@@ -1,0 +1,20 @@
+numpy
+scipy
+shapely>=2.0
+opencv-python-headless
+matplotlib
+pyyaml
+requests
+paho-mqtt         # Bambu P1S LAN MQTT
+pillow
+trimesh          # STL cross-sections (recovery.slicing)
+# Bambu Studio itself (GUI + CLI) is installed separately: https://bambulab.com/en/download/studio
+pytest
+# trained models (optional; the classical detector/segmenter run without these)
+torch
+torchvision
+segmentation-models-pytorch
+timm
+# interface / LLM planner (optional)
+gradio
+anthropic

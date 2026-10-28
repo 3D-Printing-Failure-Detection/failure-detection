@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+data/
+results/
+runs/
+runs_smoke/
+*.npz
+*.pt
+*.pdf
+.claude/

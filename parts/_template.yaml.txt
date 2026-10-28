@@ -1,0 +1,15 @@
+# Copy to parts/<yourpart>.yaml (or pass any path to --part). Geometry: CSG stack OR `stl:`.
+name: mypart
+height: 30
+layer_h: 0.25
+# stl: models/mypart.stl            # use instead of `geometry` for a real mesh
+geometry:
+  - add: {rect: {size: [50, 20]}}
+  - cut: {circle: {center: [0, 0], r: 4}}
+# --- function spec: include only what the part needs ---
+# container: {base_h: 2.0, capacity_mm3: [lo, hi]}        # holds liquid: closed walls, flat base, volume
+# min_wall_mm: 1.6                                          # no wall thinner than this
+# material_volume_mm3: [lo, hi]
+# holes: [{center: [x, y], diameter: [lo, hi], tol_center: 1.0}]   # through-holes (screws, shafts)
+# connected: [{z: [a, b], components: 1}]                   # must be one piece here (e.g. a handle joined)
+# present:   [{z: [a, b], min_area_frac: 0.85}]             # material must exist here

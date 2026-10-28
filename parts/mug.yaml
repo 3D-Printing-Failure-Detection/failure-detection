@@ -1,0 +1,19 @@
+name: mug
+height: 40
+layer_h: 0.25
+geometry:
+  - add: {circle: {r: 25}}
+  - cut: {circle: {r: 22.6}, z: [2.0, 40]}                        # cavity above a 2 mm base
+  - add: {rect: {center: [32.5, 0], size: [17, 8]}, z: [8, 14]}   # handle, lower bar (fused to wall)
+  - add: {rect: {center: [32.5, 0], size: [17, 8]}, z: [30, 36]}  # handle, upper bar
+  - add: {rect: {center: [38, 0],   size: [6, 8]},  z: [14, 30]}  # handle, vertical bar
+# --- function spec ---
+container:
+  base_h: 2.0
+  capacity_mm3: [46000, 76000]
+min_wall_mm: 1.6
+connected:                      # region must be ONE piece in these z-ranges (handle attached)
+  - {z: [8.5, 13.5], components: 1}
+  - {z: [30.5, 35.5], components: 1}
+present:                        # material must still exist here (handle not lost)
+  - {z: [15.0, 29.0], min_area_frac: 0.85}

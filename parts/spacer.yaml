@@ -1,0 +1,12 @@
+name: spacer
+height: 12
+layer_h: 0.25
+geometry:
+  - add: {circle: {r: 15}}
+  - cut: {circle: {r: 5}}
+min_wall_mm: 3.0
+material_volume_mm3: [5000, 8600]
+holes:
+  - center: [0, 0]
+    diameter: [8.5, 11.5]     # M8 bolt clearance
+    tol_center: 1.0

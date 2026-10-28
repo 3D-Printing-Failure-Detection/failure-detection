@@ -1,0 +1,10 @@
+name: cup
+height: 40
+layer_h: 0.25
+geometry:
+  - add: {circle: {r: [22, 28]}}                  # tapered outer wall
+  - cut: {circle: {r: [20.3, 26]}, z: [2.0, 40]}  # cavity, 2 mm wall
+container:
+  base_h: 2.0
+  capacity_mm3: [38000, 80000]
+min_wall_mm: 1.4

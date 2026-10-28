@@ -1,0 +1,12 @@
+name: bracket
+height: 8
+layer_h: 0.25
+geometry:
+  - add: {rect: {size: [60, 30]}}
+  - cut: {circle: {center: [-20, 0], r: 2.5}}
+  - cut: {circle: {center: [20, 0],  r: 2.5}}
+min_wall_mm: 3.0
+material_volume_mm3: [11500, 16500]
+holes:
+  - {center: [-20, 0], diameter: [4.0, 6.5], tol_center: 1.0}
+  - {center: [20, 0],  diameter: [4.0, 6.5], tol_center: 1.0}
