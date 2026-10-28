@@ -37,9 +37,16 @@ def calibrate(ip, code, out, pattern=(9, 6), square_mm=10.0, board_origin=(100.0
 
 
 def run_live(part_path, ip, serial, code, calib_path, models="classical", mode="restart",
-             rehome_gcode="", log=print):
+             rehome_gcode="", skip_stress=False, log=print):
     part = get_part(part_path)
     nom = part.layers()
+    if not skip_stress and part.spec.get("loads"):
+        from .fea import stress_test
+        rep = stress_test(nom, part.spec, part.layer_h, 1.0)
+        log("pre-print stress test of the sliced part:\n" + rep.table())
+        if not rep.ok:
+            raise SystemExit("the part as sliced fails its stress tests; fix the design or the spec "
+                             "(or pass --skip-stress)")
     if part.gcode_text is None:
         raise ValueError("live runs need `gcode:` (Bambu Studio sliced file) in the part YAML")
     printer = BambuPrinter(ip, serial, code, nom, part.layer_h, BedCamera.load(calib_path),

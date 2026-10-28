@@ -10,3 +10,10 @@ holes:
   - center: [0, 0]
     diameter: [8.5, 11.5]     # M8 bolt clearance
     tol_center: 1.0
+description: A ring spacer clamped between two parts by an M8 bolt.
+material: PLA
+loads:
+  - name: clamped, 6 kN bolt preload
+    supports: [{face: bottom}]
+    loads: [{face: top, force_N: 6000, direction: [0, 0, -1]}]
+    require: {safety_factor: 1.5}

@@ -1,7 +1,8 @@
-"""Train the detector and segmenter on synthetic (+ optionally real) layer images.
+"""Train the detector (ConvNeXt-V2, timm) and segmenter (SegFormer, transformers) on synthetic
+(+ optionally real) layer images. Input = previous-layer frame + current frame + expected render.
 
-  python -m recovery.models.train --data data/synth.npz --epochs 15
-  python -m recovery.models.train --data data/synth.npz --init runs/seg.pt --real data/real.npz --epochs 8 --lr 1e-4
+  python -m recovery.models.train --data data/synth.npz --epochs 15 --pretrained
+  python -m recovery.models.train --data data/synth.npz --init runs --real data/real.npz --epochs 8 --lr-det 1e-4 --lr-seg 3e-5
 
 Real data: an .npz with the same arrays as synth_data (img, exp, tgt, label), built from your
 own prints with induced failures (label them with tools/label_real.md workflow in README).
@@ -16,7 +17,8 @@ import torch.nn as nn
 import torch.nn.functional as Fn
 
 from .classical import LABELS
-from .nets import build_classifier, build_segmenter, device
+from .nets import (DEFAULT_BACKBONE, DEFAULT_SEG, N_FRAMES, build_detector, build_segmenter, device,
+                   seg_logits)
 
 
 def batches(n, bs, rng, shuffle=True):
@@ -26,9 +28,11 @@ def batches(n, bs, rng, shuffle=True):
 
 
 def make_x(d, idx):
+    """[previous frame, current frame, expected render] -> (B, 7, H, W)"""
     im = torch.from_numpy(d["img"][idx]).float().permute(0, 3, 1, 2) / 255.0
+    pv = torch.from_numpy(d["prev"][idx]).float().permute(0, 3, 1, 2) / 255.0
     ex = torch.from_numpy(d["exp"][idx]).float()[:, None] / 255.0
-    return torch.cat([im, ex], 1)
+    return torch.cat([pv, im, ex], 1)
 
 
 def dice_loss(logits, y):
@@ -50,10 +54,13 @@ def main(argv=None):
     ap.add_argument("--real", default=None, help="optional real-image .npz for fine-tuning")
     ap.add_argument("--epochs", type=int, default=15)
     ap.add_argument("--bs", type=int, default=16)
-    ap.add_argument("--lr", type=float, default=1e-3)
-    ap.add_argument("--pretrained", action="store_true")
+    ap.add_argument("--lr-det", type=float, default=3e-4)
+    ap.add_argument("--lr-seg", type=float, default=1e-4)
+    ap.add_argument("--backbone", default=DEFAULT_BACKBONE, help="any timm model name")
+    ap.add_argument("--seg-arch", default=DEFAULT_SEG, help="SegFormer checkpoint (nvidia/mit-b0..b5)")
+    ap.add_argument("--pretrained", action="store_true", help="start from ImageNet / ADE20k weights")
     ap.add_argument("--out", default="runs")
-    ap.add_argument("--init", default=None, help="prefix of checkpoints to start from (fine-tune)")
+    ap.add_argument("--init", default=None, help="directory of checkpoints to fine-tune from")
     a = ap.parse_args(argv)
     dev, rng = device(), np.random.default_rng(0)
     d = dict(np.load(a.data))
@@ -66,12 +73,13 @@ def main(argv=None):
     tr, va = perm[:cut], perm[cut:]
     Path(a.out).mkdir(exist_ok=True)
 
-    clf, seg = build_classifier(a.pretrained).to(dev), build_segmenter(a.pretrained).to(dev)
+    clf = build_detector(a.backbone, N_FRAMES, a.pretrained).to(dev)
+    seg = build_segmenter(a.seg_arch, N_FRAMES, a.pretrained).to(dev)
     if a.init:
-        clf.load_state_dict(torch.load(f"{a.init}_det.pt", map_location=dev))
-        seg.load_state_dict(torch.load(f"{a.init}_seg.pt", map_location=dev))
-    opt_c = torch.optim.AdamW(clf.parameters(), a.lr)
-    opt_s = torch.optim.AdamW(seg.parameters(), a.lr)
+        clf.load_state_dict(torch.load(Path(a.init) / "det.pt", map_location=dev))
+        seg.load_state_dict(torch.load(Path(a.init) / "seg.pt", map_location=dev))
+    opt_c = torch.optim.AdamW(clf.parameters(), a.lr_det, weight_decay=0.05)
+    opt_s = torch.optim.AdamW(seg.parameters(), a.lr_seg, weight_decay=0.01)
     for ep in range(a.epochs):
         clf.train(), seg.train()
         tl = ts = 0.0
@@ -82,7 +90,7 @@ def main(argv=None):
             m = (torch.from_numpy(d["tgt"][idx]).float()[:, None] / 255.0).to(dev)
             loss_c = Fn.cross_entropy(clf(x), y)
             opt_c.zero_grad(), loss_c.backward(), opt_c.step()
-            lo = seg(x)
+            lo = seg_logits(seg, x)
             loss_s = Fn.binary_cross_entropy_with_logits(lo, m) + dice_loss(lo, m)
             opt_s.zero_grad(), loss_s.backward(), opt_s.step()
             tl, ts = tl + loss_c.item(), ts + loss_s.item()
@@ -99,11 +107,14 @@ def main(argv=None):
                 n_ok += (y == 0).sum().item()
                 fa += ((y == 0) & (pred != 0)).sum().item()
                 m = (torch.from_numpy(d["tgt"][idx]).float()[:, None] / 255.0).to(dev)
-                ious.append(iou(seg(x), m))
+                ious.append(iou(seg_logits(seg, x), m))
         print(f"epoch {ep+1}/{a.epochs} loss det {tl:.2f} seg {ts:.2f} | val acc {correct/len(va):.3f} "
               f"false-alarm {fa/max(n_ok,1):.3f} contour IoU {np.mean(ious):.3f}")
     torch.save(clf.state_dict(), Path(a.out) / "det.pt")
     torch.save(seg.state_dict(), Path(a.out) / "seg.pt")
+    import json
+    (Path(a.out) / "config.json").write_text(json.dumps(
+        dict(backbone=a.backbone, seg_arch=a.seg_arch, n_frames=N_FRAMES)))
     print("saved", Path(a.out) / "det.pt", Path(a.out) / "seg.pt")
 
 

@@ -23,9 +23,10 @@ class Decision:
 
 class RulePolicy:
     def __init__(self, spec, nominal: List[Layer], layer_h, allow_adapt=True,
-                 cheap_scrap_frac=0.03, cheap_scrap_dev=3.0):
+                 cheap_scrap_frac=0.03, cheap_scrap_dev=3.0, use_fea=False, fea_h=1.5):
         self.spec, self.nominal, self.h = spec, nominal, layer_h
         self.allow_adapt = allow_adapt
+        self.use_fea, self.fea_h = use_fea, fea_h      # also stress-test candidates that pass the geometry checks
         self.cheap_frac, self.cheap_dev = cheap_scrap_frac, cheap_scrap_dev
 
     def _relief(self):
@@ -51,7 +52,25 @@ class RulePolicy:
             for p in A.candidate_plans(current_plan[k], known[-1], rest, relief=self._relief()):
                 out.append(dict(name=p.name, plan=p,
                                 verdict=check(known + p.layers, self.nominal, self.spec, self.h)))
+        if self.use_fea and self.spec.get("loads"):
+            self._stress_filter(known, out)
         return out
+
+    def _stress_filter(self, known, cands):
+        """Geometry says a candidate is fine; now simulate the loads on the finished part.
+        Stops at the first candidate that passes both (the rest are left untested: expensive)."""
+        from ..fea import stress_test
+        for c in cands:
+            v = c["verdict"]
+            if not v.ok:
+                continue
+            rep = stress_test(known + c["plan"].layers, self.spec, self.h, self.fea_h)
+            c["stress"] = rep
+            if not rep.ok:
+                v.ok = False
+                v.violations += rep.violations
+            else:
+                break
 
     def decide(self, known: List[Layer], current_plan: List[Layer], detection) -> Decision:
         k = len(known) - 1

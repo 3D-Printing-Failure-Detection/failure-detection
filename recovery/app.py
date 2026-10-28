@@ -28,10 +28,10 @@ def _overlay(event):
     return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 
-def run(part, kind, seed, severity, policy, models):
+def run(part, kind, seed, severity, policy, models, use_fea):
     logs = []
     sc = run_scenario(part, kind, int(seed), severity if severity > 0 else None, policy, models,
-                      log=logs.append)
+                      log=logs.append, use_fea=use_fea)
     res = sc.result
     ev = res.events[0] if res.events else None
     status = [f"**Injected:** {sc.failure.kind} at layer {sc.failure.k0} "
@@ -57,12 +57,13 @@ def build():
         gr.Markdown("## Detect → measure → assess → decide → adapt\nSimulated printer; "
                     "inject a failure and watch the loop respond.")
         with gr.Row():
-            part = gr.Dropdown(PART_NAMES, value="mug", label="Part")
+            part = gr.Dropdown(PART_NAMES, value=PART_NAMES[0], label="Part")
             kind = gr.Dropdown(KINDS, value="collapse", label="Failure")
             seed = gr.Number(0, label="Seed", precision=0)
             sev = gr.Slider(0, 8, value=0, step=0.1, label="Severity mm (0 = random)")
             pol = gr.Radio(["ours", "alert"], value="ours", label="Policy")
             mdl = gr.Radio(["classical", "torch"], value="classical", label="Models")
+            fea = gr.Checkbox(False, label="Stress-test candidates (FEA, slower)")
         btn = gr.Button("Run", variant="primary")
         out_txt = gr.Markdown()
         with gr.Row():
@@ -72,7 +73,7 @@ def build():
                                label="Options considered")
         out_log = gr.Textbox(label="Controller log", lines=6)
         out_file = gr.File(label="Final G-code")
-        btn.click(run, [part, kind, seed, sev, pol, mdl],
+        btn.click(run, [part, kind, seed, sev, pol, mdl, fea],
                   [out_txt, out_img, out_fig, out_tab, out_log, out_file])
     return demo
 

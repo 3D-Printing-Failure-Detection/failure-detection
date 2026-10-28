@@ -7,5 +7,5 @@ runs/
 runs_smoke/
 *.npz
 *.pt
-*.pdf
 .claude/
+/Project 2 plan*.pdf

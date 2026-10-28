@@ -42,6 +42,7 @@ def make_sample(rng, get, p_fail=0.6, dev_thresh=1.0):
     for j in range(max(1, k - 3), k + 1):
         actual.append(f.apply(P[j], j) if f is not None and f.active(j) else P[j])
     img = camera.render([P[0]] + actual, rng)
+    prev = camera.render([P[0]] + actual[:-1], rng)          # camera view one layer earlier (video context)
     cur, exp = actual[-1], P[k]
     label = "ok"
     if f is not None:
@@ -51,19 +52,21 @@ def make_sample(rng, get, p_fail=0.6, dev_thresh=1.0):
                      "under_extrusion": "under_extrusion", "detach": "detach"}[f.kind]
     big = lambda m: cv2.resize(m, (SIZE, SIZE), interpolation=cv2.INTER_AREA)
     img_s = cv2.resize(img, (SIZE, SIZE), interpolation=cv2.INTER_AREA)
+    prev_s = cv2.resize(prev, (SIZE, SIZE), interpolation=cv2.INTER_AREA)
     exp_s = big(camera.expected_mask(exp) * 255)
     tgt_s = big(camera.rasterise(cur.region))
-    return img_s, exp_s, tgt_s, LABELS.index(label)
+    return img_s, prev_s, exp_s, tgt_s, LABELS.index(label)
 
 
 def make_dataset(n, seed=0):
     rng = np.random.default_rng(seed)
     get = _layers_cache()
-    imgs, exps, tgts, labs = [], [], [], []
+    imgs, prevs, exps, tgts, labs = [], [], [], [], []
     for _ in range(n):
-        a, b, c, d = make_sample(rng, get)
-        imgs.append(a), exps.append(b), tgts.append(c), labs.append(d)
-    return dict(img=np.stack(imgs), exp=np.stack(exps), tgt=np.stack(tgts), label=np.array(labs))
+        a, p, b, c, d = make_sample(rng, get)
+        imgs.append(a), prevs.append(p), exps.append(b), tgts.append(c), labs.append(d)
+    return dict(img=np.stack(imgs), prev=np.stack(prevs), exp=np.stack(exps), tgt=np.stack(tgts),
+                label=np.array(labs))
 
 
 if __name__ == "__main__":

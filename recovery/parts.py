@@ -20,8 +20,10 @@ Two ways to describe geometry in the YAML:
      where the part sits on the bed so adapted layers are written back to the right place.
   3. A real mesh:    stl: path/to/part.stl      (cross-sectioned with trimesh)
 
-Spec keys (all optional) are documented in geometry/spec.py. Add a new part by dropping a
-YAML file into parts/ (or pass any path with --part).
+Spec keys (all optional) are documented in geometry/spec.py and fea/cases.py (stress tests).
+The spec can sit in the same file or in a separate one (`spec_file: specs/mug.yaml`), e.g. one
+written by the LLM spec author (recovery/specgen.py). Add a new part by dropping a YAML file
+into parts/ (or pass any path with --part).
 """
 from pathlib import Path
 from typing import List
@@ -109,6 +111,11 @@ class Part:
     def from_yaml(cls, path) -> "Part":
         path = Path(path)
         d = yaml.safe_load(path.read_text())
+        if "spec_file" in d:                      # spec kept in its own file (LLM-authored or hand-written)
+            sf = Path(d["spec_file"])
+            sf = sf if sf.is_absolute() else path.parent / sf
+            extra = yaml.safe_load(sf.read_text()) or {}
+            d = {**d, **{k: v for k, v in extra.items() if k not in ("name", "geometry", "stl", "gcode")}}
         name = d.get("name", path.stem)
         lh = float(d.get("layer_h", 0.25))
         if "gcode" in d:

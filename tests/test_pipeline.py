@@ -101,3 +101,26 @@ def test_bed_camera_topdown_is_identity_for_a_straight_down_camera():
     img = np.zeros((480, 640, 3), np.uint8)
     out = cam.top_down(img, 0.0, (100.0, 100.0))
     assert out.shape == (CAM.size, CAM.size, 3)
+
+
+def test_heuristic_specgen_is_verified_on_the_nominal_part():
+    from recovery.specgen import author_spec
+    part = get_part(PART_NAMES[0])
+    res = author_spec(part.layers(), part.layer_h, "", use_llm=False, h=2.0)
+    assert res["source"] == "heuristic" and res["verified"], res["issues"]
+
+
+def test_validate_spec_rejects_unknown_keys():
+    from recovery.specgen import geometry_summary, validate_spec
+    part = get_part(PART_NAMES[0])
+    summ = geometry_summary(part.layers(), part.layer_h)
+    assert validate_spec({"not_a_rule": 1}, summ)
+
+
+def test_stress_test_reports_a_safety_factor():
+    from recovery.fea import stress_test
+    part = next((get_part(n) for n in PART_NAMES if get_part(n).spec.get("loads")), None)
+    if part is None:
+        pytest.skip("no part defines loads")
+    rep = stress_test(part.layers(), part.spec, part.layer_h, 2.0)
+    assert rep.cases and all(c.safety_factor > 0 for c in rep.cases)

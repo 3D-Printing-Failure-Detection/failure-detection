@@ -12,9 +12,8 @@ trimesh          # STL cross-sections (recovery.slicing)
 pytest
 # trained models (optional; the classical detector/segmenter run without these)
 torch
-torchvision
-segmentation-models-pytorch
-timm
+timm            # ConvNeXt-V2 detector backbone
+transformers    # SegFormer segmenter
 # interface / LLM planner (optional)
 gradio
 anthropic

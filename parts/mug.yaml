@@ -17,3 +17,15 @@ connected:                      # region must be ONE piece in these z-ranges (ha
   - {z: [30.5, 35.5], components: 1}
 present:                        # material must still exist here (handle not lost)
   - {z: [15.0, 29.0], min_area_frac: 0.85}
+# --- stress tests (recovery.fea): what the mug must survive ---
+description: A coffee mug with a D-handle. Holds hot drinks and is lifted by the handle.
+material: PLA
+loads:
+  - name: full of water on a table
+    fluid: {density_kg_m3: 1000, fill_height_mm: 36}
+    supports: [{face: bottom}]
+    require: {safety_factor: 1.5, leak_free: true}
+  - name: lifted by the handle (30 N pull on the handle)
+    supports: [{face: bottom}]
+    loads: [{box: [34, 42, -5, 5, 14, 30], force_N: 30, direction: [0, 0, 1]}]
+    require: {safety_factor: 1.5}

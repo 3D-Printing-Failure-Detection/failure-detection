@@ -8,3 +8,10 @@ container:
   base_h: 2.0
   capacity_mm3: [38000, 80000]
 min_wall_mm: 1.4
+description: A tapered drinking cup with no handle. Holds liquid.
+material: PLA
+loads:
+  - name: full of water on a table
+    fluid: {density_kg_m3: 1000, fill_height_mm: 36}
+    supports: [{face: bottom}]
+    require: {safety_factor: 1.5, leak_free: true}
