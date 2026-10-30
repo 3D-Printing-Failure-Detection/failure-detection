@@ -286,7 +286,12 @@ large environments and raw outputs stay on the data disk.
 
 The implementation commit is `5ecda34` on `work/mujoco-generalization`. Its source
 digest matches both completed benchmarks. The report, small validation artifacts,
-and summarization tool accompany it on `main`, created from the original `slop-v1`
-tip and merged without rewriting that branch. The original research features are
-retained with their validation limits stated above. GitHub's existing default
-branch setting is left unchanged; use `main` for this reviewed version.
+and summarization tool accompany it on local `main`, created from the original
+`slop-v1` tip and merged at `3258b66` without rewriting that branch. The original
+research features are retained with their validation limits stated above.
+
+**Publication status:** local integration is complete; nothing was pushed.
+Automatic approval review rejected publishing repository/report contents to the
+existing GitHub origin because explicit authorization for that publication was not
+established. Remote publication requires approval. GitHub's existing `slop-v1`
+branch and default-branch setting are unchanged; use local `main` for this version.
