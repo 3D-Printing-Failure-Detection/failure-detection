@@ -17,6 +17,18 @@ from pathlib import Path
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    # Delegate before argparse consumes the child command's flags.
+    if argv and argv[0] in {"eval", "mujoco-eval", "gen-data", "train"}:
+        if argv[0] == "gen-data":
+            import runpy
+            sys.argv = ["synth_data"] + argv[1:]
+            runpy.run_module("recovery.models.synth_data", run_name="__main__")
+            return
+        import importlib
+        module = {"eval": ".eval.run_eval", "mujoco-eval": ".eval.mujoco_eval",
+                  "train": ".models.train"}[argv[0]]
+        return importlib.import_module(module, "recovery").main(argv[1:])
     ap = argparse.ArgumentParser(prog="recovery")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -28,7 +40,7 @@ def main(argv=None):
     d.add_argument("--models", default="classical", choices=["classical", "torch"])
     d.add_argument("--out", default="results/demo")
 
-    for name in ("eval", "gen-data", "train"):
+    for name in ("eval", "mujoco-eval", "gen-data", "train"):
         p = sub.add_parser(name, add_help=False)
         p.add_argument("rest", nargs=argparse.REMAINDER)
     sub.add_parser("app")

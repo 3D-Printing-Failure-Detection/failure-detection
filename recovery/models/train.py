@@ -9,6 +9,7 @@ own prints with induced failures (label them with tools/label_real.md workflow i
 Reports detection accuracy / false-alarm rate and contour IoU on a held-out split.
 """
 import argparse
+import json
 from pathlib import Path
 
 import numpy as np
@@ -73,8 +74,15 @@ def main(argv=None):
     tr, va = perm[:cut], perm[cut:]
     Path(a.out).mkdir(exist_ok=True)
 
-    clf = build_detector(a.backbone, N_FRAMES, a.pretrained).to(dev)
-    seg = build_segmenter(a.seg_arch, N_FRAMES, a.pretrained).to(dev)
+    init_cfg = json.loads((Path(a.init) / "config.json").read_text()) if a.init else {}
+    n_frames = init_cfg.get("n_frames", N_FRAMES)
+    if n_frames != 2:
+        raise ValueError("training data currently supplies exactly two frames")
+    backbone = init_cfg.get("backbone", a.backbone)
+    seg_arch = init_cfg.get("seg_arch", a.seg_arch)
+    clf = build_detector(backbone, n_frames, a.pretrained and not a.init).to(dev)
+    seg = build_segmenter(seg_arch, n_frames, a.pretrained and not a.init,
+                          config=init_cfg.get("segmenter_config")).to(dev)
     if a.init:
         clf.load_state_dict(torch.load(Path(a.init) / "det.pt", map_location=dev))
         seg.load_state_dict(torch.load(Path(a.init) / "seg.pt", map_location=dev))
@@ -112,9 +120,9 @@ def main(argv=None):
               f"false-alarm {fa/max(n_ok,1):.3f} contour IoU {np.mean(ious):.3f}")
     torch.save(clf.state_dict(), Path(a.out) / "det.pt")
     torch.save(seg.state_dict(), Path(a.out) / "seg.pt")
-    import json
     (Path(a.out) / "config.json").write_text(json.dumps(
-        dict(backbone=a.backbone, seg_arch=a.seg_arch, n_frames=N_FRAMES)))
+        dict(backbone=backbone, seg_arch=seg_arch, n_frames=n_frames,
+             segmenter_config=seg.config.to_dict())))
     print("saved", Path(a.out) / "det.pt", Path(a.out) / "seg.pt")
 
 

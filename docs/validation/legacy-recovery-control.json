@@ -1,0 +1,80 @@
+[
+  {
+    "profile": "corexy",
+    "part": "mug",
+    "kind": "collapse",
+    "seed": 3,
+    "method": "ignore",
+    "clear_failure_on_adapt": true,
+    "outcome": "finished",
+    "in_place": true,
+    "adaptations": 0,
+    "frames": 0,
+    "violations": []
+  },
+  {
+    "profile": "corexy",
+    "part": "mug",
+    "kind": "collapse",
+    "seed": 3,
+    "method": "ours",
+    "clear_failure_on_adapt": true,
+    "outcome": "finished",
+    "in_place": true,
+    "adaptations": 1,
+    "frames": 160,
+    "violations": []
+  },
+  {
+    "profile": "cartesian",
+    "part": "mug",
+    "kind": "collapse",
+    "seed": 3,
+    "method": "ignore",
+    "clear_failure_on_adapt": true,
+    "outcome": "finished",
+    "in_place": true,
+    "adaptations": 0,
+    "frames": 0,
+    "violations": []
+  },
+  {
+    "profile": "cartesian",
+    "part": "mug",
+    "kind": "collapse",
+    "seed": 3,
+    "method": "ours",
+    "clear_failure_on_adapt": true,
+    "outcome": "finished",
+    "in_place": true,
+    "adaptations": 1,
+    "frames": 160,
+    "violations": []
+  },
+  {
+    "profile": "bedslinger",
+    "part": "mug",
+    "kind": "collapse",
+    "seed": 3,
+    "method": "ignore",
+    "clear_failure_on_adapt": true,
+    "outcome": "finished",
+    "in_place": true,
+    "adaptations": 0,
+    "frames": 0,
+    "violations": []
+  },
+  {
+    "profile": "bedslinger",
+    "part": "mug",
+    "kind": "collapse",
+    "seed": 3,
+    "method": "ours",
+    "clear_failure_on_adapt": true,
+    "outcome": "finished",
+    "in_place": true,
+    "adaptations": 1,
+    "frames": 160,
+    "violations": []
+  }
+]

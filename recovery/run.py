@@ -45,7 +45,7 @@ def run_scenario(part_name, kind="collapse", seed=0, severity=None, policy="ours
     # layers before the failure are clean; skip imaging them unless asked (full-print run)
     pr = SimPrinter(nom, f, seed=seed, start_idx=0 if from_start else f.k0)
     res = Controller(pr, seg, det, pol, part.spec, nom, part.layer_h,
-                     quiet_horizon=None if from_start else 25, log=log).run()
+                     log=log).run()
     ig = SimPrinter(nom, f, seed=seed, start_idx=f.k0)
     ig.fast_forward()
     gcode, _ = write_gcode(pr.printed if not pr.cancelled else nom[:pr.n_done], part.layer_h,

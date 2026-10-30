@@ -1,0 +1,7 @@
+profile,assumption,n,in_place,scrapped,defective_finished,harmful,recovered_harmful,adapted
+cartesian,persistent,40,20,18,2,15,0,5
+cartesian,cleared_on_adapt,40,24,14,2,15,1,5
+corexy,persistent,40,20,19,1,15,0,5
+corexy,cleared_on_adapt,40,22,15,3,15,1,5
+bedslinger,persistent,40,20,18,2,15,0,5
+bedslinger,cleared_on_adapt,40,24,14,2,15,1,5

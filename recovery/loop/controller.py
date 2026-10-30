@@ -50,6 +50,8 @@ class Controller:
             pr.print_layer()
             img, exp = pr.camera_image(), pr.expected_layer()
             meas = self.seg.measure(img, camera.expected_mask(exp))
+            if hasattr(pr, "record_measurement"):
+                pr.record_measurement(Layer(exp.z, meas))
             det = self.det.detect(img, exp.region, meas)
             if det.label == "ok":
                 known.append(exp)

@@ -1,0 +1,13 @@
+..............................                                           [100%]
+============================= slowest 10 durations =============================
+7.00s call     tests/test_pipeline.py::test_collapse_is_recovered_in_place
+2.82s call     tests/test_pipeline.py::test_gcode_round_trip
+2.40s call     tests/test_pipeline.py::test_failure_that_ignoring_survives_is_not_scrapped
+0.55s call     tests/test_mujoco.py::test_rig_motion_camera_and_full_controller[corexy]
+0.55s call     tests/test_mujoco.py::test_rig_motion_camera_and_full_controller[cartesian]
+0.44s call     tests/test_pipeline.py::test_detach_is_scrapped
+0.40s call     tests/test_mujoco.py::test_rig_motion_camera_and_full_controller[bedslinger]
+0.40s call     tests/test_pipeline.py::test_custom_part_from_yaml_runs_through_the_loop
+0.12s call     tests/test_pipeline.py::test_heuristic_specgen_is_verified_on_the_nominal_part
+0.07s call     tests/test_pipeline.py::test_validate_spec_rejects_unknown_keys
+30 passed, 1 skipped in 15.24s

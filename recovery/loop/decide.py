@@ -58,7 +58,7 @@ class RulePolicy:
 
     def _stress_filter(self, known, cands):
         """Geometry says a candidate is fine; now simulate the loads on the finished part.
-        Stops at the first candidate that passes both (the rest are left untested: expensive)."""
+        Check every eligible candidate: optional policies may select any passing option."""
         from ..fea import stress_test
         for c in cands:
             v = c["verdict"]
@@ -69,8 +69,6 @@ class RulePolicy:
             if not rep.ok:
                 v.ok = False
                 v.violations += rep.violations
-            else:
-                break
 
     def decide(self, known: List[Layer], current_plan: List[Layer], detection) -> Decision:
         k = len(known) - 1
