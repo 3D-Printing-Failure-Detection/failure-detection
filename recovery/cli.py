@@ -38,6 +38,8 @@ def main(argv=None):
     d.add_argument("--seed", type=int, default=3)
     d.add_argument("--severity", type=float, default=None)
     d.add_argument("--models", default="classical", choices=["classical", "torch"])
+    d.add_argument("--policy", default="ours", choices=["ours", "alert", "functional"],
+                   help="functional: experimental measured-state and predictive recovery")
     d.add_argument("--out", default="results/demo")
 
     for name in ("eval", "mujoco-eval", "gen-data", "train"):
@@ -130,7 +132,7 @@ def main(argv=None):
     if a.cmd == "demo":
         from .run import run_scenario
         from .viz import event_figure
-        sc = run_scenario(a.part, a.kind, a.seed, a.severity, models=a.models, log=print)
+        sc = run_scenario(a.part, a.kind, a.seed, a.severity, models=a.models, policy=a.policy, log=print)
         res = sc.result
         print(f"injected {sc.failure.kind} at layer {sc.failure.k0}; if ignored: {sc.ignore_verdict}")
         print(f"outcome: {res.outcome}; final: {res.final}")

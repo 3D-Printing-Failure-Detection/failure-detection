@@ -24,10 +24,13 @@ from ..geometry.ops import iou
 from ..geometry.spec import check
 from ..loop.controller import Controller, filament_of
 from ..loop.decide import AlertOnlyPolicy, RulePolicy
+from ..loop.functional import FunctionalPolicy
 from ..models.classical import ClassicalDetector, ClassicalSegmenter
 from ..parts import PART_NAMES, get_part
 from ..printer.profiles import PROFILES
 from .run_eval import METHODS, ScrapPolicy
+
+EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional"]
 
 
 class ObservedSegmenter(ClassicalSegmenter):
@@ -64,8 +67,12 @@ def run_case(job):
                 verdict = check(pr.printed, nominal, part.spec, part.layer_h)
                 functional, outcome = verdict.ok, "finished"
             else:
-                policy = {"ours": RulePolicy, "alert": AlertOnlyPolicy, "scrap": ScrapPolicy}[method](
-                    part.spec, nominal, part.layer_h)
+                if method in ("measured", "predictive", "functional"):
+                    policy = FunctionalPolicy(part.spec, nominal, part.layer_h,
+                                              predict=method != "measured", rank_margin=method == "functional")
+                else:
+                    policy = {"ours": RulePolicy, "alert": AlertOnlyPolicy, "scrap": ScrapPolicy}[method](
+                        part.spec, nominal, part.layer_h)
                 res = Controller(pr, seg, ClassicalDetector(), policy, part.spec,
                                  nominal, part.layer_h).run()
                 functional, outcome, verdict, events = res.functional, res.outcome, res.final, res.events
@@ -89,7 +96,8 @@ def run_case(job):
                 tracking_rms_mm=float(pr.tracking_rms_mm), max_tracking_mm=pr.max_tracking_mm,
                 executed_waypoints=pr.executed_waypoints,
                 violations=verdict.violations if verdict else [events[-1].reason],
-                actions=[dict(layer=e.layer, label=e.label, action=e.action, reason=e.reason) for e in events],
+                actions=[dict(layer=e.layer, label=e.label, action=e.action, reason=e.reason,
+                              considered=e.considered) for e in events],
                 seconds=time.perf_counter()-started))
     return rows
 
@@ -98,7 +106,7 @@ def summarize(rows):
     summary = []
     ignored = {(r["profile"], r["part"], r["kind"], r["seed"]): r for r in rows if r["method"] == "ignore"}
     for profile in sorted({r["profile"] for r in rows}):
-        for method in METHODS:
+        for method in EXPERIMENT_METHODS:
             for split in ("clean", "failure"):
                 selected = [r for r in rows if r["profile"] == profile and r["method"] == method
                             and (r["kind"] == "clean") == (split == "clean")]
@@ -128,6 +136,28 @@ def write_csv(path, rows):
         writer.writerows(rows)
 
 
+def paired_comparison(rows):
+    """Count actual in-place rescues and regressions on identical scenarios."""
+    key = lambda r: (r["profile"], r["part"], r["kind"], r["seed"])
+    by_method = {m: {key(r): r for r in rows if r["method"] == m} for m in EXPERIMENT_METHODS}
+    comparisons = []
+    for baseline, treatment in (("ignore", "ours"), ("ignore", "measured"), ("ignore", "predictive"),
+                                ("ignore", "functional"), ("ours", "measured"), ("measured", "predictive"),
+                                ("predictive", "functional"), ("ours", "functional")):
+        for split in ("clean", "failure"):
+            keys = sorted(k for k in by_method[baseline].keys() & by_method[treatment].keys()
+                          if (k[2] == "clean") == (split == "clean"))
+            pairs = [(by_method[baseline][k], by_method[treatment][k]) for k in keys]
+            if not pairs:
+                continue
+            comparisons.append(dict(baseline=baseline, treatment=treatment, split=split, n=len(pairs),
+                baseline_in_place=sum(a["in_place"] for a, b in pairs),
+                treatment_in_place=sum(b["in_place"] for a, b in pairs),
+                gained=[list(key(b)) for a, b in pairs if b["in_place"] and not a["in_place"]],
+                lost=[list(key(b)) for a, b in pairs if a["in_place"] and not b["in_place"]]))
+    return comparisons
+
+
 def source_digest():
     root = Path(__file__).resolve().parents[2]
     digest = hashlib.sha256()
@@ -142,7 +172,7 @@ def main(argv=None):
     parser.add_argument("--profiles", nargs="+", choices=list(PROFILES), default=list(PROFILES))
     parser.add_argument("--parts", nargs="+", default=PART_NAMES)
     parser.add_argument("--kinds", nargs="+", choices=["clean"] + KINDS, default=["clean"] + KINDS)
-    parser.add_argument("--methods", nargs="+", choices=METHODS, default=METHODS)
+    parser.add_argument("--methods", nargs="+", choices=EXPERIMENT_METHODS, default=METHODS)
     parser.add_argument("--n", type=int, default=2, help="seeds per part/failure/profile")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--workers", type=int, default=4)
@@ -191,6 +221,7 @@ def main(argv=None):
     summary = summarize(rows)
     write_csv(output / "summary.csv", summary)
     (output / "summary.json").write_text(json.dumps(summary, indent=2))
+    (output / "paired.json").write_text(json.dumps(paired_comparison(rows), indent=2))
     manifest.update(status="failed" if errors else "complete", completed_runs=len(rows), errors=errors,
                     final_source_sha256=source_digest())
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2))

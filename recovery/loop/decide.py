@@ -64,7 +64,7 @@ class RulePolicy:
             v = c["verdict"]
             if not v.ok:
                 continue
-            rep = stress_test(known + c["plan"].layers, self.spec, self.h, self.fea_h)
+            rep = stress_test(known + c.get("predicted", c["plan"].layers), self.spec, self.h, self.fea_h)
             c["stress"] = rep
             if not rep.ok:
                 v.ok = False

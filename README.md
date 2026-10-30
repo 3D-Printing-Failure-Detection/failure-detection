@@ -39,6 +39,15 @@ On this machine, the environment and raw experiment outputs live under
 `/mnt/data/ishaan/hri-workspace/failure-detection`; `.venv` is a local symlink.
 On another machine, choose an appropriate disk for environments and results.
 
+The [follow-up policy trial](docs/functional-policy-trial.md) tests three cumulative
+changes: `measured` retains every measured layer and adds functional alarms;
+`predictive` also forecasts persistent deposition error and compensates commands;
+`functional` also ranks feasible plans by functional margin under geometric
+uncertainty. These are experimental options; `ours` remains the default. Compare
+them with `--methods ignore ours measured predictive functional`. The CLI demo
+also accepts `--policy functional`, but its older simulator clears failures after
+adaptation; use MuJoCo without `--clear-failure-on-adapt` to test persistence.
+
 ## The idea in physical terms
 
 A print is a stack of ~0.2 mm slabs. If slab *k* lands somewhere other than planned (wall sags,

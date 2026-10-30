@@ -113,6 +113,7 @@ def check(layers: List[Layer], planned: List[Layer], spec: dict, layer_h: float)
         (cx, cy), d = F.inscribed(max(ps, key=lambda p: p.area))
         dc = Point(cx, cy).distance(Point(*hs["center"]))
         met[f"hole_{hs['center']}_d"] = d
+        met[f"hole_{hs['center']}_offset_mm"] = dc
         if not (hs["diameter"][0] <= d <= hs["diameter"][1]):
             viol.append(f"hole at {hs['center']} diameter {d:.1f} outside {hs['diameter']}")
         elif dc > hs["tol_center"]:

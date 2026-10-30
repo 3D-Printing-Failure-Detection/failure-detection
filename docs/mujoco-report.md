@@ -4,6 +4,10 @@ Date: 2026-10-29. Source branch reviewed: `slop-v1`, initially `882d6fa`.
 The repository and remote initially had no `main` branch. Work was isolated on
 `work/mujoco-generalization`; integration status and final results are recorded below.
 
+The [2026-10-30 follow-up trial](functional-policy-trial.md) tests measured-state
+tracking, persistent-error prediction, and functional-margin ranking. This report
+and its original evidence remain the baseline study.
+
 **Finding:** the software pipeline runs across all three rigs, but reliable
 end-to-end recovery has not been established. Across the paired persistent-failure
 cases, recovery completed 50% functionally in place versus 62.5% for ignoring the

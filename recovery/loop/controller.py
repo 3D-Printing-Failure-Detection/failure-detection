@@ -53,16 +53,18 @@ class Controller:
             if hasattr(pr, "record_measurement"):
                 pr.record_measurement(Layer(exp.z, meas))
             det = self.det.detect(img, exp.region, meas)
+            measured = Layer(exp.z, meas)
+            if hasattr(self.pol, "observe"):
+                measured, det = self.pol.observe(exp, measured, det, len(known))
             if det.label == "ok":
-                known.append(exp)
+                known.append(measured if hasattr(self.pol, "observe") else exp)
                 quiet += 1
-                if self.horizon and quiet >= self.horizon:
+                if self.horizon and quiet >= self.horizon and not hasattr(self.pol, "observe"):
                     pr.fast_forward()
                     break
                 continue
             quiet = 0
             pr.pause()
-            measured = Layer(exp.z, meas)
             known.append(measured)
             self.log(f"layer {pr.n_done-1}: {det.label} dev={det.deviation_mm:.1f}mm")
             dec = self.pol.decide(known, pr.plan, det)
