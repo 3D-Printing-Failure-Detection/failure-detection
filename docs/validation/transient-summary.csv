@@ -1,0 +1,4 @@
+profile,method,split,n,in_place,scrapped,defective_finished,adapted,n_harmful,recovered_harmful,mean_filament_with_assumed_restart,mean_measurement_iou
+bedslinger,ours,failure,40,0.6,0.35,0.05,0.125,0,,1.158391398174907,0.9272009686029294
+cartesian,ours,failure,40,0.6,0.35,0.05,0.125,0,,1.1583764723602574,0.930246978930397
+corexy,ours,failure,40,0.55,0.375,0.075,0.125,0,,1.1765214784094025,0.9294959907980582
