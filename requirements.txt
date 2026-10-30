@@ -8,6 +8,8 @@ requests
 paho-mqtt         # Bambu P1S LAN MQTT
 pillow
 trimesh          # STL cross-sections (recovery.slicing)
+networkx         # trimesh path topology
+rtree            # trimesh polygon enclosure queries
 # Bambu Studio itself (GUI + CLI) is installed separately: https://bambulab.com/en/download/studio
 pytest
 # trained models (optional; the classical detector/segmenter run without these)

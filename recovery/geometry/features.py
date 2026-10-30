@@ -62,7 +62,7 @@ def excess_overhang(layer: Layer, prev: Layer, p_layer: Layer, p_prev: Layer, r=
 def inscribed(poly):
     """Centre and diameter of the largest inscribed circle of a polygon."""
     pt = polylabel(poly, tolerance=0.05)
-    return (pt.x, pt.y), 2 * poly.exterior.distance(pt)
+    return (pt.x, pt.y), 2 * poly.boundary.distance(pt)
 
 
 def hole_near(layer: Layer, centre, radius):

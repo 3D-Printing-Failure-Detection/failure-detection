@@ -51,11 +51,18 @@ def build_detector(backbone=DEFAULT_BACKBONE, n_frames=N_FRAMES, pretrained=Fals
                              num_classes=len(LABELS))
 
 
-def build_segmenter(seg_arch=DEFAULT_SEG, n_frames=N_FRAMES, pretrained=False):
+def build_segmenter(seg_arch=DEFAULT_SEG, n_frames=N_FRAMES, pretrained=False, config=None):
     from transformers import SegformerConfig, SegformerForSemanticSegmentation
     in_ch = in_channels(n_frames)
+    if config is not None:
+        cfg = SegformerConfig.from_dict(config)
+        if cfg.num_channels != in_ch or cfg.num_labels != 1:
+            raise ValueError("saved segmenter config does not match frame/label count")
+        return SegformerForSemanticSegmentation(cfg)
     if not pretrained:
-        return SegformerForSemanticSegmentation(SegformerConfig(num_labels=1, num_channels=in_ch))
+        # Read only architecture metadata; weights remain randomly initialized.
+        cfg = SegformerConfig.from_pretrained(seg_arch, num_labels=1, num_channels=in_ch)
+        return SegformerForSemanticSegmentation(cfg)
     model = SegformerForSemanticSegmentation.from_pretrained(seg_arch, num_labels=1,
                                                              ignore_mismatched_sizes=True)
     old = model.segformer.encoder.patch_embeddings[0].proj          # expects 3 channels
@@ -108,7 +115,8 @@ class NeuralSegmenter:
         cfg = _load_cfg(ckpt_dir)
         self.n = cfg.get("n_frames", N_FRAMES)
         self.dev = dev or device()
-        self.net = build_segmenter(cfg.get("seg_arch", DEFAULT_SEG), self.n)
+        self.net = build_segmenter(cfg.get("seg_arch", DEFAULT_SEG), self.n,
+                                   config=cfg.get("segmenter_config"))
         self.net.load_state_dict(torch.load(Path(ckpt_dir) / "seg.pt", map_location="cpu"))
         self.net.to(self.dev).eval()
         self.hist = _History(self.n)

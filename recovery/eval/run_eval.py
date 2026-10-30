@@ -51,13 +51,14 @@ def run_one(args):
             pr.fast_forward()
             v = check(pr.printed, nom, part.spec, part.layer_h)
             rows.append(dict(base, outcome="finished", in_place=v.ok, restarted=False,
-                             functional=v.ok, filament_ratio=1.0, first_label="", alarm_delay=-1,
+                             functional=v.ok, filament_ratio=filament_of(pr.printed, part.layer_h) / full,
+                             first_label="", alarm_delay=-1,
                              adapted=False, violations="; ".join(v.violations), secs=time.time() - t0))
             continue
         pol_cls = {"scrap": ScrapPolicy, "alert": AlertOnlyPolicy, "ours": RulePolicy}[m]
         pol = pol_cls(part.spec, nom, part.layer_h)
         res = Controller(pr, ClassicalSegmenter(), ClassicalDetector(), pol, part.spec, nom,
-                         part.layer_h, quiet_horizon=25).run()
+                         part.layer_h).run()
         restarted = res.outcome == "scrapped"
         used = res.filament_mm + (full if restarted else 0.0)
         first = res.events[0] if res.events else None

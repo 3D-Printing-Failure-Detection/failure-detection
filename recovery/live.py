@@ -56,7 +56,9 @@ def run_live(part_path, ip, serial, code, calib_path, models="classical", mode="
     pol = RulePolicy(part.spec, nom, part.layer_h)
     ctl = Controller(printer, seg, det, pol, part.spec, nom, part.layer_h, log=log)
     t0 = time.time()
-    res = ctl.run()
-    log(f"done in {time.time()-t0:.0f}s: {res.outcome}; final check: {res.final}")
-    printer.close()
-    return res
+    try:
+        res = ctl.run()
+        log(f"done in {time.time()-t0:.0f}s: {res.outcome}; measured final check: {res.final}")
+        return res
+    finally:
+        printer.close()

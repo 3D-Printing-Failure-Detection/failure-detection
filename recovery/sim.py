@@ -37,6 +37,8 @@ class SimPrinter:
         return len(self.plan)
 
     def print_layer(self):
+        if self.paused or self.cancelled or self.n_done >= self.n_total:
+            raise RuntimeError("printer is paused, cancelled, or finished")
         idx = len(self.printed)
         lay = self.plan[idx]
         if self.failure_active and self.failure.active(idx):
@@ -72,5 +74,5 @@ class SimPrinter:
 
     def fast_forward(self):
         """Finish the print without imaging (used after the loop has been quiet)."""
-        while len(self.printed) < len(self.plan):
+        while len(self.printed) < len(self.plan) and not self.cancelled and not self.paused:
             self.print_layer()

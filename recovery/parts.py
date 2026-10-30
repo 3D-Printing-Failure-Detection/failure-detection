@@ -62,8 +62,12 @@ def _csg_fn(geometry: List[dict], height: float):
     items = []
     for it in geometry:
         op = "add" if "add" in it else "cut"
-        z0, z1 = it.get("z", [0.0, height])
-        items.append((op, it[op], z0, z1))
+        shape = dict(it[op])
+        nested_z = shape.pop("z", None)
+        if nested_z is not None and "z" in it and nested_z != it["z"]:
+            raise ValueError("conflicting nested and outer geometry z ranges")
+        z0, z1 = it.get("z", nested_z or [0.0, height])
+        items.append((op, shape, z0, z1))
 
     def fn(z):
         g = Polygon()

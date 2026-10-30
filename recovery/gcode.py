@@ -100,7 +100,7 @@ def write_gcode(layers, layer_h, **kw) -> Tuple[str, float]:
     return HEADER + body + FOOTER, fil
 
 
-_NUM = re.compile(r"([XYZEFIJR])(-?\d+\.?\d*)")
+_NUM = re.compile(r"([XYZEFIJR])([+-]?(?:\d+(?:\.\d*)?|\.\d+))")
 
 
 def _arc(x, y, nx, ny, v, cw):
@@ -120,11 +120,12 @@ def _arc(x, y, nx, ny, v, cw):
     return [(ccx + r * np.cos(t), ccy + r * np.sin(t)) for t in ang[:-1]] + [(nx, ny)]
 
 
-def parse_gcode(text: str, default_w=C.LINE_W, origin=None):
+def parse_gcode(text: str, default_w=C.LINE_W, origin=None, *, with_widths=False):
     """-> list of (z, [polylines]) for every layer, centred coordinates."""
     cx, cy = origin or C.BED_CENTER
     x = y = z = e = 0.0
     rel_e = False
+    rel_xyz = False
     layers, cur = [], None
     width = default_w
     for line in text.splitlines():
@@ -141,7 +142,13 @@ def parse_gcode(text: str, default_w=C.LINE_W, origin=None):
         if not code:
             continue
         op = code.split()[0]
-        if op == "M82":
+        if op == "G20":
+            raise ValueError("inch-mode G-code is unsupported; export in millimetres (G21)")
+        elif op == "G90":
+            rel_xyz = False
+        elif op == "G91":
+            rel_xyz = True
+        elif op == "M82":
             rel_e = False
         elif op == "M83":
             rel_e = True
@@ -149,23 +156,30 @@ def parse_gcode(text: str, default_w=C.LINE_W, origin=None):
             v = dict(_NUM.findall(code))
             if "E" in v:
                 e = float(v["E"])
+            x, y, z = float(v.get("X", x)), float(v.get("Y", y)), float(v.get("Z", z))
         elif op in ("G0", "G1", "G2", "G3"):
             v = {k: float(a) for k, a in _NUM.findall(code)}
-            nx, ny = v.get("X", x), v.get("Y", y)
+            nx = x + v.get("X", 0) if rel_xyz else v.get("X", x)
+            ny = y + v.get("Y", 0) if rel_xyz else v.get("Y", y)
             ne = (v["E"] if rel_e else v["E"] - e) if "E" in v else 0.0
             if "E" in v and not rel_e:
                 e = v["E"]
             if "Z" in v:
-                z = v["Z"]
+                z = z + v["Z"] if rel_xyz else v["Z"]
+            if op in ("G2", "G3") and "R" in v:
+                raise ValueError("radius-form arcs are unsupported; disable arc fitting")
             is_arc = op in ("G2", "G3") and ("I" in v or "J" in v)
             if ne > 0 and cur is not None and (nx != x or ny != y or is_arc):
+                if cur[0] is None:
+                    cur[0] = z
                 pts = [(x, y)]
                 if is_arc:
                     pts += _arc(x, y, nx, ny, v, cw=(op == "G2"))
                 else:
                     pts.append((nx, ny))
                 a = np.array(pts) - np.array([cx, cy])
-                cur[1].extend(a[i:i + 2] for i in range(len(a) - 1))
+                cur[1].extend((a[i:i + 2], width) if with_widths else a[i:i + 2]
+                              for i in range(len(a) - 1))
             x, y = nx, ny
     out = []
     for zz, segs in layers:
@@ -175,14 +189,15 @@ def parse_gcode(text: str, default_w=C.LINE_W, origin=None):
 
 def gcode_to_layers(text: str, origin=None) -> List[Layer]:
     """Reconstruct the deposited region of every layer from its extrusion moves."""
-    raw, w = parse_gcode(text, origin=origin)
+    raw, _ = parse_gcode(text, origin=origin, with_widths=True)
     layers = []
     for z, segs in raw:
         if not segs:
             layers.append(Layer(z, shapely.Polygon()))
             continue
-        lines = shapely.multilinestrings([shapely.linestrings(s) for s in segs])
-        region = shapely.union_all(shapely.buffer(shapely.get_parts(lines), w / 2, quad_segs=2))
+        lines = [shapely.LineString(s) for s, _ in segs]
+        widths = np.array([w for _, w in segs])
+        region = shapely.union_all(shapely.buffer(lines, widths / 2, quad_segs=2))
         from .geometry.ops import clean
         layers.append(Layer(z, clean(region)))
     return layers

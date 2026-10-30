@@ -29,11 +29,17 @@ def px_to_mm(pts: np.ndarray, cam=CAM) -> np.ndarray:
 def rasterise(region, cam=CAM, value=255, out=None) -> np.ndarray:
     m = np.zeros((cam.size, cam.size), np.uint8) if out is None else out
     for p in polys(region):
+        component = np.zeros_like(m)
         ext = np.round(mm_to_px(np.array(p.exterior.coords), cam) * 16).astype(np.int32)
-        cv2.fillPoly(m, [ext], value, lineType=cv2.LINE_AA, shift=4)
+        cv2.fillPoly(component, [ext], value, lineType=cv2.LINE_AA, shift=4)
         for r in p.interiors:
+            # Subpixel voids between buffered extrusion segments otherwise each
+            # erase a full pixel, turning a solid hatch into a nearly empty image.
+            if Polygon(r).area < (0.5 / cam.px_per_mm) ** 2:
+                continue
             h = np.round(mm_to_px(np.array(r.coords), cam) * 16).astype(np.int32)
-            cv2.fillPoly(m, [h], 0, lineType=cv2.LINE_AA, shift=4)
+            cv2.fillPoly(component, [h], 0, lineType=cv2.LINE_AA, shift=4)
+        np.maximum(m, component, out=m)
     return m
 
 
