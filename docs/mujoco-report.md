@@ -290,8 +290,8 @@ and summarization tool accompany it on local `main`, created from the original
 `slop-v1` tip and merged at `3258b66` without rewriting that branch. The original
 research features are retained with their validation limits stated above.
 
-**Publication status:** local integration is complete; nothing was pushed.
-Automatic approval review rejected publishing repository/report contents to the
-existing GitHub origin because explicit authorization for that publication was not
-established. Remote publication requires approval. GitHub's existing `slop-v1`
-branch and default-branch setting are unchanged; use local `main` for this version.
+**Review delivery (2026-10-30):** publication was explicitly approved after the
+initial local integration. The reviewed work is delivered on
+`review/mujoco-generalization` for a pull request into remote `main`, initialized
+at the original `slop-v1` tip (`882d6fa`). The remote merge is left for review.
+The original `slop-v1` branch and GitHub's default-branch setting are unchanged.
