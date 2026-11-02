@@ -4,11 +4,12 @@ import pytest
 from shapely.geometry import Point
 
 from recovery import camera
-from recovery.models.boundary import BoundarySegmenter, normalized_gray
+from recovery.models.boundary import BoundarySegmenter, normalized_gray, subpixel_offsets
 
 
-def checkpoint(path, weights):
+def checkpoint(path, weights, **metadata):
     arrays = dict(patch_size=np.array(9))
+    arrays.update(metadata)
     for i, (w, b) in enumerate(weights):
         arrays[f'w{i}'], arrays[f'b{i}'] = w, b
     np.savez(path, **arrays)
@@ -56,3 +57,31 @@ def test_invalid_boundary_weights_rejected(tmp_path):
     weights = [(np.ones((2, 80), dtype='float32'), np.zeros(2, dtype='float32'))] * 3
     with pytest.raises(ValueError, match='shape'):
         BoundarySegmenter(checkpoint(tmp_path/'bad.npz', weights))
+
+
+def test_native_outputs_represent_material_between_negative_pixel_centres(tmp_path):
+    # A vertical strip occupies x=0.125 mm within each camera pixel. Sampling
+    # only the original centres (x=0, 0.25, ...) would erase it entirely.
+    offsets = subpixel_offsets(4)
+    distance = .04 - np.abs(offsets[:, 0] / camera.CAM.px_per_mm - .125)
+    weights = [(np.zeros((1, 81), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((16, 1), dtype='float32'), np.arctanh(distance).astype('float32'))]
+    model = BoundarySegmenter(checkpoint(tmp_path/'native.npz', weights, output_upsample=np.array(4)))
+    field = model.signed_distance(np.zeros((12, 16), dtype='uint8'))
+    assert field.shape == (48, 64)
+    assert np.all(field[:, ::4] < 0)
+    assert np.all(field[:, 2::4] > 0)
+    assert np.all(field[:, 1::4] < 0)
+    assert np.all(field[:, 3::4] < 0)
+    assert np.allclose(camera.px_to_mm([[256.5, 256.75]])[0], [.125, -.1875])
+    with pytest.raises(ValueError, match='upsample factor'):
+        BoundarySegmenter(tmp_path/'native.npz', upsample=1)
+
+
+def test_output_grid_metadata_must_match_checkpoint_heads(tmp_path):
+    weights = [(np.zeros((1, 81), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32'))]
+    with pytest.raises(ValueError, match='boundary output'):
+        BoundarySegmenter(checkpoint(tmp_path/'mismatch.npz', weights, output_upsample=np.array(4)))

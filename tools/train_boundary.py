@@ -32,16 +32,23 @@ def main():
     rng = np.random.default_rng(args.seed)
     with np.load(args.data, allow_pickle=False) as data:
         x, y, split, group = [data[k] for k in ('x', 'y', 'validation', 'group')]
+        output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
+    if output_upsample > 1 and args.augment_dihedral:
+        parser.error('D4 augmentation requires rotating the subpixel targets and is not implemented')
+    y = y.reshape(len(x), -1)
+    if y.shape[1] != output_upsample**2:
+        raise ValueError('boundary targets do not match the declared output grid')
     if set(group[~split]) & set(group[split]) or not split.any() or split.all():
         raise ValueError('invalid trajectory-separated split')
     if not np.isfinite(x).all() or not np.isfinite(y).all():
         raise ValueError('non-finite boundary training data')
     args.out.mkdir(parents=True, exist_ok=True)
-    xtrain, ytrain = torch.from_numpy(x[~split].astype('float32')), torch.from_numpy(y[~split, None])
-    xval, yval = torch.from_numpy(x[split].astype('float32')), torch.from_numpy(y[split, None])
-    edge = torch.abs(yval[:, 0]) < .5
+    xtrain, ytrain = torch.from_numpy(x[~split].astype('float32')), torch.from_numpy(y[~split])
+    xval, yval = torch.from_numpy(x[split].astype('float32')), torch.from_numpy(y[split])
+    edge = torch.abs(yval) < .5
     h1, h2 = args.hidden
-    model = nn.Sequential(nn.Linear(PATCH_SIZE**2, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(), nn.Linear(h2, 1))
+    model = nn.Sequential(nn.Linear(PATCH_SIZE**2, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
+                          nn.Linear(h2, output_upsample**2))
     grid = np.arange(PATCH_SIZE**2).reshape(PATCH_SIZE, PATCH_SIZE)
     transforms = torch.from_numpy(np.stack([np.rot90(np.fliplr(grid) if flip else grid, rotation).ravel().copy()
                                            for flip in (False, True) for rotation in range(4)]))
@@ -76,7 +83,7 @@ def main():
         history.append(row)
         if error < best:
             best = error
-            arrays = dict(patch_size=np.array(PATCH_SIZE))
+            arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(output_upsample))
             for i, layer in enumerate((model[0], model[2], model[4])):
                 arrays[f'w{i}'], arrays[f'b{i}'] = layer.weight.detach().numpy(), layer.bias.detach().numpy()
             np.savez_compressed(checkpoint, **arrays)
@@ -87,11 +94,12 @@ def main():
         predicted = predicted @ w.T + b
         if i < 2:
             predicted = np.maximum(predicted, 0)
-    predicted = np.tanh(predicted[:, 0])
+    predicted = np.tanh(predicted)
     boundary = np.abs(y[split]) < .5
     error = float(np.abs(predicted[boundary] - y[split][boundary]).mean())
     assert abs(error-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
-    manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> tanh signed distance',
+    manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> {output_upsample**2} tanh distances',
+        output_upsample=output_upsample,
         args={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         device='cpu', torch=torch.__version__, seconds=time.time()-started, train_rows=len(xtrain),
         validation_rows=len(xval), training_groups=sorted(set(group[~split].tolist())),

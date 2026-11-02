@@ -1,0 +1,166 @@
+{
+  "stage": "development",
+  "same_validation_data": true,
+  "data_sha256": "ac65b0e5aca7f59cc952573cc7d2dd39c01ecd635dd658696c44067030e69c1b",
+  "validation_groups": [
+    "cartesian-bracket-clean-70",
+    "cartesian-bracket-clean-71",
+    "cartesian-bracket-collapse-70",
+    "cartesian-bracket-collapse-71",
+    "cartesian-bracket-shift-70",
+    "cartesian-bracket-shift-71",
+    "cartesian-bracket-under_extrusion-70",
+    "cartesian-bracket-under_extrusion-71",
+    "cartesian-bracket-warp-70",
+    "cartesian-bracket-warp-71",
+    "cartesian-cup-clean-70",
+    "cartesian-cup-clean-71",
+    "cartesian-cup-clean-72",
+    "cartesian-cup-clean-73",
+    "cartesian-cup-collapse-70",
+    "cartesian-cup-collapse-71",
+    "cartesian-cup-shift-70",
+    "cartesian-cup-shift-71",
+    "cartesian-cup-under_extrusion-70",
+    "cartesian-cup-under_extrusion-71",
+    "cartesian-cup-under_extrusion-72",
+    "cartesian-cup-under_extrusion-73",
+    "cartesian-cup-warp-70",
+    "cartesian-cup-warp-71",
+    "cartesian-mug-clean-70",
+    "cartesian-mug-clean-71",
+    "cartesian-mug-clean-72",
+    "cartesian-mug-clean-73",
+    "cartesian-mug-collapse-70",
+    "cartesian-mug-collapse-71",
+    "cartesian-mug-shift-70",
+    "cartesian-mug-shift-71",
+    "cartesian-mug-under_extrusion-70",
+    "cartesian-mug-under_extrusion-71",
+    "cartesian-mug-under_extrusion-72",
+    "cartesian-mug-under_extrusion-73",
+    "cartesian-mug-warp-70",
+    "cartesian-mug-warp-71",
+    "cartesian-spacer-clean-70",
+    "cartesian-spacer-clean-71",
+    "cartesian-spacer-collapse-70",
+    "cartesian-spacer-collapse-71",
+    "cartesian-spacer-shift-70",
+    "cartesian-spacer-shift-71",
+    "cartesian-spacer-under_extrusion-70",
+    "cartesian-spacer-under_extrusion-71",
+    "cartesian-spacer-warp-70",
+    "cartesian-spacer-warp-71"
+  ],
+  "results": {
+    "original": {
+      "checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+      "training_manifest_sha256": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d",
+      "overall": {
+        "rows": 676800,
+        "boundary_rows": 230465,
+        "boundary_mae_mm": 0.0837852880358696,
+        "pixel_accuracy": 0.9646705082742317,
+        "false_positive_pixels": 11551,
+        "false_negative_pixels": 12360
+      },
+      "by_kind": {
+        "clean": {
+          "rows": 172800,
+          "boundary_rows": 57993,
+          "boundary_mae_mm": 0.07616408169269562,
+          "pixel_accuracy": 0.9686979166666667,
+          "false_positive_pixels": 2920,
+          "false_negative_pixels": 2489
+        },
+        "collapse": {
+          "rows": 111600,
+          "boundary_rows": 38109,
+          "boundary_mae_mm": 0.08074187487363815,
+          "pixel_accuracy": 0.9658960573476703,
+          "false_positive_pixels": 1572,
+          "false_negative_pixels": 2234
+        },
+        "shift": {
+          "rows": 111600,
+          "boundary_rows": 38392,
+          "boundary_mae_mm": 0.10986001044511795,
+          "pixel_accuracy": 0.9544354838709678,
+          "false_positive_pixels": 3127,
+          "false_negative_pixels": 1958
+        },
+        "under_extrusion": {
+          "rows": 169200,
+          "boundary_rows": 57716,
+          "boundary_mae_mm": 0.08294624090194702,
+          "pixel_accuracy": 0.9644562647754137,
+          "false_positive_pixels": 2447,
+          "false_negative_pixels": 3567
+        },
+        "warp": {
+          "rows": 111600,
+          "boundary_rows": 38255,
+          "boundary_mae_mm": 0.07346828281879425,
+          "pixel_accuracy": 0.9677688172043011,
+          "false_positive_pixels": 1485,
+          "false_negative_pixels": 2112
+        }
+      }
+    },
+    "dense": {
+      "checkpoint_sha256": "bad695bacd433dca46603696e184493ecd23480e968bb3c1c57bcc46e217af9f",
+      "training_manifest_sha256": "26e7e31979d4916c0b38a66f48bea420cb1c1638125e2c4a57cae442b4551e32",
+      "overall": {
+        "rows": 676800,
+        "boundary_rows": 230465,
+        "boundary_mae_mm": 0.07309316098690033,
+        "pixel_accuracy": 0.9682417257683215,
+        "false_positive_pixels": 8520,
+        "false_negative_pixels": 12974
+      },
+      "by_kind": {
+        "clean": {
+          "rows": 172800,
+          "boundary_rows": 57993,
+          "boundary_mae_mm": 0.05770130828022957,
+          "pixel_accuracy": 0.9751909722222222,
+          "false_positive_pixels": 1644,
+          "false_negative_pixels": 2643
+        },
+        "collapse": {
+          "rows": 111600,
+          "boundary_rows": 38109,
+          "boundary_mae_mm": 0.07428380101919174,
+          "pixel_accuracy": 0.9667741935483871,
+          "false_positive_pixels": 1414,
+          "false_negative_pixels": 2294
+        },
+        "shift": {
+          "rows": 111600,
+          "boundary_rows": 38392,
+          "boundary_mae_mm": 0.09157787263393402,
+          "pixel_accuracy": 0.96334229390681,
+          "false_positive_pixels": 2049,
+          "false_negative_pixels": 2042
+        },
+        "under_extrusion": {
+          "rows": 169200,
+          "boundary_rows": 57716,
+          "boundary_mae_mm": 0.07891164720058441,
+          "pixel_accuracy": 0.9653309692671395,
+          "false_positive_pixels": 2150,
+          "false_negative_pixels": 3716
+        },
+        "warp": {
+          "rows": 111600,
+          "boundary_rows": 38255,
+          "boundary_mae_mm": 0.06791111826896667,
+          "pixel_accuracy": 0.9682616487455197,
+          "false_positive_pixels": 1263,
+          "false_negative_pixels": 2279
+        }
+      }
+    }
+  },
+  "limitation": "Patch errors do not establish full-frame geometry or closed-loop success"
+}

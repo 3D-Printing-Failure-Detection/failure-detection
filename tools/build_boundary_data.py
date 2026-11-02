@@ -19,7 +19,7 @@ import shapely
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from recovery import camera
 from recovery.eval.mujoco_eval import source_digest
-from recovery.models.boundary import PATCH_SIZE, normalized_gray
+from recovery.models.boundary import PATCH_SIZE, normalized_gray, subpixel_offsets
 from recovery.parts import get_part
 from recovery.printer.mujoco import MujocoPrinter
 from recovery.types import Layer
@@ -27,7 +27,9 @@ from recovery.types import Layer
 
 def build_case(job):
     path, n_frames, n_pixels = job[:3]
-    all_profiles, dense_start = job[3:] if len(job) > 3 else (False, False)
+    all_profiles, dense_start = job[3:5] if len(job) > 3 else (False, False)
+    output_upsample = job[5] if len(job) > 5 else 1
+    offsets = subpixel_offsets(output_upsample)
     with gzip.open(path, 'rt') as stream:
         record = json.load(stream)
     _, name, _, seed = record['group'].split('-')
@@ -68,10 +70,13 @@ def build_case(job):
                 pad = PATCH_SIZE // 2
                 padded = cv2.copyMakeBorder(gray, pad, pad, pad, pad, cv2.BORDER_REFLECT_101)
                 patches = np.lib.stride_tricks.sliding_window_view(padded, (PATCH_SIZE, PATCH_SIZE))[yy, xx]
-                points = camera.px_to_mm(np.column_stack([xx, yy]))
+                query_pixels = np.column_stack([xx, yy])[:, None, :] + offsets[None, :, :]
+                points = camera.px_to_mm(query_pixels.reshape(-1, 2))
                 inside = shapely.contains_xy(layer.region, points[:, 0], points[:, 1])
                 distance = shapely.distance(layer.region.boundary, shapely.points(points))
                 target = np.clip(distance * np.where(inside, 1, -1), -1, 1).astype('float32')
+                if output_upsample > 1:
+                    target = target.reshape(-1, output_upsample**2)
                 xs.append(patches.reshape(-1, PATCH_SIZE ** 2).astype('float16'))
                 ys.append(target)
     return np.concatenate(xs), np.concatenate(ys), dict(group=record['group'],
@@ -88,6 +93,8 @@ def main():
     parser.add_argument('--workers', type=int, default=2)
     parser.add_argument('--all-profiles', action='store_true', help='render every selected frame with all three cameras')
     parser.add_argument('--dense-start', action='store_true', help='retain the first ten eligible frames before subsampling')
+    parser.add_argument('--output-upsample', type=int, choices=[1, 2, 4], default=1,
+                        help='label distinct subpixel positions for native high-resolution prediction')
     args = parser.parse_args()
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('training data must stay on the data volume')
@@ -104,12 +111,14 @@ def main():
         script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         domain='MuJoCo renders of retained deposited geometry, with three camera profiles',
-        input='normalized 9x9 grayscale camera patch', target='true signed distance in mm clipped to [-1,1]')
+        input='normalized 9x9 grayscale camera patch', target='true signed distance in mm clipped to [-1,1]',
+        output_upsample=args.output_upsample, output_offsets_xy_px=subpixel_offsets(args.output_upsample).tolist())
     manifest['capture_manifest_sha256'] = hashlib.sha256((args.trajectories.parent / 'manifest.json').read_bytes()).hexdigest()
     (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     rows = []
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context('spawn')) as executor:
-        futures = [executor.submit(build_case, (p, args.frames, args.pixels, args.all_profiles, args.dense_start)) for p in paths]
+        futures = [executor.submit(build_case, (p, args.frames, args.pixels, args.all_profiles, args.dense_start,
+                                               args.output_upsample)) for p in paths]
         for future in as_completed(futures):
             row = future.result()
             rows.append(row)
@@ -119,7 +128,8 @@ def main():
     y = np.concatenate([r[1] for r in rows])
     validation = np.concatenate([np.full(len(x), info['validation'], dtype=bool) for x, _, info in rows])
     group = np.concatenate([np.full(len(x), info['group']) for x, _, info in rows])
-    np.savez_compressed(args.out / 'data.npz', x=x, y=y, validation=validation, group=group)
+    np.savez_compressed(args.out / 'data.npz', x=x, y=y, validation=validation, group=group,
+                        output_upsample=np.array(args.output_upsample))
     manifest.update(status='complete', groups=[row[2] for row in rows], rows=len(x),
                     final_source_sha256=source_digest())
     (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))

@@ -151,9 +151,12 @@ constraints. The trained fit forecast remains paired with classical measurements
 This revision still needs closed-loop validation and a new frozen comparison.
 
 The fallback run in `neural-camera-fallback-dev-v1` includes 128 diagnostic runs
-on consumed seeds 1001–1002, followed by 144 validation runs on seeds 70–71. Its
-first neural-only result restores the lost cup-collapse case; the full study is
-still running. That does not establish an overall improvement.
+on consumed seeds 1001–1002, followed by 144 validation runs on seeds 70–71.
+Completed records restore the lost cup-collapse case with and without Qwen.
+The bracket-collapse case at seed 1001 now completes with two adaptations under
+both variants, whereas the original agent finished it defective. However, the
+fallback loses the cup-shift success at seed 1002. The full study is still running;
+these mixed results do not qualify this revision as an improvement.
 
 An equivariant model trained with current-state calibration reduced validation
 displacement error to 0.1611 mm versus 0.3043 mm analytically on the same
@@ -168,8 +171,50 @@ selected frame with all three cameras. Additional cup/mug clean and thinning
 trajectories use training seeds 64–67 and validation seeds 72–73, combined with
 all 120 retained original trajectories. The
 [dense-camera protocol](validation/neural/dense-camera-v3-protocol.json) records
-the 144-group collection and training job in `neural-dense-camera-v3`, running
-in tmux window `dense-camera-v3`. Test seeds 2001–2004 remain untouched.
+the 144-group collection and training job in `neural-dense-camera-v3`.
+Training is complete. On the same 676,800 validation patches from 48 trajectories,
+the old model has 0.0837853 mm boundary error and the dense model has 0.0730932 mm.
+The [matched comparison](validation/neural/dense-camera-v3-comparison.json)
+retains both hashes and all per-fault metrics. False-negative material pixels
+increase from 12,360 to 12,974 despite the lower average distance error.
+
+`tools/inspect_camera_case.py` then follows the unchanged nominal commands for
+the consumed cup-under-extrusion case at seed 1002. Every segmenter receives the
+same actual camera frames. Truth is used only for diagnostic scoring, never as
+a policy input. The actual 160-layer deposit passes; classical, original neural,
+and dense neural measurements all report two falsely opened walls and a false
+support violation. Raw images and geometry snapshots at layers 84–87 are retained
+in `neural-dense-camera-check-v3`. This is a measurement diagnostic, not a
+closed-loop recovery win. The dense checkpoint is not promoted on its patch error.
+
+### Native subpixel output under development
+
+The original camera network predicts a single signed distance at each camera
+pixel centre. Upsampling those predictions cannot represent material between
+centres if all surrounding values are negative. An opt-in checkpoint format now
+supports a 4-by-4 set of independently trained distances per input patch, with
+explicit image-coordinate offsets. These native predictions represent a
+0.0625 mm grid using the existing 0.25 mm camera pixels; they do not increase
+the camera's physical information. Old checkpoints retain their prior behavior.
+Training targets use the true distance at each exact subpixel position. No
+morphological rule fills gaps or alters earlier observations.
+
+The [native-output protocol](validation/neural/native-camera-v4-protocol.json)
+uses the same 144 disjoint whole trajectories, 12 dense frames per trajectory
+under all three camera profiles, and 120 boundary samples per frame. A 64/32-unit
+network learns 16 distance outputs. The pipeline in tmux window `native-camera-v4`
+builds data, trains, checks its NumPy export, and repeats the consumed camera
+diagnostic. Training results are pending. The source suite passes 92 tests with
+one optional module skipped; new checks cover native output alignment, material
+between negative pixel centres, and checkpoint-grid mismatches. Test seeds
+2001–2004 remain untouched.
+
+An isolated [analytical-inverse ablation](validation/neural/analytical-inverse-results.json)
+retained the trained forward forecast while constructing corrections with the
+analytical residual field. It restored two consumed spacer failures, but lost
+all three earlier spacer-shift gains at historical seed 10. Both completed
+studies pass integrity audits. This ablation remains outside the production
+runtime and is rejected as a replacement; changing the inverse alone is insufficient.
 
 ## Development record (2026-11-02)
 

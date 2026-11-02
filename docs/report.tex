@@ -737,9 +737,55 @@ validation error from 0.0792 to 0.0887 mm, so it is retained as a failed attempt
 The fallback uses the earlier checkpoint. An equivariant calibration model also
 lowered displacement error but still scrapped a recoverable thinning diagnostic.
 Denser training captures now target brief thinning across all three camera views;
-those training results are pending. New seeds 2001--2004 are reserved for
+their results and a remaining limitation are described next. New seeds 2001--2004 are reserved for
 a revised frozen comparison; seeds 1001--1004 are now diagnostic data. Acceptance
 still requires actual learning and Qwen calls, better completion than every
 earlier baseline, preserved passing cases, and no worse defective-finish count.
+
+\clearpage
+\section{Why better camera error was insufficient}
+
+The denser training run is complete. On the same 676,800 validation patches from
+48 held-out trajectories, boundary distance error fell from 0.0838 mm for the
+original camera model to 0.0731 mm for the new model, about 13\%. This did not
+resolve the recoverable cup-thinning diagnostic. The actual 160-layer deposit
+passes the original specification, while classical and both learned measurements
+report two open walls and a support violation. Lower average distance error is
+therefore insufficient evidence for better print recovery.
+
+The new diagnostic follows the original commands throughout the print and gives
+each segmenter the same actual camera frames. Simulator truth is used only for
+scoring. Images and measured and true geometry at layers 84--87 are retained on
+the data volume. This separates perception errors from intervention effects;
+it is not a successful recovery trial.
+
+\subsection*{Predicting between camera pixels}
+The original network predicts one signed distance per camera pixel and then
+interpolates those values. If a thin wall lies between pixel centres and all
+surrounding predictions are negative, interpolation cannot recover that wall.
+The next experiment predicts sixteen distinct subpixel distances from each
+camera patch. It can represent a 0.0625 mm output grid while using the existing
+0.25 mm camera pixels. This changes the learned representation, not the physical
+camera information. No rule closes gaps or reconstructs nominal walls.
+
+Native subpixel training uses the same 144 disjoint trajectories, dense captures
+across all three views, and exact signed-distance labels at each query position.
+Its dataset, training and diagnostic pipeline runs in the \texttt{native-camera-v4}
+window of \texttt{neural-recovery}. Results remain pending. Old checkpoints keep
+their existing behavior. The full source suite passes 92 tests, with one optional
+module skipped, including checks for spatial alignment and incompatible output
+grids. Fresh test seeds 2001--2004 remain untouched.
+
+\subsection*{Recovery revisions still have mixed results}
+The revised camera fallback and consistent Qwen IDs restore the consumed
+cup-collapse and bracket-collapse cases, including an actual agent-supervised
+bracket completion with two adaptations. The fallback also loses a cup-shift
+success, so it is not an accepted replacement.
+
+A separate trial kept neural forecasting but used analytical inversion to
+construct corrections. It restored two consumed spacer failures but lost all
+three historical spacer-shift gains. That completed, audited ablation is retained
+as negative evidence. Neither these local repairs nor the camera validation
+metric establishes superiority over the analytical policy.
 
 \end{document}
