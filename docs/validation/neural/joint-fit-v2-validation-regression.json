@@ -1,0 +1,106 @@
+{
+  "stage": "development",
+  "source_runs_sha256": "ebaebb82dd46a544f2f2d280a9631209f7a9cc3cb66b176330a0250c5b3ca583",
+  "case": {
+    "profile": "cartesian",
+    "part": "bracket",
+    "kind": "collapse",
+    "seed": 71,
+    "k0": 25,
+    "severity": 4.735518587754027
+  },
+  "rows": [
+    {
+      "method": "contour",
+      "in_place": true,
+      "defective_finished": false,
+      "layers_printed": 32,
+      "n_layers": 32,
+      "adaptations": 2,
+      "violations": [],
+      "actions": [
+        {
+          "layer": 27,
+          "label": "under_extrusion",
+          "action": "adapt",
+          "reason": "continuation fails; choose a feasible correction within the action limits"
+        },
+        {
+          "layer": 28,
+          "label": "under_extrusion",
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 29,
+          "label": "under_extrusion",
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 30,
+          "label": "under_extrusion",
+          "action": "adapt",
+          "reason": "continuation fails; choose a feasible correction within the action limits"
+        },
+        {
+          "layer": 31,
+          "label": "collapse",
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        }
+      ]
+    },
+    {
+      "method": "neural_risk",
+      "in_place": false,
+      "defective_finished": false,
+      "layers_printed": 29,
+      "n_layers": 32,
+      "adaptations": 0,
+      "violations": [
+        "continuation fails and no executable recovery meets the spec"
+      ],
+      "actions": [
+        {
+          "layer": 27,
+          "label": "under_extrusion",
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 28,
+          "label": "under_extrusion",
+          "action": "scrap",
+          "reason": "continuation fails and no executable recovery meets the spec"
+        }
+      ]
+    },
+    {
+      "method": "neural_risk_agent",
+      "in_place": false,
+      "defective_finished": false,
+      "layers_printed": 29,
+      "n_layers": 32,
+      "adaptations": 0,
+      "violations": [
+        "no executable recovery meets the functional spec"
+      ],
+      "actions": [
+        {
+          "layer": 27,
+          "label": "under_extrusion",
+          "action": "continue",
+          "reason": "local Qwen selected continue; predicted function checks pass"
+        },
+        {
+          "layer": 28,
+          "label": "under_extrusion",
+          "action": "scrap",
+          "reason": "no executable recovery meets the functional spec"
+        }
+      ]
+    }
+  ],
+  "finding": "Neural continuation at layer index 27 passes its own forecast and skips the analytical check. The prefix has already lost its fit at the next observed layer. Contour intervenes at 27 and completes."
+}

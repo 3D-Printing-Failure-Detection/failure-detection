@@ -110,6 +110,12 @@ def main():
                 assert evidence['observation']['printed_layers'] == event['layer']+1
                 assert evidence['observation']['adapts_remaining'] == 3-adaptations_used
                 schema = audit['request']['response_format']['json_schema']['schema']
+                allowed_ids = set(schema['properties']['candidate']['enum'])
+                sent_eligible = {c['id'] for c in evidence['candidates']
+                                 if c['ok'] and c['executable'] and c.get('review_eligible', True)}
+                all_eligible = {c['id'] for c in considered if 'id' in c
+                                and c['ok'] and c['executable'] and c.get('review_eligible', True)}
+                assert allowed_ids == sent_eligible == all_eligible
                 assert answer['candidate'] in schema['properties']['candidate']['enum']
                 sent_candidate = next(c for c in evidence['candidates'] if c['id'] == answer['candidate'])
                 assert sent_candidate['ok'] and sent_candidate['executable'] and sent_candidate.get('review_eligible', True)

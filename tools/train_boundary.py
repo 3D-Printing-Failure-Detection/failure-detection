@@ -17,6 +17,8 @@ from recovery.models.boundary import PATCH_SIZE, BoundarySegmenter
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', type=Path, required=True)
+    parser.add_argument('--extra-data', type=Path, nargs='*', default=[],
+                        help='additional whole trajectories with the same patch and output format')
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--epochs', type=int, default=80)
     parser.add_argument('--batch-size', type=int, default=4096)
@@ -24,15 +26,32 @@ def main():
     parser.add_argument('--hidden', type=int, nargs=2, default=[32, 16], metavar=('FIRST', 'SECOND'))
     parser.add_argument('--augment-dihedral', action='store_true',
                         help='random rotations/reflections of training patches; signed distance is invariant')
+    parser.add_argument('--distance-quantile', type=float,
+                        help='learn a conditional distance quantile with pinball loss instead of a central estimate')
     args = parser.parse_args()
     if min(args.hidden) < 1:
         parser.error('hidden widths must be positive')
+    if args.distance_quantile is not None and not 0 < args.distance_quantile < 1:
+        parser.error('--distance-quantile must be strictly between zero and one')
     torch.set_num_threads(2)
     torch.manual_seed(args.seed)
     rng = np.random.default_rng(args.seed)
     with np.load(args.data, allow_pickle=False) as data:
         x, y, split, group = [data[k] for k in ('x', 'y', 'validation', 'group')]
         output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
+    sources = [dict(path=str(args.data.resolve()), sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(), rows=len(x))]
+    seen_groups = set(group.tolist())
+    for path in args.extra_data:
+        with np.load(path, allow_pickle=False) as data:
+            xx, yy, ss, gg = [data[k] for k in ('x', 'y', 'validation', 'group')]
+            scale = int(data['output_upsample']) if 'output_upsample' in data else 1
+        if scale != output_upsample or xx.shape[1:] != x.shape[1:] or yy.shape[1:] != y.shape[1:]:
+            raise ValueError('additional dataset has incompatible camera inputs or output targets')
+        if seen_groups & set(gg.tolist()):
+            raise ValueError('additional dataset repeats an existing trajectory')
+        seen_groups.update(gg.tolist())
+        x, y, split, group = [np.concatenate([a, b]) for a, b in zip((x, y, split, group), (xx, yy, ss, gg))]
+        sources.append(dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest(), rows=len(xx)))
     if output_upsample > 1 and args.augment_dihedral:
         parser.error('D4 augmentation requires rotating the subpixel targets and is not implemented')
     y = y.reshape(len(x), -1)
@@ -68,7 +87,13 @@ def main():
                 inputs = torch.gather(inputs, 1, permutation)
             prediction = torch.tanh(model(inputs))
             weight = .25 + .75 * (torch.abs(ytrain[idx]) < .5)
-            loss = (torch.nn.functional.smooth_l1_loss(prediction, ytrain[idx], beta=.05, reduction='none') * weight).mean()
+            if args.distance_quantile is None:
+                point_loss = torch.nn.functional.smooth_l1_loss(prediction, ytrain[idx], beta=.05, reduction='none')
+            else:
+                residual = ytrain[idx] - prediction
+                point_loss = torch.maximum(args.distance_quantile * residual,
+                                           (args.distance_quantile - 1) * residual)
+            loss = (point_loss * weight).mean()
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -78,12 +103,22 @@ def main():
             predicted = torch.tanh(model(xval))
             error = float(torch.abs(predicted[edge] - yval[edge]).mean())
             accuracy = float(((predicted > 0) == (yval > 0)).float().mean())
+            score = error
+            coverage = float((predicted[edge] >= yval[edge]).float().mean())
+            if args.distance_quantile is not None:
+                residual = yval - predicted
+                point_loss = torch.maximum(args.distance_quantile * residual,
+                                           (args.distance_quantile - 1) * residual)
+                score = float((point_loss * (.25 + .75 * edge)).mean())
         row = dict(epoch=epoch+1, train_loss=total/len(xtrain), validation_boundary_mae_mm=error,
-                   validation_pixel_accuracy=accuracy)
+                   validation_pixel_accuracy=accuracy, validation_selection_score=score,
+                   validation_boundary_coverage=coverage)
         history.append(row)
-        if error < best:
-            best = error
+        if score < best:
+            best = score
             arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(output_upsample))
+            if args.distance_quantile is not None:
+                arrays['distance_quantile'] = np.array(args.distance_quantile)
             for i, layer in enumerate((model[0], model[2], model[4])):
                 arrays[f'w{i}'], arrays[f'b{i}'] = layer.weight.detach().numpy(), layer.bias.detach().numpy()
             np.savez_compressed(checkpoint, **arrays)
@@ -97,14 +132,25 @@ def main():
     predicted = np.tanh(predicted)
     boundary = np.abs(y[split]) < .5
     error = float(np.abs(predicted[boundary] - y[split][boundary]).mean())
-    assert abs(error-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
+    score = error
+    if args.distance_quantile is not None:
+        residual = y[split] - predicted
+        point_loss = np.maximum(args.distance_quantile * residual, (args.distance_quantile - 1) * residual)
+        score = float((point_loss * (.25 + .75 * boundary)).mean())
+    assert abs(score-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
     manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> {output_upsample**2} tanh distances',
         output_upsample=output_upsample,
-        args={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
+        distance_quantile=args.distance_quantile,
+        validation_selection_score=score,
+        selection_metric='boundary MAE' if args.distance_quantile is None else 'weighted pinball loss',
+        validation_boundary_coverage=float((predicted[boundary] >= y[split][boundary]).mean()),
+        args={k: str(v) if isinstance(v, Path) else [str(p) for p in v] if k == 'extra_data' else v
+              for k, v in vars(args).items()},
         device='cpu', torch=torch.__version__, seconds=time.time()-started, train_rows=len(xtrain),
         validation_rows=len(xval), training_groups=sorted(set(group[~split].tolist())),
         validation_groups=sorted(set(group[split].tolist())), validation_boundary_mae_mm=error,
         data_sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(), checkpoint_sha256=exported.sha256,
+        data_sources=sources,
         history=history, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         augmentation='random D4 training patches' if args.augment_dihedral else 'none',
         limitation='patch validation is not full-frame or closed-loop recovery validation')

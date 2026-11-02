@@ -37,7 +37,10 @@ class BoundarySegmenter:
             if int(data['patch_size']) != PATCH_SIZE:
                 raise ValueError('unsupported boundary patch size')
             self.output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
+            self.distance_quantile = float(data['distance_quantile']) if 'distance_quantile' in data else None
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
+        if self.distance_quantile is not None and not 0 < self.distance_quantile < 1:
+            raise ValueError('invalid boundary distance quantile')
         subpixel_offsets(self.output_upsample)
         width = PATCH_SIZE ** 2
         for w, b in self.weights:

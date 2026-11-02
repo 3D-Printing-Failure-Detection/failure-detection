@@ -97,9 +97,12 @@ class LocalSupervisor:
 
         # Full-precision tool results remain in the controller's audit. The
         # small local model receives only decision-relevant fields, with units.
+        # Keep every eligible choice. Rejected plans remain in the full audit;
+        # omitting them here reduces CPU prompt latency without pruning choices.
         evidence = compact(dict(observation=observation,
             candidates=[{k: c[k] for k in keys if k in c}
-                        for c in sorted(candidates, key=lambda c: c.get('functional_rank', 10000))]))
+                        for c in sorted(candidates, key=lambda c: c.get('functional_rank', 10000))
+                        if c['id'] in ids]))
         payload = dict(model=self.model, messages=[dict(role='system', content=system),
             dict(role='user', content=json.dumps(evidence, allow_nan=False, separators=(',', ':')))],
             temperature=0., seed=2026, max_tokens=160,

@@ -139,8 +139,7 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
         primary = super().candidates(known, current_plan, context)
         if (not getattr(self, 'joint_forecast', False) or not hasattr(self.state, 'model') or not self.spec.get('holes')
                 or not self.allow_adapt or context.adapts_remaining == 0
-                or len(known) == len(self.nominal)
-                or (len(primary) == 1 and primary[0]['verdict'].ok)):
+                or len(known) == len(self.nominal)):
             return primary
         analytical = RiskAwareContourPolicy(self.spec, self.nominal, self.h,
             allow_adapt=self.allow_adapt, use_fea=self.use_fea,
@@ -149,20 +148,43 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
         analytical.state.residuals = self.state.residuals
         analytical.state.observations = self.state.observations
         analytical.state.uncertainty_mm = self.state.uncertainty_mm
+        original_primary = primary
+        continuation_assessment = None
+        early_warning = len(primary) == 1 and primary[0]['verdict'].ok
+        if early_warning:
+            # A confident neural continuation can miss the last recoverable
+            # layer. Check it before taking the single-candidate fast path.
+            self.analytical_candidate_checks += 1
+            continuation_assessment = analytical._evaluate(known, primary[0]['plan'],
+                context, current_plan, primary[0].get('correction_budget'))
+            if (continuation_assessment['verdict'].ok
+                    and continuation_assessment['executable']
+                    and continuation_assessment['fit_clearance_mm'] >= self.state.uncertainty_mm):
+                return original_primary
+        targets = list(self._targets(known))
+        if early_warning:
+            primary = [dict(primary[0], fit_at_risk=True)]
+            for target, budget in targets:
+                plan = A.Plan('compensate:' + target.name,
+                    self.state.compensate(target.layers), target.fidelity)
+                primary.append(self._evaluate(known, plan, context, current_plan, budget))
         alternatives = []
-        for target, budget in self._targets(known):
+        for target, budget in targets:
             plan = A.Plan('analytical inverse:' + target.name,
                 analytical.state.compensate(target.layers), target.fidelity)
             alternatives.append(self._evaluate(known, plan, context, current_plan, budget))
         candidates = [dict(c) for c in primary + alternatives]
         joint = []
-        for candidate in candidates:
+        for index, candidate in enumerate(candidates):
             if not candidate['verdict'].ok or not candidate['executable']:
                 candidate['both_forecasts_pass'] = False
                 continue
-            self.analytical_candidate_checks += 1
-            assessment = analytical._evaluate(known, candidate['plan'], context, current_plan,
-                                              candidate.get('correction_budget'))
+            if index == 0 and continuation_assessment is not None:
+                assessment = continuation_assessment
+            else:
+                self.analytical_candidate_checks += 1
+                assessment = analytical._evaluate(known, candidate['plan'], context, current_plan,
+                                                  candidate.get('correction_budget'))
             candidate['analytical_violations'] = assessment['verdict'].violations
             candidate['both_forecasts_pass'] = assessment['verdict'].ok and assessment['executable']
             if candidate['both_forecasts_pass']:
@@ -170,7 +192,12 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
                     candidate[metric] = min(candidate[metric], assessment[metric])
                 joint.append(candidate)
         if not joint:
-            return primary
+            return original_primary
+        if early_warning and candidates[0]['both_forecasts_pass']:
+            improvement = max(c['fit_clearance_mm'] for c in joint) - candidates[0]['fit_clearance_mm']
+            if improvement <= self.state.resolution_mm / 2:
+                return original_primary
+            candidates[0]['clearance_improvement_mm'] = improvement
         for candidate in candidates:
             if candidate['verdict'].ok and not candidate['both_forecasts_pass']:
                 candidate['verdict'] = Verdict(False,

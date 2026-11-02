@@ -29,13 +29,15 @@ def build_case(job):
     path, n_frames, n_pixels = job[:3]
     all_profiles, dense_start = job[3:5] if len(job) > 3 else (False, False)
     output_upsample = job[5] if len(job) > 5 else 1
+    include_base, focus_deformed = job[6:8] if len(job) > 6 else (False, False)
     offsets = subpixel_offsets(output_upsample)
     with gzip.open(path, 'rt') as stream:
         record = json.load(stream)
     _, name, _, seed = record['group'].split('-')
     rng = np.random.default_rng(int.from_bytes(hashlib.sha256(record['group'].encode()).digest()[:8], 'little'))
     actual = [Layer(f['z'], shapely.from_wkb(f['actual'])) for f in record['frames']]
-    nominal = get_part(name).layers()
+    part = get_part(name)
+    nominal = part.layers()
     eligible = record['eligible']
     count = min(n_frames, len(eligible))
     if dense_start:
@@ -46,7 +48,11 @@ def build_case(job):
         indices = np.asarray(eligible)[positions]
     else:
         indices = np.array(eligible)[np.linspace(0, len(eligible)-1, count).astype(int)]
+    if include_base and part.spec.get('container'):
+        base_indices = [i for i, layer in enumerate(nominal) if layer.z <= part.spec['container']['base_h']]
+        indices = np.array(sorted(set(indices.tolist()) | set(base_indices)))
     xs, ys = [], []
+    focused_samples = 0
     # Camera-profile augmentation reuses the deposited geometry. It does not
     # pretend the same toolpath was physically re-executed by every printer.
     profiles = ['cartesian', 'corexy', 'bedslinger']
@@ -64,7 +70,15 @@ def build_case(job):
                 y, x = np.nonzero(border)
                 if not len(y):
                     continue
-                chosen = rng.choice(len(y), n_pixels, replace=len(y) < n_pixels)
+                focus_pool = np.empty(0, dtype=int)
+                if focus_deformed:
+                    difference = (mask != camera.expected_mask(nominal[index])).astype('uint8')
+                    neighborhood = cv2.dilate(difference, np.ones((9, 9), 'uint8'))
+                    focus_pool = np.flatnonzero(neighborhood[y, x])
+                n_focus = n_pixels // 2 if len(focus_pool) else 0
+                focused_samples += n_focus
+                chosen = np.r_[rng.choice(focus_pool, n_focus, replace=len(focus_pool) < n_focus),
+                               rng.choice(len(y), n_pixels-n_focus, replace=len(y) < n_pixels-n_focus)]
                 yy = np.r_[y[chosen], rng.integers(PATCH_SIZE, gray.shape[0]-PATCH_SIZE, n_pixels // 4)]
                 xx = np.r_[x[chosen], rng.integers(PATCH_SIZE, gray.shape[1]-PATCH_SIZE, n_pixels // 4)]
                 pad = PATCH_SIZE // 2
@@ -81,6 +95,7 @@ def build_case(job):
                 ys.append(target)
     return np.concatenate(xs), np.concatenate(ys), dict(group=record['group'],
         validation=record['validation'], frames=len(indices)*(len(profiles) if all_profiles else 1),
+        focused_boundary_samples=focused_samples,
         sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
 
 
@@ -95,6 +110,9 @@ def main():
     parser.add_argument('--dense-start', action='store_true', help='retain the first ten eligible frames before subsampling')
     parser.add_argument('--output-upsample', type=int, choices=[1, 2, 4], default=1,
                         help='label distinct subpixel positions for native high-resolution prediction')
+    parser.add_argument('--include-base-frames', action='store_true', help='include every solid container base layer')
+    parser.add_argument('--focus-deformed', action='store_true',
+                        help='sample half of boundary patches near deposited/command differences; training sampling only')
     args = parser.parse_args()
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('training data must stay on the data volume')
@@ -118,7 +136,7 @@ def main():
     rows = []
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context('spawn')) as executor:
         futures = [executor.submit(build_case, (p, args.frames, args.pixels, args.all_profiles, args.dense_start,
-                                               args.output_upsample)) for p in paths]
+                                               args.output_upsample, args.include_base_frames, args.focus_deformed)) for p in paths]
         for future in as_completed(futures):
             row = future.result()
             rows.append(row)

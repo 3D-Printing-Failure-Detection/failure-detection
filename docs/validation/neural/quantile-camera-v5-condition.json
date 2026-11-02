@@ -1,0 +1,17 @@
+{
+  "status": "skipped",
+  "reason": "upper measurement still fails the fixed-trajectory functional check",
+  "verdict": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 2 layers (leaks)",
+      "base not flat/solid in 6 layers",
+      "wall far below 1.4 mm in 2 layers"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 63411.232298533716,
+      "thin_layers": 2
+    }
+  }
+}

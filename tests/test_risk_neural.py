@@ -107,3 +107,51 @@ def test_joint_forecasts_require_a_passing_alternative_before_excluding_a_plan(m
         assert result[2]['fit_robust_clearance_mm'] == .3
     else:
         assert result is primary
+
+
+@pytest.mark.parametrize('analytical_ok,clearance,recovery_ok,recovery_clearance,expected', [
+    (False, -.1, True, .4, 'recover'),  # intervene while the prefix is still repairable
+    (True, .4, True, .6, 'continue'),  # both forecasts already cover observed uncertainty
+    (False, -.1, False, -.2, 'continue'),  # no jointly passing alternative: preserve neural choice
+    (True, .1, True, .2, 'continue'),  # improvement is below half a camera pixel
+    (True, .1, True, .4, 'recover'),  # low analytical clearance has a measurable remedy
+])
+def test_joint_forecast_checks_a_confident_neural_continuation(monkeypatch,
+        analytical_ok, clearance, recovery_ok, recovery_clearance, expected):
+    layer = Layer(.25, Point(0, 0).buffer(15).difference(Point(0, 0).buffer(5)))
+    policy = object.__new__(RiskAwareNeuralPolicy)
+    policy.joint_forecast, policy.analytical_candidate_checks = True, 0
+    policy.spec = {'holes': [dict(center=[0, 0], diameter=[8.5, 11.5], tol_center=1.)]}
+    policy.allow_adapt, policy.use_fea, policy.reserve_fit = True, False, True
+    policy.h, policy.max_correction_per_layer_mm = .25, .25
+    policy.nominal = [layer] * 4
+    history = [layer]
+    policy.state = SimpleNamespace(model=object(), observations=history, residuals=[],
+        uncertainty_mm=.3, resolution_mm=.25, compensate=lambda layers: layers)
+
+    def candidate(plan, ok=True, slack=.8):
+        return dict(name=plan.name, plan=plan, predicted=plan.layers, executable=True,
+            verdict=Verdict(ok, [] if ok else ['fit threatened'], {}),
+            margin=slack, robust_margin=slack, fit_clearance_mm=slack,
+            fit_robust_clearance_mm=slack, command_change_fraction=.01)
+
+    primary = [candidate(Plan('continue', [layer]*3, 1.))]
+    monkeypatch.setattr(PreventiveFitMixin, 'candidates', lambda *args, **kwargs: primary)
+    monkeypatch.setattr(policy, '_targets', lambda known: [(Plan('target', [layer]*3, 1.), {})])
+    monkeypatch.setattr(policy, '_evaluate', lambda known, plan, *args: candidate(plan))
+    analytical = SimpleNamespace(state=SimpleNamespace(compensate=lambda layers: layers),
+        _evaluate=lambda known, plan, *args: candidate(plan,
+            analytical_ok if plan.name == 'continue' else recovery_ok,
+            clearance if plan.name == 'continue' else recovery_clearance))
+    monkeypatch.setattr(risk_neural, 'RiskAwareContourPolicy', lambda *args, **kwargs: analytical)
+    before = layer.region.wkb
+    result = policy.candidates(history, policy.nominal, DecisionContext(3))
+    assert policy.analytical_candidate_checks >= 1
+    assert primary[0]['verdict'].ok and 'fit_at_risk' not in primary[0]
+    assert layer.region.wkb == before and policy.state.observations is history
+    if expected == 'continue':
+        assert result is primary
+    else:
+        assert result[0]['fit_at_risk']
+        assert any(c['name'] != 'continue' and c['both_forecasts_pass'] for c in result)
+        assert policy.pick_candidates(result, DecisionContext(3)).action == 'adapt'

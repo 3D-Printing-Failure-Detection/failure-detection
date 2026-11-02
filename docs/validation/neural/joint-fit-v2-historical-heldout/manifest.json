@@ -1,0 +1,141 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian"
+    ],
+    "parts": [
+      "bracket",
+      "spacer"
+    ],
+    "kinds": [
+      "clean",
+      "collapse",
+      "warp",
+      "shift",
+      "under_extrusion",
+      "detach"
+    ],
+    "methods": [
+      "contour",
+      "neural_risk",
+      "neural_risk_agent"
+    ],
+    "n": 2,
+    "seed": 22,
+    "workers": 4,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-heldout/results",
+    "neural_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/temporal.npz",
+    "experiment_stage": "historical",
+    "neural_calibrate_measurements": false,
+    "neural_forecast_scope": "fits",
+    "neural_reserve_fit": true,
+    "neural_joint_forecast": true,
+    "boundary_checkpoint": null,
+    "boundary_scope": "all",
+    "boundary_fallback": false,
+    "supervisor_endpoint": "http://127.0.0.1:8090",
+    "supervisor_model": "local-qwen3",
+    "supervisor_timeout": 120.0,
+    "supervisor_review_interval": 8,
+    "supervisor_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/supervisor-b.json"
+  },
+  "instrumentation_version": 3,
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "2629314de4f5be0ab98776feba94999188072f12",
+  "source_sha256": "7fc3434ac95611a4d62784f1c902c5f965d858692b2b23b523332142529e6dbf",
+  "expected_runs": 72,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "neural_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "supervisor": {
+    "model": "Qwen/Qwen3-0.6B-GGUF",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "runtime": "llama.cpp b12057",
+    "assets": [
+      {
+        "name": "llama-b12057-bin-ubuntu-x64.tar.gz",
+        "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12057/llama-b12057-bin-ubuntu-x64.tar.gz",
+        "bytes": 22892921,
+        "sha256": "1bdfdac035014ff7b935aaf4a91d7bd5ea5018db9957e1a21b6567f189b8dbe7"
+      },
+      {
+        "name": "Qwen3-0.6B-Q8_0.gguf",
+        "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf",
+        "bytes": 639446688,
+        "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"
+      }
+    ],
+    "endpoint": "http://127.0.0.1:8090",
+    "server_command": [
+      "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-v1/runtime/llama-b12057/llama-server",
+      "-m",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-v1/Qwen3-0.6B-Q8_0.gguf",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8090",
+      "--alias",
+      "local-qwen3",
+      "--threads",
+      "2",
+      "--threads-batch",
+      "2",
+      "--ctx-size",
+      "4096",
+      "--parallel",
+      "1",
+      "--gpu-layers",
+      "0",
+      "--jinja",
+      "--chat-template-kwargs",
+      "{\"enable_thinking\": false}"
+    ],
+    "reuses_model_file": "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-v1/Qwen3-0.6B-Q8_0.gguf",
+    "verified_model_sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"
+  },
+  "completed_runs": 72,
+  "errors": [],
+  "final_source_sha256": "7fc3434ac95611a4d62784f1c902c5f965d858692b2b23b523332142529e6dbf",
+  "final_neural_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+}

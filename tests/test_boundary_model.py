@@ -85,3 +85,13 @@ def test_output_grid_metadata_must_match_checkpoint_heads(tmp_path):
                (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32'))]
     with pytest.raises(ValueError, match='boundary output'):
         BoundarySegmenter(checkpoint(tmp_path/'mismatch.npz', weights, output_upsample=np.array(4)))
+
+
+def test_quantile_estimate_is_identified_and_invalid_metadata_rejected(tmp_path):
+    weights = [(np.zeros((1, 81), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32'))]
+    model = BoundarySegmenter(checkpoint(tmp_path/'upper.npz', weights, distance_quantile=np.array(.8)))
+    assert model.distance_quantile == .8
+    with pytest.raises(ValueError, match='distance quantile'):
+        BoundarySegmenter(checkpoint(tmp_path/'invalid.npz', weights, distance_quantile=np.array(float('nan'))))

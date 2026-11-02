@@ -1,0 +1,218 @@
+{
+  "status": "complete",
+  "source_sha256": "57b1360f23a701ae97a322dde71b9d74426f287b1afac0952b079d60de0aac30",
+  "script_sha256": "3aafe57a0d8ccf45ffa391f3422de17e8f8066ba73c14e708dbf176214e4c66d",
+  "arguments": {
+    "trajectories": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/trajectories/trajectories",
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/dataset",
+    "frames": 12,
+    "pixels": 120,
+    "workers": 2,
+    "all_profiles": true,
+    "dense_start": true,
+    "output_upsample": 4,
+    "include_base_frames": true,
+    "focus_deformed": true
+  },
+  "domain": "MuJoCo renders of retained deposited geometry, with three camera profiles",
+  "input": "normalized 9x9 grayscale camera patch",
+  "target": "true signed distance in mm clipped to [-1,1]",
+  "output_upsample": 4,
+  "output_offsets_xy_px": [
+    [
+      0.0,
+      0.0
+    ],
+    [
+      0.25,
+      0.0
+    ],
+    [
+      0.5,
+      0.0
+    ],
+    [
+      0.75,
+      0.0
+    ],
+    [
+      0.0,
+      0.25
+    ],
+    [
+      0.25,
+      0.25
+    ],
+    [
+      0.5,
+      0.25
+    ],
+    [
+      0.75,
+      0.25
+    ],
+    [
+      0.0,
+      0.5
+    ],
+    [
+      0.25,
+      0.5
+    ],
+    [
+      0.5,
+      0.5
+    ],
+    [
+      0.75,
+      0.5
+    ],
+    [
+      0.0,
+      0.75
+    ],
+    [
+      0.25,
+      0.75
+    ],
+    [
+      0.5,
+      0.75
+    ],
+    [
+      0.75,
+      0.75
+    ]
+  ],
+  "capture_manifest_sha256": "67dcc0d46194738368661d594ab6b3ca79fe3e6f0132408e55c8d0d25f4de69c",
+  "groups": [
+    {
+      "group": "cartesian-cup-under_extrusion-313",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "d431c9d5946e67cdf714db219b4325d696c9d6cf3eb6ecc446ddf78feef36531"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-335",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "eb8654aca4b2b843784321059b98902d85a0ae03ab7c4901bf1c24d5b36d5de9"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-344",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "936153d6c85cba158e34ad5ac7e1693d4407ddb1499d3e19634d58b4e62fa66e"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-355",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "ff5e1f450b9becd4df2953eb500465744f43625d1fabd38ce04d81b9247dc545"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-379",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3420,
+      "sha256": "1ace4f7661413bd663df22dd40bb0cf3a239242aaa89ba5ea41759721ef0a5a2"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-400",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "d43a1d991e9e17fc1ab8df5017081d6cece64bada2cb6625d8f14e70c58f6a9d"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-410",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "e3e31b6f847325d79b2c7267fe8513e13006046049555b917081490426a8047d"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-417",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "a07c4beaf751b105fdf19ac0326789c90bccd0e76e64c2d777b7252e3674997e"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-420",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3420,
+      "sha256": "5f386dafb3753b8b0c2c91cb458e60d6482d62172cbf487ae45db4774498550e"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-313",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "f5d6d387aa4cc6e7d0b63afc16e38575ed67a3de48da402c5de0b248bbb4ab86"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-335",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "5b001ef1104035977cf24fbbd5005c9bd5a99cc52a1df667781d6116343f262d"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-344",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "80fa6caaf0f7b1eda51a56321050697c38c78f49d9d7a7db3e2da011208b970c"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-355",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "4f13aa80c4a19028e65c809b5868106047ec79eef7ae72821e0e3d4f4999b383"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-379",
+      "validation": false,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "ade108c41d0fe4f1fc7bfdc44275e4da13c7436897bfb196f1f6a5e30e985c41"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-400",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "ac83e4651b289b6e123a7abb4f20ea0ce161322f192956552b7c99d08b574de1"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-410",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "d6dae58b09f0226458ed8bf3fd0434c97158d4d2339db57e9721584132032721"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-417",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "227a2f2f1a8fc938303a5deaa2c6b888d22203a90b2ccfd68a8eeb62c616eeb5"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-420",
+      "validation": true,
+      "frames": 60,
+      "focused_boundary_samples": 3600,
+      "sha256": "fc1af501f1b64e9b0559d402c1612b02f57ed3305fba41cf257bf0cdbedb6d83"
+    }
+  ],
+  "rows": 162000,
+  "final_source_sha256": "57b1360f23a701ae97a322dde71b9d74426f287b1afac0952b079d60de0aac30"
+}

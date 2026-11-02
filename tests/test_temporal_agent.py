@@ -151,6 +151,24 @@ def test_agent_cannot_select_an_unverified_action(monkeypatch, answer):
     assert 'error' in supervisor.audit[-1]
 
 
+def test_compact_agent_request_preserves_every_eligible_choice(monkeypatch):
+    response = dict(choices=[dict(message=dict(content=json.dumps(
+        dict(candidate=3, reason='choose the second eligible tradeoff'))), finish_reason='stop')])
+    monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw: io.BytesIO(json.dumps(response).encode()))
+    supervisor = LocalSupervisor()
+    candidates = [dict(id=0, ok=False, executable=True),
+                  dict(id=1, ok=True, executable=True),
+                  dict(id=2, ok=True, executable=True, review_eligible=False),
+                  dict(id=3, ok=True, executable=True)]
+    selected = supervisor.choose({}, candidates)
+    request = supervisor.audit[-1]['request']
+    sent = json.loads(request['messages'][1]['content'])['candidates']
+    assert {c['id'] for c in sent} == {1, 3}
+    assert set(request['response_format']['json_schema']['schema']['properties']['candidate']['enum']) == {1, 3}
+    assert selected['candidate'] == 3
+    assert len(candidates) == 4
+
+
 def test_actual_agent_choice_controls_feasible_recovery(monkeypatch, persistence_model):
     from recovery.geometry.adapt import Plan
     from recovery.geometry.spec import Verdict

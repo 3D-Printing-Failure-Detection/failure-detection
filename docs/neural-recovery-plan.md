@@ -4,6 +4,14 @@ The objective is more functional completed prints and genuine recovery from
 failures, compared on identical cases with every earlier policy. A trained model
 or a successful language-model request alone does not satisfy that objective.
 
+Current verdict: ahead on historical cases, not yet accepted as better overall.
+The original combined candidate reached 67/100 versus contour's 62/100 but failed
+its first fresh test. The newer paired-forecast fit policy reaches 33/50 versus
+30/50 historical fit failures and 12/20 versus 10/20 validation failures, with
+zero versus one defective finish in each set. It still loses a bracket case
+that contour saves. An earlier continuation check is now under actual Qwen
+evaluation; the newer camera checkpoints remain unsuccessful experiments.
+
 The user requested a free model without an API key instead of Gemini. The first
 supervisor is Qwen3-0.6B Q8_0, served on localhost by llama.cpp on CPU. This is a
 resource-constrained starting point whose decisions must be evaluated, not an
@@ -155,7 +163,7 @@ on consumed seeds 1001–1002, followed by 144 validation runs on seeds 70–71.
 Completed records restore the lost cup-collapse case with and without Qwen.
 The bracket-collapse case at seed 1001 now completes with two adaptations under
 both variants, whereas the original agent finished it defective. However, the
-fallback loses the cup-shift success at seed 1002. The full study is still running;
+fallback loses the cup-shift success at seed 1002. The full study is complete;
 these mixed results do not qualify this revision as an improvement.
 
 An equivariant model trained with current-state calibration reduced validation
@@ -237,11 +245,87 @@ include whether both forecasts pass. Tests verify that a disagreement excludes
 a plan only when a jointly passing alternative exists, and that neither the
 original candidates nor measured prefix are mutated. The
 [270-run broader study](validation/neural/joint-fit-dev-v2-protocol.json) is now
-running in `neural-joint-fit-dev-v2`, covering the 50 historical fit failure cases
+complete in `neural-joint-fit-dev-v2`, covering the 50 historical fit failure cases
 and ten clean controls, consumed diagnostics, and validation with actual Qwen
 decisions. Its source snapshot is pinned to commit `97c3b38` and runtime digest
 `7fc3434ac95611a4d62784f1c902c5f965d858692b2b23b523332142529e6dbf`.
-This is not yet a full-project improvement or an untouched-test result.
+The historical fit results are 33/50 for both neural variants versus 30/50 for
+contour, with zero versus one defective finish and all ten clean controls passed.
+Qwen made 40 actual requests in these historical runs. On the separate validation
+slice, both neural variants achieve 12/20 versus 10/20, zero versus one defective
+finish, and all four clean controls; Qwen makes 32 actual requests. The three
+gains are spacer collapse at seeds 70 and 71 and spacer shift at 71. However,
+both variants lose bracket collapse at seed 71. Aggregate gains do not satisfy
+the no-lost-success criterion. Qwen ties the neural-only outcome in both sets.
+Compact audits and CSV rows are retained under `joint-fit-v2-*` in the evidence
+directory. This is not a full-project improvement or an untouched-test result.
+
+The [paired timing regression](validation/neural/joint-fit-v2-validation-regression.json)
+shows why: the neural forecast accepts continuation at layer index 27 and skips
+the analytical assessment because it has only one passing candidate. By the next
+layer the measured prefix has already lost its fit. Contour intervenes at 27 and
+completes. The revised optional joint check evaluates this continuation under the
+analytical forecast before taking that fast path. If it signals failure or low
+fit slack, both inverse constructions are considered; replacement still needs
+a jointly passing alternative. When continuation passes both forecasts, an early
+replacement needs more than half a camera pixel of additional worst-case central
+fit slack. With no jointly passing alternative, the original neural choices remain.
+
+The [early-check protocol](validation/neural/early-joint-fit-dev-v3-protocol.json)
+freezes this revision and starts 39 diagnostic runs with actual Qwen on localhost
+8089. Only if all candidate prints in those selected cases complete functionally
+does it proceed to the full 50-case historical fit comparison and 20-case fit
+validation, each with clean controls. The first bracket stage is complete: both
+failure cases and both clean controls pass for contour, neural and actual Qwen
+(four model requests). This restores seed 71 in that diagnostic; the remaining
+regression runs are still required. The `early-joint-fit-v3` tmux window keeps
+the frozen source, logs and exit code. These are development runs; reserved seeds
+2001--2004 remain untouched. The complete source suite passes 101 tests, with one
+optional module skipped.
+
+### Camera uncertainty and additional deformation coverage did not resolve the diagnostic
+
+An 80th-percentile signed-distance network attained 80.6% boundary-point coverage
+on the native-output validation set. The recoverable 160-layer cup diagnostic
+still reports two false wall gaps and six false base-hole layers. Point coverage
+is not a calibrated whole-print success probability; the checkpoint is rejected.
+
+The next dataset adds 18 whole trajectories at a previously missing range of
+under-extrusion severity: training seeds 313, 335, 344, 355, 379 and validation
+seeds 400, 410, 417, 420, for cup and mug. Seeds were chosen prospectively from
+the generator's severity range, without inspecting printing outcomes. Training
+uses all base frames and extra boundary samples near deposited deformation;
+only grayscale patches enter the model. Combined splits contain 106 training
+and 56 validation trajectories, with no group overlap. Two-dataset training
+records both input hashes and rejects repeated groups.
+
+The central estimate reaches 0.07203 mm native-grid validation error, while the
+upper estimate reaches 77.2% boundary-point coverage and 0.09465 mm error on this
+expanded dataset. Neither passes the fixed cup diagnostic: the central model
+still reports two false wall gaps and three false base-hole layers; the upper
+model reports one gap, five base-hole layers and two thin-wall layers. The
+predeclared conditional recovery trials were therefore skipped, with explicit
+records. No checkpoint is promoted. A separate retained-geometry validation is
+running across 36 container trajectories and three camera views; its geometric
+confusion counts are not complete-print recovery rates.
+
+The camera-fallback diagnostic also finishes at 16/24 for both neural variants,
+matching contour's 16/24 but with one versus zero defective finishes. This is
+another rejected replacement. Its completed 40-case validation scores 21/40
+versus contour's 19/40 and ignore's 20/40, with zero versus one versus twenty
+defective finishes; all eight clean controls pass. That validation excludes Qwen
+and does not erase the diagnostic regression.
+
+### Smaller actual Qwen requests preserve eligible choices
+
+The supervisor now sends every eligible choice while keeping rejected and
+dominated candidates in the full controller audit. The independent auditor
+checks equality of the schema, transmitted and raw eligible-ID sets. In an
+[actual replay](validation/neural/compact-agent-replay-v1.json), a 6,531-character
+user payload became 944 characters, retained both eligible choices, and selected
+the same plan. Its 6.65-second response is interface evidence, not a completed
+print; different server concurrency prevents attributing all latency improvement
+to payload size.
 
 ## Development record (2026-11-02)
 

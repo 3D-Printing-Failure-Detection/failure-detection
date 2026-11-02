@@ -36,6 +36,11 @@ def layer_features(layer, nominal, spec):
     container = spec.get('container')
     if container and layer.z > container['base_h']:
         row['open_wall'] = base['hole_area'] < .5 * F.base(nominal)['hole_area']
+    elif container:
+        row['base_problem'] = base['area'] < .85 * F.base(nominal)['area'] or base['n_main_holes'] > 0
+    connections = [rule for rule in spec.get('connected', []) if rule['z'][0] <= layer.z <= rule['z'][1]]
+    if connections:
+        row['connection_problem'] = any(base['n'] != rule.get('components', 1) for rule in connections)
     thickness = spec.get('min_wall_mm')
     if thickness:
         for name, size in [('soft_thin', thickness), ('hard_thin', HARD_WALL_FRAC * thickness)]:

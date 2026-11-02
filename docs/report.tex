@@ -794,7 +794,115 @@ two clean controls complete, preserving the three historical gains and restoring
 the two regressions. The policy uses the smaller fit slack when both forecasts
 pass; if no jointly passing plan exists, it retains the original neural choices.
 The optional \texttt{--neural-joint-forecast} flag enables this check. Broader
-historical, validation and actual Qwen evaluation are still required. These
-diagnostics do not establish superiority over the analytical policy.
+historical and actual Qwen evaluation is now complete for fit parts, as reported
+next. These diagnostics do not establish superiority over the analytical policy.
+
+\clearpage
+\section{Latest fit results and the remaining regression}
+
+The 270-run paired-forecast study is complete. It covers fit parts (bracket and
+spacer), consumed failure diagnostics, historical cases and validation. Neural
+recovery and neural recovery with actual Qwen produce the same completion counts.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+Comparison & Analytical contour & Neural + Qwen\\
+\midrule
+Historical fit failures completed & 30/50 (60\%) & 33/50 (66\%)\\
+Historical defective finishes & 1 & 0\\
+Historical clean controls & 10/10 & 10/10\\
+Validation fit failures completed & 10/20 (50\%) & 12/20 (60\%)\\
+Validation defective finishes & 1 & 0\\
+Validation clean controls & 4/4 & 4/4\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Qwen makes 40 actual historical requests and 32 validation requests. It preserves
+the neural result; these runs show no additional completed print from supervision.
+These fit-only results must not be substituted for the full-project 100-case
+historical comparison or for a fresh frozen test.
+
+\note{\textbf{Ahead in aggregate, but not accepted.} The validation run gains
+three spacer successes and loses a bracket-collapse success that analytical
+contours preserve. The no-lost-success criterion remains unmet.}
+
+\subsection*{The recovery check happened one layer too late}
+At bracket layer index 27, the neural forecast accepts continuation. The previous
+joint implementation skipped its analytical check when only this passing choice
+existed. At the next observation, the already printed hole is too small to fix.
+Analytical contours intervene at 27 and finish the part.
+
+The revised optional check also assesses that apparently healthy continuation
+under the analytical forecast. Failure or low fit slack opens recovery planning
+before the next layer. An alternative must pass both forecasts; when both accept
+continuation, a replacement also needs more than half a camera pixel of additional
+central fit slack. With no jointly passing alternative, the original neural
+choice remains. This is a forecast comparison, not access to simulator truth.
+
+The new \texttt{early-joint-fit-v3} tmux run starts with 39 actual-print diagnostic
+runs, including Qwen. A declared success gate controls whether the full fit
+historical and validation rerun proceeds. The first bracket stage restores the
+lost case: both failure cases and both clean controls pass with and without Qwen,
+which makes four actual requests. The remaining results are pending. Source tests
+pass 101 cases, with one optional module skipped. Seeds 2001--2004 remain untouched.
+
+\subsection*{Local supervision now uses shorter requests}
+Every eligible plan still goes to Qwen. Failed or dominated plans stay in the
+full audit, and an independent check verifies that no eligible choice disappears
+from the request. One actual replay reduced the user payload from 6,531 to 944
+characters, kept both choices and selected the same plan. It returned in 6.65
+seconds, but differing server concurrency prevents a controlled latency claim.
+This replay tests the interface; it is not a new successful print.
+
+\clearpage
+\section{Camera experiments remain unsuccessful}
+
+The camera branch has not resolved the recoverable cup-thinning diagnostic.
+A signed-distance model trained for the 80th percentile reaches 80.6\% boundary
+point coverage, yet still reports two false wall gaps and six false base-hole
+layers. Per-point coverage is not a whole-print reliability guarantee.
+
+An expanded dataset adds 18 complete cup and mug trajectories at a previously
+missing range of thinning severity. Seeds are selected from the generator's
+severity range before inspecting their outcomes. Training includes every base
+frame and more samples near the deformation. The neural input remains a grayscale
+camera patch. The combined split has 106 training and 56 validation trajectories,
+with no shared groups.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+Expanded-data model & Central estimate & Upper estimate\\
+\midrule
+Native-grid distance error (mm) & 0.07203 & 0.09465\\
+Boundary-point upper coverage & 47.2\% & 77.2\%\\
+False wall-gap layers in cup diagnostic & 2 & 1\\
+False base-hole layers in cup diagnostic & 3 & 5\\
+Passes diagnostic specification & No & No\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The actual deposit passes the original specification. Both measured stacks fail;
+neither new model is promoted. As declared in advance, their conditional recovery
+runs are skipped, with explicit retained reasons. A broader measurement validation
+is running on 36 container trajectories under all three camera views. It compares
+false and missed geometric defects on identical images. These are camera-frame
+statistics, not complete-print success rates.
+
+The camera-fallback diagnostic also completes at 16/24 for both neural variants,
+matching contour, but with one defective finish versus zero. It remains a rejected
+replacement. The broader validation without Qwen finishes at 21/40 versus
+contour's 19/40, with zero versus one defective finish and all eight clean controls
+passed. The original frozen comparison continues unchanged.
+
+\subsection*{Evidence and next acceptance check}
+Training manifests, diagnostics, compact audits and paired regression evidence
+are retained in \repo{docs/validation/neural}{the neural validation directory}.
+The detailed protocol is in \repo{docs/neural-recovery-plan.md}{the development
+record}. Full immutable snapshots, weights and actual Qwen logs stay on the data
+volume. Further acceptance requires all parts and failure kinds, the strongest
+earlier neural configuration as well as the original analytical baselines,
+preserved passing cases and no worse defective-finish count on a new frozen test.
 
 \end{document}
