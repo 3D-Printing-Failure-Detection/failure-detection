@@ -1,0 +1,52 @@
+{
+  "checked_at": "2026-11-02T21:32:22.520324+00:00",
+  "checks": [
+    {
+      "model": "temporal",
+      "data_path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-mujoco-v1/dataset/data.npz",
+      "data_sha256": "4febd9140d85578861404dea86402496787f6e3ad57be2668f610ea33dfe9a75",
+      "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+      "train_rows": 385280,
+      "validation_rows": 154780,
+      "train_groups": 80,
+      "validation_groups": 40,
+      "training_and_validation_seeds": [
+        60,
+        61,
+        62,
+        63,
+        70,
+        71
+      ],
+      "frozen_test_seeds_disjoint": true,
+      "metric_mm_recomputed": 0.1921098381280899,
+      "metric_mm_recorded": 0.1921098381280899,
+      "analytical_mm": 0.34352654218673706,
+      "status": "passed"
+    },
+    {
+      "model": "boundary",
+      "data_path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/dataset/data.npz",
+      "data_sha256": "e7cb5f678b82e5077965a938bc11677c45916d8e0c42658c71ef6de88316d8ea",
+      "checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+      "train_rows": 384000,
+      "validation_rows": 187200,
+      "train_groups": 80,
+      "validation_groups": 40,
+      "training_and_validation_seeds": [
+        60,
+        61,
+        62,
+        63,
+        70,
+        71
+      ],
+      "frozen_test_seeds_disjoint": true,
+      "metric_mm_recomputed": 0.0791974738240242,
+      "metric_mm_recorded": 0.0791974738240242,
+      "analytical_mm": null,
+      "status": "passed"
+    }
+  ],
+  "status": "passed"
+}

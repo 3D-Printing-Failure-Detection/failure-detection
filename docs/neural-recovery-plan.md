@@ -85,6 +85,13 @@ training/validation/test seeds. Raw records are never relabeled or edited to
 combine variants; report labels are explicit input metadata. Historical
 regression and the other acceptance requirements above remain necessary.
 
+An independent [checkpoint recheck](validation/neural/training-provenance-check.json)
+loads the retained datasets and frozen NumPy weights, verifies their hashes and
+whole-trajectory splits, and reproduces the recorded validation errors exactly:
+0.19210984 mm temporal displacement and 0.07919747 mm boundary distance. Both
+models use 80 training groups and 40 validation groups, with no overlap with
+test seeds 1001–1004. These metrics verify the trained artifacts, not recovery.
+
 The test started at 2026-11-02 21:13:45 UTC from commit
 `a27847b324da18b6c40b9b8108b6240d022c8892`, with runtime/specification digest
 `4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3`.
