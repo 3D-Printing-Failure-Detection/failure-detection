@@ -1,0 +1,118 @@
+"""Train camera boundaries from re-rendered, retained MuJoCo deposited layers.
+
+Only simulator truth supplies labels and sampling locations. Runtime features
+are grayscale patches, with no nominal shape, fault identity or truth input.
+"""
+import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import gzip
+import hashlib
+import json
+import multiprocessing
+from pathlib import Path
+import sys
+
+import cv2
+import numpy as np
+import shapely
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from recovery import camera
+from recovery.eval.mujoco_eval import source_digest
+from recovery.models.boundary import PATCH_SIZE, normalized_gray
+from recovery.parts import get_part
+from recovery.printer.mujoco import MujocoPrinter
+from recovery.types import Layer
+
+
+def build_case(job):
+    path, n_frames, n_pixels = job
+    with gzip.open(path, 'rt') as stream:
+        record = json.load(stream)
+    _, name, _, seed = record['group'].split('-')
+    rng = np.random.default_rng(int.from_bytes(hashlib.sha256(record['group'].encode()).digest()[:8], 'little'))
+    actual = [Layer(f['z'], shapely.from_wkb(f['actual'])) for f in record['frames']]
+    nominal = get_part(name).layers()
+    eligible = record['eligible']
+    indices = np.array(eligible)[np.linspace(0, len(eligible)-1, min(n_frames, len(eligible))).astype(int)]
+    xs, ys = [], []
+    # Camera-profile augmentation reuses the deposited geometry. It does not
+    # pretend the same toolpath was physically re-executed by every printer.
+    profiles = ['cartesian', 'corexy', 'bedslinger']
+    for offset, profile in enumerate(profiles):
+        selected = indices[offset::len(profiles)]
+        if not len(selected):
+            continue
+        with MujocoPrinter(nominal, None, int(seed), profile, False) as printer:
+            for index in selected:
+                printer.printed = actual[:index+1]
+                gray = normalized_gray(printer.camera_image())
+                layer = actual[index]
+                mask = camera.expected_mask(layer)
+                border = cv2.morphologyEx(mask, cv2.MORPH_GRADIENT, np.ones((9, 9), 'uint8'))
+                y, x = np.nonzero(border)
+                if not len(y):
+                    continue
+                chosen = rng.choice(len(y), n_pixels, replace=len(y) < n_pixels)
+                yy = np.r_[y[chosen], rng.integers(PATCH_SIZE, gray.shape[0]-PATCH_SIZE, n_pixels // 4)]
+                xx = np.r_[x[chosen], rng.integers(PATCH_SIZE, gray.shape[1]-PATCH_SIZE, n_pixels // 4)]
+                pad = PATCH_SIZE // 2
+                padded = cv2.copyMakeBorder(gray, pad, pad, pad, pad, cv2.BORDER_REFLECT_101)
+                patches = np.lib.stride_tricks.sliding_window_view(padded, (PATCH_SIZE, PATCH_SIZE))[yy, xx]
+                points = camera.px_to_mm(np.column_stack([xx, yy]))
+                inside = shapely.contains_xy(layer.region, points[:, 0], points[:, 1])
+                distance = shapely.distance(layer.region.boundary, shapely.points(points))
+                target = np.clip(distance * np.where(inside, 1, -1), -1, 1).astype('float32')
+                xs.append(patches.reshape(-1, PATCH_SIZE ** 2).astype('float16'))
+                ys.append(target)
+    return np.concatenate(xs), np.concatenate(ys), dict(group=record['group'],
+        validation=record['validation'], frames=len(indices), sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--trajectories', type=Path, required=True)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--frames', type=int, default=12)
+    parser.add_argument('--pixels', type=int, default=320)
+    parser.add_argument('--workers', type=int, default=2)
+    args = parser.parse_args()
+    if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
+        parser.error('training data must stay on the data volume')
+    args.out.mkdir(parents=True, exist_ok=True)
+    if (args.out / 'data.npz').exists():
+        parser.error('refusing to overwrite a dataset')
+    paths = sorted(args.trajectories.glob('*.json.gz'))
+    if not paths:
+        parser.error('no completed retained trajectories')
+    capture_manifest = json.loads((args.trajectories.parent / 'manifest.json').read_text())
+    if capture_manifest['status'] != 'complete' or len(paths) != capture_manifest['expected_groups']:
+        parser.error('source trajectory collection is incomplete')
+    manifest = dict(status='running', source_sha256=source_digest(),
+        script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
+        domain='MuJoCo renders of retained deposited geometry, with three camera profiles',
+        input='normalized 9x9 grayscale camera patch', target='true signed distance in mm clipped to [-1,1]')
+    manifest['capture_manifest_sha256'] = hashlib.sha256((args.trajectories.parent / 'manifest.json').read_bytes()).hexdigest()
+    (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
+    rows = []
+    with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context('spawn')) as executor:
+        futures = [executor.submit(build_case, (p, args.frames, args.pixels)) for p in paths]
+        for future in as_completed(futures):
+            row = future.result()
+            rows.append(row)
+            print(json.dumps(row[2]), flush=True)
+    rows.sort(key=lambda row: row[2]['group'])
+    x = np.concatenate([r[0] for r in rows])
+    y = np.concatenate([r[1] for r in rows])
+    validation = np.concatenate([np.full(len(x), info['validation'], dtype=bool) for x, _, info in rows])
+    group = np.concatenate([np.full(len(x), info['group']) for x, _, info in rows])
+    np.savez_compressed(args.out / 'data.npz', x=x, y=y, validation=validation, group=group)
+    manifest.update(status='complete', groups=[row[2] for row in rows], rows=len(x),
+                    final_source_sha256=source_digest())
+    (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
+    print('Boundary dataset complete:', len(x), 'patches', flush=True)
+
+
+if __name__ == '__main__':
+    main()

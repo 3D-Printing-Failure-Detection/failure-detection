@@ -107,3 +107,82 @@ Artifacts live under `/mnt/data/ishaan/hri-workspace/failure-detection/`:
 `neural-temporal-mujoco-v1`, and `neural-temporal-calibration-v1`.
 Attach to all jobs with `tmux attach -t neural-recovery`. Source snapshots freeze
 each run independently; ongoing code changes do not change an in-flight model.
+
+## Camera, forecasting and preventive recovery follow-up
+
+Training on actual MuJoCo images and adding optional current-frame calibration
+both tied the initial 2/6 closed-loop result. Neither change established better
+recovery. A separate camera network learned signed boundary distance from 9 by 9
+grayscale patches, with whole-trajectory train/validation separation and camera
+augmentation across the three rigs. Its validation boundary error was 0.0792 mm.
+That pixel metric does not establish print success or transfer to real cameras.
+
+On the 16 Cartesian seed-10 failure cases excluding detachment, the learned camera
+and analytical forecast completed 14/16, matching contour. It stopped the one
+defective spacer finish that contour missed. Qwen supervision tied those outcomes,
+with 42 actual calls and 191 explicitly recorded reused continuation reviews. All
+four clean controls passed. Detachment remains in the wider regression and final
+comparison; its exclusion here was only a focused camera development trial.
+
+The spacer's fit can become irrecoverable between the first and second shifted
+layers while the first central forecast still passes. The preventive policy now
+checks signed hole-clearance slack against observed residual uncertainty. It
+considers an early intervention only when a feasible candidate improves central
+clearance by more than half a camera pixel. Candidates include gradual enlargement
+of an existing hole in future layers, bounded by the original allowed diameter
+and the existing 0.25 mm/layer correction assumption. The printed prefix, function
+specification and three-adaptation limit remain unchanged. Buffered forecast
+scenarios rank candidates by signed fit clearance; these scores are not
+calibrated probabilities or physical guarantees.
+
+Earlier intervention alone failed all three seed-10 spacer-shift cases. Training
+the temporal network in coordinates aligned with observed motion then reduced
+validation displacement error to 0.1921 mm (classical measurements, versus the
+analytical 0.3435 mm) and 0.1718 mm (learned camera, versus 0.2929 mm). Rotating an
+observed scene rotates this model's forecast; zero motion produces zero predicted
+motion. Checkpoints declare their measurement source, which the evaluator checks
+to prevent mixing a model with a different camera pipeline.
+
+With classical camera measurements, the rotation-equivariant network and bounded
+fit-reserve planner completed 3/3 selected spacer cases, versus 0/3 for contour
+and the same network without preventive recovery. The learned-camera combination
+completed 2/3. These are previously inspected development cases, not an unbiased
+success-rate estimate. Raw Qwen choices reduced those results to 1/3 and 0/3,
+respectively: the small model chose weaker recovery options despite being given
+their numerical assessments. The tool now ranks choices and excludes materially
+weaker fit-risk candidates whose other functional differences are below explicit
+measurement tolerances. The remaining genuine tradeoffs still go to Qwen. This
+guard was then tested in a new actual-agent trial: the supervised policy completed
+3/3, matching the neural policy without Qwen, with 10 validated model requests and
+no defective finishes. Thus supervision preserved those gains; it did not add
+another completed print. The model's prose is never numerical evidence of a
+successful recovery. A matched `contour_risk` planner ablation separately tests
+whether the new planner can recover the same cases using the analytical forecast.
+That completed ablation recovered 1/3 with analytical forecasting and 3/3 with
+learned forecasting, so the planner alone does not explain all three rescues.
+
+The unrestricted learned forecast lost container successes in the wider
+historical regression, including cup shift and cup/mug under-extrusion. It is not
+an acceptable replacement everywhere: the completed 60-case main grid scored
+35/60 for unrestricted neural recovery versus 40/60 for contour, with two versus
+one defective finishes. There were three gained spacer cases and eight lost
+container cases. An explicit `--neural-forecast-scope fits`
+variant chooses the trained model only for parts whose original specification
+contains through-hole fits; other parts retain analytical contour forecasting.
+This choice uses the functional specification before observations, not fault
+labels, simulator outcomes or seed identities. The full benchmark still contains
+every part and failure kind. Each row records the selected forecast source and
+actual neural calls, including zero neural calls for analytical cases. A new
+full historical run compares this hybrid, with and without Qwen, against contour.
+
+One preceding reserve-planner experiment failed after a local-model timeout; its
+failed manifest is retained. Requests now contain compact decision fields and
+use a 120-second timeout. Per-case journals preserve completed methods and agent
+errors even when a later method fails. Errors still fail the experiment; they do
+not silently substitute an unsupervised decision.
+
+All completed comparisons, including unsuccessful ablations, have compact audits
+and training manifests in `docs/validation/neural`. Full source snapshots, model
+weights, training data and request/response logs remain on the data volume. The
+100 historical failure cases and untouched final comparison are still required
+before accepting the new policy as better overall.

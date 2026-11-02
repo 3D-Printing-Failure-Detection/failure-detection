@@ -37,7 +37,7 @@
 \renewcommand{\headrulewidth}{0.3pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
-\newcommand{\repourl}{https://github.com/3D-Printing-Failure-Detection/failure-detection/blob/9770276}
+\newcommand{\repourl}{https://github.com/3D-Printing-Failure-Detection/failure-detection/blob/work/neural-local-recovery}
 \newcommand{\repo}[2]{\href{\repourl/#1}{#2}}
 \newcommand{\note}[1]{\begin{tcolorbox}[colback=pale,colframe=teal!55,boxrule=0.5pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt]#1\end{tcolorbox}}
 \newcommand{\nextpage}{\clearpage}
@@ -59,20 +59,22 @@ preserve the part's functional requirements.}
 
 The project is a Python research prototype that measures each printed layer,
 estimates how commands turn into deposited material, and chooses whether to
-continue, replace the remaining layer plan, or stop. The newest experimental
-policy, \code{contour}, separates inner and outer wall boundaries when predicting
-deformation. It retains the function checks and action limits of \code{guarded}.
+continue, replace the remaining layer plan, or stop. The established \code{contour}
+policy separates inner and outer boundaries when predicting deformation. A new
+experimental neural forecast and local Qwen supervisor target earlier recovery
+of tight fits. The learned version has selected-case gains, but overall
+superiority is not yet established; see the learning follow-up on page 10.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
 {\Large\bfseries\color{teal}62/100} & {\Large\bfseries 43/100} & {\Large\bfseries 53/100}\\
-New contour policy & Previous guarded policy & Ignore the failure\\
+Established contour policy & Previous guarded policy & Ignore the failure\\
 \bottomrule
 \end{tabular*}
 \end{center}
-These are functional completions in the latest \emph{paired simulated failure
-scenarios}. The new policy preserves all 53 ignore-baseline successes and adds
+These are functional completions in the published \emph{paired simulated failure
+scenarios}. Contour preserves all 53 ignore-baseline successes and adds
 nine genuine rescues. Against guarded, it gains twenty cases and loses one.
 It also permits one defective spacer to finish. Scraps and defective completions
 are never counted as successes.
@@ -81,10 +83,10 @@ are never counted as successes.
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
-Validation & 53 tests passed, one optional neural module skipped; 484 final audited simulator runs.\\
+Validation & 75 tests passed, one optional module skipped. The established contour study contains 484 audited runs; neural development trials are separate.\\
 Controls & All 80 clean runs passed; zero alarms in 6,000 monitored clean frames.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
-Integration & Branch \code{review/mujoco-generalization}; \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} was open and unmerged when this report was prepared.\\
+Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
 \end{tabularx}
 
@@ -92,10 +94,12 @@ Integration & Branch \code{review/mujoco-generalization}; \href{https://github.c
 The system and its functional contract (page 2); observation and prediction
 (page 3); recovery decisions and cost assumptions (page 4); implementation
 history and evaluation design (page 5); results (page 6); limitations and next
-work (page 7); code and operation (page 8); evidence and reproducibility (page 9).
+work (page 7); code and operation (page 8); evidence and reproducibility (page 9);
+trained recovery and local supervision (pages 10--11).
 
-{\small\color{muted}Implementation snapshot: \code{9770276}. Results describe the
-recorded experiments, not real-printer reliability. Detailed evidence is linked
+{\small\color{muted}Historical contour snapshot: \code{9770276}. Neural experiments
+retain separate frozen source hashes. Results describe simulated experiments,
+not real-printer reliability. Detailed evidence is linked
 throughout the report.}
 
 \nextpage
@@ -149,8 +153,8 @@ passing software verdict is not independently verified physical success.
 \section{Seeing and predicting the build}
 
 \subsection*{Perception used in the reported experiments}
-The evaluated pipeline uses classical OpenCV perception, not a newly trained
-network. A calibrated camera view is rectified to the current layer plane. The
+The established contour benchmark uses classical OpenCV perception. New trained
+models are described on page 10. A calibrated camera view is rectified to the current layer plane. The
 segmenter extracts material contours from controlled current-layer illumination.
 The detector measures boundary deviation and uses geometric changes to assign a
 failure label. Its main deviation threshold is 1 mm.
@@ -370,7 +374,7 @@ For the cup-collapse trajectory, mean boundary error fell from 1.116 mm to
 0.313 mm. Better contour accuracy helps, but it does not guarantee a correct
 functional verdict in every case.
 
-\note{\textbf{Validation:} 53 tests passed; one optional neural module skipped.
+\note{\textbf{Original contour validation:} 53 tests passed; one optional module skipped.
 All 80 clean runs passed with zero alarms in 6,000 monitored frames. All 216
 overlapping baseline replays matched the prior study. The audit covers all 484
 final runs with stable source hashes and complete, unique scenario grids.}
@@ -398,7 +402,7 @@ counted as a defective finish, with the original threshold unchanged.
 Simulation recovery & Runs end to end with classical perception; strongest current evidence is the paired geometric benchmark.\\
 Live Bambu path & Camera calibration, telemetry, pause/cancel and replacement-job code exist. Physical resume behavior and recovery remain unvalidated. \code{run_live} still selects \code{RulePolicy}; contour is not wired into live mode.\\
 Optional FEA & Coarse linear-elastic screening exists, including loads and leak/connectivity checks. Latest success counts are geometry-only, not load-bearing validation.\\
-Neural / LLM paths & Neural detector/segmenter training and optional LLM spec/planning code exist. They were not used to produce these results; the latest predictor is analytical.\\
+Neural / LLM paths & A temporal network, optional learned camera and actual local Qwen supervision now run in separate experiments. They were not used to produce the historical contour results on page 6; see pages 10--11.\\
 Deployment & Open PR; experimental policies are opt-in. Existing hardware/platform/parser concerns require their own checks before release.\\
 \bottomrule
 \end{tabularx}
@@ -486,7 +490,7 @@ adapter for physical recovery.
 
 \subsection*{Evidence to read first}
 \begin{enumerate}
-\item \repo{docs/contour-prediction-trial.md}{Contour prediction trial}: latest
+\item \repo{docs/contour-prediction-trial.md}{Contour prediction trial}: established
 method, same-frame diagnostics, paired results, regressions and reproduction.
 \item \repo{docs/validation/contour/outcomes.csv}{Outcome counts} and
 \repo{docs/validation/contour/runs.csv}{per-run records}: machine-readable evidence
@@ -517,19 +521,19 @@ inspiration for the correction budget and expected-cost decomposition. Its
 assumed probabilities were not adopted as learned estimates.
 \end{itemize}
 
-\note{\textbf{Do not pool unrelated study totals.} The latest headline uses
+\note{\textbf{Do not pool unrelated study totals.} The historical headline uses
 seed 10 on three profiles plus fresh seeds 22--23 on Cartesian. Earlier reports
 used other seed sets and policy combinations. Compare paired methods within a
 study, or explicitly verified overlapping replays.}
 
-\subsection*{Exact latest-study footprint}
+\subsection*{Exact historical contour-study footprint}
 \begin{tabularx}{\linewidth}{@{}p{1.6in}Y@{}}
 \toprule
 Implementation & Commit \code{9770276} on \code{review/mujoco-generalization}.\\
 Final audit & 288 main + 192 fresh-seed + 4 selected-rescue runs = 484.\\
 Separate development & 27 development-policy runs and eight untouched diagnostic trajectories; excluded from the final benchmark totals.\\
 Raw data location & \path{/mnt/data/ishaan/hri-workspace/failure-detection/}\\
-Active integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{GitHub PR \#1}; open at preparation time.\\
+Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{GitHub PR \#1}, now merged into main.\\
 \bottomrule
 \end{tabularx}
 
@@ -546,5 +550,131 @@ This PDF is generated from \code{docs/report.tex}; its results figure comes from
 the committed contour evidence. Run \code{python3 tools/build_report.py} from the
 repository to rebuild root-level \code{report.pdf}. Update the narrative, tables
 and evidence links together when a new experiment changes the project state.
+
+\nextpage
+\section{Trained recovery and local supervision}
+
+\subsection*{What is learned}
+The temporal model predicts future command-to-deposit displacement from four
+camera-derived local offsets, four global translations, the requested horizon
+and whether a point belongs to an inner or outer boundary. A small neural
+network (18 inputs, two 64-unit hidden layers, two outputs) predicts a bounded
+change from the latest observed displacement. Runtime inference uses exported
+NumPy weights; training used PyTorch on CPU.
+
+The latest model expresses vectors in coordinates aligned with observed motion,
+then rotates its output back to camera coordinates. Rotating the whole observed
+scene therefore rotates the forecast. It does not learn four training directions
+as unrelated cases. Zero observed motion produces zero predicted motion.
+Training labels use simulated deposited geometry; runtime inputs never receive
+that geometry, failure parameters, random seeds or final truth verdicts.
+
+Whole trajectories are separated by seed: training uses 60--63, validation
+70--71. Seeds 1001--1004 remain reserved for a frozen final comparison. The
+classical-camera model's validation displacement error is 0.1921 mm, versus
+0.3435 mm for the analytical forecast. These are point-displacement errors,
+not print-completion rates. Training manifests pin dataset and checkpoint hashes.
+
+An optional camera model learns signed boundary distance from 9 by 9 grayscale
+patches. Its validation boundary error is 0.0792 mm. On 16 Cartesian seed-10
+failure cases excluding detach, it tied contour's 14 functional completions
+while stopping the one defective spacer finish. Both versions passed four clean
+controls. That model is a separate ablation; its improved image metric alone
+did not increase successful completions.
+
+\subsection*{Recover before a passing fit becomes unusable}
+A central forecast can still pass while a narrowing hole is close to losing its
+fit. Waiting for a definite failure may allow the next deposited layer to make
+recovery impossible. The preventive planner considers alternatives when signed
+fit clearance is smaller than uncertainty inferred from recent observations.
+It replaces a passing continuation only when a feasible candidate improves
+central clearance by more than half a camera pixel.
+
+One new target gradually enlarges an existing hole in future layers within the
+original allowed diameter, at the existing 0.25 mm/layer correction assumption.
+The prefix cannot be widened. All original functional checks, printer bounds and
+the three-adaptation limit still apply. Signed clearance under buffered forecast
+scenarios ranks risk; it is not a calibrated failure probability.
+
+\subsection*{What the local agent actually does}
+Qwen3-0.6B Q8\_0 runs on localhost through llama.cpp on CPU, with no API key.
+It receives observations and tool-computed candidate assessments and chooses an
+eligible candidate ID through structured JSON. The selected plan controls the
+printer. Every request, response, selected ID, validation result and latency is
+recorded. Errors fail the experiment instead of silently substituting a rule.
+
+The small model initially selected weaker recovery options and reduced success.
+A tool now ranks choices and excludes materially worse fit-risk options when
+other functional differences are below explicit measurement tolerances. Genuine
+tradeoffs remain available. Fresh geometry checks run on every warning; a prior
+review may be reused for fewer than eight layers only when passing continuation
+is the sole action. Reused reviews are not counted as model inference.
+
+\nextpage
+\section{Neural evidence and current acceptance status}
+
+\subsection*{Selected spacer-shift development cases}
+All rows below use the same three previously inspected seed-10 cases, one per
+printer profile. They are useful debugging evidence, not an unbiased estimate
+of general success rate.
+
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+Method & Functional & Defective finishes\\
+\midrule
+Established analytical contour & 0/3 & 1\\
+Same new preventive planner, analytical forecast & 1/3 & 0\\
+Learned forecast plus preventive fit planner & 3/3 & 0\\
+Learned planner plus unrestricted Qwen choices & 1/3 & 0\\
+Learned planner plus guarded Qwen choices & 3/3 & 0\\
+\bottomrule
+\end{tabularx}
+
+The guarded-agent run made ten validated local-model calls. It preserved the
+neural planner's three successes and added no further completion. The matched
+analytical-planner ablation supports a contribution from the learned forecast
+on these cases. It does not prove that a language model improved success.
+
+\subsection*{A wider regression found a limitation}
+Using the learned forecast on every part lost cup and mug successes that contour
+kept, including shifts and material starvation. That unrestricted replacement
+scored 35/60 functional completions versus contour's 40/60 on the completed
+main grid, with two versus one defective finishes. Its three gains were spacers;
+all eight losses were containers. It is not accepted. An explicit hybrid variant selects the trained forecast only
+when the original part specification contains through-hole fit constraints;
+other parts retain analytical contour forecasting. The selection is made from
+the specification before observations, never from simulator outcomes or fault
+labels. Each result records which forecast ran and its actual neural-call count.
+
+The hybrid comparison includes all 100 historical failure cases and 20 clean
+controls, with neural-only and actual-Qwen variants. It is still in progress.
+After development is frozen, the full untouched comparison must include every
+earlier baseline. No overall superiority claim is made at this stage.
+
+\note{\textbf{Acceptance remains open.} A useful trained model, lower forecast
+error and three selected rescues are insufficient. The final candidate must
+outperform the strongest earlier policy on a frozen fresh comparison, preserve
+historical successes and avoid a worse defective-finish rate. Agent contribution
+must be reported separately. None of these simulation results is a physical
+printer validation.}
+
+\subsection*{Reproduction and retained evidence}
+The \repo{docs/neural-recovery-plan.md}{neural recovery plan} records the split,
+acceptance rules, failed attempts and model identities. Compact training and
+experiment audits are in \repo{docs/validation/neural}{docs/validation/neural}.
+Full datasets, checkpoints, source snapshots and model request logs are under
+\path{/mnt/data/ishaan/hri-workspace/failure-detection/}. Failed runs are retained,
+including an agent-timeout trial; they are not counted as complete comparisons.
+
+\begin{Code}
+tmux attach -t neural-recovery
+.venv/bin/python -m recovery.eval.mujoco_eval --help
+.venv/bin/python tools/audit_neural_experiment.py --help
+.venv/bin/python tools/compare_neural_experiments.py --help
+\end{Code}
+The hybrid uses \code{--neural-forecast-scope fits --neural-reserve-fit}, the
+rotation-equivariant classical-camera checkpoint and an explicit local-server
+manifest. It remains an experimental option; the live entry point's default
+policy is unchanged.
 
 \end{document}

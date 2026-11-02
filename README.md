@@ -9,8 +9,9 @@ Target hardware: **Bambu Lab P1S + Bambu Studio**. Based on the [Project 2 plan]
 > **Status: research prototype.** The classical loop now runs against three MuJoCo
 > printer rigs, with paired failure evaluations and regression tests. See the
 > [review and generalization report](docs/mujoco-report.md) for measured results,
-> corrected errors, reproduction commands, and simulation limits. Real-printer
-> recovery and trained-model accuracy remain unvalidated.
+> corrected errors, reproduction commands, and simulation limits. Trained-model
+> development results are recorded separately below. Real-printer recovery remains
+> unvalidated.
 
 The repository-root [project report (PDF)](report.pdf) explains the system,
 current implementation, experimental results, limitations, and next steps.
@@ -66,6 +67,15 @@ forecasting deposition and computing compensation, while retaining the guarded
 policy's functional checks and action limits. Compare with
 `--methods ignore ours guarded contour`; the demo also accepts `--policy contour`.
 Use the persistent-failure MuJoCo evaluation for recovery evidence.
+
+The [learned recovery experiment](docs/neural-recovery-plan.md) trains a temporal
+neural network and runs a free local Qwen model in the decision loop, without an
+API key. Its optional `neural_risk` and `neural_risk_agent` policies can intervene
+before a tight fit becomes unusable. Selected development cases improved, but
+overall superiority is still being evaluated; these policies remain opt-in.
+The experiment records real model calls, failed attempts and neural-only
+ablations. It does not count an agent response or lower prediction error as a
+successful print.
 
 ## The idea in physical terms
 

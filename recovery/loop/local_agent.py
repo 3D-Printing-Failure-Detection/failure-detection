@@ -10,11 +10,46 @@ import urllib.parse
 import urllib.request
 
 from .decide import Decision, DecisionContext
+from .contour import ContourPolicy
 from .neural import NeuralPolicy
+from .risk_neural import RiskAwareNeuralPolicy
+
+
+def rank_for_review(candidates, resolution_mm):
+    """Tool-computed functional priorities; no simulator outcomes enter here.
+
+    A local model must not trade a materially worse fit-risk score for changes
+    smaller than measurement resolution in the central fit. Other genuine
+    tradeoffs remain available for review. Scores are forecast scenarios, not
+    calibrated success probabilities or physical safety guarantees.
+    """
+    candidates = [dict(c) for c in candidates]
+    feasible = [c for c in candidates if c['ok'] and c['executable']]
+    tolerance = resolution_mm/4
+    for candidate in feasible:
+        candidate['review_eligible'] = True
+        if 'fit_robust_clearance_mm' not in candidate:
+            continue
+        for alternative in feasible:
+            if ('fit_robust_clearance_mm' in alternative
+                    and alternative['fit_robust_clearance_mm'] > candidate['fit_robust_clearance_mm'] + tolerance
+                    and alternative.get('fit_clearance_mm', -1.) >= candidate.get('fit_clearance_mm', -1.) - tolerance
+                    and alternative.get('robust_margin', -1.) >= candidate.get('robust_margin', -1.)
+                    and alternative.get('margin', -1.) >= candidate.get('margin', -1.) - .02):
+                candidate['review_eligible'] = False
+                candidate['review_exclusion'] = f"functional-risk dominated by candidate {alternative['id']}"
+                break
+    ordered = sorted(feasible, key=lambda c: (c['review_eligible'],
+        c.get('fit_robust_clearance_mm', -1.), c.get('fit_clearance_mm', -1.),
+        c.get('robust_margin', -1.), c.get('margin', -1.),
+        -c.get('command_change_fraction', 0.), c.get('fidelity', 0.)), reverse=True)
+    for rank, candidate in enumerate(ordered, 1):
+        candidate['functional_rank'] = rank
+    return candidates
 
 
 class LocalSupervisor:
-    def __init__(self, endpoint='http://127.0.0.1:8089', model='local-qwen3', timeout=60):
+    def __init__(self, endpoint='http://127.0.0.1:8089', model='local-qwen3', timeout=120):
         parsed = urllib.parse.urlparse(endpoint)
         if parsed.scheme != 'http' or parsed.hostname not in ('127.0.0.1', 'localhost', '::1'):
             raise ValueError('local supervisor must use a localhost HTTP server')
@@ -24,25 +59,49 @@ class LocalSupervisor:
         self.audit = []
 
     def choose(self, observation, candidates):
-        ids = [c['id'] for c in candidates if c['ok'] and c['executable']]
+        ids = [c['id'] for c in candidates if c['ok'] and c['executable'] and c.get('review_eligible', True)]
         if not ids:
             raise ValueError('no allowed agent action')
         schema = dict(type='object', properties=dict(candidate=dict(type='integer', enum=ids),
                       reason=dict(type='string')), required=['candidate', 'reason'], additionalProperties=False)
         system = ('You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. '
-            'Only candidates marked ok and executable are allowed. Aim for a functional completed print. '
-            'Prefer continuing when it passes; unnecessary intervention consumes a limited budget. '
+            'Only candidates marked ok, executable, and review_eligible are allowed. '
+            'The assessment tool ranks them by functional risk: functional_rank 1 is its recommendation. '
+            'Aim for a functional completed print. '
+            'Prefer continuing when it passes with adequate margin; unnecessary intervention consumes a limited budget. '
+            'If fit_at_risk is true, prioritize the largest fit_robust_clearance_mm, then fit_clearance_mm: '
+            'a verified recovery with greater clearance '
+            'can preserve a through-hole before the next layers damage its fit. '
             'For recovery, consider functional margin, robustness under uncertainty, material change, '
-            'and remaining correction distance. Larger margins are better. Negative robust margin means '
+            'and remaining correction distance. margin and robust_margin are dimensionless; '
+            'fit_clearance_mm and uncertainty_mm are lengths in millimetres. '
+            'Larger margins are better. Negative robust margin means '
             'the uncertainty envelope fails, even if the central prediction passes. '
             'Do not invent measurements or change the functional specification. Reply with JSON and a short reason.')
-        evidence = dict(observation=observation, candidates=candidates)
+        keys = ('id', 'name', 'ok', 'executable', 'violations', 'margin', 'robust_margin',
+                'fit_clearance_mm', 'fit_robust_clearance_mm', 'fit_at_risk', 'command_change_fraction',
+                'uncertainty_mm', 'adapts_remaining', 'fidelity', 'functional_rank', 'review_eligible', 'review_exclusion')
+
+        def compact(value):
+            if isinstance(value, float):
+                return round(value, 4)
+            if isinstance(value, dict):
+                return {k: compact(v) for k, v in value.items() if v is not None and v != []}
+            if isinstance(value, list):
+                return [compact(v) for v in value]
+            return value
+
+        # Full-precision tool results remain in the controller's audit. The
+        # small local model receives only decision-relevant fields, with units.
+        evidence = compact(dict(observation=observation,
+            candidates=[{k: c[k] for k in keys if k in c}
+                        for c in sorted(candidates, key=lambda c: c.get('functional_rank', 10000))]))
         payload = dict(model=self.model, messages=[dict(role='system', content=system),
             dict(role='user', content=json.dumps(evidence, allow_nan=False, separators=(',', ':')))],
             temperature=0., seed=2026, max_tokens=160,
             chat_template_kwargs=dict(enable_thinking=False),
             response_format=dict(type='json_schema', json_schema=dict(name='recovery_decision', strict=True, schema=schema)))
-        record = dict(request=payload, accepted=False)
+        record = dict(request=payload, accepted=False, endpoint=self.endpoint, timeout_s=self.timeout)
         self.audit.append(record)
         started = time.monotonic()
         try:
@@ -62,13 +121,13 @@ class LocalSupervisor:
             return selected
         except Exception as exc:
             record['error'] = repr(exc)
-            raise RuntimeError('local supervisor failed; refusing to count an unsupervised decision') from exc
+            raise RuntimeError(f'local supervisor failed; refusing to count an unsupervised decision: {type(exc).__name__}: {exc}') from exc
         finally:
             record['seconds'] = time.monotonic() - started
             record['request_sha256'] = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
-class AgentNeuralPolicy(NeuralPolicy):
+class LocalAgentMixin:
     def __init__(self, *args, supervisor=None, review_interval_layers=8, **kwargs):
         super().__init__(*args, **kwargs)
         if review_interval_layers < 1:
@@ -86,6 +145,7 @@ class AgentNeuralPolicy(NeuralPolicy):
             | dict(id=i, ok=c['verdict'].ok, violations=c['verdict'].violations,
                    fidelity=c['plan'].fidelity, adapts_remaining=context.adapts_remaining)
             for i, c in enumerate(candidates)]
+        considered = rank_for_review(considered, self.state.resolution_mm)
         if not any(c['ok'] and c['executable'] for c in considered):
             return Decision('scrap', 'no executable recovery meets the functional spec',
                             None, candidates[0]['verdict'], considered)
@@ -105,11 +165,24 @@ class AgentNeuralPolicy(NeuralPolicy):
         observation = dict(printed_layers=len(known), total_layers=len(self.nominal),
             detector_label=detection.label, deviation_mm=detection.deviation_mm,
             uncertainty_mm=self.state.uncertainty_mm, adapts_remaining=context.adapts_remaining,
-            checkpoint_sha256=self.state.model.sha256)
+            checkpoint_sha256=getattr(getattr(self.state, 'model', None), 'sha256', None))
         selected = self.supervisor.choose(observation, considered)
         chosen = candidates[selected['candidate']]
         self.last_continue_review = ((len(known), self.supervisor.audit[-1]['request_sha256'])
                                      if chosen['name'] == 'continue' else None)
         considered.append(dict(agent=self.supervisor.audit[-1]))
         return Decision('continue' if chosen['name'] == 'continue' else 'adapt',
-            'local Qwen supervisor: ' + selected['reason'], chosen['plan'], chosen['verdict'], considered)
+            'local Qwen selected ' + chosen['name'] + ': ' + selected['reason'],
+            chosen['plan'], chosen['verdict'], considered)
+
+
+class AgentNeuralPolicy(LocalAgentMixin, NeuralPolicy):
+    """Local supervision with a trained temporal deposition model."""
+
+
+class AgentContourPolicy(LocalAgentMixin, ContourPolicy):
+    """Local supervision with the analytical forecast, e.g. learned-camera ablation."""
+
+
+class AgentRiskAwareNeuralPolicy(LocalAgentMixin, RiskAwareNeuralPolicy):
+    """Local supervision over learned forecasts and preventive fit recovery."""

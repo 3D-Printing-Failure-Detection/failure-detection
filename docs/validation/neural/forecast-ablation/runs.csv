@@ -1,0 +1,7 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+bedslinger,spacer,shift,10,contour_risk,False,True,False,35,35,1,0,0,6.843354951008223
+bedslinger,spacer,shift,10,neural_risk,True,False,False,48,48,1,0,0,15.54452138801571
+cartesian,spacer,shift,10,contour_risk,False,True,False,39,39,1,0,0,12.616270925034769
+cartesian,spacer,shift,10,neural_risk,True,False,False,48,48,1,0,0,15.654985139030032
+corexy,spacer,shift,10,contour_risk,True,False,False,48,48,2,0,0,21.331482668989338
+corexy,spacer,shift,10,neural_risk,True,False,False,48,48,2,0,0,15.698663156945258

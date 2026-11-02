@@ -1,0 +1,16 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+bedslinger,spacer,shift,10,ignore,False,False,True,48,0,0,0,0,2.2412299109855667
+bedslinger,spacer,shift,10,contour,False,True,False,35,35,1,0,0,5.247708514099941
+bedslinger,spacer,shift,10,neural,False,True,False,35,35,1,0,0,5.261194213060662
+bedslinger,spacer,shift,10,neural_risk,False,True,False,35,35,1,0,0,6.6996945679420605
+bedslinger,spacer,shift,10,neural_risk_agent,False,True,False,35,35,1,2,2,51.36241764598526
+corexy,spacer,shift,10,ignore,False,False,True,48,0,0,0,0,2.2845395680051297
+corexy,spacer,shift,10,contour,False,True,False,39,39,3,0,0,7.296352907083929
+corexy,spacer,shift,10,neural,False,True,False,35,35,0,0,0,4.3683874409180135
+corexy,spacer,shift,10,neural_risk,False,True,False,36,36,1,0,0,8.016702236956917
+corexy,spacer,shift,10,neural_risk_agent,False,True,False,35,35,1,2,2,52.12259535701014
+cartesian,spacer,shift,10,ignore,False,False,True,48,0,0,0,0,2.396593168959953
+cartesian,spacer,shift,10,contour,False,False,True,48,48,2,0,0,7.804339808993973
+cartesian,spacer,shift,10,neural,False,True,False,35,35,1,0,0,5.611066673998721
+cartesian,spacer,shift,10,neural_risk,False,True,False,36,36,1,0,0,8.027451870962977
+cartesian,spacer,shift,10,neural_risk_agent,False,True,False,35,35,1,2,2,53.19483048096299

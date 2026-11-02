@@ -54,6 +54,15 @@ class NeuralObservationState(ContourObservationState):
 
 
 class NeuralPolicy(ContourPolicy):
-    def __init__(self, *args, checkpoint, calibrate_measurements=False, **kwargs):
+    def __init__(self, *args, checkpoint, calibrate_measurements=False, forecast_scope='all', **kwargs):
         super().__init__(*args, **kwargs)
-        self.state = NeuralObservationState(checkpoint, calibrate_measurements=calibrate_measurements)
+        if forecast_scope not in ('all', 'fits'):
+            raise ValueError('forecast scope must be all or fits')
+        # A declared functional domain, decided before any observations. The
+        # learned dynamics improved fit recovery but regressed thin containers
+        # in development. Keep the analytical model outside the selected domain;
+        # never select a predictor using simulator outcomes or failure labels.
+        use_neural = forecast_scope == 'all' or bool(self.spec.get('holes'))
+        self.forecast_source = 'trained' if use_neural else 'analytical'
+        if use_neural:
+            self.state = NeuralObservationState(checkpoint, calibrate_measurements=calibrate_measurements)

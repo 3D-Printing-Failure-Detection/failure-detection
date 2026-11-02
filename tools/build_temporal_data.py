@@ -30,12 +30,18 @@ def trajectory(job):
     domain, profile = job[5:7] if len(job) > 5 else ('synthetic', 'cartesian')
     include_current = job[7] if len(job) > 7 else False
     capture_dir = Path(job[8]) if len(job) > 8 and job[8] else None
+    boundary_checkpoint = job[9] if len(job) > 9 else None
+    replay_path = Path(job[10]) if len(job) > 10 and job[10] else None
     started = time.time()
     nominal = get_part(name).layers()
     failure = None if kind == 'clean' else random_failure(nominal, np.random.default_rng(seed), kind=kind)
     identity = f'{profile}-{name}-{kind}-{seed}'
     rng = np.random.default_rng(int.from_bytes(hashlib.sha256(identity.encode()).digest()[:8], 'little'))
-    segmenter = ClassicalSegmenter()
+    if boundary_checkpoint:
+        from recovery.models.boundary import BoundarySegmenter
+        segmenter = BoundarySegmenter(boundary_checkpoint)
+    else:
+        segmenter = ClassicalSegmenter()
     actual, measured, targets, measured_layers = {}, {}, {}, {}
 
     def geometry(i):
@@ -61,6 +67,21 @@ def trajectory(job):
         dense = eligible[:min(10, snapshots)]
         rest = rng.choice(eligible[len(dense):], snapshots-len(dense), replace=False)
         eligible = np.sort(np.concatenate([dense, rest]))
+    replay = None
+    if replay_path:
+        import gzip
+        import shapely
+        with gzip.open(replay_path, 'rt') as stream:
+            replay = json.load(stream)
+        if replay['group'] != identity or replay['validation'] != validation:
+            raise ValueError('replayed trajectory identity or split does not match the requested job')
+        if len(replay['frames']) != len(nominal):
+            raise ValueError('replayed layer count differs from the nominal part')
+        for i, frame in enumerate(replay['frames']):
+            if frame['z'] != nominal[i].z or not shapely.from_wkb(frame['command']).equals_exact(nominal[i].region, 1e-8):
+                raise ValueError('replayed commands differ from this source version')
+            actual[i] = Layer(frame['z'], shapely.from_wkb(frame['actual']))
+        eligible = np.asarray(replay['eligible'])
     if domain == 'mujoco':
         from recovery.printer.mujoco import MujocoPrinter
         from recovery.geometry.ops import clean
@@ -68,8 +89,11 @@ def trajectory(job):
         # Training labels may use truth; the saved feature rows still contain
         # only the same camera-derived residuals available at runtime.
         with MujocoPrinter(nominal, failure, seed, profile, False) as printer:
-            for i in range(len(nominal)):
-                actual[i] = printer.print_layer()
+            for i in (sorted(required) if replay else range(len(nominal))):
+                if replay:
+                    printer.printed = [actual[j] for j in range(i+1)]
+                else:
+                    actual[i] = printer.print_layer()
                 image = printer.camera_image()
                 if i in required:
                     region = segmenter.measure(image)
@@ -104,7 +128,8 @@ def trajectory(job):
         with gzip.open(capture_dir / (identity + '.json.gz'), 'wt') as stream:
             json.dump(dict(group=identity, validation=validation, eligible=eligible.tolist(), frames=frames), stream)
     return np.concatenate(xs), np.concatenate(ys), dict(group=identity, validation=validation,
-        frames=len(measured), samples=sum(len(x) for x in xs), seconds=time.time()-started)
+        frames=len(measured), samples=sum(len(x) for x in xs), seconds=time.time()-started,
+        replay_sha256=hashlib.sha256(replay_path.read_bytes()).hexdigest() if replay_path else None)
 
 
 def main():
@@ -120,22 +145,33 @@ def main():
     parser.add_argument('--profiles', nargs='+', default=['cartesian'])
     parser.add_argument('--include-current', action='store_true', help='also train camera-to-current-deposit calibration')
     parser.add_argument('--save-trajectories', action='store_true', help='retain compact geometry for later training ablations')
+    parser.add_argument('--boundary-checkpoint', type=Path,
+                        help='train the temporal model on learned-camera measurements instead of classical contours')
+    parser.add_argument('--replay-trajectories', type=Path,
+                        help='re-render retained deposition trajectories instead of repeating the physical rollout')
     args = parser.parse_args()
     if set(args.train_seeds) & set(args.validation_seeds):
         parser.error('training and validation seeds must be disjoint')
+    if args.replay_trajectories and args.domain != 'mujoco':
+        parser.error('trajectory replay uses the MuJoCo camera domain')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('dataset must be on the data volume')
     args.out.mkdir(parents=True, exist_ok=True)
     if (args.out / 'data.npz').exists():
         parser.error('refusing to overwrite a dataset')
     jobs = [(part, kind, seed, validation, args.snapshots, args.domain, profile, args.include_current,
-             str(args.out / 'trajectories') if args.save_trajectories else None) for validation, seeds in
+             str(args.out / 'trajectories') if args.save_trajectories else None,
+             str(args.boundary_checkpoint.resolve()) if args.boundary_checkpoint else None,
+             str(args.replay_trajectories / f'{profile}-{part}-{kind}-{seed}.json.gz') if args.replay_trajectories else None) for validation, seeds in
             [(False, args.train_seeds), (True, args.validation_seeds)]
             for profile in args.profiles for seed in seeds for part in args.parts for kind in args.kinds]
-    manifest = dict(arguments={**vars(args), 'out': str(args.out)}, status='running',
+    manifest = dict(arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}, status='running',
         source_sha256=source_digest(), script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         domain=args.domain, target='true future contour displacement',
         input='four past camera-derived contour residuals; horizon; boundary role', expected_groups=len(jobs))
+    if args.boundary_checkpoint:
+        manifest['arguments']['boundary_checkpoint'] = str(args.boundary_checkpoint)
+        manifest['boundary_checkpoint_sha256'] = hashlib.sha256(args.boundary_checkpoint.read_bytes()).hexdigest()
     manifest_path = args.out / 'manifest.json'
     manifest_path.write_text(json.dumps(manifest, indent=2))
     rows = []

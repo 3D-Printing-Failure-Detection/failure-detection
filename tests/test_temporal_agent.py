@@ -7,8 +7,9 @@ import pytest
 from shapely.affinity import translate
 from shapely.geometry import Point, box
 
-from recovery.loop.local_agent import AgentNeuralPolicy, LocalSupervisor
-from recovery.loop.neural import NeuralObservationState
+from recovery.loop.local_agent import AgentNeuralPolicy, LocalSupervisor, rank_for_review
+from recovery.loop.neural import NeuralObservationState, NeuralPolicy
+from recovery.loop.contour import ContourPolicy
 from recovery.loop.decide import DecisionContext
 from recovery.models.classical import Detection
 from recovery.models.temporal import TemporalModel, features
@@ -40,6 +41,27 @@ def test_neural_prediction_inverts_a_persistent_translation(persistence_model):
     assert state.neural_queries > 0
 
 
+@pytest.mark.parametrize('part_name,source', [('cup', 'analytical'), ('spacer', 'trained')])
+def test_fit_scope_preserves_the_container_forecast(persistence_model, part_name, source):
+    from recovery.parts import get_part
+    part = get_part(part_name)
+    layers = part.layers()
+    policy = NeuralPolicy(part.spec, layers, part.layer_h, checkpoint=persistence_model, forecast_scope='fits')
+    baseline = ContourPolicy(part.spec, layers, part.layer_h)
+    for layer in layers[:4]:
+        measured = Layer(layer.z, translate(layer.region, .5, -.25))
+        policy.state.observe(layer, measured)
+        baseline.state.observe(layer, measured)
+    actual = policy.state.predict(layers[4:5])[0]
+    expected = baseline.state.predict(layers[4:5])[0]
+    assert policy.forecast_source == source
+    if source == 'analytical':
+        assert actual.region.wkb == expected.region.wkb
+        assert getattr(policy.state, 'neural_queries', 0) == 0
+    else:
+        assert policy.state.neural_queries > 0
+
+
 def test_checkpoint_and_input_validation(persistence_model, tmp_path):
     model = TemporalModel(persistence_model)
     x = features(np.ones((4, 3, 2)), np.zeros((4, 2)), 3, True)
@@ -55,6 +77,27 @@ def test_checkpoint_and_input_validation(persistence_model, tmp_path):
     np.savez(bad, **arrays)
     with pytest.raises(ValueError, match='shape'):
         TemporalModel(bad)
+
+
+def test_equivariant_forecast_rotates_with_observed_motion(persistence_model, tmp_path):
+    with np.load(persistence_model) as data:
+        arrays = dict(data)
+    rng = np.random.default_rng(83)
+    for key in list(arrays):
+        if key[0] in ('w', 'b'):
+            arrays[key] = rng.normal(0, .2, arrays[key].shape).astype('float32')
+    arrays['equivariant'] = np.array(True)
+    path = tmp_path/'equivariant.npz'
+    np.savez(path, **arrays)
+    model = TemporalModel(path)
+    x = features(rng.normal(size=(4, 10, 2)), rng.normal(size=(4, 2)), 10, False)
+    angle = .73
+    rotation = np.array([[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]], dtype='float32')
+    rotated = x.copy()
+    rotated[:, :16] = (x[:, :16].reshape(-1, 8, 2) @ rotation.T).reshape(-1, 16)
+    assert np.allclose(model(rotated), model(x) @ rotation.T, atol=1e-5)
+    x[:, :16] = 0
+    assert np.allclose(model(x), 0)
 
 
 def test_measurement_calibration_requires_training_and_preserves_missing_boundaries(persistence_model, tmp_path):
@@ -117,6 +160,29 @@ def test_actual_agent_choice_controls_feasible_recovery(monkeypatch, persistence
 def test_local_endpoint_cannot_send_state_to_external_service():
     with pytest.raises(ValueError, match='localhost'):
         LocalSupervisor('https://example.com')
+
+
+def test_agent_cannot_override_a_materially_better_verified_fit_option(monkeypatch):
+    candidates = [dict(id=0, name='fragile', ok=True, executable=True, margin=.38, robust_margin=-1.,
+                      fit_clearance_mm=.29, fit_robust_clearance_mm=-.17),
+                  dict(id=1, name='clearance reserve', ok=True, executable=True, margin=.38, robust_margin=-1.,
+                      fit_clearance_mm=.29, fit_robust_clearance_mm=-.05)]
+    ranked = rank_for_review(candidates, .25)
+    assert not ranked[0]['review_eligible'] and ranked[1]['review_eligible']
+    assert ranked[1]['functional_rank'] == 1
+    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=0, reason='prefer fidelity'))),
+                                  finish_reason='stop')])
+    monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw: io.BytesIO(json.dumps(response).encode()))
+    with pytest.raises(RuntimeError, match='unverified action'):
+        LocalSupervisor().choose({}, ranked)
+
+
+def test_review_preserves_real_fit_tradeoffs():
+    candidates = [dict(id=0, ok=True, executable=True, margin=.5, robust_margin=-1.,
+                      fit_clearance_mm=.5, fit_robust_clearance_mm=-.17),
+                  dict(id=1, ok=True, executable=True, margin=.3, robust_margin=-1.,
+                      fit_clearance_mm=.29, fit_robust_clearance_mm=-.05)]
+    assert all(c['review_eligible'] for c in rank_for_review(candidates, .25))
 
 
 def test_reused_review_requires_fresh_passing_checks(monkeypatch, persistence_model):

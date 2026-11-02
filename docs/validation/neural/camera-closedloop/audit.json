@@ -1,0 +1,95 @@
+{
+  "status": "passed",
+  "source_sha256": "e9e976017f0fbcc2bb7b13acf643a01395c6165f8447e2b6bfa339c2f93badfe",
+  "checkpoints": {
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "b067ef06f1bc9aafeb7c4c0fec437d4c161ff21ccae7032159e1322e5a389e97",
+  "rows": 80,
+  "actual_agent_calls": 42,
+  "reused_reviews": 191,
+  "summary": [
+    {
+      "method": "ignore",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 29.58210591902025
+    },
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 16,
+      "in_place": 11,
+      "scrapped": 0,
+      "defective_finished": 5,
+      "agent_requests": 0,
+      "seconds": 116.59733885375317
+    },
+    {
+      "method": "contour",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 54.81259647477418
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 16,
+      "in_place": 14,
+      "scrapped": 1,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "seconds": 332.5065192551119
+    },
+    {
+      "method": "neural_camera",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 83.28401181101799
+    },
+    {
+      "method": "neural_camera",
+      "split": "failure",
+      "n": 16,
+      "in_place": 14,
+      "scrapped": 2,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 440.4402964109322
+    },
+    {
+      "method": "neural_camera_agent",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 83.40419546200428
+    },
+    {
+      "method": "neural_camera_agent",
+      "split": "failure",
+      "n": 16,
+      "in_place": 14,
+      "scrapped": 2,
+      "defective_finished": 0,
+      "agent_requests": 42,
+      "seconds": 673.5145711330697
+    }
+  ],
+  "limitation": "development comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "95fc29bde550438b5007d317c8a8ab307aca8092af680856c4edae4fe5e518a6"
+}
