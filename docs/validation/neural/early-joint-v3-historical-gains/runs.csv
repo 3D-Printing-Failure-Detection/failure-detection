@@ -1,0 +1,10 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+corexy,spacer,shift,10,contour,False,True,False,39,39,3,0,0,11.15043391508516
+corexy,spacer,shift,10,neural_risk,True,False,False,48,48,2,0,0,47.06152187695261
+corexy,spacer,shift,10,neural_risk_agent,True,False,False,48,48,2,4,4,82.68874354695436
+cartesian,spacer,shift,10,contour,False,False,True,48,48,2,0,0,10.868781921104528
+cartesian,spacer,shift,10,neural_risk,True,False,False,48,48,2,0,0,47.3325273640221
+cartesian,spacer,shift,10,neural_risk_agent,True,False,False,48,48,2,5,5,89.29234297492076
+bedslinger,spacer,shift,10,contour,False,True,False,35,35,1,0,0,7.654315926018171
+bedslinger,spacer,shift,10,neural_risk,True,False,False,48,48,2,0,0,47.35583115706686
+bedslinger,spacer,shift,10,neural_risk_agent,True,False,False,48,48,2,5,5,84.7131553189829

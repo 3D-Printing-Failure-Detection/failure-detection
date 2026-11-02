@@ -11,7 +11,20 @@ import torch
 from torch import nn
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from recovery.models.boundary import PATCH_SIZE, BoundarySegmenter
+from recovery.models.boundary import PATCH_SIZE, BoundarySegmenter, subpixel_offsets
+
+
+class QueryBoundaryNetwork(nn.Module):
+    """One distance decoder shared across subpixel query coordinates."""
+    def __init__(self, h1, h2, scale):
+        super().__init__()
+        self.first, self.second, self.last = nn.Linear(PATCH_SIZE**2, h1), nn.Linear(h1, h2), nn.Linear(h2, 1)
+        self.query = nn.Linear(2, h2, bias=False)
+        self.register_buffer('offsets', torch.from_numpy(subpixel_offsets(scale)))
+
+    def forward(self, patches):
+        hidden = self.second(torch.relu(self.first(patches)))
+        return self.last(torch.relu(hidden[:, None, :] + self.query(self.offsets))).squeeze(-1)
 
 
 def main():
@@ -28,6 +41,8 @@ def main():
                         help='random rotations/reflections of training patches; signed distance is invariant')
     parser.add_argument('--distance-quantile', type=float,
                         help='learn a conditional distance quantile with pinball loss instead of a central estimate')
+    parser.add_argument('--query-conditioned', action='store_true',
+                        help='share one distance decoder across native subpixel XY queries')
     args = parser.parse_args()
     if min(args.hidden) < 1:
         parser.error('hidden widths must be positive')
@@ -54,6 +69,8 @@ def main():
         sources.append(dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest(), rows=len(xx)))
     if output_upsample > 1 and args.augment_dihedral:
         parser.error('D4 augmentation requires rotating the subpixel targets and is not implemented')
+    if args.query_conditioned and output_upsample == 1:
+        parser.error('--query-conditioned requires native subpixel targets')
     y = y.reshape(len(x), -1)
     if y.shape[1] != output_upsample**2:
         raise ValueError('boundary targets do not match the declared output grid')
@@ -66,8 +83,9 @@ def main():
     xval, yval = torch.from_numpy(x[split].astype('float32')), torch.from_numpy(y[split])
     edge = torch.abs(yval) < .5
     h1, h2 = args.hidden
-    model = nn.Sequential(nn.Linear(PATCH_SIZE**2, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
-                          nn.Linear(h2, output_upsample**2))
+    model = (QueryBoundaryNetwork(h1, h2, output_upsample) if args.query_conditioned else
+             nn.Sequential(nn.Linear(PATCH_SIZE**2, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
+                           nn.Linear(h2, output_upsample**2)))
     grid = np.arange(PATCH_SIZE**2).reshape(PATCH_SIZE, PATCH_SIZE)
     transforms = torch.from_numpy(np.stack([np.rot90(np.fliplr(grid) if flip else grid, rotation).ravel().copy()
                                            for flip in (False, True) for rotation in range(4)]))
@@ -119,17 +137,15 @@ def main():
             arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(output_upsample))
             if args.distance_quantile is not None:
                 arrays['distance_quantile'] = np.array(args.distance_quantile)
-            for i, layer in enumerate((model[0], model[2], model[4])):
+            layers = (model.first, model.second, model.last) if args.query_conditioned else (model[0], model[2], model[4])
+            if args.query_conditioned:
+                arrays['query_weights'] = model.query.weight.detach().numpy()
+            for i, layer in enumerate(layers):
                 arrays[f'w{i}'], arrays[f'b{i}'] = layer.weight.detach().numpy(), layer.bias.detach().numpy()
             np.savez_compressed(checkpoint, **arrays)
         print(json.dumps(row), flush=True)
     exported = BoundarySegmenter(checkpoint)
-    predicted = x[split].astype('float32')
-    for i, (w, b) in enumerate(exported.weights):
-        predicted = predicted @ w.T + b
-        if i < 2:
-            predicted = np.maximum(predicted, 0)
-    predicted = np.tanh(predicted)
+    predicted = exported.predict_patches(x[split].astype('float32'))
     boundary = np.abs(y[split]) < .5
     error = float(np.abs(predicted[boundary] - y[split][boundary]).mean())
     score = error
@@ -140,6 +156,7 @@ def main():
     assert abs(score-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
     manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> {output_upsample**2} tanh distances',
         output_upsample=output_upsample,
+        subpixel_decoder='shared XY-conditioned distance' if args.query_conditioned else 'independent distance heads',
         distance_quantile=args.distance_quantile,
         validation_selection_score=score,
         selection_metric='boundary MAE' if args.distance_quantile is None else 'weighted pinball loss',
@@ -154,6 +171,8 @@ def main():
         history=history, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         augmentation='random D4 training patches' if args.augment_dihedral else 'none',
         limitation='patch validation is not full-frame or closed-loop recovery validation')
+    if args.query_conditioned:
+        manifest['architecture'] = f'9x9 grayscale patch -> {h1} ReLU -> {h2} plus XY query ReLU -> shared tanh distance'
     (args.out / 'training.json').write_text(json.dumps(manifest, indent=2))
     print('Exported', checkpoint, 'boundary MAE mm', error, flush=True)
 

@@ -92,7 +92,12 @@ def mask_to_region(mask: np.ndarray, cam=CAM, min_area=4.0, simplify=0.12):
             j = hier[j][0]
         pg = Polygon(shell, holes)
         if pg.area >= min_area:
-            out.append(pg)
+            # Pixel contours can touch themselves or their holes diagonally.
+            # Repair each contour before union: repairing only afterwards is
+            # too late if GEOS cannot assign an invalid ring to its shell.
+            # Preserve all polygonal pieces here; the existing area filter and
+            # half-pixel outline correction keep their original meanings.
+            out.extend(polys(clean(pg, min_area=0.)))
     if not out:
         return Polygon()
     from shapely.ops import unary_union

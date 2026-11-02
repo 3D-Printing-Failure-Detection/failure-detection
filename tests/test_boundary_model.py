@@ -95,3 +95,42 @@ def test_quantile_estimate_is_identified_and_invalid_metadata_rejected(tmp_path)
     assert model.distance_quantile == .8
     with pytest.raises(ValueError, match='distance quantile'):
         BoundarySegmenter(checkpoint(tmp_path/'invalid.npz', weights, distance_quantile=np.array(float('nan'))))
+
+
+def test_shared_query_full_frame_matches_direct_coordinate_evaluation(tmp_path):
+    rng = np.random.default_rng(27)
+    weights = [(rng.normal(0, .1, (outputs, inputs)).astype('float32'),
+                rng.normal(0, .1, outputs).astype('float32'))
+               for inputs, outputs in ((81, 8), (8, 4), (4, 1))]
+    queries = rng.normal(0, .1, (4, 2)).astype('float32')
+    model = BoundarySegmenter(checkpoint(tmp_path/'query.npz', weights,
+        output_upsample=np.array(4), query_weights=queries))
+    image = rng.integers(0, 255, (12, 16, 3), dtype='uint8')
+    gray = normalized_gray(image)
+    patches = np.lib.stride_tricks.sliding_window_view(np.pad(gray, 4, mode='reflect'), (9, 9)).reshape(-1, 81)
+    hidden = np.maximum(patches @ weights[0][0].T + weights[0][1], 0)
+    hidden = hidden @ weights[1][0].T + weights[1][1]
+    outputs = []
+    for dx, dy in subpixel_offsets(4):
+        local = np.maximum(hidden + dx*queries[:, 0] + dy*queries[:, 1], 0)
+        outputs.append(np.tanh(local @ weights[2][0].T + weights[2][1])[:, 0])
+    expected = np.stack(outputs, axis=-1)
+    assert np.allclose(model.predict_patches(patches), expected, atol=1e-6)
+    field = expected.reshape(12, 16, 4, 4).transpose(0, 2, 1, 3).reshape(48, 64)
+    assert np.allclose(model.signed_distance(image), field, atol=1e-6)
+
+
+def test_shared_query_decoder_can_represent_a_subpixel_wall(tmp_path):
+    # d(x) = .04 - abs(.25*x - .125), using one shared two-ReLU
+    # decoder, is positive between two negative camera-pixel centres.
+    weights = [(np.zeros((1, 81), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.zeros((2, 1), dtype='float32'), np.array([0., -.5], dtype='float32')),
+               (np.array([[.25, -.5]], dtype='float32'), np.array([-.085], dtype='float32'))]
+    path = checkpoint(tmp_path/'wall.npz', weights, output_upsample=np.array(4),
+                      query_weights=np.array([[1., 0.], [1., 0.]], dtype='float32'))
+    field = BoundarySegmenter(path).signed_distance(np.zeros((8, 8), dtype='uint8'))
+    assert np.all(field[:, ::4] < 0) and np.all(field[:, 2::4] > 0)
+    assert np.all(field[:, 1::4] < 0) and np.all(field[:, 3::4] < 0)
+    with pytest.raises(ValueError, match='query weights'):
+        BoundarySegmenter(checkpoint(tmp_path/'bad-query.npz', weights, output_upsample=np.array(4),
+                                    query_weights=np.zeros((2, 3), dtype='float32')))

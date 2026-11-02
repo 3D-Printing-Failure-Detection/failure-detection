@@ -190,7 +190,15 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
             if candidate['both_forecasts_pass']:
                 for metric in ('margin', 'robust_margin', 'fit_clearance_mm', 'fit_robust_clearance_mm'):
                     candidate[metric] = min(candidate[metric], assessment[metric])
-                joint.append(candidate)
+                if early_warning:
+                    # Disagreement alone must not replace a passing neural
+                    # continuation with a less robust fit. Compare the joint
+                    # candidate bound with the original continuation bound.
+                    candidate['early_fit_robustness_preserved'] = (
+                        candidate['name'] == 'continue' or
+                        candidate['fit_robust_clearance_mm'] >= original_primary[0]['fit_robust_clearance_mm'])
+                if candidate.get('early_fit_robustness_preserved', True):
+                    joint.append(candidate)
         if not joint:
             return original_primary
         if early_warning and candidates[0]['both_forecasts_pass']:
@@ -199,10 +207,13 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
                 return original_primary
             candidates[0]['clearance_improvement_mm'] = improvement
         for candidate in candidates:
-            if candidate['verdict'].ok and not candidate['both_forecasts_pass']:
+            if candidate['verdict'].ok and (not candidate['both_forecasts_pass'] or
+                    not candidate.get('early_fit_robustness_preserved', True)):
+                reason = ('early recovery weakens the passing neural fit robustness' if
+                    not candidate.get('early_fit_robustness_preserved', True) else
+                    'analytical forecast rejects this plan while a jointly passing alternative exists')
                 candidate['verdict'] = Verdict(False,
-                    ['analytical forecast rejects this plan while a jointly passing alternative exists'],
-                    candidate['verdict'].metrics)
+                    [reason], candidate['verdict'].metrics)
         return candidates
 
 

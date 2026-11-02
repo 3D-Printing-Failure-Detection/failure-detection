@@ -9,8 +9,9 @@ The original combined candidate reached 67/100 versus contour's 62/100 but faile
 its first fresh test. The newer paired-forecast fit policy reaches 33/50 versus
 30/50 historical fit failures and 12/20 versus 10/20 validation failures, with
 zero versus one defective finish in each set. It still loses a bracket case
-that contour saves. An earlier continuation check is now under actual Qwen
-evaluation; the newer camera checkpoints remain unsuccessful experiments.
+that contour saves. The first earlier-continuation check restored that bracket
+but harmed a spacer. A revised guard compares fit robustness before intervening;
+it is under actual Qwen evaluation. New camera models remain experimental.
 
 The user requested a free model without an API key instead of Gemini. The first
 supervisor is Qwen3-0.6B Q8_0, served on localhost by llama.cpp on CPU. This is a
@@ -277,11 +278,24 @@ freezes this revision and starts 39 diagnostic runs with actual Qwen on localhos
 does it proceed to the full 50-case historical fit comparison and 20-case fit
 validation, each with clean controls. The first bracket stage is complete: both
 failure cases and both clean controls pass for contour, neural and actual Qwen
-(four model requests). This restores seed 71 in that diagnostic; the remaining
-regression runs are still required. The `early-joint-fit-v3` tmux window keeps
-the frozen source, logs and exit code. These are development runs; reserved seeds
-2001--2004 remain untouched. The complete source suite passes 101 tests, with one
-optional module skipped.
+(four model requests). The complete diagnostic then fails its gate: spacer shift
+at seed 1002 finishes defective with and without Qwen. The analytical warning
+triggers a second correction at layer 28, although its worst fit bound is weaker
+than the already passing neural continuation. All three historical spacer-shift
+gains remain, but this new defective finish rejects the variant. The broad rerun
+is skipped as predeclared; the failed gate and all 39 audited rows are retained.
+
+The [robustness revision](validation/neural/robust-joint-fit-dev-v4-protocol.json)
+permits an early, disagreement-triggered replacement only if its fit bound under
+both forecasts is at least as good as the original passing neural continuation's
+bound. A jointly passing plan alone is insufficient. If no such plan exists,
+the original neural choice remains. The bracket and spacer stages now complete:
+both neural variants pass all six failure diagnostics and all four clean controls,
+with no defective finishes, versus contour's five of six failures. Qwen makes
+20 actual requests. This restores the one-adaptation spacer success while keeping
+the bracket rescue. The historical-gain gate and broader results remain pending
+in `robust-joint-fit-v4`. Reserved seeds 2001--2004 remain untouched.
+The complete source suite passes 106 tests, with one optional module skipped.
 
 ### Camera uncertainty and additional deformation coverage did not resolve the diagnostic
 
@@ -305,9 +319,37 @@ expanded dataset. Neither passes the fixed cup diagnostic: the central model
 still reports two false wall gaps and three false base-hole layers; the upper
 model reports one gap, five base-hole layers and two thin-wall layers. The
 predeclared conditional recovery trials were therefore skipped, with explicit
-records. No checkpoint is promoted. A separate retained-geometry validation is
-running across 36 container trajectories and three camera views; its geometric
-confusion counts are not complete-print recovery rates.
+records. No checkpoint is promoted. The initial retained-geometry validation
+fails after recording 960 frames from 18 groups: an invalid pixel contour causes
+GEOS to reject the polygon union. The failure manifest remains in the evidence.
+Individual contours are now made valid before union, preserving polygonal pieces
+and the original area and outline corrections. A deterministic crashing-mask
+regression and a visible-hole/island preservation test pass. The full 36-group,
+2,040-frame validation restarts from a new frozen snapshot in `camera-geometry-v7`;
+the original failed run is not overwritten.
+
+This conversion repair also changes some tiny base-hole classifications. An
+[identical-mask comparison](validation/neural/camera-contour-repair-paired-mask.json)
+reproduces a 0.000335 mm2 hole under the old conversion and none under the repair.
+Its raw background touches the exterior diagonally (8-connectivity), but not
+through pixel edges (4-connectivity). This is a pixel-topology ambiguity at the
+boundary, not proof that geometry conversion has no effect on measurements.
+Raw masks, hashes and crops are retained; all models undergo the same revised
+validation. The original functional checks are unchanged.
+
+A [shared-query camera experiment](validation/neural/query-camera-v7-protocol.json)
+reuses the same 106/56 trajectory split. Its 81-to-64-to-32 network adds the
+subpixel XY coordinate before a shared scalar distance decoder, replacing 16
+independent heads. This represents a continuous function within each pixel;
+continuity across different pixel patches is not guaranteed. Training completes
+80 epochs and exports matching NumPy weights, with 0.07351 mm validation error
+versus the independent-head model's 0.07203 mm on the same dataset. The completed
+160-layer cup diagnostic still reports two false wall gaps and a 27 mm2 false
+overhang; the conditional recovery trial is skipped. Under the repaired contour
+conversion neither this model nor the earlier central model reports a base hole
+in this diagnostic, so that improvement cannot be attributed to the new network.
+The shared model remains unaccepted; its 36-group geometric validation continues.
+It uses no new test seeds or datasets.
 
 The camera-fallback diagnostic also finishes at 16/24 for both neural variants,
 matching contour's 16/24 but with one versus zero defective finishes. This is

@@ -68,7 +68,10 @@ def inspect_group(job):
                 truth = layer_features(actual[index], nominal[index], part.spec)
                 measured = {}
                 for name, model in models.items():
-                    region = clean(model.measure(image, expected).simplify(.25/4))
+                    try:
+                        region = clean(model.measure(image, expected).simplify(.25/4))
+                    except Exception as exc:
+                        raise RuntimeError(f"{record['group']}/{profile}/layer-{index}/{name}: camera measurement failed") from exc
                     measured[name] = layer_features(Layer(nominal[index].z, region), nominal[index], part.spec)
                 rows.append(dict(group=record['group'], profile=profile, layer=index,
                                  truth=truth, measured=measured))

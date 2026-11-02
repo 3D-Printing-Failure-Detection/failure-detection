@@ -840,12 +840,15 @@ continuation, a replacement also needs more than half a camera pixel of addition
 central fit slack. With no jointly passing alternative, the original neural
 choice remains. This is a forecast comparison, not access to simulator truth.
 
-The new \texttt{early-joint-fit-v3} tmux run starts with 39 actual-print diagnostic
-runs, including Qwen. A declared success gate controls whether the full fit
-historical and validation rerun proceeds. The first bracket stage restores the
-lost case: both failure cases and both clean controls pass with and without Qwen,
-which makes four actual requests. The remaining results are pending. Source tests
-pass 101 cases, with one optional module skipped. Seeds 2001--2004 remain untouched.
+The 39-run \texttt{early-joint-fit-v3} diagnostic restores the bracket but fails
+its gate: an unnecessary second correction makes a previously passing spacer
+finish defective, with and without Qwen. Its broader rerun is skipped. The next
+guard also requires an early replacement's fit bound under both forecasts to be
+at least as good as the original neural continuation's bound. That revision
+passes all six bracket/spacer failure diagnostics and all four clean controls
+with and without Qwen, with no defective finishes and 20 actual model requests.
+The historical-gain gate and broader runs remain pending. Source tests
+pass 106 cases, with one optional module skipped. Seeds 2001--2004 remain untouched.
 
 \subsection*{Local supervision now uses shorter requests}
 Every eligible plan still goes to Qwen. Failed or dominated plans stay in the
@@ -868,7 +871,7 @@ missing range of thinning severity. Seeds are selected from the generator's
 severity range before inspecting their outcomes. Training includes every base
 frame and more samples near the deformation. The neural input remains a grayscale
 camera patch. The combined split has 106 training and 56 validation trajectories,
-with no shared groups.
+with no shared groups. The following diagnostic used the earlier contour conversion.
 
 \begin{center}
 \begin{tabularx}{\linewidth}{@{}Yrr@{}}
@@ -885,10 +888,23 @@ Passes diagnostic specification & No & No\\
 \end{center}
 The actual deposit passes the original specification. Both measured stacks fail;
 neither new model is promoted. As declared in advance, their conditional recovery
-runs are skipped, with explicit retained reasons. A broader measurement validation
-is running on 36 container trajectories under all three camera views. It compares
-false and missed geometric defects on identical images. These are camera-frame
-statistics, not complete-print success rates.
+runs are skipped, with explicit retained reasons. The first broad measurement
+validation fails after 960 frames because an invalid pixel contour crashes the
+polygon union. Contours are now repaired individually before union, with tests
+for the crash and preservation of visible holes. This also changes some tiny
+base-hole reports: a retained identical-mask example concerns background touching
+the exterior diagonally. The full 36-trajectory, 2,040-frame validation is rerunning
+under the same repaired conversion for all models. These are geometric camera
+statistics, not complete-print success rates; the functional checks are unchanged.
+
+A new camera network shares one distance decoder across subpixel XY coordinates
+instead of using sixteen independent output heads. It completes 80 training epochs
+on the same separated data and exports verified NumPy weights. Its 0.07351 mm
+validation error is slightly worse than the central model's 0.07203 mm. The
+completed cup diagnostic still reports two false wall gaps and a false support
+violation; its conditional recovery trial is skipped. Both models lose their
+base-hole reports under the repaired conversion, so that change is not evidence
+for the shared decoder. Geometric validation continues; the model is not promoted.
 
 The camera-fallback diagnostic also completes at 16/24 for both neural variants,
 matching contour, but with one defective finish versus zero. It remains a rejected

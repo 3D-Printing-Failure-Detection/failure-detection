@@ -109,15 +109,16 @@ def test_joint_forecasts_require_a_passing_alternative_before_excluding_a_plan(m
         assert result is primary
 
 
-@pytest.mark.parametrize('analytical_ok,clearance,recovery_ok,recovery_clearance,expected', [
-    (False, -.1, True, .4, 'recover'),  # intervene while the prefix is still repairable
-    (True, .4, True, .6, 'continue'),  # both forecasts already cover observed uncertainty
-    (False, -.1, False, -.2, 'continue'),  # no jointly passing alternative: preserve neural choice
-    (True, .1, True, .2, 'continue'),  # improvement is below half a camera pixel
-    (True, .1, True, .4, 'recover'),  # low analytical clearance has a measurable remedy
+@pytest.mark.parametrize('analytical_ok,clearance,recovery_ok,recovery_clearance,continuation_robust,expected', [
+    (False, -.1, True, .4, -.1, 'recover'),  # intervene while the prefix is still repairable
+    (True, .4, True, .6, -.1, 'continue'),  # both forecasts already cover observed uncertainty
+    (False, -.1, False, -.2, -.1, 'continue'),  # no jointly passing alternative: preserve neural choice
+    (True, .1, True, .2, -.1, 'continue'),  # improvement is below half a camera pixel
+    (True, .1, True, .4, -.1, 'recover'),  # low analytical clearance has a measurable remedy
+    (False, -.1, True, .4, .5, 'continue'),  # disagreement cannot justify a weaker fit bound
 ])
 def test_joint_forecast_checks_a_confident_neural_continuation(monkeypatch,
-        analytical_ok, clearance, recovery_ok, recovery_clearance, expected):
+        analytical_ok, clearance, recovery_ok, recovery_clearance, continuation_robust, expected):
     layer = Layer(.25, Point(0, 0).buffer(15).difference(Point(0, 0).buffer(5)))
     policy = object.__new__(RiskAwareNeuralPolicy)
     policy.joint_forecast, policy.analytical_candidate_checks = True, 0
@@ -136,6 +137,7 @@ def test_joint_forecast_checks_a_confident_neural_continuation(monkeypatch,
             fit_robust_clearance_mm=slack, command_change_fraction=.01)
 
     primary = [candidate(Plan('continue', [layer]*3, 1.))]
+    primary[0]['fit_robust_clearance_mm'] = continuation_robust
     monkeypatch.setattr(PreventiveFitMixin, 'candidates', lambda *args, **kwargs: primary)
     monkeypatch.setattr(policy, '_targets', lambda known: [(Plan('target', [layer]*3, 1.), {})])
     monkeypatch.setattr(policy, '_evaluate', lambda known, plan, *args: candidate(plan))

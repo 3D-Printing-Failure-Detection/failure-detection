@@ -22,6 +22,27 @@ def test_nested_island_is_not_erased_by_surrounding_ring():
     assert image[center, center + 9 * 4] == 0
 
 
+def test_touching_pixel_contours_are_repaired_before_union():
+    # This deterministic mask previously raised "unable to assign free hole
+    # to a shell" in unary_union, before the final geometry cleanup could run.
+    mask = (np.random.default_rng(5).random((32, 32)) > .4).astype('uint8')
+    cfg = camera.C.CameraCfg(px_per_mm=1., fov_mm=32.)
+    region = camera.mask_to_region(mask, cfg, min_area=0., simplify=0.)
+    assert region.is_valid and not region.is_empty
+    assert 0 < region.area < cfg.fov_mm ** 2
+
+
+def test_contour_repair_preserves_visible_voids_and_islands():
+    ring = Point(0, 0).buffer(15).difference(Point(0, 0).buffer(10))
+    island = Point(0, 0).buffer(5)
+    mask = (camera.rasterise(ring.union(island)) > 127).astype('uint8')
+    region = camera.mask_to_region(mask)
+    assert region.is_valid
+    assert region.contains(Point(0, 0))
+    assert not region.contains(Point(8, 0))
+    assert region.contains(Point(12, 0))
+
+
 def test_csg_nested_and_outer_height_ranges_agree(tmp_path):
     texts = ["  - cut: {circle: {r: 4}, z: [1, 4]}",
              "  - cut: {circle: {r: 4}}\n    z: [1, 4]"]

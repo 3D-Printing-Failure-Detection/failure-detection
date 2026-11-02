@@ -38,6 +38,7 @@ class BoundarySegmenter:
                 raise ValueError('unsupported boundary patch size')
             self.output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
             self.distance_quantile = float(data['distance_quantile']) if 'distance_quantile' in data else None
+            self.query_weights = data['query_weights'] if 'query_weights' in data else None
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
         if self.distance_quantile is not None and not 0 < self.distance_quantile < 1:
             raise ValueError('invalid boundary distance quantile')
@@ -49,12 +50,36 @@ class BoundarySegmenter:
             if not np.isfinite(w).all() or not np.isfinite(b).all():
                 raise ValueError('non-finite boundary weights')
             width = len(w)
-        if (width != self.output_upsample**2 or upsample < self.output_upsample
+        if self.query_weights is not None:
+            if (self.query_weights.shape != (len(self.weights[1][1]), 2)
+                    or not np.isfinite(self.query_weights).all() or self.output_upsample == 1):
+                raise ValueError('invalid subpixel query weights')
+        outputs = 1 if self.query_weights is not None else self.output_upsample**2
+        if (width != outputs or upsample < self.output_upsample
                 or upsample % self.output_upsample):
             raise ValueError('invalid boundary output or upsample factor')
         self.upsample = upsample
         self._sampling_grid = None
         self.queries = 0
+
+    def _distance_outputs(self, hidden):
+        weights, bias = self.weights[1]
+        hidden = hidden @ weights.T + bias
+        weights, bias = self.weights[2]
+        if self.query_weights is not None:
+            # All subpixel locations share one distance decoder. Conditioning
+            # the hidden activations on XY represents a continuous function
+            # inside each pixel instead of sixteen unrelated output heads.
+            values = [np.tanh(np.maximum(hidden + self.query_weights @ offset, 0)
+                              @ weights.T + bias)[..., 0]
+                      for offset in subpixel_offsets(self.output_upsample)]
+            return np.stack(values, axis=-1)
+        return np.tanh(np.maximum(hidden, 0) @ weights.T + bias)
+
+    def predict_patches(self, patches):
+        """Export verification on normalized patches, without camera state."""
+        weights, bias = self.weights[0]
+        return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0))
 
     def signed_distance(self, image):
         gray = normalized_gray(image)
@@ -63,16 +88,13 @@ class BoundarySegmenter:
                                        borderType=cv2.BORDER_REFLECT_101) + offset
                            for kernel, offset in zip(weights, bias)], axis=-1)
         hidden = np.maximum(hidden, 0)
-        for i, (weights, bias) in enumerate(self.weights[1:]):
-            hidden = hidden @ weights.T + bias
-            if i == 0:
-                hidden = np.maximum(hidden, 0)
+        distance = self._distance_outputs(hidden)
         scale = self.output_upsample
         height, width = gray.shape
-        # Each output head predicts its own position within a camera pixel.
+        # Each output distance represents its own position within a camera pixel.
         # Interpolating a single value per pixel cannot represent a narrow
         # positive region when every surrounding pixel centre lies outside it.
-        return np.tanh(hidden).reshape(height, width, scale, scale).transpose(
+        return distance.reshape(height, width, scale, scale).transpose(
             0, 2, 1, 3).reshape(height*scale, width*scale)
 
     def measure(self, image, expected_mask=None):
