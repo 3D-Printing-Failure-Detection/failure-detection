@@ -12,6 +12,10 @@ Target hardware: **Bambu Lab P1S + Bambu Studio**. Based on the [Project 2 plan]
 > corrected errors, reproduction commands, and simulation limits. Real-printer
 > recovery and trained-model accuracy remain unvalidated.
 
+The repository-root [project report (PDF)](report.pdf) explains the system,
+current implementation, experimental results, limitations, and next steps.
+Its source is `docs/report.tex`; rebuild it with `python3 tools/build_report.py`.
+
 ## MuJoCo across printer configurations
 
 The optional backend executes extrusion waypoints on Cartesian, ideal CoreXY,
