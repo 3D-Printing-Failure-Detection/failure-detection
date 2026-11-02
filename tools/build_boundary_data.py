@@ -26,7 +26,8 @@ from recovery.types import Layer
 
 
 def build_case(job):
-    path, n_frames, n_pixels = job
+    path, n_frames, n_pixels = job[:3]
+    all_profiles, dense_start = job[3:] if len(job) > 3 else (False, False)
     with gzip.open(path, 'rt') as stream:
         record = json.load(stream)
     _, name, _, seed = record['group'].split('-')
@@ -34,13 +35,21 @@ def build_case(job):
     actual = [Layer(f['z'], shapely.from_wkb(f['actual'])) for f in record['frames']]
     nominal = get_part(name).layers()
     eligible = record['eligible']
-    indices = np.array(eligible)[np.linspace(0, len(eligible)-1, min(n_frames, len(eligible))).astype(int)]
+    count = min(n_frames, len(eligible))
+    if dense_start:
+        dense_count = min(10, count)
+        positions = list(range(dense_count))
+        if count > dense_count:
+            positions += np.linspace(dense_count, len(eligible)-1, count-dense_count).astype(int).tolist()
+        indices = np.asarray(eligible)[positions]
+    else:
+        indices = np.array(eligible)[np.linspace(0, len(eligible)-1, count).astype(int)]
     xs, ys = [], []
     # Camera-profile augmentation reuses the deposited geometry. It does not
     # pretend the same toolpath was physically re-executed by every printer.
     profiles = ['cartesian', 'corexy', 'bedslinger']
     for offset, profile in enumerate(profiles):
-        selected = indices[offset::len(profiles)]
+        selected = indices if all_profiles else indices[offset::len(profiles)]
         if not len(selected):
             continue
         with MujocoPrinter(nominal, None, int(seed), profile, False) as printer:
@@ -66,7 +75,8 @@ def build_case(job):
                 xs.append(patches.reshape(-1, PATCH_SIZE ** 2).astype('float16'))
                 ys.append(target)
     return np.concatenate(xs), np.concatenate(ys), dict(group=record['group'],
-        validation=record['validation'], frames=len(indices), sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
+        validation=record['validation'], frames=len(indices)*(len(profiles) if all_profiles else 1),
+        sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
 
 
 def main():
@@ -76,6 +86,8 @@ def main():
     parser.add_argument('--frames', type=int, default=12)
     parser.add_argument('--pixels', type=int, default=320)
     parser.add_argument('--workers', type=int, default=2)
+    parser.add_argument('--all-profiles', action='store_true', help='render every selected frame with all three cameras')
+    parser.add_argument('--dense-start', action='store_true', help='retain the first ten eligible frames before subsampling')
     args = parser.parse_args()
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('training data must stay on the data volume')
@@ -97,7 +109,7 @@ def main():
     (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     rows = []
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context('spawn')) as executor:
-        futures = [executor.submit(build_case, (p, args.frames, args.pixels)) for p in paths]
+        futures = [executor.submit(build_case, (p, args.frames, args.pixels, args.all_profiles, args.dense_start)) for p in paths]
         for future in as_completed(futures):
             row = future.result()
             rows.append(row)

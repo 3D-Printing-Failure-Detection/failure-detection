@@ -734,7 +734,10 @@ Replays verify the interface change; they are not completed-print evidence.
 \subsection*{What did not improve, and the next test}
 A larger camera network trained with rotations and reflections worsened boundary
 validation error from 0.0792 to 0.0887 mm, so it is retained as a failed attempt.
-The fallback uses the earlier checkpoint. New seeds 2001--2004 are reserved for
+The fallback uses the earlier checkpoint. An equivariant calibration model also
+lowered displacement error but still scrapped a recoverable thinning diagnostic.
+Denser training captures now target brief thinning across all three camera views;
+those training results are pending. New seeds 2001--2004 are reserved for
 a revised frozen comparison; seeds 1001--1004 are now diagnostic data. Acceptance
 still requires actual learning and Qwen calls, better completion than every
 earlier baseline, preserved passing cases, and no worse defective-finish count.

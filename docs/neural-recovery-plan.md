@@ -150,6 +150,27 @@ Alternative plans must pass the original complete specification and action
 constraints. The trained fit forecast remains paired with classical measurements.
 This revision still needs closed-loop validation and a new frozen comparison.
 
+The fallback run in `neural-camera-fallback-dev-v1` includes 128 diagnostic runs
+on consumed seeds 1001–1002, followed by 144 validation runs on seeds 70–71. Its
+first neural-only result restores the lost cup-collapse case; the full study is
+still running. That does not establish an overall improvement.
+
+An equivariant model trained with current-state calibration reduced validation
+displacement error to 0.1611 mm versus 0.3043 mm analytically on the same
+calibration dataset. It still scrapped the recoverable cup thinning case at seed
+1002, as did contour; ignore finished successfully. This failed diagnostic is
+retained separately and the model is not promoted on its lower point error.
+
+The original camera dataset divided selected frames among the three profiles;
+brief thinning events therefore had sparse coverage in each view. The next
+dataset preserves the first ten eligible frames densely and renders every
+selected frame with all three cameras. Additional cup/mug clean and thinning
+trajectories use training seeds 64–67 and validation seeds 72–73, combined with
+all 120 retained original trajectories. The
+[dense-camera protocol](validation/neural/dense-camera-v3-protocol.json) records
+the 144-group collection and training job in `neural-dense-camera-v3`, running
+in tmux window `dense-camera-v3`. Test seeds 2001–2004 remain untouched.
+
 ## Development record (2026-11-02)
 
 Qwen3-0.6B Q8_0 and llama.cpp b12057 are downloaded with pinned SHA-256 checksums.
