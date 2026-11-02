@@ -235,9 +235,12 @@ passes three of the seven failure cases in this small diagnostic.
 remains disabled. Rows record actual analytical candidate checks; agent requests
 include whether both forecasts pass. Tests verify that a disagreement excludes
 a plan only when a jointly passing alternative exists, and that neither the
-original candidates nor measured prefix are mutated. A broader study in
-`neural-joint-fit-dev-v2` will cover the 50 historical fit failure cases and ten
-clean controls, consumed diagnostics, and validation with actual Qwen decisions.
+original candidates nor measured prefix are mutated. The
+[270-run broader study](validation/neural/joint-fit-dev-v2-protocol.json) is now
+running in `neural-joint-fit-dev-v2`, covering the 50 historical fit failure cases
+and ten clean controls, consumed diagnostics, and validation with actual Qwen
+decisions. Its source snapshot is pinned to commit `97c3b38` and runtime digest
+`7fc3434ac95611a4d62784f1c902c5f965d858692b2b23b523332142529e6dbf`.
 This is not yet a full-project improvement or an untouched-test result.
 
 ## Development record (2026-11-02)
