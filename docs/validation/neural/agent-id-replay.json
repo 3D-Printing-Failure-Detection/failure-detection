@@ -1,0 +1,33 @@
+{
+  "status": "complete",
+  "limitation": "Response replay of a rejected-test diagnostic; not closed-loop success evidence.",
+  "actual_requests": 2,
+  "records": [
+    {
+      "case": [
+        "cartesian",
+        "bracket",
+        "collapse",
+        1001
+      ],
+      "layer": 26,
+      "selected_name": "compensate:bounded hole clearance",
+      "selected_rank": 1,
+      "request_sha256": "91e18bb3a670d96026996e34819860ff649660a036d3c160ec3d09d8a3b7a594",
+      "accepted": true
+    },
+    {
+      "case": [
+        "cartesian",
+        "bracket",
+        "collapse",
+        1001
+      ],
+      "layer": 27,
+      "selected_name": "compensate:bounded hole clearance",
+      "selected_rank": 1,
+      "request_sha256": "1675a6a82c94ee32f4383d9d31ba5cb86244828c25e4e70fa401aca5a3e53681",
+      "accepted": true
+    }
+  ]
+}

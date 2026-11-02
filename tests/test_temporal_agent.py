@@ -172,6 +172,28 @@ def test_actual_agent_choice_controls_feasible_recovery(monkeypatch, persistence
     assert policy.supervisor.audit[-1]['selected']['reason'] == 'robust margin is 123 mm'
 
 
+def test_agent_rank_one_selects_the_best_plan_even_when_generated_last(monkeypatch, persistence_model):
+    from recovery.geometry.adapt import Plan
+    from recovery.geometry.spec import Verdict
+    layer = Layer(.25, Point(0, 0).buffer(5))
+    policy = AgentNeuralPolicy({}, [layer]*4, .25, checkpoint=persistence_model)
+    plans = [Plan('continue', [layer]*3, 1.), Plan('weak correction', [layer]*3, .9),
+             Plan('clearance reserve', [layer]*3, .8)]
+    candidates = [dict(name=p.name, plan=p, predicted=[], executable=True,
+                       verdict=Verdict(i != 0, []), margin=.5, robust_margin=i*.2)
+                  for i, p in enumerate(plans)]
+    monkeypatch.setattr(policy, 'candidates', lambda *args: candidates)
+    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=1, reason='rank one'))),
+                                  finish_reason='stop')])
+    monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw: io.BytesIO(json.dumps(response).encode()))
+    decision = policy.decide([layer], [layer]*4, Detection('shift', 2, {}))
+    assert decision.plan is plans[2]
+    evidence = json.loads(policy.supervisor.audit[-1]['request']['messages'][1]['content'])
+    first = evidence['candidates'][0]
+    assert first['id'] == first['functional_rank'] == 1
+    assert first['name'] == 'clearance reserve'
+
+
 def test_local_endpoint_cannot_send_state_to_external_service():
     with pytest.raises(ValueError, match='localhost'):
         LocalSupervisor('https://example.com')
@@ -208,7 +230,7 @@ def test_reused_review_requires_fresh_passing_checks(monkeypatch, persistence_mo
     candidate = dict(name='continue', plan=Plan('continue', [layer], 1.), predicted=[],
                      executable=True, verdict=Verdict(True, []), margin=.5, robust_margin=.4)
     monkeypatch.setattr(policy, 'candidates', lambda *args: [candidate])
-    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=0, reason='passes'))),
+    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=1, reason='passes'))),
                                   finish_reason='stop')])
     monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw: io.BytesIO(json.dumps(response).encode()))
     detection = Detection('functional_risk', .5, {})

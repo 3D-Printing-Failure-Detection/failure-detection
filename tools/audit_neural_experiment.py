@@ -62,7 +62,11 @@ def main():
                            and (config.get('boundary_scope', 'all') == 'all' or not row['has_fit_constraints']))
             assert row['boundary_queries'] == (row['frames'] if uses_camera else 0)
             if manifest.get('instrumentation_version', 1) >= 3:
-                assert row['measurement_source'] == (checkpoints['boundary'] if uses_camera else 'classical')
+                fallback = config.get('boundary_fallback', False)
+                assert row['measurement_source'] == (checkpoints['boundary'] if uses_camera and not fallback else 'classical')
+                if fallback:
+                    assert row['alternative_measurement_source'] == (checkpoints['boundary'] if uses_camera else None)
+                    assert row['alternative_observations'] == (row['frames'] if uses_camera else 0)
         assert row['adaptations'] == sum(event['action'] == 'adapt' for event in row['actions']) <= 3
         if (config.get('neural_forecast_scope') == 'fits' and row['method'] in
                 ('neural', 'neural_agent', 'neural_risk', 'neural_risk_agent')):

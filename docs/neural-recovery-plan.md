@@ -100,7 +100,8 @@ All 4,320 runs use the frozen source and copied checkpoints under
 The [launch protocol](validation/neural/frozen-test-v1-protocol.json) records
 every command, model hash and comparison label. Seeds 1001–1004 are now consumed
 by this test and must not be reused as untouched data for a tuned replacement.
-Results are pending. Attach with `tmux attach -t neural-recovery`; the
+Complete results are pending, but the candidate has already failed acceptance
+as recorded below. Attach with `tmux attach -t neural-recovery`; the
 `test-status` window reports progress and `test-audit` runs the final comparison
 after all jobs finish. A successful audit exit confirms integrity, not superiority:
 all outcome criteria in `comparison.json` must also pass.
@@ -116,6 +117,38 @@ The [audit addendum](validation/neural/frozen-test-v1-integrity-addendum.json)
 pins both audit scripts. Its `test-integrity` tmux window waits for the original
 comparison, retains separate outputs under `integrity-v2`, and explicitly
 distinguishes completed audits from passed outcome criteria.
+
+### First frozen candidate rejected; revision under development
+
+At 21:38 UTC, completed paired records already contradicted the no-lost-success
+criterion: Cartesian cup collapse, seed 1001, finishes under contour but is
+scrapped by the combined candidate. The
+[retained counterexample](validation/neural/frozen-test-v1-early-rejection.json)
+pins both records and their matched failure conditions. Candidate records also
+contain defective bracket and mug finishes. The original 4,320-run benchmark
+continues unchanged; a partial counterexample proves rejection but does not
+supply an overall success-rate estimate. Seeds 1001–1004 are now diagnostic data,
+never untouched evidence for a revision. Seeds 2001–2004 are
+[reserved](validation/neural/next-test-seed-reservation.json) for the next frozen
+test; they have not been launched.
+
+One bracket failure exposed an action-identifier ambiguity: Qwen described the
+best-ranked hole-clearance plan but returned candidate ID 1, which referred to a
+different plan. Policy requests now number executable choices in rank order so
+rank 1 and ID 1 identify the same plan. Two actual response replays select the
+intended clearance plan after the fix. This is diagnostic evidence, not a new
+closed-loop success count; the response still determines the executed plan.
+
+A 64/32-unit camera network trained with rotations and reflections worsened
+validation boundary error from 0.0792 to 0.0887 mm. Its weights, training record
+and logs are retained in `neural-boundary-v2`; it is not selected as an improvement.
+The next policy instead tests `--boundary-fallback`: preserve any feasible plan
+from classical camera measurements, and consult a separate learned-camera
+observation history only when the primary pipeline finds no feasible option.
+Both views measure every actual frame; neither rewrites earlier observations.
+Alternative plans must pass the original complete specification and action
+constraints. The trained fit forecast remains paired with classical measurements.
+This revision still needs closed-loop validation and a new frozen comparison.
 
 ## Development record (2026-11-02)
 

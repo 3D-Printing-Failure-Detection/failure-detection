@@ -62,8 +62,9 @@ estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
 policy separates inner and outer boundaries when predicting deformation. A new
 camera model, neural forecast and local Qwen supervisor improve the historical
-comparison below. Untouched testing is still required before claiming broader
-superiority; see the learning follow-up on page 10.
+comparison below. The first fresh test has exposed lost successes and defective
+finishes, so that candidate is rejected. Further development and a new frozen
+test are required; see the learning follow-up from page 10.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
@@ -83,7 +84,7 @@ counted as successes. These development cases are not the reserved untouched tes
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
-Validation & 77 tests passed, one optional module skipped. The established contour study contains 484 audited runs; neural development trials are separate.\\
+Validation & The first fresh neural comparison has failed acceptance; full results continue to run. The established contour study contains 484 audited runs; neural trials are separate.\\
 Controls & The combined candidate passes all 20 clean controls. The earlier contour study's 80 clean runs also passed.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
@@ -571,7 +572,8 @@ that geometry, failure parameters, random seeds or final truth verdicts.
 
 Whole trajectories are separated by seed: training uses 60--63, validation
 70--71. The frozen final comparison on seeds 1001--1004 started on November 2;
-its results are pending. These seeds may not be used to tune this candidate. The
+its full results are pending, but an observed regression already rejects this
+candidate. These seeds cannot be reused as untouched test data. The
 classical-camera model's validation displacement error is 0.1921 mm, versus
 0.3435 mm for the analytical forecast. These are point-displacement errors,
 not print-completion rates. Training manifests pin dataset and checkpoint hashes.
@@ -661,10 +663,11 @@ produce zero defective finishes. Qwen matches the combined neural-only result
 with 201 validated requests; all 20 clean controls pass. The frozen fresh test
 started on November 2 at 21:13 UTC: 240 failure cases and 48 clean controls per
 configuration, across all nine earlier baselines and six candidate/ablation
-configurations (4,320 runs). Results are pending before claiming broader superiority.
+configurations (4,320 runs). A completed paired counterexample already rejects
+the candidate; full-grid rates remain pending.
 
-\note{\textbf{Acceptance remains open.} A useful trained model, lower forecast
-error and three selected rescues are insufficient. The final candidate must
+\note{\textbf{The first frozen candidate is rejected.} A useful trained model,
+lower forecast error and historical gains are insufficient. A revised candidate must
 outperform the strongest earlier policy on a frozen fresh comparison, preserve
 historical successes and avoid a worse defective-finish rate. Agent contribution
 must be reported separately. None of these simulation results is a physical
@@ -683,5 +686,57 @@ tmux attach -t neural-recovery
 The combined option pairs fit-only forecasting with learned measurements
 elsewhere. Both checkpoints and the local-server manifest are explicit inputs.
 It remains experimental; the live entry point's default is unchanged.
+
+\nextpage
+\section{What the fresh test changed}
+
+The historical 67/100 result did not establish generalization. In the first fresh
+test, analytical contours completed a Cartesian cup-collapse case that the
+combined candidate scrapped. Completed candidate records also contain defective
+bracket and mug finishes. This is enough to reject the candidate under the
+predeclared criteria. The original benchmark continues unchanged to retain the
+full comparison; its overall rates are not yet available.
+
+\subsection*{Two separate causes and a revised candidate}
+The learned camera can change estimated wall thickness and the projected shape
+enough to reject a recoverable print. The proposed fallback keeps classical
+measurements as the primary view and maintains a separate learned view of every
+frame. It preserves a feasible primary plan. Only when none passes does it
+consider plans from the learned view, against the same original specification.
+The already printed prefix is never rewritten in either history.
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,
+  flowbox/.style={draw=teal!65,rounded corners=2pt,fill=pale,align=center,font=\small,
+               text width=2.35in,minimum height=.50in},
+  arr/.style={->,thick,color=teal}]
+\node[flowbox] (a) at (0,0) {Classical measurement\\and primary forecast};
+\node[flowbox] (b) at (7,0) {Learned camera measurement\\and independent history};
+\node[flowbox] (c) at (0,-1.9) {A primary plan passes?\\Preserve that feasible choice};
+\node[flowbox] (d) at (7,-1.9) {No primary plan passes?\\Check learned-view alternatives};
+\node[flowbox,text width=4.4in] (e) at (3.5,-3.8) {Rank verified choices; Qwen selects a consistent ID\\Continue, adapt future layers, or stop if none passes};
+\draw[arr] (a)--(c);
+\draw[arr] (b)--(d);
+\draw[arr] (c)--(d);
+\draw[arr] (c)--(e);
+\draw[arr] (d)--(e);
+\end{tikzpicture}
+\end{center}
+The learned temporal forecast still handles specified fits using its matching
+classical camera input. The camera fallback applies to parts without such fits.
+This diagram describes the revision under test, not an accepted replacement.
+
+The Qwen failure was separate: on a bracket, it described the best-ranked plan
+but returned ID 1 for a different plan. IDs now match the displayed rank order.
+Two actual request replays selected the intended clearance plan after this fix.
+Replays verify the interface change; they are not completed-print evidence.
+
+\subsection*{What did not improve, and the next test}
+A larger camera network trained with rotations and reflections worsened boundary
+validation error from 0.0792 to 0.0887 mm, so it is retained as a failed attempt.
+The fallback uses the earlier checkpoint. New seeds 2001--2004 are reserved for
+a revised frozen comparison; seeds 1001--1004 are now diagnostic data. Acceptance
+still requires actual learning and Qwen calls, better completion than every
+earlier baseline, preserved passing cases, and no worse defective-finish count.
 
 \end{document}

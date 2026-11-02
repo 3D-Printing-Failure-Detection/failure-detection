@@ -1,0 +1,632 @@
+{
+  "architecture": "9x9 grayscale patch -> 64 ReLU -> 32 ReLU -> tanh signed distance",
+  "args": {
+    "data": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/dataset/data.npz",
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v2/model",
+    "epochs": 80,
+    "batch_size": 4096,
+    "seed": 2026,
+    "hidden": [
+      64,
+      32
+    ],
+    "augment_dihedral": true
+  },
+  "device": "cpu",
+  "torch": "2.7.1+cu126",
+  "seconds": 36.85277199745178,
+  "train_rows": 384000,
+  "validation_rows": 187200,
+  "training_groups": [
+    "cartesian-bracket-clean-60",
+    "cartesian-bracket-clean-61",
+    "cartesian-bracket-clean-62",
+    "cartesian-bracket-clean-63",
+    "cartesian-bracket-collapse-60",
+    "cartesian-bracket-collapse-61",
+    "cartesian-bracket-collapse-62",
+    "cartesian-bracket-collapse-63",
+    "cartesian-bracket-shift-60",
+    "cartesian-bracket-shift-61",
+    "cartesian-bracket-shift-62",
+    "cartesian-bracket-shift-63",
+    "cartesian-bracket-under_extrusion-60",
+    "cartesian-bracket-under_extrusion-61",
+    "cartesian-bracket-under_extrusion-62",
+    "cartesian-bracket-under_extrusion-63",
+    "cartesian-bracket-warp-60",
+    "cartesian-bracket-warp-61",
+    "cartesian-bracket-warp-62",
+    "cartesian-bracket-warp-63",
+    "cartesian-cup-clean-60",
+    "cartesian-cup-clean-61",
+    "cartesian-cup-clean-62",
+    "cartesian-cup-clean-63",
+    "cartesian-cup-collapse-60",
+    "cartesian-cup-collapse-61",
+    "cartesian-cup-collapse-62",
+    "cartesian-cup-collapse-63",
+    "cartesian-cup-shift-60",
+    "cartesian-cup-shift-61",
+    "cartesian-cup-shift-62",
+    "cartesian-cup-shift-63",
+    "cartesian-cup-under_extrusion-60",
+    "cartesian-cup-under_extrusion-61",
+    "cartesian-cup-under_extrusion-62",
+    "cartesian-cup-under_extrusion-63",
+    "cartesian-cup-warp-60",
+    "cartesian-cup-warp-61",
+    "cartesian-cup-warp-62",
+    "cartesian-cup-warp-63",
+    "cartesian-mug-clean-60",
+    "cartesian-mug-clean-61",
+    "cartesian-mug-clean-62",
+    "cartesian-mug-clean-63",
+    "cartesian-mug-collapse-60",
+    "cartesian-mug-collapse-61",
+    "cartesian-mug-collapse-62",
+    "cartesian-mug-collapse-63",
+    "cartesian-mug-shift-60",
+    "cartesian-mug-shift-61",
+    "cartesian-mug-shift-62",
+    "cartesian-mug-shift-63",
+    "cartesian-mug-under_extrusion-60",
+    "cartesian-mug-under_extrusion-61",
+    "cartesian-mug-under_extrusion-62",
+    "cartesian-mug-under_extrusion-63",
+    "cartesian-mug-warp-60",
+    "cartesian-mug-warp-61",
+    "cartesian-mug-warp-62",
+    "cartesian-mug-warp-63",
+    "cartesian-spacer-clean-60",
+    "cartesian-spacer-clean-61",
+    "cartesian-spacer-clean-62",
+    "cartesian-spacer-clean-63",
+    "cartesian-spacer-collapse-60",
+    "cartesian-spacer-collapse-61",
+    "cartesian-spacer-collapse-62",
+    "cartesian-spacer-collapse-63",
+    "cartesian-spacer-shift-60",
+    "cartesian-spacer-shift-61",
+    "cartesian-spacer-shift-62",
+    "cartesian-spacer-shift-63",
+    "cartesian-spacer-under_extrusion-60",
+    "cartesian-spacer-under_extrusion-61",
+    "cartesian-spacer-under_extrusion-62",
+    "cartesian-spacer-under_extrusion-63",
+    "cartesian-spacer-warp-60",
+    "cartesian-spacer-warp-61",
+    "cartesian-spacer-warp-62",
+    "cartesian-spacer-warp-63"
+  ],
+  "validation_groups": [
+    "cartesian-bracket-clean-70",
+    "cartesian-bracket-clean-71",
+    "cartesian-bracket-collapse-70",
+    "cartesian-bracket-collapse-71",
+    "cartesian-bracket-shift-70",
+    "cartesian-bracket-shift-71",
+    "cartesian-bracket-under_extrusion-70",
+    "cartesian-bracket-under_extrusion-71",
+    "cartesian-bracket-warp-70",
+    "cartesian-bracket-warp-71",
+    "cartesian-cup-clean-70",
+    "cartesian-cup-clean-71",
+    "cartesian-cup-collapse-70",
+    "cartesian-cup-collapse-71",
+    "cartesian-cup-shift-70",
+    "cartesian-cup-shift-71",
+    "cartesian-cup-under_extrusion-70",
+    "cartesian-cup-under_extrusion-71",
+    "cartesian-cup-warp-70",
+    "cartesian-cup-warp-71",
+    "cartesian-mug-clean-70",
+    "cartesian-mug-clean-71",
+    "cartesian-mug-collapse-70",
+    "cartesian-mug-collapse-71",
+    "cartesian-mug-shift-70",
+    "cartesian-mug-shift-71",
+    "cartesian-mug-under_extrusion-70",
+    "cartesian-mug-under_extrusion-71",
+    "cartesian-mug-warp-70",
+    "cartesian-mug-warp-71",
+    "cartesian-spacer-clean-70",
+    "cartesian-spacer-clean-71",
+    "cartesian-spacer-collapse-70",
+    "cartesian-spacer-collapse-71",
+    "cartesian-spacer-shift-70",
+    "cartesian-spacer-shift-71",
+    "cartesian-spacer-under_extrusion-70",
+    "cartesian-spacer-under_extrusion-71",
+    "cartesian-spacer-warp-70",
+    "cartesian-spacer-warp-71"
+  ],
+  "validation_boundary_mae_mm": 0.08865238726139069,
+  "data_sha256": "e7cb5f678b82e5077965a938bc11677c45916d8e0c42658c71ef6de88316d8ea",
+  "checkpoint_sha256": "a8fe8b38c2fd0fb5af0e5048f2bc65771338fb3c614633e07c4ac4cc9eaac5f8",
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.11256074742476145,
+      "validation_boundary_mae_mm": 0.13100017607212067,
+      "validation_pixel_accuracy": 0.9454006552696228
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.055773291518290836,
+      "validation_boundary_mae_mm": 0.12452681362628937,
+      "validation_pixel_accuracy": 0.9475641250610352
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.046634238362312314,
+      "validation_boundary_mae_mm": 0.12132414430379868,
+      "validation_pixel_accuracy": 0.951025664806366
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.04367475321888924,
+      "validation_boundary_mae_mm": 0.10545872896909714,
+      "validation_pixel_accuracy": 0.9561378359794617
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.042345849841833115,
+      "validation_boundary_mae_mm": 0.10256271809339523,
+      "validation_pixel_accuracy": 0.9579219818115234
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.04057514038681984,
+      "validation_boundary_mae_mm": 0.10406871140003204,
+      "validation_pixel_accuracy": 0.9563621878623962
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.040557136714458465,
+      "validation_boundary_mae_mm": 0.09606385231018066,
+      "validation_pixel_accuracy": 0.9597382545471191
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.04013754337032636,
+      "validation_boundary_mae_mm": 0.10805089771747589,
+      "validation_pixel_accuracy": 0.9518162608146667
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.03875390616059303,
+      "validation_boundary_mae_mm": 0.0983908474445343,
+      "validation_pixel_accuracy": 0.9607104659080505
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.038512065718571346,
+      "validation_boundary_mae_mm": 0.10445250570774078,
+      "validation_pixel_accuracy": 0.9530395269393921
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.03823299760619799,
+      "validation_boundary_mae_mm": 0.09791839867830276,
+      "validation_pixel_accuracy": 0.9590651988983154
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.03727594159046809,
+      "validation_boundary_mae_mm": 0.09643824398517609,
+      "validation_pixel_accuracy": 0.9578952789306641
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.038249732047319414,
+      "validation_boundary_mae_mm": 0.10306672006845474,
+      "validation_pixel_accuracy": 0.960443377494812
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0369891406695048,
+      "validation_boundary_mae_mm": 0.1011493057012558,
+      "validation_pixel_accuracy": 0.9538942575454712
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.03654647669196129,
+      "validation_boundary_mae_mm": 0.09535542875528336,
+      "validation_pixel_accuracy": 0.9580234885215759
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.036014620949824654,
+      "validation_boundary_mae_mm": 0.09600464254617691,
+      "validation_pixel_accuracy": 0.9592360854148865
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.0360233284731706,
+      "validation_boundary_mae_mm": 0.10501714050769806,
+      "validation_pixel_accuracy": 0.959337592124939
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.0367208007077376,
+      "validation_boundary_mae_mm": 0.10168708115816116,
+      "validation_pixel_accuracy": 0.9578846096992493
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0364049805700779,
+      "validation_boundary_mae_mm": 0.09609407931566238,
+      "validation_pixel_accuracy": 0.9587713479995728
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.03562343016266823,
+      "validation_boundary_mae_mm": 0.09706761687994003,
+      "validation_pixel_accuracy": 0.9559829235076904
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.03551353065172831,
+      "validation_boundary_mae_mm": 0.09549511969089508,
+      "validation_pixel_accuracy": 0.9597756266593933
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.03587801896532376,
+      "validation_boundary_mae_mm": 0.10502461344003677,
+      "validation_pixel_accuracy": 0.9610416889190674
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.03537964185078939,
+      "validation_boundary_mae_mm": 0.10040084272623062,
+      "validation_pixel_accuracy": 0.962008535861969
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.035305455446243285,
+      "validation_boundary_mae_mm": 0.10151562839746475,
+      "validation_pixel_accuracy": 0.9536431431770325
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.03578227241834005,
+      "validation_boundary_mae_mm": 0.09591932594776154,
+      "validation_pixel_accuracy": 0.956784188747406
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.03482539673646291,
+      "validation_boundary_mae_mm": 0.11367353796958923,
+      "validation_pixel_accuracy": 0.9493269324302673
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.035533880988756816,
+      "validation_boundary_mae_mm": 0.09651392698287964,
+      "validation_pixel_accuracy": 0.957355797290802
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.03445861415068308,
+      "validation_boundary_mae_mm": 0.09653043746948242,
+      "validation_pixel_accuracy": 0.9596100449562073
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.035147530525922774,
+      "validation_boundary_mae_mm": 0.09936344623565674,
+      "validation_pixel_accuracy": 0.9613407850265503
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.0344699576596419,
+      "validation_boundary_mae_mm": 0.09533058851957321,
+      "validation_pixel_accuracy": 0.9596154093742371
+    },
+    {
+      "epoch": 31,
+      "train_loss": 0.034745520641406374,
+      "validation_boundary_mae_mm": 0.09994523972272873,
+      "validation_pixel_accuracy": 0.9600160121917725
+    },
+    {
+      "epoch": 32,
+      "train_loss": 0.03461950730284055,
+      "validation_boundary_mae_mm": 0.10212971270084381,
+      "validation_pixel_accuracy": 0.959658145904541
+    },
+    {
+      "epoch": 33,
+      "train_loss": 0.03442361242572466,
+      "validation_boundary_mae_mm": 0.09679209440946579,
+      "validation_pixel_accuracy": 0.9596260786056519
+    },
+    {
+      "epoch": 34,
+      "train_loss": 0.03433620003859202,
+      "validation_boundary_mae_mm": 0.09617630392313004,
+      "validation_pixel_accuracy": 0.9582478404045105
+    },
+    {
+      "epoch": 35,
+      "train_loss": 0.0344214239915212,
+      "validation_boundary_mae_mm": 0.0995156541466713,
+      "validation_pixel_accuracy": 0.9596046805381775
+    },
+    {
+      "epoch": 36,
+      "train_loss": 0.03507689995567004,
+      "validation_boundary_mae_mm": 0.09757167100906372,
+      "validation_pixel_accuracy": 0.9599679708480835
+    },
+    {
+      "epoch": 37,
+      "train_loss": 0.03441024706761042,
+      "validation_boundary_mae_mm": 0.09869019687175751,
+      "validation_pixel_accuracy": 0.9619871973991394
+    },
+    {
+      "epoch": 38,
+      "train_loss": 0.03371010966102282,
+      "validation_boundary_mae_mm": 0.09054496139287949,
+      "validation_pixel_accuracy": 0.9601923227310181
+    },
+    {
+      "epoch": 39,
+      "train_loss": 0.034233747631311415,
+      "validation_boundary_mae_mm": 0.09548766911029816,
+      "validation_pixel_accuracy": 0.9575961828231812
+    },
+    {
+      "epoch": 40,
+      "train_loss": 0.034367964645226796,
+      "validation_boundary_mae_mm": 0.09524714201688766,
+      "validation_pixel_accuracy": 0.9615170955657959
+    },
+    {
+      "epoch": 41,
+      "train_loss": 0.033629634946584705,
+      "validation_boundary_mae_mm": 0.09385831654071808,
+      "validation_pixel_accuracy": 0.9593269228935242
+    },
+    {
+      "epoch": 42,
+      "train_loss": 0.03373606476187706,
+      "validation_boundary_mae_mm": 0.10115397721529007,
+      "validation_pixel_accuracy": 0.9600641131401062
+    },
+    {
+      "epoch": 43,
+      "train_loss": 0.03395293346047402,
+      "validation_boundary_mae_mm": 0.107503741979599,
+      "validation_pixel_accuracy": 0.9601281881332397
+    },
+    {
+      "epoch": 44,
+      "train_loss": 0.03391554889082909,
+      "validation_boundary_mae_mm": 0.09586047381162643,
+      "validation_pixel_accuracy": 0.9569551348686218
+    },
+    {
+      "epoch": 45,
+      "train_loss": 0.033952468236287434,
+      "validation_boundary_mae_mm": 0.09516973793506622,
+      "validation_pixel_accuracy": 0.960277795791626
+    },
+    {
+      "epoch": 46,
+      "train_loss": 0.03403983735044797,
+      "validation_boundary_mae_mm": 0.09901314228773117,
+      "validation_pixel_accuracy": 0.9612873792648315
+    },
+    {
+      "epoch": 47,
+      "train_loss": 0.03338285153110822,
+      "validation_boundary_mae_mm": 0.09170816838741302,
+      "validation_pixel_accuracy": 0.9585363268852234
+    },
+    {
+      "epoch": 48,
+      "train_loss": 0.0335467795530955,
+      "validation_boundary_mae_mm": 0.09461153298616409,
+      "validation_pixel_accuracy": 0.9588568210601807
+    },
+    {
+      "epoch": 49,
+      "train_loss": 0.033334338198105495,
+      "validation_boundary_mae_mm": 0.09936337918043137,
+      "validation_pixel_accuracy": 0.9607371687889099
+    },
+    {
+      "epoch": 50,
+      "train_loss": 0.03320893493294716,
+      "validation_boundary_mae_mm": 0.09233997762203217,
+      "validation_pixel_accuracy": 0.9602083563804626
+    },
+    {
+      "epoch": 51,
+      "train_loss": 0.03381412529945373,
+      "validation_boundary_mae_mm": 0.09428948163986206,
+      "validation_pixel_accuracy": 0.9624519348144531
+    },
+    {
+      "epoch": 52,
+      "train_loss": 0.03297947512070338,
+      "validation_boundary_mae_mm": 0.08935289084911346,
+      "validation_pixel_accuracy": 0.9618269205093384
+    },
+    {
+      "epoch": 53,
+      "train_loss": 0.03267218141754468,
+      "validation_boundary_mae_mm": 0.09371431171894073,
+      "validation_pixel_accuracy": 0.957569420337677
+    },
+    {
+      "epoch": 54,
+      "train_loss": 0.033307238847017286,
+      "validation_boundary_mae_mm": 0.0939551517367363,
+      "validation_pixel_accuracy": 0.9613568186759949
+    },
+    {
+      "epoch": 55,
+      "train_loss": 0.03328058955073357,
+      "validation_boundary_mae_mm": 0.0966828241944313,
+      "validation_pixel_accuracy": 0.9614689946174622
+    },
+    {
+      "epoch": 56,
+      "train_loss": 0.0331072621246179,
+      "validation_boundary_mae_mm": 0.10281617194414139,
+      "validation_pixel_accuracy": 0.9530074596405029
+    },
+    {
+      "epoch": 57,
+      "train_loss": 0.03314459133148193,
+      "validation_boundary_mae_mm": 0.0919521376490593,
+      "validation_pixel_accuracy": 0.9624893069267273
+    },
+    {
+      "epoch": 58,
+      "train_loss": 0.032621051500240965,
+      "validation_boundary_mae_mm": 0.09471775591373444,
+      "validation_pixel_accuracy": 0.9571313858032227
+    },
+    {
+      "epoch": 59,
+      "train_loss": 0.03283134560783704,
+      "validation_boundary_mae_mm": 0.09456224739551544,
+      "validation_pixel_accuracy": 0.9573023319244385
+    },
+    {
+      "epoch": 60,
+      "train_loss": 0.032306322276592254,
+      "validation_boundary_mae_mm": 0.09413983672857285,
+      "validation_pixel_accuracy": 0.957975447177887
+    },
+    {
+      "epoch": 61,
+      "train_loss": 0.032171235531568525,
+      "validation_boundary_mae_mm": 0.09639477729797363,
+      "validation_pixel_accuracy": 0.9604113101959229
+    },
+    {
+      "epoch": 62,
+      "train_loss": 0.033166541983683906,
+      "validation_boundary_mae_mm": 0.09302902966737747,
+      "validation_pixel_accuracy": 0.9624305367469788
+    },
+    {
+      "epoch": 63,
+      "train_loss": 0.032353363066911695,
+      "validation_boundary_mae_mm": 0.09094779193401337,
+      "validation_pixel_accuracy": 0.9596688151359558
+    },
+    {
+      "epoch": 64,
+      "train_loss": 0.0321635859409968,
+      "validation_boundary_mae_mm": 0.0947629064321518,
+      "validation_pixel_accuracy": 0.9562446475028992
+    },
+    {
+      "epoch": 65,
+      "train_loss": 0.03219320989648501,
+      "validation_boundary_mae_mm": 0.08865238726139069,
+      "validation_pixel_accuracy": 0.9619444608688354
+    },
+    {
+      "epoch": 66,
+      "train_loss": 0.0321185877819856,
+      "validation_boundary_mae_mm": 0.0902572050690651,
+      "validation_pixel_accuracy": 0.9611538648605347
+    },
+    {
+      "epoch": 67,
+      "train_loss": 0.03214680550495783,
+      "validation_boundary_mae_mm": 0.09454776346683502,
+      "validation_pixel_accuracy": 0.95600426197052
+    },
+    {
+      "epoch": 68,
+      "train_loss": 0.03203693462411562,
+      "validation_boundary_mae_mm": 0.09137050807476044,
+      "validation_pixel_accuracy": 0.9618642926216125
+    },
+    {
+      "epoch": 69,
+      "train_loss": 0.03183296901981036,
+      "validation_boundary_mae_mm": 0.08996902406215668,
+      "validation_pixel_accuracy": 0.962008535861969
+    },
+    {
+      "epoch": 70,
+      "train_loss": 0.03223361387848854,
+      "validation_boundary_mae_mm": 0.08962740749120712,
+      "validation_pixel_accuracy": 0.9606783986091614
+    },
+    {
+      "epoch": 71,
+      "train_loss": 0.03173720479011535,
+      "validation_boundary_mae_mm": 0.09392740577459335,
+      "validation_pixel_accuracy": 0.9606570601463318
+    },
+    {
+      "epoch": 72,
+      "train_loss": 0.03176514868438244,
+      "validation_boundary_mae_mm": 0.09228183329105377,
+      "validation_pixel_accuracy": 0.9612072706222534
+    },
+    {
+      "epoch": 73,
+      "train_loss": 0.03155789571503798,
+      "validation_boundary_mae_mm": 0.08880683034658432,
+      "validation_pixel_accuracy": 0.962003231048584
+    },
+    {
+      "epoch": 74,
+      "train_loss": 0.03175817469755809,
+      "validation_boundary_mae_mm": 0.0935472622513771,
+      "validation_pixel_accuracy": 0.9575374126434326
+    },
+    {
+      "epoch": 75,
+      "train_loss": 0.03176489520072937,
+      "validation_boundary_mae_mm": 0.09080960601568222,
+      "validation_pixel_accuracy": 0.9590277671813965
+    },
+    {
+      "epoch": 76,
+      "train_loss": 0.031336084216833114,
+      "validation_boundary_mae_mm": 0.09323932230472565,
+      "validation_pixel_accuracy": 0.9581997990608215
+    },
+    {
+      "epoch": 77,
+      "train_loss": 0.03141970349351565,
+      "validation_boundary_mae_mm": 0.09208974987268448,
+      "validation_pixel_accuracy": 0.9578418731689453
+    },
+    {
+      "epoch": 78,
+      "train_loss": 0.03130404438575109,
+      "validation_boundary_mae_mm": 0.09551142156124115,
+      "validation_pixel_accuracy": 0.9567681550979614
+    },
+    {
+      "epoch": 79,
+      "train_loss": 0.031654134243726734,
+      "validation_boundary_mae_mm": 0.09194568544626236,
+      "validation_pixel_accuracy": 0.9614797234535217
+    },
+    {
+      "epoch": 80,
+      "train_loss": 0.031396813174088795,
+      "validation_boundary_mae_mm": 0.09127356857061386,
+      "validation_pixel_accuracy": 0.9581249952316284
+    }
+  ],
+  "trainer_sha256": "76e308ed312f9cce22d7ec7e7402d193af37db3a2950f6700e4503eadbdd0db2",
+  "augmentation": "random D4 training patches",
+  "limitation": "patch validation is not full-frame or closed-loop recovery validation"
+}

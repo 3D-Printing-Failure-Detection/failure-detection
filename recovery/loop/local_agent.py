@@ -13,6 +13,7 @@ from .decide import Decision, DecisionContext
 from .contour import ContourPolicy
 from .neural import NeuralPolicy
 from .risk_neural import RiskAwareNeuralPolicy
+from .camera_fallback import FallbackNeuralPolicy, FallbackRiskNeuralPolicy
 
 
 def rank_for_review(candidates, resolution_mm):
@@ -37,7 +38,7 @@ def rank_for_review(candidates, resolution_mm):
                     and alternative.get('robust_margin', -1.) >= candidate.get('robust_margin', -1.)
                     and alternative.get('margin', -1.) >= candidate.get('margin', -1.) - .02):
                 candidate['review_eligible'] = False
-                candidate['review_exclusion'] = f"functional-risk dominated by candidate {alternative['id']}"
+                candidate['review_exclusion'] = 'functional-risk dominated by ' + alternative.get('name', str(alternative['id']))
                 break
     ordered = sorted(feasible, key=lambda c: (c['review_eligible'],
         c.get('fit_robust_clearance_mm', -1.), c.get('fit_clearance_mm', -1.),
@@ -67,6 +68,7 @@ class LocalSupervisor:
         system = ('You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. '
             'Only candidates marked ok, executable, and review_eligible are allowed. '
             'The assessment tool ranks them by functional risk: functional_rank 1 is its recommendation. '
+            'In policy requests the candidate IDs match their displayed ranks; return that candidate ID. '
             'Aim for a functional completed print. '
             'Prefer continuing when it passes with adequate margin; unnecessary intervention consumes a limited budget. '
             'If fit_at_risk is true, prioritize the largest fit_robust_clearance_mm, then fit_clearance_mm: '
@@ -81,6 +83,7 @@ class LocalSupervisor:
         keys = ('id', 'name', 'ok', 'executable', 'violations', 'margin', 'robust_margin',
                 'fit_clearance_mm', 'fit_robust_clearance_mm', 'fit_at_risk', 'command_change_fraction',
                 'uncertainty_mm', 'adapts_remaining', 'fidelity', 'functional_rank', 'review_eligible', 'review_exclusion')
+        keys += ('observation_model', 'fallback_after_no_primary_plan')
 
         def compact(value):
             if isinstance(value, float):
@@ -146,6 +149,14 @@ class LocalAgentMixin:
                    fidelity=c['plan'].fidelity, adapts_remaining=context.adapts_remaining)
             for i, c in enumerate(candidates)]
         considered = rank_for_review(considered, self.state.resolution_mm)
+        # The small model confused original index 1 with functional rank 1.
+        # Give it one consistent numbering scheme and keep the executable plans
+        # in exactly the same order. Its selected ID still determines the action.
+        order = sorted(range(len(candidates)), key=lambda i: considered[i].get('functional_rank', 10000+i))
+        candidates = [candidates[i] for i in order]
+        considered = [considered[i] for i in order]
+        for identifier, candidate in enumerate(considered, 1):
+            candidate['id'] = identifier
         if not any(c['ok'] and c['executable'] for c in considered):
             return Decision('scrap', 'no executable recovery meets the functional spec',
                             None, candidates[0]['verdict'], considered)
@@ -167,7 +178,7 @@ class LocalAgentMixin:
             uncertainty_mm=self.state.uncertainty_mm, adapts_remaining=context.adapts_remaining,
             checkpoint_sha256=getattr(getattr(self.state, 'model', None), 'sha256', None))
         selected = self.supervisor.choose(observation, considered)
-        chosen = candidates[selected['candidate']]
+        chosen = candidates[selected['candidate'] - 1]
         self.last_continue_review = ((len(known), self.supervisor.audit[-1]['request_sha256'])
                                      if chosen['name'] == 'continue' else None)
         considered.append(dict(agent=self.supervisor.audit[-1]))
@@ -189,3 +200,11 @@ class AgentContourPolicy(LocalAgentMixin, ContourPolicy):
 
 class AgentRiskAwareNeuralPolicy(LocalAgentMixin, RiskAwareNeuralPolicy):
     """Local supervision over learned forecasts and preventive fit recovery."""
+
+
+class AgentFallbackNeuralPolicy(LocalAgentMixin, FallbackNeuralPolicy):
+    pass
+
+
+class AgentFallbackRiskNeuralPolicy(LocalAgentMixin, FallbackRiskNeuralPolicy):
+    pass

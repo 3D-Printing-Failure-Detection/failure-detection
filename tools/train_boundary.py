@@ -21,7 +21,12 @@ def main():
     parser.add_argument('--epochs', type=int, default=80)
     parser.add_argument('--batch-size', type=int, default=4096)
     parser.add_argument('--seed', type=int, default=2026)
+    parser.add_argument('--hidden', type=int, nargs=2, default=[32, 16], metavar=('FIRST', 'SECOND'))
+    parser.add_argument('--augment-dihedral', action='store_true',
+                        help='random rotations/reflections of training patches; signed distance is invariant')
     args = parser.parse_args()
+    if min(args.hidden) < 1:
+        parser.error('hidden widths must be positive')
     torch.set_num_threads(2)
     torch.manual_seed(args.seed)
     rng = np.random.default_rng(args.seed)
@@ -35,7 +40,11 @@ def main():
     xtrain, ytrain = torch.from_numpy(x[~split].astype('float32')), torch.from_numpy(y[~split, None])
     xval, yval = torch.from_numpy(x[split].astype('float32')), torch.from_numpy(y[split, None])
     edge = torch.abs(yval[:, 0]) < .5
-    model = nn.Sequential(nn.Linear(PATCH_SIZE**2, 32), nn.ReLU(), nn.Linear(32, 16), nn.ReLU(), nn.Linear(16, 1))
+    h1, h2 = args.hidden
+    model = nn.Sequential(nn.Linear(PATCH_SIZE**2, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(), nn.Linear(h2, 1))
+    grid = np.arange(PATCH_SIZE**2).reshape(PATCH_SIZE, PATCH_SIZE)
+    transforms = torch.from_numpy(np.stack([np.rot90(np.fliplr(grid) if flip else grid, rotation).ravel().copy()
+                                           for flip in (False, True) for rotation in range(4)]))
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
     best, history, started = float('inf'), [], time.time()
     checkpoint = args.out / 'boundary.npz'
@@ -46,7 +55,11 @@ def main():
         model.train()
         for start in range(0, len(indices), args.batch_size):
             idx = indices[start:start+args.batch_size]
-            prediction = torch.tanh(model(xtrain[idx]))
+            inputs = xtrain[idx]
+            if args.augment_dihedral:
+                permutation = transforms[rng.integers(len(transforms), size=len(idx))]
+                inputs = torch.gather(inputs, 1, permutation)
+            prediction = torch.tanh(model(inputs))
             weight = .25 + .75 * (torch.abs(ytrain[idx]) < .5)
             loss = (torch.nn.functional.smooth_l1_loss(prediction, ytrain[idx], beta=.05, reduction='none') * weight).mean()
             optimizer.zero_grad()
@@ -78,13 +91,15 @@ def main():
     boundary = np.abs(y[split]) < .5
     error = float(np.abs(predicted[boundary] - y[split][boundary]).mean())
     assert abs(error-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
-    manifest = dict(architecture='9x9 grayscale patch -> 32 ReLU -> 16 ReLU -> tanh signed distance',
+    manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> tanh signed distance',
         args={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         device='cpu', torch=torch.__version__, seconds=time.time()-started, train_rows=len(xtrain),
         validation_rows=len(xval), training_groups=sorted(set(group[~split].tolist())),
         validation_groups=sorted(set(group[split].tolist())), validation_boundary_mae_mm=error,
         data_sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(), checkpoint_sha256=exported.sha256,
-        history=history, limitation='patch validation is not full-frame or closed-loop recovery validation')
+        history=history, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        augmentation='random D4 training patches' if args.augment_dihedral else 'none',
+        limitation='patch validation is not full-frame or closed-loop recovery validation')
     (args.out / 'training.json').write_text(json.dumps(manifest, indent=2))
     print('Exported', checkpoint, 'boundary MAE mm', error, flush=True)
 
