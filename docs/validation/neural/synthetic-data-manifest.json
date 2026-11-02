@@ -1,0 +1,881 @@
+{
+  "arguments": {
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-v1/dataset",
+    "train_seeds": [
+      60,
+      61,
+      62,
+      63
+    ],
+    "validation_seeds": [
+      70,
+      71
+    ],
+    "parts": [
+      "bracket",
+      "cup",
+      "mug",
+      "spacer"
+    ],
+    "kinds": [
+      "clean",
+      "collapse",
+      "warp",
+      "shift",
+      "under_extrusion"
+    ],
+    "snapshots": 24,
+    "workers": 2
+  },
+  "status": "complete",
+  "source_sha256": "7abfe82a2a0f1e65f547e0af1fa168effcac77ebd3322d32dc4a304ff0ff2173",
+  "script_sha256": "94669e2d69b9b85a404051e284c4cc4adacfdab5871df5252d08edc6c7955b06",
+  "domain": "synthetic camera.render; not MuJoCo",
+  "target": "true future contour displacement",
+  "input": "four past camera-derived contour residuals; horizon; boundary role",
+  "expected_groups": 120,
+  "rows": 544616,
+  "groups": [
+    {
+      "group": "bracket-clean-60",
+      "validation": false,
+      "frames": 30,
+      "samples": 3000,
+      "seconds": 0.6212551593780518
+    },
+    {
+      "group": "bracket-clean-61",
+      "validation": false,
+      "frames": 31,
+      "samples": 2960,
+      "seconds": 0.6488292217254639
+    },
+    {
+      "group": "bracket-clean-62",
+      "validation": false,
+      "frames": 31,
+      "samples": 2920,
+      "seconds": 0.6553511619567871
+    },
+    {
+      "group": "bracket-clean-63",
+      "validation": false,
+      "frames": 31,
+      "samples": 2960,
+      "seconds": 0.636878490447998
+    },
+    {
+      "group": "bracket-clean-70",
+      "validation": true,
+      "frames": 31,
+      "samples": 2920,
+      "seconds": 0.6625571250915527
+    },
+    {
+      "group": "bracket-clean-71",
+      "validation": true,
+      "frames": 31,
+      "samples": 2920,
+      "seconds": 0.6481342315673828
+    },
+    {
+      "group": "bracket-collapse-60",
+      "validation": false,
+      "frames": 28,
+      "samples": 2800,
+      "seconds": 0.7546665668487549
+    },
+    {
+      "group": "bracket-collapse-61",
+      "validation": false,
+      "frames": 23,
+      "samples": 2080,
+      "seconds": 0.5816757678985596
+    },
+    {
+      "group": "bracket-collapse-62",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.5471570491790771
+    },
+    {
+      "group": "bracket-collapse-63",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.538764476776123
+    },
+    {
+      "group": "bracket-collapse-70",
+      "validation": true,
+      "frames": 18,
+      "samples": 1440,
+      "seconds": 0.4465782642364502
+    },
+    {
+      "group": "bracket-collapse-71",
+      "validation": true,
+      "frames": 12,
+      "samples": 720,
+      "seconds": 0.2788870334625244
+    },
+    {
+      "group": "bracket-shift-60",
+      "validation": false,
+      "frames": 28,
+      "samples": 2760,
+      "seconds": 0.6024408340454102
+    },
+    {
+      "group": "bracket-shift-61",
+      "validation": false,
+      "frames": 23,
+      "samples": 2080,
+      "seconds": 0.4930124282836914
+    },
+    {
+      "group": "bracket-shift-62",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.47187137603759766
+    },
+    {
+      "group": "bracket-shift-63",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.458010196685791
+    },
+    {
+      "group": "bracket-shift-70",
+      "validation": true,
+      "frames": 18,
+      "samples": 1440,
+      "seconds": 0.3904268741607666
+    },
+    {
+      "group": "bracket-shift-71",
+      "validation": true,
+      "frames": 12,
+      "samples": 720,
+      "seconds": 0.24893474578857422
+    },
+    {
+      "group": "bracket-under_extrusion-60",
+      "validation": false,
+      "frames": 28,
+      "samples": 2760,
+      "seconds": 0.5869367122650146
+    },
+    {
+      "group": "bracket-under_extrusion-61",
+      "validation": false,
+      "frames": 23,
+      "samples": 2080,
+      "seconds": 0.48641252517700195
+    },
+    {
+      "group": "bracket-under_extrusion-62",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.46587467193603516
+    },
+    {
+      "group": "bracket-under_extrusion-63",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.45737600326538086
+    },
+    {
+      "group": "bracket-under_extrusion-70",
+      "validation": true,
+      "frames": 18,
+      "samples": 1440,
+      "seconds": 0.38921260833740234
+    },
+    {
+      "group": "bracket-under_extrusion-71",
+      "validation": true,
+      "frames": 12,
+      "samples": 720,
+      "seconds": 0.24839282035827637
+    },
+    {
+      "group": "bracket-warp-60",
+      "validation": false,
+      "frames": 28,
+      "samples": 2760,
+      "seconds": 0.7158148288726807
+    },
+    {
+      "group": "bracket-warp-61",
+      "validation": false,
+      "frames": 23,
+      "samples": 2080,
+      "seconds": 0.5707175731658936
+    },
+    {
+      "group": "bracket-warp-62",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.5297632217407227
+    },
+    {
+      "group": "bracket-warp-63",
+      "validation": false,
+      "frames": 22,
+      "samples": 1920,
+      "seconds": 0.5306665897369385
+    },
+    {
+      "group": "bracket-warp-70",
+      "validation": true,
+      "frames": 18,
+      "samples": 1440,
+      "seconds": 0.45873594284057617
+    },
+    {
+      "group": "bracket-warp-71",
+      "validation": true,
+      "frames": 12,
+      "samples": 720,
+      "seconds": 0.28612327575683594
+    },
+    {
+      "group": "cup-clean-60",
+      "validation": false,
+      "frames": 67,
+      "samples": 8124,
+      "seconds": 2.0788302421569824
+    },
+    {
+      "group": "cup-clean-61",
+      "validation": false,
+      "frames": 64,
+      "samples": 8444,
+      "seconds": 1.9681053161621094
+    },
+    {
+      "group": "cup-clean-62",
+      "validation": false,
+      "frames": 56,
+      "samples": 8380,
+      "seconds": 1.8371686935424805
+    },
+    {
+      "group": "cup-clean-63",
+      "validation": false,
+      "frames": 62,
+      "samples": 7676,
+      "seconds": 1.9667434692382812
+    },
+    {
+      "group": "cup-clean-70",
+      "validation": true,
+      "frames": 59,
+      "samples": 7996,
+      "seconds": 1.915471076965332
+    },
+    {
+      "group": "cup-clean-71",
+      "validation": true,
+      "frames": 64,
+      "samples": 7996,
+      "seconds": 1.9579684734344482
+    },
+    {
+      "group": "cup-collapse-60",
+      "validation": false,
+      "frames": 61,
+      "samples": 7616,
+      "seconds": 2.6542465686798096
+    },
+    {
+      "group": "cup-collapse-61",
+      "validation": false,
+      "frames": 59,
+      "samples": 7168,
+      "seconds": 2.469937324523926
+    },
+    {
+      "group": "cup-collapse-62",
+      "validation": false,
+      "frames": 54,
+      "samples": 6976,
+      "seconds": 2.1952335834503174
+    },
+    {
+      "group": "cup-collapse-63",
+      "validation": false,
+      "frames": 55,
+      "samples": 6848,
+      "seconds": 2.2178375720977783
+    },
+    {
+      "group": "cup-collapse-70",
+      "validation": true,
+      "frames": 55,
+      "samples": 6592,
+      "seconds": 2.3407609462738037
+    },
+    {
+      "group": "cup-collapse-71",
+      "validation": true,
+      "frames": 36,
+      "samples": 5056,
+      "seconds": 1.4285557270050049
+    },
+    {
+      "group": "cup-shift-60",
+      "validation": false,
+      "frames": 63,
+      "samples": 7936,
+      "seconds": 2.10357403755188
+    },
+    {
+      "group": "cup-shift-61",
+      "validation": false,
+      "frames": 50,
+      "samples": 6656,
+      "seconds": 1.7018625736236572
+    },
+    {
+      "group": "cup-shift-62",
+      "validation": false,
+      "frames": 62,
+      "samples": 6912,
+      "seconds": 2.0456197261810303
+    },
+    {
+      "group": "cup-shift-63",
+      "validation": false,
+      "frames": 59,
+      "samples": 6912,
+      "seconds": 1.8674638271331787
+    },
+    {
+      "group": "cup-shift-70",
+      "validation": true,
+      "frames": 59,
+      "samples": 6656,
+      "seconds": 1.9696195125579834
+    },
+    {
+      "group": "cup-shift-71",
+      "validation": true,
+      "frames": 34,
+      "samples": 5120,
+      "seconds": 1.1002073287963867
+    },
+    {
+      "group": "cup-under_extrusion-60",
+      "validation": false,
+      "frames": 61,
+      "samples": 7872,
+      "seconds": 1.9177603721618652
+    },
+    {
+      "group": "cup-under_extrusion-61",
+      "validation": false,
+      "frames": 56,
+      "samples": 7296,
+      "seconds": 1.8382723331451416
+    },
+    {
+      "group": "cup-under_extrusion-62",
+      "validation": false,
+      "frames": 57,
+      "samples": 6976,
+      "seconds": 1.831413984298706
+    },
+    {
+      "group": "cup-under_extrusion-63",
+      "validation": false,
+      "frames": 57,
+      "samples": 7168,
+      "seconds": 1.8213119506835938
+    },
+    {
+      "group": "cup-under_extrusion-70",
+      "validation": true,
+      "frames": 56,
+      "samples": 6720,
+      "seconds": 1.7796180248260498
+    },
+    {
+      "group": "cup-under_extrusion-71",
+      "validation": true,
+      "frames": 36,
+      "samples": 4928,
+      "seconds": 1.1329963207244873
+    },
+    {
+      "group": "cup-warp-60",
+      "validation": false,
+      "frames": 62,
+      "samples": 8000,
+      "seconds": 2.315011739730835
+    },
+    {
+      "group": "cup-warp-61",
+      "validation": false,
+      "frames": 60,
+      "samples": 7232,
+      "seconds": 2.1715095043182373
+    },
+    {
+      "group": "cup-warp-62",
+      "validation": false,
+      "frames": 60,
+      "samples": 6976,
+      "seconds": 2.102931261062622
+    },
+    {
+      "group": "cup-warp-63",
+      "validation": false,
+      "frames": 59,
+      "samples": 6464,
+      "seconds": 2.104153633117676
+    },
+    {
+      "group": "cup-warp-70",
+      "validation": true,
+      "frames": 57,
+      "samples": 6720,
+      "seconds": 2.0898232460021973
+    },
+    {
+      "group": "cup-warp-71",
+      "validation": true,
+      "frames": 36,
+      "samples": 5184,
+      "seconds": 1.3349177837371826
+    },
+    {
+      "group": "mug-clean-60",
+      "validation": false,
+      "frames": 61,
+      "samples": 8192,
+      "seconds": 2.029099702835083
+    },
+    {
+      "group": "mug-clean-61",
+      "validation": false,
+      "frames": 62,
+      "samples": 8256,
+      "seconds": 2.097689628601074
+    },
+    {
+      "group": "mug-clean-62",
+      "validation": false,
+      "frames": 59,
+      "samples": 8320,
+      "seconds": 1.9892487525939941
+    },
+    {
+      "group": "mug-clean-63",
+      "validation": false,
+      "frames": 64,
+      "samples": 8064,
+      "seconds": 2.066710948944092
+    },
+    {
+      "group": "mug-clean-70",
+      "validation": true,
+      "frames": 59,
+      "samples": 7872,
+      "seconds": 2.0012075901031494
+    },
+    {
+      "group": "mug-clean-71",
+      "validation": true,
+      "frames": 58,
+      "samples": 7744,
+      "seconds": 1.929302453994751
+    },
+    {
+      "group": "mug-collapse-60",
+      "validation": false,
+      "frames": 58,
+      "samples": 8192,
+      "seconds": 2.798739433288574
+    },
+    {
+      "group": "mug-collapse-61",
+      "validation": false,
+      "frames": 59,
+      "samples": 6912,
+      "seconds": 2.4212241172790527
+    },
+    {
+      "group": "mug-collapse-62",
+      "validation": false,
+      "frames": 60,
+      "samples": 6848,
+      "seconds": 2.318117141723633
+    },
+    {
+      "group": "mug-collapse-63",
+      "validation": false,
+      "frames": 59,
+      "samples": 7360,
+      "seconds": 2.31329083442688
+    },
+    {
+      "group": "mug-collapse-70",
+      "validation": true,
+      "frames": 49,
+      "samples": 6528,
+      "seconds": 2.139827013015747
+    },
+    {
+      "group": "mug-collapse-71",
+      "validation": true,
+      "frames": 36,
+      "samples": 4928,
+      "seconds": 1.3846428394317627
+    },
+    {
+      "group": "mug-shift-60",
+      "validation": false,
+      "frames": 58,
+      "samples": 7808,
+      "seconds": 2.124859094619751
+    },
+    {
+      "group": "mug-shift-61",
+      "validation": false,
+      "frames": 56,
+      "samples": 7296,
+      "seconds": 1.9122073650360107
+    },
+    {
+      "group": "mug-shift-62",
+      "validation": false,
+      "frames": 60,
+      "samples": 6848,
+      "seconds": 2.006101369857788
+    },
+    {
+      "group": "mug-shift-63",
+      "validation": false,
+      "frames": 62,
+      "samples": 6592,
+      "seconds": 1.9227516651153564
+    },
+    {
+      "group": "mug-shift-70",
+      "validation": true,
+      "frames": 49,
+      "samples": 6912,
+      "seconds": 1.7425317764282227
+    },
+    {
+      "group": "mug-shift-71",
+      "validation": true,
+      "frames": 35,
+      "samples": 5184,
+      "seconds": 1.0964655876159668
+    },
+    {
+      "group": "mug-under_extrusion-60",
+      "validation": false,
+      "frames": 54,
+      "samples": 7360,
+      "seconds": 1.8585779666900635
+    },
+    {
+      "group": "mug-under_extrusion-61",
+      "validation": false,
+      "frames": 59,
+      "samples": 7104,
+      "seconds": 1.9327247142791748
+    },
+    {
+      "group": "mug-under_extrusion-62",
+      "validation": false,
+      "frames": 56,
+      "samples": 7296,
+      "seconds": 1.8297464847564697
+    },
+    {
+      "group": "mug-under_extrusion-63",
+      "validation": false,
+      "frames": 59,
+      "samples": 6592,
+      "seconds": 1.872532844543457
+    },
+    {
+      "group": "mug-under_extrusion-70",
+      "validation": true,
+      "frames": 56,
+      "samples": 6592,
+      "seconds": 1.7759020328521729
+    },
+    {
+      "group": "mug-under_extrusion-71",
+      "validation": true,
+      "frames": 36,
+      "samples": 4992,
+      "seconds": 1.1059980392456055
+    },
+    {
+      "group": "mug-warp-60",
+      "validation": false,
+      "frames": 57,
+      "samples": 7488,
+      "seconds": 2.2290186882019043
+    },
+    {
+      "group": "mug-warp-61",
+      "validation": false,
+      "frames": 62,
+      "samples": 6720,
+      "seconds": 2.2506279945373535
+    },
+    {
+      "group": "mug-warp-62",
+      "validation": false,
+      "frames": 60,
+      "samples": 6848,
+      "seconds": 2.087740421295166
+    },
+    {
+      "group": "mug-warp-63",
+      "validation": false,
+      "frames": 62,
+      "samples": 6784,
+      "seconds": 2.192732572555542
+    },
+    {
+      "group": "mug-warp-70",
+      "validation": true,
+      "frames": 56,
+      "samples": 6656,
+      "seconds": 2.070669412612915
+    },
+    {
+      "group": "mug-warp-71",
+      "validation": true,
+      "frames": 36,
+      "samples": 4928,
+      "seconds": 1.2731318473815918
+    },
+    {
+      "group": "spacer-clean-60",
+      "validation": false,
+      "frames": 38,
+      "samples": 2730,
+      "seconds": 0.8150947093963623
+    },
+    {
+      "group": "spacer-clean-61",
+      "validation": false,
+      "frames": 40,
+      "samples": 2610,
+      "seconds": 0.8480463027954102
+    },
+    {
+      "group": "spacer-clean-62",
+      "validation": false,
+      "frames": 39,
+      "samples": 2610,
+      "seconds": 0.8145136833190918
+    },
+    {
+      "group": "spacer-clean-63",
+      "validation": false,
+      "frames": 40,
+      "samples": 2700,
+      "seconds": 0.835364818572998
+    },
+    {
+      "group": "spacer-clean-70",
+      "validation": true,
+      "frames": 43,
+      "samples": 2610,
+      "seconds": 0.9150855541229248
+    },
+    {
+      "group": "spacer-clean-71",
+      "validation": true,
+      "frames": 39,
+      "samples": 2610,
+      "seconds": 0.8473489284515381
+    },
+    {
+      "group": "spacer-collapse-60",
+      "validation": false,
+      "frames": 38,
+      "samples": 2340,
+      "seconds": 0.9643149375915527
+    },
+    {
+      "group": "spacer-collapse-61",
+      "validation": false,
+      "frames": 33,
+      "samples": 2280,
+      "seconds": 0.8139581680297852
+    },
+    {
+      "group": "spacer-collapse-62",
+      "validation": false,
+      "frames": 32,
+      "samples": 2280,
+      "seconds": 0.7180700302124023
+    },
+    {
+      "group": "spacer-collapse-63",
+      "validation": false,
+      "frames": 31,
+      "samples": 2280,
+      "seconds": 0.7177915573120117
+    },
+    {
+      "group": "spacer-collapse-70",
+      "validation": true,
+      "frames": 26,
+      "samples": 1920,
+      "seconds": 0.6424434185028076
+    },
+    {
+      "group": "spacer-collapse-71",
+      "validation": true,
+      "frames": 15,
+      "samples": 810,
+      "seconds": 0.3311014175415039
+    },
+    {
+      "group": "spacer-shift-60",
+      "validation": false,
+      "frames": 42,
+      "samples": 2400,
+      "seconds": 0.9135701656341553
+    },
+    {
+      "group": "spacer-shift-61",
+      "validation": false,
+      "frames": 32,
+      "samples": 2280,
+      "seconds": 0.698042631149292
+    },
+    {
+      "group": "spacer-shift-62",
+      "validation": false,
+      "frames": 32,
+      "samples": 2220,
+      "seconds": 0.6977131366729736
+    },
+    {
+      "group": "spacer-shift-63",
+      "validation": false,
+      "frames": 32,
+      "samples": 2310,
+      "seconds": 0.6702215671539307
+    },
+    {
+      "group": "spacer-shift-70",
+      "validation": true,
+      "frames": 26,
+      "samples": 1920,
+      "seconds": 0.5710163116455078
+    },
+    {
+      "group": "spacer-shift-71",
+      "validation": true,
+      "frames": 15,
+      "samples": 810,
+      "seconds": 0.3199918270111084
+    },
+    {
+      "group": "spacer-under_extrusion-60",
+      "validation": false,
+      "frames": 41,
+      "samples": 2460,
+      "seconds": 0.8712096214294434
+    },
+    {
+      "group": "spacer-under_extrusion-61",
+      "validation": false,
+      "frames": 33,
+      "samples": 2280,
+      "seconds": 0.6969285011291504
+    },
+    {
+      "group": "spacer-under_extrusion-62",
+      "validation": false,
+      "frames": 32,
+      "samples": 2220,
+      "seconds": 0.6579983234405518
+    },
+    {
+      "group": "spacer-under_extrusion-63",
+      "validation": false,
+      "frames": 32,
+      "samples": 2280,
+      "seconds": 0.6860206127166748
+    },
+    {
+      "group": "spacer-under_extrusion-70",
+      "validation": true,
+      "frames": 26,
+      "samples": 1920,
+      "seconds": 0.554724931716919
+    },
+    {
+      "group": "spacer-under_extrusion-71",
+      "validation": true,
+      "frames": 15,
+      "samples": 810,
+      "seconds": 0.3099052906036377
+    },
+    {
+      "group": "spacer-warp-60",
+      "validation": false,
+      "frames": 40,
+      "samples": 2430,
+      "seconds": 0.9070756435394287
+    },
+    {
+      "group": "spacer-warp-61",
+      "validation": false,
+      "frames": 33,
+      "samples": 2250,
+      "seconds": 0.7245981693267822
+    },
+    {
+      "group": "spacer-warp-62",
+      "validation": false,
+      "frames": 32,
+      "samples": 2280,
+      "seconds": 0.6627819538116455
+    },
+    {
+      "group": "spacer-warp-63",
+      "validation": false,
+      "frames": 32,
+      "samples": 2340,
+      "seconds": 0.6966655254364014
+    },
+    {
+      "group": "spacer-warp-70",
+      "validation": true,
+      "frames": 26,
+      "samples": 1920,
+      "seconds": 0.6125411987304688
+    },
+    {
+      "group": "spacer-warp-71",
+      "validation": true,
+      "frames": 15,
+      "samples": 810,
+      "seconds": 0.32402682304382324
+    }
+  ],
+  "final_source_sha256": "7abfe82a2a0f1e65f547e0af1fa168effcac77ebd3322d32dc4a304ff0ff2173"
+}

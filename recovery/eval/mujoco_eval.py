@@ -32,7 +32,7 @@ from ..parts import PART_NAMES, get_part
 from ..printer.profiles import PROFILES
 from .run_eval import METHODS, ScrapPolicy
 
-EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded", "contour"]
+EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded", "contour", "neural", "neural_agent"]
 
 
 class ObservedSegmenter(ClassicalSegmenter):
@@ -63,7 +63,8 @@ class ObservedSegmenter(ClassicalSegmenter):
 
 def run_case(job):
     from ..printer.mujoco import MujocoPrinter
-    profile, part_name, kind, seed, methods, clear_on_adapt = job
+    profile, part_name, kind, seed, methods, clear_on_adapt = job[:6]
+    options = job[6] if len(job) > 6 else {}
     part = get_part(part_name)
     nominal = part.layers()
     nominal_check = check(nominal, nominal, part.spec, part.layer_h)
@@ -74,6 +75,7 @@ def run_case(job):
     rows = []
     for method in methods:
         started = time.perf_counter()
+        policy = None
         with MujocoPrinter(nominal, failure, seed, profile, clear_on_adapt,
                             render=method != "ignore") as pr:
             seg = ObservedSegmenter(pr)
@@ -83,7 +85,17 @@ def run_case(job):
                 verdict = check(pr.printed, nominal, part.spec, part.layer_h)
                 functional, outcome = verdict.ok, "finished"
             else:
-                if method in ("guarded", "contour"):
+                if method in ("neural", "neural_agent"):
+                    from ..loop.neural import NeuralPolicy
+                    from ..loop.local_agent import AgentNeuralPolicy, LocalSupervisor
+                    policy_options = dict(checkpoint=options['neural_checkpoint'],
+                                          calibrate_measurements=options.get('neural_calibrate_measurements', False))
+                    if method == 'neural_agent':
+                        policy_options['supervisor'] = LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'])
+                        policy_options['review_interval_layers'] = options.get('supervisor_review_interval', 8)
+                    policy = {'neural': NeuralPolicy, 'neural_agent': AgentNeuralPolicy}[method](
+                        part.spec, nominal, part.layer_h, **policy_options)
+                elif method in ("guarded", "contour"):
                     policy = {"guarded": GuardedPolicy, "contour": ContourPolicy}[method](part.spec, nominal, part.layer_h)
                 elif method in ("measured", "predictive", "functional"):
                     policy = FunctionalPolicy(part.spec, nominal, part.layer_h,
@@ -118,6 +130,9 @@ def run_case(job):
                 command_boundary_error_mm=float(np.mean([s["command_mm"] for s in forecast_scores])) if forecast_scores else None,
                 tracking_rms_mm=float(pr.tracking_rms_mm), max_tracking_mm=pr.max_tracking_mm,
                 executed_waypoints=pr.executed_waypoints,
+                neural_queries=getattr(getattr(policy, 'state', None), 'neural_queries', 0),
+                agent_requests=len(getattr(getattr(policy, 'supervisor', None), 'audit', [])),
+                agent_accepted=sum(a['accepted'] for a in getattr(getattr(policy, 'supervisor', None), 'audit', [])),
                 violations=verdict.violations if verdict else [events[-1].reason],
                 actions=[dict(layer=e.layer, label=e.label, action=e.action, reason=e.reason,
                               considered=e.considered) for e in events],
@@ -164,12 +179,15 @@ def paired_comparison(rows):
     key = lambda r: (r["profile"], r["part"], r["kind"], r["seed"])
     by_method = {m: {key(r): r for r in rows if r["method"] == m} for m in EXPERIMENT_METHODS}
     comparisons = []
-    for baseline, treatment in (("ignore", "ours"), ("ignore", "measured"), ("ignore", "predictive"),
+    comparisons_to_run = [("ignore", "ours"), ("ignore", "measured"), ("ignore", "predictive"),
                                 ("ignore", "functional"), ("ours", "measured"), ("measured", "predictive"),
                                 ("predictive", "functional"), ("ours", "functional"),
                                 ("ignore", "guarded"), ("ours", "guarded"),
                                 ("predictive", "guarded"), ("functional", "guarded"),
-                                ("ignore", "contour"), ("guarded", "contour")):
+                                ("ignore", "contour"), ("guarded", "contour")]
+    comparisons_to_run += [(baseline, treatment) for treatment in ('neural', 'neural_agent')
+                          for baseline in EXPERIMENT_METHODS if baseline not in ('neural_agent', treatment)]
+    for baseline, treatment in comparisons_to_run:
         for split in ("clean", "failure"):
             keys = sorted(k for k in by_method[baseline].keys() & by_method[treatment].keys()
                           if (k[2] == "clean") == (split == "clean"))
@@ -205,17 +223,35 @@ def main(argv=None):
     parser.add_argument("--clear-failure-on-adapt", action="store_true",
                         help="optimistic ablation: adaptation removes the prescribed failure cause")
     parser.add_argument("--out", default="results/mujoco")
+    parser.add_argument('--neural-checkpoint', type=Path)
+    parser.add_argument('--neural-calibrate-measurements', action='store_true')
+    parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
+    parser.add_argument('--supervisor-model', default='local-qwen3')
+    parser.add_argument('--supervisor-review-interval', type=int, default=8,
+                        help='maximum layer interval between reviews of an unchanged, passing continuation')
+    parser.add_argument('--supervisor-manifest', type=Path,
+                        help='pinned local runtime/model asset provenance')
     args = parser.parse_args(argv)
     if args.n < 1 or args.workers < 1:
         parser.error("--n and --workers must be positive")
+    neural = any(m in ('neural', 'neural_agent') for m in args.methods)
+    if neural and not args.neural_checkpoint:
+        parser.error('neural methods require --neural-checkpoint')
+    if 'neural_agent' in args.methods and not args.supervisor_manifest:
+        parser.error('agent evaluation requires --supervisor-manifest')
+    options = dict(neural_checkpoint=str(args.neural_checkpoint.resolve()) if args.neural_checkpoint else None,
+                   neural_calibrate_measurements=args.neural_calibrate_measurements,
+                   supervisor_endpoint=args.supervisor_endpoint, supervisor_model=args.supervisor_model,
+                   supervisor_review_interval=args.supervisor_review_interval)
     output = Path(args.out)
     output.mkdir(parents=True, exist_ok=True)
     if (output / "runs.jsonl").exists():
         parser.error("output already contains runs.jsonl; use a fresh directory")
-    jobs = [(p, part, kind, seed, args.methods, args.clear_failure_on_adapt)
+    jobs = [(p, part, kind, seed, args.methods, args.clear_failure_on_adapt, options)
             for p in args.profiles for part in args.parts for kind in args.kinds
             for seed in range(args.seed, args.seed + args.n)]
-    manifest = dict(arguments=vars(args), profiles={k: asdict(PROFILES[k]) for k in args.profiles},
+    manifest = dict(arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
+                    profiles={k: asdict(PROFILES[k]) for k in args.profiles},
                     python=platform.python_version(),
                     packages={p: importlib.metadata.version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},
                     git_revision=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
@@ -224,6 +260,10 @@ def main(argv=None):
                     "0.1 mm bead-fusion closing before failure injection",
                     "prescribed failures", "controlled current-layer illumination", "exact camera calibration",
                     "geometry-only function verdicts", "restart cost is hypothetical"])
+    if neural:
+        manifest['neural_checkpoint_sha256'] = hashlib.sha256(args.neural_checkpoint.read_bytes()).hexdigest()
+    if args.supervisor_manifest:
+        manifest['supervisor'] = json.loads(args.supervisor_manifest.read_text())
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
     rows, errors = [], []
     # Spawn isolates GL contexts; forking an initialized EGL runtime is unsafe.
@@ -250,6 +290,11 @@ def main(argv=None):
     (output / "paired.json").write_text(json.dumps(paired_comparison(rows), indent=2))
     manifest.update(status="failed" if errors else "complete", completed_runs=len(rows), errors=errors,
                     final_source_sha256=source_digest())
+    if neural:
+        manifest['final_neural_checkpoint_sha256'] = hashlib.sha256(args.neural_checkpoint.read_bytes()).hexdigest()
+        if manifest['final_neural_checkpoint_sha256'] != manifest['neural_checkpoint_sha256']:
+            manifest['status'] = 'failed'
+            errors.append(dict(error='neural checkpoint changed during evaluation'))
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
     if errors:
         raise SystemExit(f"{len(errors)} scenarios failed; see manifest.json")

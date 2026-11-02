@@ -1,0 +1,92 @@
+{
+  "status": "passed",
+  "source_sha256": "50baad60de3d83725fb8a7a173e7234619b7ad0a86d19a5f79b6d07ce2138703",
+  "checkpoint_sha256": "dbb507d434674476c8acb6fadc5f6c4d7435e4c80839819c3379193dd91c91a8",
+  "runs_sha256": "8bb2a92dddd533d4cf45157afb502b57fa371bd8a0092715b08cc50a5046875c",
+  "rows": 32,
+  "actual_agent_calls": 77,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "ignore",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 13.878350887913257
+    },
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 6,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 4,
+      "agent_requests": 0,
+      "seconds": 41.953427536878735
+    },
+    {
+      "method": "contour",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 26.079386650933884
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 6,
+      "in_place": 2,
+      "scrapped": 4,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 127.95705673319753
+    },
+    {
+      "method": "neural",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 26.0861124539515
+    },
+    {
+      "method": "neural",
+      "split": "failure",
+      "n": 6,
+      "in_place": 2,
+      "scrapped": 4,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 105.96704496594612
+    },
+    {
+      "method": "neural_agent",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 26.49293867801316
+    },
+    {
+      "method": "neural_agent",
+      "split": "failure",
+      "n": 6,
+      "in_place": 2,
+      "scrapped": 4,
+      "defective_finished": 0,
+      "agent_requests": 77,
+      "seconds": 425.10705224389676
+    }
+  ],
+  "limitation": "development comparison; does not establish superiority on untouched test cases"
+}

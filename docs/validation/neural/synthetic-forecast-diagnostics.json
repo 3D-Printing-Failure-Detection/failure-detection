@@ -1,0 +1,2249 @@
+{
+  "manifest": {
+    "source_sha256": "50baad60de3d83725fb8a7a173e7234619b7ad0a86d19a5f79b6d07ce2138703",
+    "final_source_sha256": "50baad60de3d83725fb8a7a173e7234619b7ad0a86d19a5f79b6d07ce2138703",
+    "scorer_sha256": "81bcfbf1c6d56ca19d9f9724d1e3c5901e23701314686e053bb0329562513dac",
+    "stride": 8,
+    "dense_onset_frames": 8,
+    "inputs": {
+      "cartesian-cup-collapse-10.json.gz": {
+        "sha256": "ea9a80c9ff323644190b42a519601d41b01e2b3028e09642c2ecdceb909b0b37",
+        "capture_source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db"
+      },
+      "cartesian-cup-shift-10.json.gz": {
+        "sha256": "4fad67a7f43445311471612a44e7313b989396c08168262da835bb413eccbc85",
+        "capture_source_sha256": "4dbe0d863502819e60f96b9096fc3e60e55ff13bc62958cae1c2194d6e826240"
+      },
+      "cartesian-cup-under_extrusion-10.json.gz": {
+        "sha256": "618c1f2ddb61b392cbe8c48c17da068f6806becede327fd0fcd43ff2505808d2",
+        "capture_source_sha256": "4dbe0d863502819e60f96b9096fc3e60e55ff13bc62958cae1c2194d6e826240"
+      },
+      "cartesian-cup-warp-10.json.gz": {
+        "sha256": "a5e0d5bdcc96566ae202fc9efa2a693b13fe5fca6f0c7ba1eca2587fa6eb749a",
+        "capture_source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db"
+      },
+      "cartesian-mug-collapse-10.json.gz": {
+        "sha256": "2a35c1ad434eea62f96575dd792bbffcf5818c49c01da4621337a0ec8a40b85d",
+        "capture_source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800"
+      },
+      "cartesian-mug-shift-10.json.gz": {
+        "sha256": "47e4b46ef02165ae6ea1ac47be7927d3502f29a2175c42c2c4ad27912eb02539",
+        "capture_source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800"
+      },
+      "cartesian-mug-under_extrusion-10.json.gz": {
+        "sha256": "e7e85b2b40c503b069327b9f097cf92295538711bc3ef27d3f84c28131532a4a",
+        "capture_source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800"
+      },
+      "cartesian-mug-warp-10.json.gz": {
+        "sha256": "4180d6bdd523c0970c71dd0349f73966401fa169f74d5ca0133ff3c989f11d7a",
+        "capture_source_sha256": "4dbe0d863502819e60f96b9096fc3e60e55ff13bc62958cae1c2194d6e826240"
+      }
+    },
+    "neural_checkpoint_sha256": "dbb507d434674476c8acb6fadc5f6c4d7435e4c80839819c3379193dd91c91a8"
+  },
+  "scores": [
+    {
+      "trajectory": "cartesian-cup-collapse-10.json.gz",
+      "model": "original",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 1.1162246905554634,
+      "continuation_snapshots": 14,
+      "predicted_failures": 6,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 21 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 26 layers (leaks)",
+            "wall below 1.4 mm in 4 layers"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 26 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 20 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 12 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 4 layers (leaks)"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-collapse-10.json.gz",
+      "model": "contour",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.3129987442426149,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-collapse-10.json.gz",
+      "model": "neural",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.4753589216683441,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-shift-10.json.gz",
+      "model": "original",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.38612900392001137,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-shift-10.json.gz",
+      "model": "contour",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.36437130930250944,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-shift-10.json.gz",
+      "model": "neural",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.780572627143236,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-under_extrusion-10.json.gz",
+      "model": "original",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.3556895931542992,
+      "continuation_snapshots": 14,
+      "predicted_failures": 14,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.4 mm in 26 layers"
+          ]
+        },
+        {
+          "layer": 108,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 20 layers (leaks)",
+            "wall below 1.4 mm in 27 layers"
+          ]
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 26 layers (leaks)",
+            "wall below 1.4 mm in 32 layers"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 25 layers (leaks)",
+            "wall below 1.4 mm in 31 layers"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 27 layers (leaks)",
+            "wall below 1.4 mm in 33 layers"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-under_extrusion-10.json.gz",
+      "model": "contour",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.33129081195118254,
+      "continuation_snapshots": 14,
+      "predicted_failures": 14,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.4 mm in 53 layers"
+          ]
+        },
+        {
+          "layer": 108,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.4 mm in 53 layers"
+          ]
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 27 layers (leaks)",
+            "wall below 1.4 mm in 33 layers"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 25 layers (leaks)",
+            "wall below 1.4 mm in 30 layers"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 5 layers (leaks)",
+            "wall below 1.4 mm in 31 layers"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-under_extrusion-10.json.gz",
+      "model": "neural",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.22536014166413762,
+      "continuation_snapshots": 14,
+      "predicted_failures": 12,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 1 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 2 layers (leaks)",
+            "wall below 1.4 mm in 12 layers"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 12 layers"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)",
+            "wall below 1.4 mm in 5 layers"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-warp-10.json.gz",
+      "model": "original",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.42821160248021084,
+      "continuation_snapshots": 14,
+      "predicted_failures": 6,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 23 layers (leaks)",
+            "wall below 1.4 mm in 4 layers"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 31 layers (leaks)",
+            "wall below 1.4 mm in 4 layers"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 32 layers (leaks)",
+            "wall below 1.4 mm in 6 layers"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 27 layers (leaks)",
+            "wall below 1.4 mm in 4 layers"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 26 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 15 layers (leaks)",
+            "wall below 1.4 mm in 4 layers"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-warp-10.json.gz",
+      "model": "contour",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.30278790818506485,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-cup-warp-10.json.gz",
+      "model": "neural",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.23607589484639843,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-collapse-10.json.gz",
+      "model": "original",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.3831137609079875,
+      "continuation_snapshots": 14,
+      "predicted_failures": 4,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 36 layers (leaks)",
+            "expected 1 piece(s) near z=31.8, found 2"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 27 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 20 layers (leaks)"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 3 layers (leaks)"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-collapse-10.json.gz",
+      "model": "contour",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.320095201017429,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-collapse-10.json.gz",
+      "model": "neural",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.4876595695241777,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-shift-10.json.gz",
+      "model": "original",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.4087684423491413,
+      "continuation_snapshots": 14,
+      "predicted_failures": 13,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (14 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (18 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (27 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (35 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (38 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (36 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-shift-10.json.gz",
+      "model": "contour",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.38200269388376484,
+      "continuation_snapshots": 14,
+      "predicted_failures": 13,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (15 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (18 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (26 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (29 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (35 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (37 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (37 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (32 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-shift-10.json.gz",
+      "model": "neural",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.809993958006178,
+      "continuation_snapshots": 14,
+      "predicted_failures": 11,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (11 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (13 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (18 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (20 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (18 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 115,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (21 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 123,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 131,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 139,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 147,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        },
+        {
+          "layer": 155,
+          "predicted_ok": false,
+          "violations": [
+            "layer not supported by layer below (30 mm2 overhang)"
+          ]
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-under_extrusion-10.json.gz",
+      "model": "original",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.3575923334910378,
+      "continuation_snapshots": 14,
+      "predicted_failures": 5,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 26 layers"
+          ]
+        },
+        {
+          "layer": 108,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 25 layers"
+          ]
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 51 layers"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 51 layers"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 51 layers"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-under_extrusion-10.json.gz",
+      "model": "contour",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.32825892394226297,
+      "continuation_snapshots": 14,
+      "predicted_failures": 4,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 26 layers"
+          ]
+        },
+        {
+          "layer": 109,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 51 layers"
+          ]
+        },
+        {
+          "layer": 110,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 51 layers"
+          ]
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "wall below 1.6 mm in 51 layers"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-under_extrusion-10.json.gz",
+      "model": "neural",
+      "actual_ok": false,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.26045873592980656,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-warp-10.json.gz",
+      "model": "original",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.34469206223029375,
+      "continuation_snapshots": 14,
+      "predicted_failures": 3,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 48 layers (leaks)",
+            "capacity 42.2 ml outside [46,76]",
+            "expected 1 piece(s) near z=30.5, found 3"
+          ]
+        },
+        {
+          "layer": 112,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 47 layers (leaks)",
+            "capacity 42.7 ml outside [46,76]",
+            "expected 1 piece(s) near z=30.5, found 5"
+          ]
+        },
+        {
+          "layer": 113,
+          "predicted_ok": false,
+          "violations": [
+            "walls not closed in 46 layers (leaks)",
+            "capacity 43.1 ml outside [46,76]",
+            "expected 1 piece(s) near z=30.5, found 3"
+          ]
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-warp-10.json.gz",
+      "model": "contour",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.31490163873407256,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    },
+    {
+      "trajectory": "cartesian-mug-warp-10.json.gz",
+      "model": "neural",
+      "actual_ok": true,
+      "forecast_frames": 53,
+      "boundary_error_mm": 0.22766985396036987,
+      "continuation_snapshots": 14,
+      "predicted_failures": 0,
+      "snapshots": [
+        {
+          "layer": 107,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 108,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 109,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 110,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 111,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 112,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 113,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 114,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 115,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 123,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 131,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 139,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 147,
+          "predicted_ok": true,
+          "violations": []
+        },
+        {
+          "layer": 155,
+          "predicted_ok": true,
+          "violations": []
+        }
+      ]
+    }
+  ]
+}

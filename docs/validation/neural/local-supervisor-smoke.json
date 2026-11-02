@@ -1,0 +1,92 @@
+[
+  {
+    "request": {
+      "model": "local-qwen3",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. Only candidates marked ok and executable are allowed. Aim for a functional completed print. Prefer continuing when it passes; unnecessary intervention consumes a limited budget. For recovery, consider functional margin, robustness under uncertainty, material change, and remaining correction distance. Larger margins are better. Negative robust margin means the uncertainty envelope fails, even if the central prediction passes. Do not invent measurements or change the functional specification. Reply with JSON and a short reason."
+        },
+        {
+          "role": "user",
+          "content": "{\"observation\":{\"printed_layers\":20,\"total_layers\":100,\"uncertainty_mm\":0.15,\"adapts_remaining\":2},\"candidates\":[{\"id\":0,\"name\":\"continue\",\"ok\":false,\"executable\":true,\"margin\":-1,\"robust_margin\":-1},{\"id\":1,\"name\":\"bounded return\",\"ok\":true,\"executable\":true,\"margin\":0.8,\"robust_margin\":0.6,\"command_change_fraction\":0.1}]}"
+        }
+      ],
+      "temperature": 0.0,
+      "seed": 2026,
+      "max_tokens": 160,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "recovery_decision",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "candidate": {
+                "type": "integer",
+                "enum": [
+                  1
+                ]
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "candidate",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "accepted": true,
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\n  \"candidate\": 1,\n  \"reason\": \"bounded return is a functional candidate with a positive margin and robust margin, making it the best choice for a completed 3D print.\"\n}"
+          }
+        }
+      ],
+      "created": 1793646902,
+      "model": "local-qwen3",
+      "system_fingerprint": "b12057-cd8427d01",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 46,
+        "prompt_tokens": 224,
+        "total_tokens": 270,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-i0goNCRwUlG7szglitacY1Ud3PZ94ed7",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 224,
+        "prompt_ms": 876.975,
+        "prompt_per_token_ms": 3.9150669642857143,
+        "prompt_per_second": 255.42347273297412,
+        "predicted_n": 46,
+        "predicted_ms": 1398.741,
+        "predicted_per_token_ms": 31.083133333333333,
+        "predicted_per_second": 32.17178877290363
+      }
+    },
+    "selected": {
+      "candidate": 1,
+      "reason": "bounded return is a functional candidate with a positive margin and robust margin, making it the best choice for a completed 3D print."
+    },
+    "seconds": 2.2898648369591683,
+    "request_sha256": "64afb325e42744ccc4b49d225cbd66e56208d4256f7818dfafa6f6bd79613001"
+  }
+]
