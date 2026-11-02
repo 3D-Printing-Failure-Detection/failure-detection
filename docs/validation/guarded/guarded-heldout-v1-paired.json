@@ -1,0 +1,447 @@
+[
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 11,
+    "treatment_in_place": 10,
+    "gained": [],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "predictive",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "predictive",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 11,
+    "treatment_in_place": 12,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        21
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "functional",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 11,
+    "treatment_in_place": 7,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        21
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "functional",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 12,
+    "treatment_in_place": 7,
+    "gained": [],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "ours",
+    "treatment": "functional",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 10,
+    "treatment_in_place": 7,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        21
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "guarded",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 11,
+    "treatment_in_place": 12,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        21
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "ours",
+    "treatment": "guarded",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 10,
+    "treatment_in_place": 12,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        21
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        21
+      ]
+    ]
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "guarded",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "functional",
+    "treatment": "guarded",
+    "split": "clean",
+    "n": 4,
+    "baseline_in_place": 4,
+    "treatment_in_place": 4,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "functional",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 20,
+    "baseline_in_place": 7,
+    "treatment_in_place": 12,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        21
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        21
+      ]
+    ],
+    "lost": []
+  }
+]

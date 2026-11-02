@@ -1,0 +1,127 @@
+[
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 0,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "predictive",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 1,
+    "treatment_in_place": 1,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 1,
+    "treatment_in_place": 1,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "functional",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 1,
+    "treatment_in_place": 1,
+    "gained": [],
+    "lost": []
+  }
+]

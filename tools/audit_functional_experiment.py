@@ -16,7 +16,7 @@ from recovery.eval.mujoco_eval import paired_comparison, source_digest
 
 
 KEY = ("profile", "part", "kind", "seed", "method")
-METHODS = ("ignore", "ours", "measured", "predictive", "functional")
+METHODS = ("ignore", "ours", "measured", "predictive", "functional", "guarded")
 
 
 def read_rows(path):
@@ -81,13 +81,13 @@ def main():
         (args.out / (directory.name + "-paired.json")).write_text(json.dumps(comparisons, indent=2))
         (args.out / (directory.name + "-manifest.json")).write_text(json.dumps(manifest, indent=2))
         for comparison in comparisons:
-            if comparison["treatment"] == "functional" and comparison["baseline"] in ("ignore", "ours", "predictive"):
+            if comparison["treatment"] in ("functional", "guarded") and comparison["baseline"] in ("ignore", "ours", "predictive", "functional"):
                 for direction in ("gained", "lost"):
                     for case in comparison[direction]:
-                        row = by_key[tuple(case) + ("functional",)]
-                        change_key = (directory.name, *case)
+                        row = by_key[tuple(case) + (comparison["treatment"],)]
+                        change_key = (directory.name, comparison["treatment"], *case)
                         if change_key not in changed:
-                            changed[change_key] = dict(experiment=directory.name, case=case,
+                            changed[change_key] = dict(experiment=directory.name, method=comparison["treatment"], case=case,
                                                       comparisons=[], actions=row["actions"])
                         changed[change_key]["comparisons"].append(dict(baseline=comparison["baseline"], direction=direction))
         audit.append(dict(experiment=directory.name, directory=str(directory), runs=len(rows),

@@ -5,6 +5,7 @@ from typing import List, Optional
 from .. import camera, config as C
 from ..geometry.spec import Verdict, check
 from ..types import Layer
+from .decide import DecisionContext
 
 
 @dataclass
@@ -43,6 +44,14 @@ class Controller:
         self.horizon, self.max_adapts = quiet_horizon, max_adapts
         self.log = log or (lambda *a: None)
 
+    def _validate_remaining(self, layers):
+        rest = self.pr.plan[self.pr.n_done:]
+        if len(layers) != len(rest) or any(a.z != b.z for a, b in zip(layers, rest)):
+            raise ValueError("replacement must preserve remaining layer count and heights")
+        validator = getattr(self.pr, "validate_plan", None)
+        if validator:
+            validator(self.pr.plan[:self.pr.n_done] + list(layers))
+
     def run(self) -> Result:
         pr, events, adapts, quiet = self.pr, [], 0, 0
         known = list(pr.printed)                          # layers believed printed (clean prefix)
@@ -67,7 +76,8 @@ class Controller:
             pr.pause()
             known.append(measured)
             self.log(f"layer {pr.n_done-1}: {det.label} dev={det.deviation_mm:.1f}mm")
-            dec = self.pol.decide(known, pr.plan, det)
+            context = DecisionContext(max(0, self.max_adapts - adapts), self._validate_remaining)
+            dec = self.pol.decide(known, pr.plan, det, context=context)
             if dec.action == "adapt" and adapts >= self.max_adapts:
                 dec.action, dec.reason = "scrap", "too many re-plans on one print"
             events.append(Event(pr.n_done - 1, det.label, det.deviation_mm, dec.action, dec.reason,

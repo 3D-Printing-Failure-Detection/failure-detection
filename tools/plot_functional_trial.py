@@ -12,14 +12,18 @@ import numpy as np
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", type=Path, help="audit output directory containing outcomes.csv")
+    parser.add_argument("--experiments", nargs=2, default=["function-main-v1", "function-heldout-v1"])
+    parser.add_argument("--titles", nargs=2, default=["Three rigs, seed 10", "Cartesian, fresh seed 20"])
+    parser.add_argument("--methods", nargs="+", default=["ignore", "ours", "measured", "predictive", "functional"])
     args = parser.parse_args()
     with (args.directory / "outcomes.csv").open() as stream:
         rows = list(csv.DictReader(stream))
-    methods = ["ignore", "ours", "measured", "predictive", "functional"]
-    labels = ["Ignore", "Current policy", "1: measured", "1+2: predictive", "1+2+3: margin"]
+    methods = args.methods
+    names_by_method = dict(ignore="Ignore", ours="Original policy", measured="Measured state",
+                           predictive="Prediction", functional="Margin ranking", guarded="Constrained recovery")
+    labels = [names_by_method[m] for m in methods]
     fig, axes = plt.subplots(1, 2, figsize=(12, 4), sharex=True, sharey=True)
-    for ax, name, title in zip(axes, ["function-main-v1", "function-heldout-v1"],
-                               ["Three rigs, seed 10", "Cartesian, fresh seed 20"]):
+    for ax, name, title in zip(axes, args.experiments, args.titles):
         selected = {r["method"]: r for r in rows if r["experiment"] == name and r["split"] == "failure"}
         y, left = np.arange(len(methods)), np.zeros(len(methods))
         for field, label, color in [("in_place", "Functional completion", "#2b8c7b"),

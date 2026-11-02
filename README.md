@@ -48,6 +48,14 @@ them with `--methods ignore ours measured predictive functional`. The CLI demo
 also accepts `--policy functional`, but its older simulator clears failures after
 adaptation; use MuJoCo without `--clear-failure-on-adapt` to test persistence.
 
+The [notebook-inspired constrained policy](docs/notebook-recovery-trial.md),
+available as `guarded`, separates function, executable recovery and intervention
+cost. It retains a passing continuation, checks the remaining replan budget and
+printer bounds, and builds corrections using an explicit per-layer assumption.
+Compare it with `--methods ignore ours predictive functional guarded`. The
+notebook's success probability remains an unknown input; a geometry margin is
+not used as a probability. This policy also remains opt-in.
+
 ## The idea in physical terms
 
 A print is a stack of ~0.2 mm slabs. If slab *k* lands somewhere other than planned (wall sags,

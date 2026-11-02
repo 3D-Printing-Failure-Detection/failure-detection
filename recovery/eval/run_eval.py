@@ -30,7 +30,7 @@ METHODS = ["ignore", "scrap", "alert", "ours"]
 
 
 class ScrapPolicy(RulePolicy):
-    def decide(self, known, current_plan, detection):
+    def decide(self, known, current_plan, detection, *, context=None):
         return Decision("scrap", "baseline: scrap on any alarm")
 
 

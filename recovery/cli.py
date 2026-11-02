@@ -38,7 +38,7 @@ def main(argv=None):
     d.add_argument("--seed", type=int, default=3)
     d.add_argument("--severity", type=float, default=None)
     d.add_argument("--models", default="classical", choices=["classical", "torch"])
-    d.add_argument("--policy", default="ours", choices=["ours", "alert", "functional"],
+    d.add_argument("--policy", default="ours", choices=["ours", "alert", "functional", "guarded"],
                    help="functional: experimental measured-state and predictive recovery")
     d.add_argument("--out", default="results/demo")
 

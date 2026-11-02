@@ -2,7 +2,7 @@
 continue / adapt / scrap. Rules first; an LLM planner can pick among the rule-verified
 candidates (loop/llm.py) but can never pick one that fails the spec check."""
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 from shapely.ops import unary_union
 
@@ -19,6 +19,13 @@ class Decision:
     plan: Optional[A.Plan] = None
     verdict: Optional[Verdict] = None
     considered: List[dict] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class DecisionContext:
+    """Executable-action limits, without access to printer truth or fault state."""
+    adapts_remaining: Optional[int] = None
+    validate_remaining: Optional[Callable[[List[Layer]], None]] = None
 
 
 class RulePolicy:
@@ -70,7 +77,7 @@ class RulePolicy:
                 v.ok = False
                 v.violations += rep.violations
 
-    def decide(self, known: List[Layer], current_plan: List[Layer], detection) -> Decision:
+    def decide(self, known: List[Layer], current_plan: List[Layer], detection, *, context=None) -> Decision:
         k = len(known) - 1
         if detection.label == "detach":
             return Decision("scrap", "part detached: nothing to build on")

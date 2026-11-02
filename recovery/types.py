@@ -12,3 +12,6 @@ class Layer:
     z: float
     region: BaseGeometry
     cache: Dict[str, Any] = field(default_factory=dict, repr=False)
+    # Retained by cache keys without retaining an entire previous layer. Unlike
+    # id(layer), this identity cannot be recycled while a cache entry exists.
+    cache_token: object = field(default_factory=object, init=False, repr=False)

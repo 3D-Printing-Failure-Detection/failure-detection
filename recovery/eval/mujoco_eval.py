@@ -25,12 +25,13 @@ from ..geometry.spec import check
 from ..loop.controller import Controller, filament_of
 from ..loop.decide import AlertOnlyPolicy, RulePolicy
 from ..loop.functional import FunctionalPolicy
-from ..models.classical import ClassicalDetector, ClassicalSegmenter
+from ..loop.guarded import GuardedPolicy
+from ..models.classical import ClassicalDetector, ClassicalSegmenter, boundary_deviation
 from ..parts import PART_NAMES, get_part
 from ..printer.profiles import PROFILES
 from .run_eval import METHODS, ScrapPolicy
 
-EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional"]
+EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded"]
 
 
 class ObservedSegmenter(ClassicalSegmenter):
@@ -38,10 +39,24 @@ class ObservedSegmenter(ClassicalSegmenter):
     def __init__(self, printer):
         self.printer = printer
         self.ious = []
+        self.policy = None
+        self.forecast_scores = []
 
     def measure(self, image, expected_mask=None):
         measured = super().measure(image, expected_mask)
         self.ious.append(iou(measured, self.printer.printed[-1].region))
+        # Score BEFORE observe() fits the current measurement. Truth is used
+        # only here, and no score is fed back to the policy or estimator.
+        state = getattr(self.policy, "state", None)
+        if state and state.residuals:
+            command = self.printer.expected_layer()
+            forecast = state.predict([command])[0]
+            actual = self.printer.printed[-1]
+            failure = self.printer.failure
+            self.forecast_scores.append(dict(
+                after_onset=bool(failure and self.printer.n_done - 1 >= failure.k0),
+                forecast_mm=boundary_deviation(forecast.region, actual.region),
+                command_mm=boundary_deviation(command.region, actual.region)))
         return measured
 
 
@@ -67,18 +82,22 @@ def run_case(job):
                 verdict = check(pr.printed, nominal, part.spec, part.layer_h)
                 functional, outcome = verdict.ok, "finished"
             else:
-                if method in ("measured", "predictive", "functional"):
+                if method == "guarded":
+                    policy = GuardedPolicy(part.spec, nominal, part.layer_h)
+                elif method in ("measured", "predictive", "functional"):
                     policy = FunctionalPolicy(part.spec, nominal, part.layer_h,
                                               predict=method != "measured", rank_margin=method == "functional")
                 else:
                     policy = {"ours": RulePolicy, "alert": AlertOnlyPolicy, "scrap": ScrapPolicy}[method](
                         part.spec, nominal, part.layer_h)
+                seg.policy = policy
                 res = Controller(pr, seg, ClassicalDetector(), policy, part.spec,
                                  nominal, part.layer_h).run()
                 functional, outcome, verdict, events = res.functional, res.outcome, res.final, res.events
             used = filament_of(pr.printed, part.layer_h)
             k0 = failure.k0 if failure else len(nominal)
             post_failure = [e for e in events if e.layer >= k0]
+            forecast_scores = [s for s in seg.forecast_scores if s["after_onset"]]
             rows.append(dict(
                 profile=profile, part=part_name, kind=kind, seed=seed, method=method,
                 clear_failure_on_adapt=clear_on_adapt, k0=k0 if failure else -1,
@@ -93,6 +112,9 @@ def run_case(job):
                 alarm_delay=post_failure[0].layer-k0 if post_failure else -1,
                 first_label=events[0].label if events else "",
                 adaptations=len(pr.replacements), measurement_iou=float(np.mean(seg.ious)) if seg.ious else None,
+                forecast_samples_after_onset=len(forecast_scores),
+                forecast_boundary_error_mm=float(np.mean([s["forecast_mm"] for s in forecast_scores])) if forecast_scores else None,
+                command_boundary_error_mm=float(np.mean([s["command_mm"] for s in forecast_scores])) if forecast_scores else None,
                 tracking_rms_mm=float(pr.tracking_rms_mm), max_tracking_mm=pr.max_tracking_mm,
                 executed_waypoints=pr.executed_waypoints,
                 violations=verdict.violations if verdict else [events[-1].reason],
@@ -143,7 +165,9 @@ def paired_comparison(rows):
     comparisons = []
     for baseline, treatment in (("ignore", "ours"), ("ignore", "measured"), ("ignore", "predictive"),
                                 ("ignore", "functional"), ("ours", "measured"), ("measured", "predictive"),
-                                ("predictive", "functional"), ("ours", "functional")):
+                                ("predictive", "functional"), ("ours", "functional"),
+                                ("ignore", "guarded"), ("ours", "guarded"),
+                                ("predictive", "guarded"), ("functional", "guarded")):
         for split in ("clean", "failure"):
             keys = sorted(k for k in by_method[baseline].keys() & by_method[treatment].keys()
                           if (k[2] == "clean") == (split == "clean"))
