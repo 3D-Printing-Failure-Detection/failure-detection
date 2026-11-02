@@ -1,0 +1,42 @@
+{
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/main/integrity-audit-v2",
+      "audit_sha256": "1b51844a1d12e453a231d124a414346d28b6a48a97ac464f4c41b99bb9abf5ea",
+      "status": "passed",
+      "rows": 288,
+      "raw_runs_sha256": "b11eb66b38c81c383b31b1dc33060def8a383f95dfacb3d42399908f78b853a5",
+      "auditor_sha256": "aa1f1bfaa2e54915f6a25c346c0dd804f4a28d09468478f732c02b2f2f2a7fd3",
+      "completed_prints_and_paired_failure_conditions_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/heldout/integrity-audit-v2",
+      "audit_sha256": "4427e453fc5751257f2e73d027b282d4c9db69cd8b464394a1b3e85d3ea746c3",
+      "status": "passed",
+      "rows": 192,
+      "raw_runs_sha256": "760679db5bcbc7cb5f6b341db2f1d9b7bee380535bded2b2dcf8947ac1001bd2",
+      "auditor_sha256": "aa1f1bfaa2e54915f6a25c346c0dd804f4a28d09468478f732c02b2f2f2a7fd3",
+      "completed_prints_and_paired_failure_conditions_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/main/integrity-audit-v2",
+      "audit_sha256": "e1833a2a363f16a7d92f8484a551f33fa5fa78fcf6673975fc50208d5be831a3",
+      "status": "passed",
+      "rows": 72,
+      "raw_runs_sha256": "ce5f600125cba6a696cecd25e12897230a258d4b043f2a8f688d6f530aaba88e",
+      "auditor_sha256": "aa1f1bfaa2e54915f6a25c346c0dd804f4a28d09468478f732c02b2f2f2a7fd3",
+      "completed_prints_and_paired_failure_conditions_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/heldout/integrity-audit-v2",
+      "audit_sha256": "72559162fed8522cd5384d4c4f533ff2c1914504645cd5835025103ce3fc87e7",
+      "status": "passed",
+      "rows": 48,
+      "raw_runs_sha256": "73109b7176622849e040ce39ecfcdda4882a36d9d05448ff56a64420b1c84c14",
+      "auditor_sha256": "aa1f1bfaa2e54915f6a25c346c0dd804f4a28d09468478f732c02b2f2f2a7fd3",
+      "completed_prints_and_paired_failure_conditions_verified": true
+    }
+  ],
+  "rows": 600,
+  "status": "passed"
+}

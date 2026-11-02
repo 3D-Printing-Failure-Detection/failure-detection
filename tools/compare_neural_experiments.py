@@ -58,8 +58,13 @@ def main():
         boundary_training = json.loads(args.boundary_training_manifest.read_text())
         assert boundaries == {boundary_training['checkpoint_sha256']}
     identity = lambda row: tuple(row[k] for k in ('profile', 'part', 'kind', 'seed'))
-    by_method = {}
+    by_method, conditions = {}, {}
     for name, row in rows:
+        # This check spans separately run agent and ablation directories too.
+        scenario = tuple(row[k] for k in ('part', 'kind', 'seed'))
+        parameters = tuple(row[k] for k in ('k0', 'severity', 'n_layers'))
+        assert conditions.setdefault(scenario, parameters) == parameters, 'unpaired conditions across input experiments'
+        assert row['clear_failure_on_adapt'] is False, 'raw row clears a persistent failure'
         method_rows = by_method.setdefault(name, {})
         assert identity(row) not in method_rows, 'duplicate paired case'
         method_rows[identity(row)] = row

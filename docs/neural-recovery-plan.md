@@ -98,6 +98,18 @@ Results are pending. Attach with `tmux attach -t neural-recovery`; the
 after all jobs finish. A successful audit exit confirms integrity, not superiority:
 all outcome criteria in `comparison.json` must also pass.
 
+A supplementary integrity audit was scheduled at 21:23 UTC, without changing
+the frozen policy, weights, data or outcome criteria. It verifies that a finished
+print contains every nominal layer, successful prints have no final violations,
+raw persistence flags match the protocol, clean controls contain no injected
+failure, and paired runs agree on onset, severity and nominal layer count across
+profiles and separately launched jobs. The same checks pass all 600 historical
+combined-model records; nine corruption/validity tests cover the added checks.
+The [audit addendum](validation/neural/frozen-test-v1-integrity-addendum.json)
+pins both audit scripts. Its `test-integrity` tmux window waits for the original
+comparison, retains separate outputs under `integrity-v2`, and explicitly
+distinguishes completed audits from passed outcome criteria.
+
 ## Development record (2026-11-02)
 
 Qwen3-0.6B Q8_0 and llama.cpp b12057 are downloaded with pinned SHA-256 checksums.

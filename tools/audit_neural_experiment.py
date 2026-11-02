@@ -7,6 +7,26 @@ import json
 from pathlib import Path
 
 
+def validate_outcomes(rows, clear_failure_on_adapt=False):
+    """Check physical completion and the recorded paired failure conditions."""
+    conditions = {}
+    for row in rows:
+        assert row['clear_failure_on_adapt'] == clear_failure_on_adapt, 'failure persistence differs from protocol'
+        assert row['outcome'] in ('finished', 'scrapped'), 'unknown terminal outcome'
+        assert 0 < row['layers_printed'] <= row['n_layers'], 'invalid printed layer count'
+        assert row['scrapped'] == (row['outcome'] == 'scrapped'), 'scrap classification differs from terminal outcome'
+        assert sum(bool(row[k]) for k in ('in_place', 'scrapped', 'defective_finished')) == 1
+        if row['in_place'] or row['defective_finished']:
+            assert row['outcome'] == 'finished' and row['layers_printed'] == row['n_layers'], 'incomplete print counted as finished'
+        if row['in_place']:
+            assert not row['violations'], 'functional success has final violations'
+        scenario = tuple(row[k] for k in ('part', 'kind', 'seed'))
+        parameters = tuple(row[k] for k in ('k0', 'severity', 'n_layers'))
+        assert conditions.setdefault(scenario, parameters) == parameters, 'unpaired failure conditions or nominal layer counts'
+        if row['kind'] == 'clean':
+            assert row['k0'] == -1 and row['severity'] == 0, 'failure injected into a clean control'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory', type=Path)
@@ -14,7 +34,7 @@ def main():
     args = parser.parse_args()
     manifest = json.loads((args.directory / 'manifest.json').read_text())
     rows = [json.loads(line) for line in (args.directory / 'runs.jsonl').read_text().splitlines()]
-    assert manifest['status'] == 'complete'
+    assert manifest['status'] == 'complete' and not manifest.get('errors')
     assert manifest['source_sha256'] == manifest['final_source_sha256']
     checkpoints = {}
     for kind in ('neural', 'boundary'):
@@ -33,9 +53,9 @@ def main():
     identities = [tuple(row[k] for k in fields) for row in rows]
     assert len(rows) == len(set(identities)) == manifest['completed_runs'] == manifest['expected_runs']
     assert set(identities) == expected
+    validate_outcomes(rows, config['clear_failure_on_adapt'])
     total_calls, reused = 0, 0
     for row in rows:
-        assert sum(bool(row[k]) for k in ('in_place', 'scrapped', 'defective_finished')) == 1
         assert row['frames'] == (0 if row['method'] == 'ignore' else row['layers_printed'])
         if manifest.get('instrumentation_version', 1) >= 2:
             uses_camera = (bool(config.get('boundary_checkpoint')) and row['method'].startswith('neural')
@@ -112,6 +132,7 @@ def main():
                     if config.get('experiment_stage') == 'frozen-test' else
                     'development/historical comparison; does not establish superiority on untouched test cases'))
     report['auditor_sha256'] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    report['completed_prints_and_paired_failure_conditions_verified'] = True
     (args.out / 'audit.json').write_text(json.dumps(report, indent=2))
     columns = fields + ('in_place', 'scrapped', 'defective_finished', 'layers_printed', 'frames',
                         'adaptations', 'agent_requests', 'agent_accepted', 'seconds')
