@@ -59,3 +59,9 @@ def test_zero_calls_cannot_hide_a_bypassed_eligible_agent_decision():
         agent_decision_opportunities(rows)
     rows[0]['actions'][0]['considered'].append(dict(agent={'accepted': True}))
     assert agent_decision_opportunities(rows) == 1
+
+
+def test_agent_cannot_adapt_without_any_recorded_candidate_or_review():
+    rows = [dict(method='neural_risk_agent', actions=[dict(action='adapt', considered=[])])]
+    with pytest.raises(AssertionError, match='adaptation bypassed the agent'):
+        agent_decision_opportunities(rows)

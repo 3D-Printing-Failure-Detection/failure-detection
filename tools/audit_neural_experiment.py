@@ -40,6 +40,7 @@ def agent_decision_opportunities(rows):
             reviewed = any('agent' in item or 'agent_review_reused' in item for item in considered)
             assert not eligible or reviewed, 'eligible decision bypassed the agent'
             assert not reviewed or eligible, 'agent review has no eligible decision'
+            assert event['action'] != 'adapt' or (eligible and reviewed), 'adaptation bypassed the agent'
             opportunities += eligible
     return opportunities
 

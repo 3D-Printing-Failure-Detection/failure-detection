@@ -100,7 +100,7 @@ one false base-problem layer. Recovery and wider geometry checks are skipped as
 predeclared. This model is also rejected; lower patch error did not repair the gap.
 Seeds 2001--2004 remain untouched.
 
-The current source passes 129 tests, with one optional module skipped. Long runs
+The current source passes 130 tests, with one optional module skipped. Long runs
 remain in tmux session `neural-recovery`; attach with
 `tmux attach -t neural-recovery`. Full evidence stays on the data volume, with
 compact manifests and completed audits under `docs/validation/neural`.
