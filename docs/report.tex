@@ -759,7 +759,7 @@ scoring. Images and measured and true geometry at layers 84--87 are retained on
 the data volume. This separates perception errors from intervention effects;
 it is not a successful recovery trial.
 
-\subsection*{Predicting between camera pixels}
+\subsection*{Predicting between camera pixels: an unsuccessful trial}
 The original network predicts one signed distance per camera pixel and then
 interpolates those values. If a thin wall lies between pixel centres and all
 surrounding predictions are negative, interpolation cannot recover that wall.
@@ -770,11 +770,12 @@ camera information. No rule closes gaps or reconstructs nominal walls.
 
 Native subpixel training uses the same 144 disjoint trajectories, dense captures
 across all three views, and exact signed-distance labels at each query position.
-Its dataset, training and diagnostic pipeline runs in the \texttt{native-camera-v4}
-window of \texttt{neural-recovery}. Results remain pending. Old checkpoints keep
-their existing behavior. The full source suite passes 92 tests, with one optional
-module skipped, including checks for spatial alignment and incompatible output
-grids. Fresh test seeds 2001--2004 remain untouched.
+Its completed pipeline is retained in the \texttt{native-camera-v4} window of
+\texttt{neural-recovery}. Native-grid error is 0.07372 mm, but the diagnostic still
+reports both false wall gaps and adds three false base-hole reports. This model
+is not promoted. Old checkpoints keep their existing behavior. The full source
+suite passes 94 tests, with one optional module skipped. Fresh test seeds
+2001--2004 remain untouched.
 
 \subsection*{Recovery revisions still have mixed results}
 The revised camera fallback and consistent Qwen IDs restore the consumed
@@ -785,7 +786,15 @@ success, so it is not an accepted replacement.
 A separate trial kept neural forecasting but used analytical inversion to
 construct corrections. It restored two consumed spacer failures but lost all
 three historical spacer-shift gains. That completed, audited ablation is retained
-as negative evidence. Neither these local repairs nor the camera validation
-metric establishes superiority over the analytical policy.
+as negative evidence.
+
+Keeping both inverse constructions and checking plans under both forward
+forecasts performs better on that small diagnostic: all seven failure cases and
+two clean controls complete, preserving the three historical gains and restoring
+the two regressions. The policy uses the smaller fit slack when both forecasts
+pass; if no jointly passing plan exists, it retains the original neural choices.
+The optional \texttt{--neural-joint-forecast} flag enables this check. Broader
+historical, validation and actual Qwen evaluation are still required. These
+diagnostics do not establish superiority over the analytical policy.
 
 \end{document}

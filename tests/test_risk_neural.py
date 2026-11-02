@@ -9,7 +9,8 @@ from recovery.geometry.adapt import Plan
 from recovery.geometry import features as F
 from recovery.geometry.spec import Verdict
 from recovery.loop.decide import DecisionContext
-from recovery.loop.risk_neural import RiskAwareNeuralPolicy
+from recovery.loop.risk_neural import RiskAwareNeuralPolicy, PreventiveFitMixin
+from recovery.loop import risk_neural
 from recovery.models.classical import Detection
 from recovery.types import Layer
 
@@ -64,3 +65,45 @@ def test_clearance_reserve_is_bounded_and_never_changes_the_prefix():
         new_void = unary_union(F.hole_near(expanded, [0, 0], 11.5))
         assert old_void.difference(new_void).area < 1e-6
         assert new_void.difference(old_void.buffer(i*.25+1e-5, quad_segs=8)).area < 1e-5
+
+
+@pytest.mark.parametrize('alternative_passes', [False, True])
+def test_joint_forecasts_require_a_passing_alternative_before_excluding_a_plan(monkeypatch, alternative_passes):
+    layer = Layer(.25, Point(0, 0).buffer(15).difference(Point(0, 0).buffer(5)))
+    policy = object.__new__(RiskAwareNeuralPolicy)
+    policy.joint_forecast = True
+    policy.analytical_candidate_checks = 0
+    policy.spec = {'holes': [dict(center=[0, 0], diameter=[8.5, 11.5], tol_center=1.)]}
+    policy.allow_adapt, policy.use_fea, policy.reserve_fit = True, False, True
+    policy.h, policy.max_correction_per_layer_mm = .25, .25
+    policy.nominal = [layer] * 4
+    history = [layer]
+    policy.state = SimpleNamespace(model=object(), observations=history, residuals=[], uncertainty_mm=.2)
+
+    def candidate(plan, ok=True, score=.8):
+        return dict(name=plan.name, plan=plan, executable=True,
+                    verdict=Verdict(ok, [] if ok else ['forecast fails'], {}),
+                    margin=score, robust_margin=score, fit_clearance_mm=score,
+                    fit_robust_clearance_mm=score)
+
+    primary = [candidate(Plan('continue', [layer]*3, 1.), False),
+               candidate(Plan('learned inverse', [layer]*3, 1.))]
+    monkeypatch.setattr(PreventiveFitMixin, 'candidates', lambda *args, **kwargs: primary)
+    monkeypatch.setattr(policy, '_targets', lambda known: [(Plan('target', [layer]*3, 1.), {})])
+    monkeypatch.setattr(policy, '_evaluate', lambda known, plan, *args: candidate(plan))
+    analytical_state = SimpleNamespace(compensate=lambda layers: layers)
+    analytical = SimpleNamespace(state=analytical_state,
+        _evaluate=lambda known, plan, *args: candidate(plan,
+            alternative_passes and plan.name.startswith('analytical inverse:'), score=.3))
+    monkeypatch.setattr(risk_neural, 'RiskAwareContourPolicy', lambda *args, **kwargs: analytical)
+    before = layer.region.wkb
+    result = policy.candidates(history, policy.nominal, DecisionContext(3))
+    assert policy.analytical_candidate_checks == 2
+    assert history == [layer] and layer.region.wkb == before
+    assert primary[1]['verdict'].ok  # independent assessment never mutates the original
+    if alternative_passes:
+        assert not result[1]['verdict'].ok
+        assert result[2]['verdict'].ok and result[2]['both_forecasts_pass']
+        assert result[2]['fit_robust_clearance_mm'] == .3
+    else:
+        assert result is primary

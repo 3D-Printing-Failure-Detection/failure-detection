@@ -1,0 +1,657 @@
+{
+  "architecture": "9x9 grayscale patch -> 64 ReLU -> 32 ReLU -> 16 tanh distances",
+  "output_upsample": 4,
+  "args": {
+    "data": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/dataset/data.npz",
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model",
+    "epochs": 80,
+    "batch_size": 4096,
+    "seed": 2026,
+    "hidden": [
+      64,
+      32
+    ],
+    "augment_dihedral": false
+  },
+  "device": "cpu",
+  "torch": "2.7.1+cu126",
+  "seconds": 40.87460112571716,
+  "train_rows": 518400,
+  "validation_rows": 253800,
+  "training_groups": [
+    "cartesian-bracket-clean-60",
+    "cartesian-bracket-clean-61",
+    "cartesian-bracket-clean-62",
+    "cartesian-bracket-clean-63",
+    "cartesian-bracket-collapse-60",
+    "cartesian-bracket-collapse-61",
+    "cartesian-bracket-collapse-62",
+    "cartesian-bracket-collapse-63",
+    "cartesian-bracket-shift-60",
+    "cartesian-bracket-shift-61",
+    "cartesian-bracket-shift-62",
+    "cartesian-bracket-shift-63",
+    "cartesian-bracket-under_extrusion-60",
+    "cartesian-bracket-under_extrusion-61",
+    "cartesian-bracket-under_extrusion-62",
+    "cartesian-bracket-under_extrusion-63",
+    "cartesian-bracket-warp-60",
+    "cartesian-bracket-warp-61",
+    "cartesian-bracket-warp-62",
+    "cartesian-bracket-warp-63",
+    "cartesian-cup-clean-60",
+    "cartesian-cup-clean-61",
+    "cartesian-cup-clean-62",
+    "cartesian-cup-clean-63",
+    "cartesian-cup-clean-64",
+    "cartesian-cup-clean-65",
+    "cartesian-cup-clean-66",
+    "cartesian-cup-clean-67",
+    "cartesian-cup-collapse-60",
+    "cartesian-cup-collapse-61",
+    "cartesian-cup-collapse-62",
+    "cartesian-cup-collapse-63",
+    "cartesian-cup-shift-60",
+    "cartesian-cup-shift-61",
+    "cartesian-cup-shift-62",
+    "cartesian-cup-shift-63",
+    "cartesian-cup-under_extrusion-60",
+    "cartesian-cup-under_extrusion-61",
+    "cartesian-cup-under_extrusion-62",
+    "cartesian-cup-under_extrusion-63",
+    "cartesian-cup-under_extrusion-64",
+    "cartesian-cup-under_extrusion-65",
+    "cartesian-cup-under_extrusion-66",
+    "cartesian-cup-under_extrusion-67",
+    "cartesian-cup-warp-60",
+    "cartesian-cup-warp-61",
+    "cartesian-cup-warp-62",
+    "cartesian-cup-warp-63",
+    "cartesian-mug-clean-60",
+    "cartesian-mug-clean-61",
+    "cartesian-mug-clean-62",
+    "cartesian-mug-clean-63",
+    "cartesian-mug-clean-64",
+    "cartesian-mug-clean-65",
+    "cartesian-mug-clean-66",
+    "cartesian-mug-clean-67",
+    "cartesian-mug-collapse-60",
+    "cartesian-mug-collapse-61",
+    "cartesian-mug-collapse-62",
+    "cartesian-mug-collapse-63",
+    "cartesian-mug-shift-60",
+    "cartesian-mug-shift-61",
+    "cartesian-mug-shift-62",
+    "cartesian-mug-shift-63",
+    "cartesian-mug-under_extrusion-60",
+    "cartesian-mug-under_extrusion-61",
+    "cartesian-mug-under_extrusion-62",
+    "cartesian-mug-under_extrusion-63",
+    "cartesian-mug-under_extrusion-64",
+    "cartesian-mug-under_extrusion-65",
+    "cartesian-mug-under_extrusion-66",
+    "cartesian-mug-under_extrusion-67",
+    "cartesian-mug-warp-60",
+    "cartesian-mug-warp-61",
+    "cartesian-mug-warp-62",
+    "cartesian-mug-warp-63",
+    "cartesian-spacer-clean-60",
+    "cartesian-spacer-clean-61",
+    "cartesian-spacer-clean-62",
+    "cartesian-spacer-clean-63",
+    "cartesian-spacer-collapse-60",
+    "cartesian-spacer-collapse-61",
+    "cartesian-spacer-collapse-62",
+    "cartesian-spacer-collapse-63",
+    "cartesian-spacer-shift-60",
+    "cartesian-spacer-shift-61",
+    "cartesian-spacer-shift-62",
+    "cartesian-spacer-shift-63",
+    "cartesian-spacer-under_extrusion-60",
+    "cartesian-spacer-under_extrusion-61",
+    "cartesian-spacer-under_extrusion-62",
+    "cartesian-spacer-under_extrusion-63",
+    "cartesian-spacer-warp-60",
+    "cartesian-spacer-warp-61",
+    "cartesian-spacer-warp-62",
+    "cartesian-spacer-warp-63"
+  ],
+  "validation_groups": [
+    "cartesian-bracket-clean-70",
+    "cartesian-bracket-clean-71",
+    "cartesian-bracket-collapse-70",
+    "cartesian-bracket-collapse-71",
+    "cartesian-bracket-shift-70",
+    "cartesian-bracket-shift-71",
+    "cartesian-bracket-under_extrusion-70",
+    "cartesian-bracket-under_extrusion-71",
+    "cartesian-bracket-warp-70",
+    "cartesian-bracket-warp-71",
+    "cartesian-cup-clean-70",
+    "cartesian-cup-clean-71",
+    "cartesian-cup-clean-72",
+    "cartesian-cup-clean-73",
+    "cartesian-cup-collapse-70",
+    "cartesian-cup-collapse-71",
+    "cartesian-cup-shift-70",
+    "cartesian-cup-shift-71",
+    "cartesian-cup-under_extrusion-70",
+    "cartesian-cup-under_extrusion-71",
+    "cartesian-cup-under_extrusion-72",
+    "cartesian-cup-under_extrusion-73",
+    "cartesian-cup-warp-70",
+    "cartesian-cup-warp-71",
+    "cartesian-mug-clean-70",
+    "cartesian-mug-clean-71",
+    "cartesian-mug-clean-72",
+    "cartesian-mug-clean-73",
+    "cartesian-mug-collapse-70",
+    "cartesian-mug-collapse-71",
+    "cartesian-mug-shift-70",
+    "cartesian-mug-shift-71",
+    "cartesian-mug-under_extrusion-70",
+    "cartesian-mug-under_extrusion-71",
+    "cartesian-mug-under_extrusion-72",
+    "cartesian-mug-under_extrusion-73",
+    "cartesian-mug-warp-70",
+    "cartesian-mug-warp-71",
+    "cartesian-spacer-clean-70",
+    "cartesian-spacer-clean-71",
+    "cartesian-spacer-collapse-70",
+    "cartesian-spacer-collapse-71",
+    "cartesian-spacer-shift-70",
+    "cartesian-spacer-shift-71",
+    "cartesian-spacer-under_extrusion-70",
+    "cartesian-spacer-under_extrusion-71",
+    "cartesian-spacer-warp-70",
+    "cartesian-spacer-warp-71"
+  ],
+  "validation_boundary_mae_mm": 0.07371977716684341,
+  "data_sha256": "436457cae648d387497f9e94620b13e8173e8bb26e956ae23b84dacd01c3ed71",
+  "checkpoint_sha256": "03bc310d93e29c2f912419f8aef559fcc36e1a5147988f4049ef7e30dfed205e",
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.10431582467791475,
+      "validation_boundary_mae_mm": 0.11015400290489197,
+      "validation_pixel_accuracy": 0.9609882235527039
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.04404199894195721,
+      "validation_boundary_mae_mm": 0.10414717346429825,
+      "validation_pixel_accuracy": 0.9618158936500549
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.03837873394106641,
+      "validation_boundary_mae_mm": 0.10397374629974365,
+      "validation_pixel_accuracy": 0.9623706936836243
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0363341075476305,
+      "validation_boundary_mae_mm": 0.09829329699277878,
+      "validation_pixel_accuracy": 0.9641073346138
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.03466262638568878,
+      "validation_boundary_mae_mm": 0.09556195139884949,
+      "validation_pixel_accuracy": 0.9656545519828796
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.03384914881285326,
+      "validation_boundary_mae_mm": 0.09254695475101471,
+      "validation_pixel_accuracy": 0.9670232534408569
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.032930570465547065,
+      "validation_boundary_mae_mm": 0.09130549430847168,
+      "validation_pixel_accuracy": 0.967214822769165
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.03158380764502066,
+      "validation_boundary_mae_mm": 0.08891046792268753,
+      "validation_pixel_accuracy": 0.9679843783378601
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.03231977299315694,
+      "validation_boundary_mae_mm": 0.08899740129709244,
+      "validation_pixel_accuracy": 0.9680853486061096
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0312371168460375,
+      "validation_boundary_mae_mm": 0.08873861283063889,
+      "validation_pixel_accuracy": 0.9681558012962341
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0312361351483398,
+      "validation_boundary_mae_mm": 0.09239083528518677,
+      "validation_pixel_accuracy": 0.9672377109527588
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.03048171091594814,
+      "validation_boundary_mae_mm": 0.0861230120062828,
+      "validation_pixel_accuracy": 0.9689849019050598
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.03095813316695484,
+      "validation_boundary_mae_mm": 0.09199483692646027,
+      "validation_pixel_accuracy": 0.967269241809845
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.02967691464372623,
+      "validation_boundary_mae_mm": 0.08531011641025543,
+      "validation_pixel_accuracy": 0.9693356156349182
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.029165060696778475,
+      "validation_boundary_mae_mm": 0.09941188246011734,
+      "validation_pixel_accuracy": 0.9658993482589722
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.03039339659022696,
+      "validation_boundary_mae_mm": 0.08468686044216156,
+      "validation_pixel_accuracy": 0.9693508744239807
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.02983558015598927,
+      "validation_boundary_mae_mm": 0.0849582850933075,
+      "validation_pixel_accuracy": 0.9692612290382385
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.02897657897553326,
+      "validation_boundary_mae_mm": 0.08921007066965103,
+      "validation_pixel_accuracy": 0.9675031900405884
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.02907461593548457,
+      "validation_boundary_mae_mm": 0.0835072323679924,
+      "validation_pixel_accuracy": 0.9700016975402832
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.028281083564147536,
+      "validation_boundary_mae_mm": 0.09420638531446457,
+      "validation_pixel_accuracy": 0.9676516652107239
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.02899385028415256,
+      "validation_boundary_mae_mm": 0.08876781910657883,
+      "validation_pixel_accuracy": 0.9688758254051208
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.028281919660943525,
+      "validation_boundary_mae_mm": 0.08217106014490128,
+      "validation_pixel_accuracy": 0.9704804420471191
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.028156241838946754,
+      "validation_boundary_mae_mm": 0.08107396215200424,
+      "validation_pixel_accuracy": 0.9706961512565613
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.028658743077590143,
+      "validation_boundary_mae_mm": 0.08292005956172943,
+      "validation_pixel_accuracy": 0.9706321358680725
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.028122121978689123,
+      "validation_boundary_mae_mm": 0.08122003823518753,
+      "validation_pixel_accuracy": 0.9705853462219238
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.027810116320112606,
+      "validation_boundary_mae_mm": 0.0808580219745636,
+      "validation_pixel_accuracy": 0.9709687829017639
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.027819657224563903,
+      "validation_boundary_mae_mm": 0.0849628746509552,
+      "validation_pixel_accuracy": 0.9700915813446045
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.028128619634626824,
+      "validation_boundary_mae_mm": 0.07992197573184967,
+      "validation_pixel_accuracy": 0.971173882484436
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.027537678935461576,
+      "validation_boundary_mae_mm": 0.08025995641946793,
+      "validation_pixel_accuracy": 0.9713871479034424
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.027751094900347568,
+      "validation_boundary_mae_mm": 0.09468813985586166,
+      "validation_pixel_accuracy": 0.9649239182472229
+    },
+    {
+      "epoch": 31,
+      "train_loss": 0.027323139303444346,
+      "validation_boundary_mae_mm": 0.0839478075504303,
+      "validation_pixel_accuracy": 0.9707735180854797
+    },
+    {
+      "epoch": 32,
+      "train_loss": 0.027498898788550753,
+      "validation_boundary_mae_mm": 0.08288466185331345,
+      "validation_pixel_accuracy": 0.9708961248397827
+    },
+    {
+      "epoch": 33,
+      "train_loss": 0.02695904282692038,
+      "validation_boundary_mae_mm": 0.08228577673435211,
+      "validation_pixel_accuracy": 0.9708244800567627
+    },
+    {
+      "epoch": 34,
+      "train_loss": 0.027281749954010233,
+      "validation_boundary_mae_mm": 0.08040884137153625,
+      "validation_pixel_accuracy": 0.9715620279312134
+    },
+    {
+      "epoch": 35,
+      "train_loss": 0.02647853180030246,
+      "validation_boundary_mae_mm": 0.07800108939409256,
+      "validation_pixel_accuracy": 0.9717843532562256
+    },
+    {
+      "epoch": 36,
+      "train_loss": 0.027519985120973468,
+      "validation_boundary_mae_mm": 0.0792272761464119,
+      "validation_pixel_accuracy": 0.9711381793022156
+    },
+    {
+      "epoch": 37,
+      "train_loss": 0.02695929406325758,
+      "validation_boundary_mae_mm": 0.07801996171474457,
+      "validation_pixel_accuracy": 0.9718897938728333
+    },
+    {
+      "epoch": 38,
+      "train_loss": 0.026789321601390838,
+      "validation_boundary_mae_mm": 0.08150813728570938,
+      "validation_pixel_accuracy": 0.9715304970741272
+    },
+    {
+      "epoch": 39,
+      "train_loss": 0.027121469837463934,
+      "validation_boundary_mae_mm": 0.08227155357599258,
+      "validation_pixel_accuracy": 0.970781147480011
+    },
+    {
+      "epoch": 40,
+      "train_loss": 0.026733698201032333,
+      "validation_boundary_mae_mm": 0.08639967441558838,
+      "validation_pixel_accuracy": 0.9686842560768127
+    },
+    {
+      "epoch": 41,
+      "train_loss": 0.02661486360301942,
+      "validation_boundary_mae_mm": 0.0780019760131836,
+      "validation_pixel_accuracy": 0.9722589254379272
+    },
+    {
+      "epoch": 42,
+      "train_loss": 0.026944700537456408,
+      "validation_boundary_mae_mm": 0.07913137227296829,
+      "validation_pixel_accuracy": 0.971919059753418
+    },
+    {
+      "epoch": 43,
+      "train_loss": 0.026018786580290325,
+      "validation_boundary_mae_mm": 0.08417089283466339,
+      "validation_pixel_accuracy": 0.9709963798522949
+    },
+    {
+      "epoch": 44,
+      "train_loss": 0.026565997236304813,
+      "validation_boundary_mae_mm": 0.0771646648645401,
+      "validation_pixel_accuracy": 0.9722911715507507
+    },
+    {
+      "epoch": 45,
+      "train_loss": 0.02585879308665976,
+      "validation_boundary_mae_mm": 0.07668289542198181,
+      "validation_pixel_accuracy": 0.9725009799003601
+    },
+    {
+      "epoch": 46,
+      "train_loss": 0.02685997628963288,
+      "validation_boundary_mae_mm": 0.08198012411594391,
+      "validation_pixel_accuracy": 0.9714915752410889
+    },
+    {
+      "epoch": 47,
+      "train_loss": 0.026512605778780986,
+      "validation_boundary_mae_mm": 0.07846178859472275,
+      "validation_pixel_accuracy": 0.972100555896759
+    },
+    {
+      "epoch": 48,
+      "train_loss": 0.02617412901311009,
+      "validation_boundary_mae_mm": 0.08299577981233597,
+      "validation_pixel_accuracy": 0.9710217118263245
+    },
+    {
+      "epoch": 49,
+      "train_loss": 0.025885679781620884,
+      "validation_boundary_mae_mm": 0.07824816554784775,
+      "validation_pixel_accuracy": 0.9722394347190857
+    },
+    {
+      "epoch": 50,
+      "train_loss": 0.026167433191964656,
+      "validation_boundary_mae_mm": 0.08486563712358475,
+      "validation_pixel_accuracy": 0.9687748551368713
+    },
+    {
+      "epoch": 51,
+      "train_loss": 0.025959539726192568,
+      "validation_boundary_mae_mm": 0.08069014549255371,
+      "validation_pixel_accuracy": 0.9711781144142151
+    },
+    {
+      "epoch": 52,
+      "train_loss": 0.025897424531019765,
+      "validation_boundary_mae_mm": 0.08742617815732956,
+      "validation_pixel_accuracy": 0.9698832631111145
+    },
+    {
+      "epoch": 53,
+      "train_loss": 0.02592056296673822,
+      "validation_boundary_mae_mm": 0.08785611391067505,
+      "validation_pixel_accuracy": 0.9678558707237244
+    },
+    {
+      "epoch": 54,
+      "train_loss": 0.026043173636735223,
+      "validation_boundary_mae_mm": 0.07776331156492233,
+      "validation_pixel_accuracy": 0.971570611000061
+    },
+    {
+      "epoch": 55,
+      "train_loss": 0.02564045634166694,
+      "validation_boundary_mae_mm": 0.07647533714771271,
+      "validation_pixel_accuracy": 0.9728777408599854
+    },
+    {
+      "epoch": 56,
+      "train_loss": 0.025919256993098022,
+      "validation_boundary_mae_mm": 0.07859234511852264,
+      "validation_pixel_accuracy": 0.9713059067726135
+    },
+    {
+      "epoch": 57,
+      "train_loss": 0.025673623530217158,
+      "validation_boundary_mae_mm": 0.07900197803974152,
+      "validation_pixel_accuracy": 0.9718314409255981
+    },
+    {
+      "epoch": 58,
+      "train_loss": 0.02598957751820117,
+      "validation_boundary_mae_mm": 0.07650021463632584,
+      "validation_pixel_accuracy": 0.9731473922729492
+    },
+    {
+      "epoch": 59,
+      "train_loss": 0.025663777785720647,
+      "validation_boundary_mae_mm": 0.07563900947570801,
+      "validation_pixel_accuracy": 0.9727795124053955
+    },
+    {
+      "epoch": 60,
+      "train_loss": 0.025381178340794126,
+      "validation_boundary_mae_mm": 0.07598984241485596,
+      "validation_pixel_accuracy": 0.9730339050292969
+    },
+    {
+      "epoch": 61,
+      "train_loss": 0.0254833273773576,
+      "validation_boundary_mae_mm": 0.08593226224184036,
+      "validation_pixel_accuracy": 0.9703016877174377
+    },
+    {
+      "epoch": 62,
+      "train_loss": 0.025251233371687522,
+      "validation_boundary_mae_mm": 0.07940278202295303,
+      "validation_pixel_accuracy": 0.9716156721115112
+    },
+    {
+      "epoch": 63,
+      "train_loss": 0.026311822103129493,
+      "validation_boundary_mae_mm": 0.07923365384340286,
+      "validation_pixel_accuracy": 0.9721618890762329
+    },
+    {
+      "epoch": 64,
+      "train_loss": 0.024952218911530058,
+      "validation_boundary_mae_mm": 0.07954373955726624,
+      "validation_pixel_accuracy": 0.9720917344093323
+    },
+    {
+      "epoch": 65,
+      "train_loss": 0.02521131877361992,
+      "validation_boundary_mae_mm": 0.07605502009391785,
+      "validation_pixel_accuracy": 0.9732764363288879
+    },
+    {
+      "epoch": 66,
+      "train_loss": 0.025543271788844357,
+      "validation_boundary_mae_mm": 0.07492990046739578,
+      "validation_pixel_accuracy": 0.9730624556541443
+    },
+    {
+      "epoch": 67,
+      "train_loss": 0.025362833450421875,
+      "validation_boundary_mae_mm": 0.07479992508888245,
+      "validation_pixel_accuracy": 0.9735143184661865
+    },
+    {
+      "epoch": 68,
+      "train_loss": 0.025184266423737563,
+      "validation_boundary_mae_mm": 0.07543832063674927,
+      "validation_pixel_accuracy": 0.9727543592453003
+    },
+    {
+      "epoch": 69,
+      "train_loss": 0.025399818478359117,
+      "validation_boundary_mae_mm": 0.07691772282123566,
+      "validation_pixel_accuracy": 0.9728824496269226
+    },
+    {
+      "epoch": 70,
+      "train_loss": 0.024884701160553063,
+      "validation_boundary_mae_mm": 0.08056053519248962,
+      "validation_pixel_accuracy": 0.9721377491950989
+    },
+    {
+      "epoch": 71,
+      "train_loss": 0.02514224262609158,
+      "validation_boundary_mae_mm": 0.07526837289333344,
+      "validation_pixel_accuracy": 0.973372757434845
+    },
+    {
+      "epoch": 72,
+      "train_loss": 0.02539387127775469,
+      "validation_boundary_mae_mm": 0.07984896749258041,
+      "validation_pixel_accuracy": 0.9722012877464294
+    },
+    {
+      "epoch": 73,
+      "train_loss": 0.024671758711338043,
+      "validation_boundary_mae_mm": 0.07703608274459839,
+      "validation_pixel_accuracy": 0.9726923108100891
+    },
+    {
+      "epoch": 74,
+      "train_loss": 0.02496292507390917,
+      "validation_boundary_mae_mm": 0.07588392496109009,
+      "validation_pixel_accuracy": 0.9729494452476501
+    },
+    {
+      "epoch": 75,
+      "train_loss": 0.02550674479868677,
+      "validation_boundary_mae_mm": 0.07462473213672638,
+      "validation_pixel_accuracy": 0.9734439253807068
+    },
+    {
+      "epoch": 76,
+      "train_loss": 0.024569629224730126,
+      "validation_boundary_mae_mm": 0.07371976971626282,
+      "validation_pixel_accuracy": 0.9737093448638916
+    },
+    {
+      "epoch": 77,
+      "train_loss": 0.024681386006651103,
+      "validation_boundary_mae_mm": 0.07661319524049759,
+      "validation_pixel_accuracy": 0.9735997915267944
+    },
+    {
+      "epoch": 78,
+      "train_loss": 0.02491982511808107,
+      "validation_boundary_mae_mm": 0.08016866445541382,
+      "validation_pixel_accuracy": 0.9701228737831116
+    },
+    {
+      "epoch": 79,
+      "train_loss": 0.024985228613202955,
+      "validation_boundary_mae_mm": 0.08345664292573929,
+      "validation_pixel_accuracy": 0.971485435962677
+    },
+    {
+      "epoch": 80,
+      "train_loss": 0.02480086652217088,
+      "validation_boundary_mae_mm": 0.07384289056062698,
+      "validation_pixel_accuracy": 0.9740647077560425
+    }
+  ],
+  "trainer_sha256": "6955a30e66923328f31c93ec99c70b87485e8705a2993ad467e6a4907fddd719",
+  "augmentation": "none",
+  "limitation": "patch validation is not full-frame or closed-loop recovery validation"
+}

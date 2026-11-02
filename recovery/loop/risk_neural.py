@@ -128,6 +128,56 @@ class PreventiveFitMixin:
 class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
     """Preventive fit planning with the trained temporal forecast."""
 
+    def __init__(self, *args, joint_forecast=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.joint_forecast = joint_forecast
+        self.analytical_candidate_checks = 0
+
+    def candidates(self, known, current_plan, context=None):
+        from ..geometry.spec import Verdict
+        context = context or DecisionContext()
+        primary = super().candidates(known, current_plan, context)
+        if (not getattr(self, 'joint_forecast', False) or not hasattr(self.state, 'model') or not self.spec.get('holes')
+                or not self.allow_adapt or context.adapts_remaining == 0
+                or len(known) == len(self.nominal)
+                or (len(primary) == 1 and primary[0]['verdict'].ok)):
+            return primary
+        analytical = RiskAwareContourPolicy(self.spec, self.nominal, self.h,
+            allow_adapt=self.allow_adapt, use_fea=self.use_fea,
+            max_correction_per_layer_mm=self.max_correction_per_layer_mm,
+            reserve_fit=self.reserve_fit)
+        analytical.state.residuals = self.state.residuals
+        analytical.state.observations = self.state.observations
+        analytical.state.uncertainty_mm = self.state.uncertainty_mm
+        alternatives = []
+        for target, budget in self._targets(known):
+            plan = A.Plan('analytical inverse:' + target.name,
+                analytical.state.compensate(target.layers), target.fidelity)
+            alternatives.append(self._evaluate(known, plan, context, current_plan, budget))
+        candidates = [dict(c) for c in primary + alternatives]
+        joint = []
+        for candidate in candidates:
+            if not candidate['verdict'].ok or not candidate['executable']:
+                candidate['both_forecasts_pass'] = False
+                continue
+            self.analytical_candidate_checks += 1
+            assessment = analytical._evaluate(known, candidate['plan'], context, current_plan,
+                                              candidate.get('correction_budget'))
+            candidate['analytical_violations'] = assessment['verdict'].violations
+            candidate['both_forecasts_pass'] = assessment['verdict'].ok and assessment['executable']
+            if candidate['both_forecasts_pass']:
+                for metric in ('margin', 'robust_margin', 'fit_clearance_mm', 'fit_robust_clearance_mm'):
+                    candidate[metric] = min(candidate[metric], assessment[metric])
+                joint.append(candidate)
+        if not joint:
+            return primary
+        for candidate in candidates:
+            if candidate['verdict'].ok and not candidate['both_forecasts_pass']:
+                candidate['verdict'] = Verdict(False,
+                    ['analytical forecast rejects this plan while a jointly passing alternative exists'],
+                    candidate['verdict'].metrics)
+        return candidates
+
 
 class RiskAwareContourPolicy(PreventiveFitMixin, ContourPolicy):
     """Matched planner ablation retaining the analytical contour forecast."""

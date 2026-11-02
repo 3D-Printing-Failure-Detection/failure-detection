@@ -204,7 +204,12 @@ uses the same 144 disjoint whole trajectories, 12 dense frames per trajectory
 under all three camera profiles, and 120 boundary samples per frame. A 64/32-unit
 network learns 16 distance outputs. The pipeline in tmux window `native-camera-v4`
 builds data, trains, checks its NumPy export, and repeats the consumed camera
-diagnostic. Training results are pending. The source suite passes 92 tests with
+diagnostic. That pipeline is complete: native-grid validation error is 0.07372 mm,
+but the diagnostic still falsely opens both thin walls and introduces three
+false base-hole reports. This model is not promoted. The
+[matched pixel-centre comparison](validation/neural/native-camera-v4-comparison.json)
+separates common-centre errors from the native subpixel metric. The source suite
+passes 94 tests with
 one optional module skipped; new checks cover native output alignment, material
 between negative pixel centres, and checkpoint-grid mismatches. Test seeds
 2001–2004 remain untouched.
@@ -215,6 +220,25 @@ analytical residual field. It restored two consumed spacer failures, but lost
 all three earlier spacer-shift gains at historical seed 10. Both completed
 studies pass integrity audits. This ablation remains outside the production
 runtime and is rejected as a replacement; changing the inverse alone is insufficient.
+
+The next [joint-forecast diagnostic](validation/neural/joint-inverse-results.json)
+retains both inverse constructions and checks each eligible plan under both
+forward forecasts. When jointly passing plans exist, it ranks those using the
+smaller fit slack from the two forecasts. When none exists, it retains the
+original neural candidates. Both estimators receive the same camera history;
+neither sees the injected failure or actual deposit. This restores both consumed
+spacer regressions and retains all three historical spacer-shift gains: all seven
+failure cases and both clean controls pass, with no defective finishes. Contour
+passes three of the seven failure cases in this small diagnostic.
+
+`--neural-joint-forecast` now enables this experimental fit check. The default
+remains disabled. Rows record actual analytical candidate checks; agent requests
+include whether both forecasts pass. Tests verify that a disagreement excludes
+a plan only when a jointly passing alternative exists, and that neither the
+original candidates nor measured prefix are mutated. A broader study in
+`neural-joint-fit-dev-v2` will cover the 50 historical fit failure cases and ten
+clean controls, consumed diagnostics, and validation with actual Qwen decisions.
+This is not yet a full-project improvement or an untouched-test result.
 
 ## Development record (2026-11-02)
 

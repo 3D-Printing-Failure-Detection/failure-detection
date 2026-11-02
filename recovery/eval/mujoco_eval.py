@@ -122,6 +122,7 @@ def run_case(job):
                                           forecast_scope=options.get('neural_forecast_scope', 'all'))
                     if method in ('neural_risk', 'neural_risk_agent'):
                         policy_options['reserve_fit'] = options.get('neural_reserve_fit', False)
+                        policy_options['joint_forecast'] = options.get('neural_joint_forecast', False)
                     if method.endswith('_agent'):
                         policy_options['supervisor'] = LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
                                                                       options.get('supervisor_timeout', 120))
@@ -181,6 +182,7 @@ def run_case(job):
                 tracking_rms_mm=float(pr.tracking_rms_mm), max_tracking_mm=pr.max_tracking_mm,
                 executed_waypoints=pr.executed_waypoints,
                 neural_queries=getattr(getattr(policy, 'state', None), 'neural_queries', 0),
+                analytical_candidate_checks=getattr(policy, 'analytical_candidate_checks', 0),
                 has_fit_constraints=bool(part.spec.get('holes')),
                 forecast_source=getattr(policy, 'forecast_source',
                     'analytical' if getattr(policy, 'state', None) is not None else None),
@@ -294,6 +296,8 @@ def main(argv=None):
                         help='fits uses the learned forecast only for parts with specified through-hole fits')
     parser.add_argument('--neural-reserve-fit', action='store_true',
                         help='offer a bounded clearance-reserve candidate to the preventive learned policy')
+    parser.add_argument('--neural-joint-forecast', action='store_true',
+                        help='prefer recovery candidates verified by both learned and analytical fit forecasts')
     parser.add_argument('--boundary-checkpoint', type=Path,
                         help='learned camera boundary model for neural methods; historical baselines stay classical')
     parser.add_argument('--boundary-scope', choices=('all', 'nonfits'), default='all',
@@ -341,6 +345,7 @@ def main(argv=None):
                    neural_calibrate_measurements=args.neural_calibrate_measurements,
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,
+                   neural_joint_forecast=args.neural_joint_forecast,
                    supervisor_endpoint=args.supervisor_endpoint, supervisor_model=args.supervisor_model,
                    supervisor_timeout=args.supervisor_timeout,
                    supervisor_review_interval=args.supervisor_review_interval)

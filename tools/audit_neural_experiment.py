@@ -57,6 +57,13 @@ def main():
     total_calls, reused = 0, 0
     for row in rows:
         assert row['frames'] == (0 if row['method'] == 'ignore' else row['layers_printed'])
+        joint_checks = row.get('analytical_candidate_checks', 0)
+        assert type(joint_checks) is int and joint_checks >= 0
+        joint_enabled = (config.get('neural_joint_forecast', False)
+                         and row['method'] in ('neural_risk', 'neural_risk_agent')
+                         and row.get('has_fit_constraints'))
+        if not joint_enabled:
+            assert joint_checks == 0
         if manifest.get('instrumentation_version', 1) >= 2:
             uses_camera = (bool(config.get('boundary_checkpoint')) and row['method'].startswith('neural')
                            and (config.get('boundary_scope', 'all') == 'all' or not row['has_fit_constraints']))
