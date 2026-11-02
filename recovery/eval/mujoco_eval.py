@@ -26,12 +26,13 @@ from ..loop.controller import Controller, filament_of
 from ..loop.decide import AlertOnlyPolicy, RulePolicy
 from ..loop.functional import FunctionalPolicy
 from ..loop.guarded import GuardedPolicy
+from ..loop.contour import ContourPolicy
 from ..models.classical import ClassicalDetector, ClassicalSegmenter, boundary_deviation
 from ..parts import PART_NAMES, get_part
 from ..printer.profiles import PROFILES
 from .run_eval import METHODS, ScrapPolicy
 
-EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded"]
+EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded", "contour"]
 
 
 class ObservedSegmenter(ClassicalSegmenter):
@@ -82,8 +83,8 @@ def run_case(job):
                 verdict = check(pr.printed, nominal, part.spec, part.layer_h)
                 functional, outcome = verdict.ok, "finished"
             else:
-                if method == "guarded":
-                    policy = GuardedPolicy(part.spec, nominal, part.layer_h)
+                if method in ("guarded", "contour"):
+                    policy = {"guarded": GuardedPolicy, "contour": ContourPolicy}[method](part.spec, nominal, part.layer_h)
                 elif method in ("measured", "predictive", "functional"):
                     policy = FunctionalPolicy(part.spec, nominal, part.layer_h,
                                               predict=method != "measured", rank_margin=method == "functional")
@@ -167,7 +168,8 @@ def paired_comparison(rows):
                                 ("ignore", "functional"), ("ours", "measured"), ("measured", "predictive"),
                                 ("predictive", "functional"), ("ours", "functional"),
                                 ("ignore", "guarded"), ("ours", "guarded"),
-                                ("predictive", "guarded"), ("functional", "guarded")):
+                                ("predictive", "guarded"), ("functional", "guarded"),
+                                ("ignore", "contour"), ("guarded", "contour")):
         for split in ("clean", "failure"):
             keys = sorted(k for k in by_method[baseline].keys() & by_method[treatment].keys()
                           if (k[2] == "clean") == (split == "clean"))

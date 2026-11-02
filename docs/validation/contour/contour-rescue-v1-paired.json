@@ -1,0 +1,73 @@
+[
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 0,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "contour",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 0,
+    "treatment_in_place": 1,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        0
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "guarded",
+    "treatment": "contour",
+    "split": "failure",
+    "n": 1,
+    "baseline_in_place": 1,
+    "treatment_in_place": 1,
+    "gained": [],
+    "lost": []
+  }
+]

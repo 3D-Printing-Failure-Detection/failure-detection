@@ -1,0 +1,26 @@
+[
+  {
+    "experiment": "contour-main-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/contour-main-v1",
+    "runs": 288,
+    "source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800",
+    "baseline_replays_matched": 216,
+    "raw_sha256": "e3b44a1e4c0780f7b59fe3c094727e2ec7dab67c4f0f9577ecdbbd3dc306cf01"
+  },
+  {
+    "experiment": "contour-heldout-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/contour-heldout-v1",
+    "runs": 192,
+    "source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800",
+    "baseline_replays_matched": 0,
+    "raw_sha256": "3d4a61101f8408c3c833a21c1ae903d9ea820ee240877b82d573e2f0e0a7c226"
+  },
+  {
+    "experiment": "contour-rescue-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/contour-rescue-v1",
+    "runs": 4,
+    "source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800",
+    "baseline_replays_matched": 0,
+    "raw_sha256": "9fddff518a8810cd5360db755c9721d6a0487b418b178e5f9567f29035f5645b"
+  }
+]

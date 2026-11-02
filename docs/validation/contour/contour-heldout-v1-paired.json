@@ -1,0 +1,313 @@
+[
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "clean",
+    "n": 8,
+    "baseline_in_place": 8,
+    "treatment_in_place": 8,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "failure",
+    "n": 40,
+    "baseline_in_place": 20,
+    "treatment_in_place": 14,
+    "gained": [],
+    "lost": [
+      [
+        "cartesian",
+        "bracket",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        22
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        22
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        22
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "guarded",
+    "split": "clean",
+    "n": 8,
+    "baseline_in_place": 8,
+    "treatment_in_place": 8,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 40,
+    "baseline_in_place": 20,
+    "treatment_in_place": 14,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        23
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        23
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        22
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        23
+      ]
+    ]
+  },
+  {
+    "baseline": "ours",
+    "treatment": "guarded",
+    "split": "clean",
+    "n": 8,
+    "baseline_in_place": 8,
+    "treatment_in_place": 8,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "guarded",
+    "split": "failure",
+    "n": 40,
+    "baseline_in_place": 14,
+    "treatment_in_place": 14,
+    "gained": [
+      [
+        "cartesian",
+        "bracket",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        23
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        22
+      ]
+    ],
+    "lost": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        23
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        23
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "contour",
+    "split": "clean",
+    "n": 8,
+    "baseline_in_place": 8,
+    "treatment_in_place": 8,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "contour",
+    "split": "failure",
+    "n": 40,
+    "baseline_in_place": 20,
+    "treatment_in_place": 22,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        23
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "guarded",
+    "treatment": "contour",
+    "split": "clean",
+    "n": 8,
+    "baseline_in_place": 8,
+    "treatment_in_place": 8,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "guarded",
+    "treatment": "contour",
+    "split": "failure",
+    "n": 40,
+    "baseline_in_place": 14,
+    "treatment_in_place": 22,
+    "gained": [
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        23
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        22
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        22
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        23
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        22
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        23
+      ]
+    ],
+    "lost": []
+  }
+]

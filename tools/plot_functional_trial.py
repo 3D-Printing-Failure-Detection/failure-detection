@@ -20,7 +20,8 @@ def main():
         rows = list(csv.DictReader(stream))
     methods = args.methods
     names_by_method = dict(ignore="Ignore", ours="Original policy", measured="Measured state",
-                           predictive="Prediction", functional="Margin ranking", guarded="Constrained recovery")
+                           predictive="Prediction", functional="Margin ranking", guarded="Constrained recovery",
+                           contour="Contour prediction")
     labels = [names_by_method[m] for m in methods]
     fig, axes = plt.subplots(1, 2, figsize=(12, 4), sharex=True, sharey=True)
     for ax, name, title in zip(axes, args.experiments, args.titles):
@@ -32,7 +33,7 @@ def main():
             values = np.array([int(selected[m][field]) / int(selected[m]["n"]) for m in methods])
             ax.barh(y, values, left=left, label=label, color=color, height=.65)
             for i, (value, m) in enumerate(zip(values, methods)):
-                if value >= .06:
+                if value > 0:
                     ax.text(left[i] + value / 2, i, selected[m][field], ha="center", va="center", fontsize=9)
             left += values
         ax.set_title(title + f" ({selected['ours']['n']} failure runs per policy)", fontsize=11)

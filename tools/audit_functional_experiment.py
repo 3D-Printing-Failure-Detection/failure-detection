@@ -16,7 +16,7 @@ from recovery.eval.mujoco_eval import paired_comparison, source_digest
 
 
 KEY = ("profile", "part", "kind", "seed", "method")
-METHODS = ("ignore", "ours", "measured", "predictive", "functional", "guarded")
+METHODS = ("ignore", "ours", "measured", "predictive", "functional", "guarded", "contour")
 
 
 def read_rows(path):
@@ -81,7 +81,7 @@ def main():
         (args.out / (directory.name + "-paired.json")).write_text(json.dumps(comparisons, indent=2))
         (args.out / (directory.name + "-manifest.json")).write_text(json.dumps(manifest, indent=2))
         for comparison in comparisons:
-            if comparison["treatment"] in ("functional", "guarded") and comparison["baseline"] in ("ignore", "ours", "predictive", "functional"):
+            if comparison["treatment"] in ("functional", "guarded", "contour") and comparison["baseline"] in ("ignore", "ours", "predictive", "functional", "guarded"):
                 for direction in ("gained", "lost"):
                     for case in comparison[direction]:
                         row = by_key[tuple(case) + (comparison["treatment"],)]

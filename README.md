@@ -56,6 +56,13 @@ Compare it with `--methods ignore ours predictive functional guarded`. The
 notebook's success probability remains an unknown input; a geometry margin is
 not used as a probability. This policy also remains opt-in.
 
+The [contour prediction trial](docs/contour-prediction-trial.md) adds the opt-in
+`contour` policy. It matches inner and outer wall boundaries separately when
+forecasting deposition and computing compensation, while retaining the guarded
+policy's functional checks and action limits. Compare with
+`--methods ignore ours guarded contour`; the demo also accepts `--policy contour`.
+Use the persistent-failure MuJoCo evaluation for recovery evidence.
+
 ## The idea in physical terms
 
 A print is a stack of ~0.2 mm slabs. If slab *k* lands somewhere other than planned (wall sags,

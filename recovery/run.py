@@ -11,6 +11,7 @@ from .loop.controller import Controller, Result
 from .loop.decide import AlertOnlyPolicy, RulePolicy
 from .loop.functional import FunctionalPolicy
 from .loop.guarded import GuardedPolicy
+from .loop.contour import ContourPolicy
 from .models.classical import ClassicalDetector, ClassicalSegmenter
 from .parts import Part, get_part
 from .sim import SimPrinter
@@ -43,10 +44,10 @@ def run_scenario(part_name, kind="collapse", seed=0, severity=None, policy="ours
     f = random_failure(nom, rng, kind=kind, severity=severity)
     seg, det = make_models(models)
     pol_cls = {"ours": RulePolicy, "alert": AlertOnlyPolicy, "functional": FunctionalPolicy,
-               "guarded": GuardedPolicy}[policy]
+               "guarded": GuardedPolicy, "contour": ContourPolicy}[policy]
     pol = pol_cls(part.spec, nom, part.layer_h, use_fea=use_fea)
     # layers before the failure are clean; skip imaging them unless asked (full-print run)
-    pr = SimPrinter(nom, f, seed=seed, start_idx=0 if from_start or policy in ("functional", "guarded") else f.k0)
+    pr = SimPrinter(nom, f, seed=seed, start_idx=0 if from_start or policy in ("functional", "guarded", "contour") else f.k0)
     res = Controller(pr, seg, det, pol, part.spec, nom, part.layer_h,
                      log=log).run()
     ig = SimPrinter(nom, f, seed=seed, start_idx=f.k0)
