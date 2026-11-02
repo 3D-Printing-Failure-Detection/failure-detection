@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "source_sha256": "2d117a49d37f3fc6e6170c24cca31ff565d53f55f72dd98c5d24a89f8e80181a",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "b11eb66b38c81c383b31b1dc33060def8a383f95dfacb3d42399908f78b853a5",
+  "rows": 288,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "ignore",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 89.77859704394359
+    },
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 60,
+      "in_place": 33,
+      "scrapped": 0,
+      "defective_finished": 27,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 433.48206435132306
+    },
+    {
+      "method": "guarded",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 171.66128362098243
+    },
+    {
+      "method": "guarded",
+      "split": "failure",
+      "n": 60,
+      "in_place": 29,
+      "scrapped": 31,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 1310.0420208092546
+    },
+    {
+      "method": "contour",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 180.15109959908295
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 60,
+      "in_place": 40,
+      "scrapped": 19,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 1122.618606832344
+    },
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 347.5914744390175
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 60,
+      "in_place": 45,
+      "scrapped": 15,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 24349,
+      "seconds": 1943.8539378196
+    }
+  ],
+  "stage": "historical",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}

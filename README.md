@@ -71,10 +71,11 @@ Use the persistent-failure MuJoCo evaluation for recovery evidence.
 The [learned recovery experiment](docs/neural-recovery-plan.md) trains camera and
 temporal neural networks and runs a free local Qwen model in the decision loop,
 without an API key. Its optional `neural_risk` and `neural_risk_agent` policies can
-intervene before a tight fit becomes unusable. The fit-only forecast hybrid
-improved a 60-case historical comparison from 40 to 43 functional completions,
-with zero defective finishes instead of one. The wider and untouched comparisons
-remain incomplete, so these policies remain opt-in.
+intervene before a tight fit becomes unusable. The combined model and Qwen
+completed 67/100 historical failure cases versus contour's 62/100, preserving its
+successes with zero defective finishes instead of one. All 20 clean controls
+passed. The untouched comparison remains incomplete, so these policies remain
+opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.

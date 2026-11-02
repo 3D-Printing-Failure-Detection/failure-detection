@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "source_sha256": "2d117a49d37f3fc6e6170c24cca31ff565d53f55f72dd98c5d24a89f8e80181a",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "ce5f600125cba6a696cecd25e12897230a258d4b043f2a8f688d6f530aaba88e",
+  "rows": 72,
+  "actual_agent_calls": 131,
+  "reused_reviews": 613,
+  "summary": [
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 324.28421422000974
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 60,
+      "in_place": 45,
+      "scrapped": 15,
+      "defective_finished": 0,
+      "agent_requests": 131,
+      "neural_queries": 24349,
+      "seconds": 3136.2278077374212
+    }
+  ],
+  "stage": "historical",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}

@@ -1,0 +1,98 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian"
+    ],
+    "parts": [
+      "cup",
+      "bracket",
+      "mug",
+      "spacer"
+    ],
+    "kinds": [
+      "clean",
+      "collapse",
+      "warp",
+      "shift",
+      "under_extrusion",
+      "detach"
+    ],
+    "methods": [
+      "ignore",
+      "guarded",
+      "contour",
+      "neural_risk"
+    ],
+    "n": 2,
+    "seed": 22,
+    "workers": 6,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/heldout/results",
+    "neural_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/temporal.npz",
+    "experiment_stage": "historical",
+    "neural_calibrate_measurements": false,
+    "neural_forecast_scope": "fits",
+    "neural_reserve_fit": true,
+    "boundary_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/boundary.npz",
+    "boundary_scope": "nonfits",
+    "supervisor_endpoint": "http://127.0.0.1:8089",
+    "supervisor_model": "local-qwen3",
+    "supervisor_timeout": 120.0,
+    "supervisor_review_interval": 8,
+    "supervisor_manifest": null
+  },
+  "instrumentation_version": 3,
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "3bde967e2b98951f78dab6f41e1177fdc66b67ad",
+  "source_sha256": "2d117a49d37f3fc6e6170c24cca31ff565d53f55f72dd98c5d24a89f8e80181a",
+  "expected_runs": 192,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "neural_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "boundary_checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+  "completed_runs": 192,
+  "errors": [],
+  "final_source_sha256": "2d117a49d37f3fc6e6170c24cca31ff565d53f55f72dd98c5d24a89f8e80181a",
+  "final_neural_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "final_boundary_checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+}

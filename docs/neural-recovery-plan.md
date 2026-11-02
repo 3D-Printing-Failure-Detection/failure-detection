@@ -58,6 +58,33 @@ the existing Torch environment for training and export small NumPy weights for
 inference in the project's existing environment. Respect the shared 100 GB quota
 and avoid taking over the GPU already used by other jobs.
 
+## Frozen comparison matrix
+
+The reserved final grid is seeds 1001--1004, all three printer profiles, all four
+parts, all five failure kinds and clean controls: 240 failure cases and 48 clean
+cases per method. Freeze source, weights and options before the first case. The
+required earlier baselines remain `ignore`, `scrap`, `alert`, `ours`, `measured`,
+`predictive`, `functional`, `guarded` and `contour`; none is removed after seeing
+results.
+
+The additional comparisons are the analytical preventive planner (`contour_risk`),
+learned camera on all parts (`neural_camera`), the combined model without
+preventive recovery (`neural`), the complete model without Qwen (`neural_risk`),
+and the earlier fit-only forecast hybrid using classical measurements everywhere.
+The latter retains its raw `neural_risk` records and receives the explicit report
+label `neural_risk_classical`, with its configuration and raw hashes preserved.
+The candidate is the complete model with actual Qwen decisions
+(`neural_risk_agent`). This is fifteen configurations, including the candidate.
+
+The candidate must strictly exceed every earlier baseline and also attain the
+best completion count among the included neural variants. A tie with the same
+model without the agent is reported as a tie, not a benefit from supervision.
+The audit lists all gained and lost paired cases and checks defects, clean
+controls, real model calls, both trained checkpoint identities and disjoint
+training/validation/test seeds. Raw records are never relabeled or edited to
+combine variants; report labels are explicit input metadata. Historical
+regression and the other acceptance requirements above remain necessary.
+
 ## Development record (2026-11-02)
 
 Qwen3-0.6B Q8_0 and llama.cpp b12057 are downloaded with pinned SHA-256 checksums.
@@ -202,7 +229,14 @@ and `neural-combined-agent-historical-v1` (actual Qwen), using the exact same so
 snapshot and two checkpoints. A second CPU inference worker on localhost:8090
 shares the verified Qwen model file so it does not queue behind the earlier
 hybrid trial on localhost:8089. No second download or API access is required.
-Both combined runs are still in progress. The full source test suite passes
+Both combined runs are complete: each scores 67/100, versus contour's 62/100,
+guarded's 43/100 and ignore's 53/100. No passing case from those baselines is lost;
+the 38 successes recorded for the original rule policy are also retained. The
+combined candidate has zero defective finishes and passes all 20 clean controls.
+Actual Qwen supervision makes 201 validated calls and matches the neural-only
+result. The earlier classical-camera hybrid finishes at 65/100, also without
+lost contour successes or defective finishes. These results qualify the combined
+candidate for the frozen test; they do not replace that test. The full source test suite passes
 77 tests, with one optional module skipped.
 The operator-facing agent reason now states only the selected candidate and the
 verified prediction check. Qwen's original prose remains in the raw audit;
