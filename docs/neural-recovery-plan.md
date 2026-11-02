@@ -10,8 +10,68 @@ its first fresh test. The newer paired-forecast fit policy reaches 33/50 versus
 30/50 historical fit failures and 12/20 versus 10/20 validation failures, with
 zero versus one defective finish in each set. It still loses a bracket case
 that contour saves. The first earlier-continuation check restored that bracket
-but harmed a spacer. A revised guard compares fit robustness before intervening;
-it is under actual Qwen evaluation. New camera models remain experimental.
+but harmed a spacer. A revised guard compares fit robustness before intervening.
+It passes all nine selected failure cases and four clean controls with actual
+Qwen, and its completed 50-case historical fit comparison scores 33/50 versus
+30/50, with zero versus one defective finish, every contour success retained,
+all ten clean controls passed and 40 actual Qwen requests. Separate fit validation
+is running.
+New camera models remain experimental.
+
+## Current camera cross-check and context experiments
+
+The optional `--boundary-joint-forecast` extends `--boundary-fallback`. When the
+classical-camera continuation fails but a correction is feasible, both camera
+histories propose corrections and assess each other's proposals. A jointly
+passing correction can displace one rejected by the other view. If none passes
+both views, retain the original classical proposal. A passing classical
+continuation remains unchanged. Histories remain independent and every frame is
+observed. This compares two interpretations of one image, not two physical cameras.
+
+The frozen development protocol `camera-joint-dev-v1-protocol.json` specifies
+36 runs over four failure cases and two clean controls, including matched old
+fallback and learned-camera-only ablations. The completed shifted-cup case
+(Cartesian, seed 1002) now finishes successfully with one adaptation for both
+neural-only and actual Qwen, versus a scrap for contour. Ignore also passes;
+this is preservation of a recoverable print, not a rescue of an otherwise harmful
+fault. Qwen makes 11 validated requests. Both cup/mug collapse cases and both clean
+controls also pass for all four methods in that completed slice. The thinning
+case and matched ablations remain pending; the option is not accepted as a general
+replacement.
+
+The repaired contour conversion's 36-group, 2,040-frame camera validation is
+complete. Among 1,176 wall frames, 57 truly contain an opening. Classical
+segmentation has 66 false openings and three misses; the original neural camera
+has 63 and five, expanded-data central prediction 49 and six, upper prediction
+39 and seven, and the shared-query decoder 51 and six. The newer networks detect
+more thinning but introduce 259, 270 and 165 false base-problem frames respectively,
+versus zero for classical and original neural segmentation across 864 base frames.
+There are no positive base-fault examples in this sample, so base-fault recall
+cannot be estimated. These are correlated per-frame geometry errors, not print
+success rates. None of these replacement networks is promoted.
+
+A scene-raster diagnostic finds that the known cup-thinning layer still encloses
+its cavity at the existing scene resolution. It does not support blaming the
+scene's binary rasterization for that false opening; rendering and functional
+specifications are unchanged. The next test, `context-camera-v8-protocol.json`,
+adds a stride-four 9x9 grayscale patch beside the original fine patch. Both come
+from the existing camera image. A fine-only network is trained on exactly the
+same rows, targets, split, seed and optimizer schedule to isolate the context
+change. The resource-bounded dataset uses all 66 training and 36 validation
+container trajectories, yielding 86,400 sampled patches (55,800 train and 30,600
+validation). Both models complete 160 epochs, with verified NumPy export. On the
+same validation points, boundary MAE is 0.06493 mm for the matched fine-only
+model and 0.04817 mm with wider context. The existing central and shared-query
+models score 0.06575 and 0.06876 mm on those same points; these values are not their
+earlier full-dataset scores. Full-stack diagnostics and the 2,040-frame geometric
+validation remain pending; no print-success improvement is inferred from MAE. The consumed
+cup-thinning recovery check runs only if the context model's measured full stack
+passes the original specification. Seeds 2001--2004 remain untouched.
+
+The current source passes 110 tests, with one optional module skipped. Long runs
+remain in tmux session `neural-recovery`; attach with
+`tmux attach -t neural-recovery`. Full evidence stays on the data volume, with
+compact manifests and completed audits under `docs/validation/neural`.
 
 The user requested a free model without an API key instead of Gemini. The first
 supervisor is Qwen3-0.6B Q8_0, served on localhost by llama.cpp on CPU. This is a

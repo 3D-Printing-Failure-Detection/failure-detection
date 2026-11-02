@@ -14,6 +14,25 @@ from .. import camera
 PATCH_SIZE = 9
 
 
+def validate_input_scales(scales):
+    scales = tuple(scales)
+    if not scales or len(set(scales)) != len(scales) or any(s not in (1, 2, 4) for s in scales):
+        raise ValueError('invalid boundary input scales')
+    return tuple(int(s) for s in scales)
+
+
+def camera_patches(gray, pixels, input_scales=(1,)):
+    """Normalized grayscale samples at fine and wider-context pixel strides."""
+    scales = validate_input_scales(input_scales)
+    pixels = np.asarray(pixels, dtype=int).reshape(-1, 2)
+    radius = PATCH_SIZE // 2
+    pad = radius * max(scales)
+    padded = cv2.copyMakeBorder(gray, pad, pad, pad, pad, cv2.BORDER_REFLECT_101)
+    xx, yy = np.meshgrid(np.arange(-radius, radius+1), np.arange(-radius, radius+1))
+    return np.concatenate([padded[pixels[:, 1, None] + yy.ravel()*s + pad,
+                                  pixels[:, 0, None] + xx.ravel()*s + pad] for s in scales], axis=1)
+
+
 def subpixel_offsets(scale):
     """Image XY offsets of native output samples, with no half-pixel shift."""
     if scale not in (1, 2, 4):
@@ -39,11 +58,12 @@ class BoundarySegmenter:
             self.output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
             self.distance_quantile = float(data['distance_quantile']) if 'distance_quantile' in data else None
             self.query_weights = data['query_weights'] if 'query_weights' in data else None
+            self.input_scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
         if self.distance_quantile is not None and not 0 < self.distance_quantile < 1:
             raise ValueError('invalid boundary distance quantile')
         subpixel_offsets(self.output_upsample)
-        width = PATCH_SIZE ** 2
+        width = PATCH_SIZE ** 2 * len(self.input_scales)
         for w, b in self.weights:
             if w.ndim != 2 or w.shape[1] != width or b.shape != (len(w),):
                 raise ValueError('invalid boundary network shape')
@@ -84,9 +104,17 @@ class BoundarySegmenter:
     def signed_distance(self, image):
         gray = normalized_gray(image)
         weights, bias = self.weights[0]
-        hidden = np.stack([cv2.filter2D(gray, cv2.CV_32F, kernel.reshape(PATCH_SIZE, PATCH_SIZE),
-                                       borderType=cv2.BORDER_REFLECT_101) + offset
-                           for kernel, offset in zip(weights, bias)], axis=-1)
+        channels = []
+        for kernels, offset in zip(weights.reshape(len(weights), len(self.input_scales), PATCH_SIZE, PATCH_SIZE), bias):
+            channel = np.full_like(gray, offset)
+            for kernel, scale in zip(kernels, self.input_scales):
+                if scale > 1:
+                    sparse = np.zeros(((PATCH_SIZE-1)*scale+1,)*2, dtype='float32')
+                    sparse[::scale, ::scale] = kernel
+                    kernel = sparse
+                channel += cv2.filter2D(gray, cv2.CV_32F, kernel, borderType=cv2.BORDER_REFLECT_101)
+            channels.append(channel)
+        hidden = np.stack(channels, axis=-1)
         hidden = np.maximum(hidden, 0)
         distance = self._distance_outputs(hidden)
         scale = self.output_upsample

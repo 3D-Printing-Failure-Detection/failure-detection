@@ -847,8 +847,13 @@ guard also requires an early replacement's fit bound under both forecasts to be
 at least as good as the original neural continuation's bound. That revision
 passes all six bracket/spacer failure diagnostics and all four clean controls
 with and without Qwen, with no defective finishes and 20 actual model requests.
-The historical-gain gate and broader runs remain pending. Source tests
-pass 106 cases, with one optional module skipped. Seeds 2001--2004 remain untouched.
+The three historical gains also pass, making nine selected failure cases and
+four clean controls preserved, with 30 actual model requests. The broader
+50-case historical fit comparison completes at 33/50 for both neural variants
+versus 30/50 for contour, with zero versus one defective finish, no lost contour
+successes, all ten clean controls passed and 40 actual Qwen requests. Separate fit
+validation is running. Source tests pass 110 cases, with
+one optional module skipped. Seeds 2001--2004 remain untouched.
 
 \subsection*{Local supervision now uses shorter requests}
 Every eligible plan still goes to Qwen. Failed or dominated plans stay in the
@@ -893,7 +898,7 @@ validation fails after 960 frames because an invalid pixel contour crashes the
 polygon union. Contours are now repaired individually before union, with tests
 for the crash and preservation of visible holes. This also changes some tiny
 base-hole reports: a retained identical-mask example concerns background touching
-the exterior diagonally. The full 36-trajectory, 2,040-frame validation is rerunning
+the exterior diagonally. The full 36-trajectory, 2,040-frame validation completes
 under the same repaired conversion for all models. These are geometric camera
 statistics, not complete-print success rates; the functional checks are unchanged.
 
@@ -904,13 +909,71 @@ validation error is slightly worse than the central model's 0.07203 mm. The
 completed cup diagnostic still reports two false wall gaps and a false support
 violation; its conditional recovery trial is skipped. Both models lose their
 base-hole reports under the repaired conversion, so that change is not evidence
-for the shared decoder. Geometric validation continues; the model is not promoted.
+for the shared decoder. Its geometric validation also completes; the model is not promoted.
 
 The camera-fallback diagnostic also completes at 16/24 for both neural variants,
 matching contour, but with one defective finish versus zero. It remains a rejected
 replacement. The broader validation without Qwen finishes at 21/40 versus
 contour's 19/40, with zero versus one defective finish and all eight clean controls
 passed. The original frozen comparison continues unchanged.
+
+\clearpage
+\section{Camera validation and the next controlled experiment}
+
+Across the completed validation set, 57 of 1,176 wall frames contain a real
+opening. All 864 base frames are negative for the base-problem flag. Thus the
+sample estimates false base alarms, but cannot establish base-fault recall.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Measurement model & False wall gaps & Missed gaps & False base alarms\\
+\midrule
+Classical & 66 & 3 & 0\\
+Original neural & 63 & 5 & 0\\
+Expanded-data central & 49 & 6 & 259\\
+Expanded-data upper & 39 & 7 & 270\\
+Shared-query decoder & 51 & 6 & 165\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Newer networks detect more thinning, but fewer false wall gaps come with more
+missed gaps and many false base alarms. Frames from one trajectory are correlated;
+these counts are not independent trials or complete-print success rates. None of
+these camera replacements is accepted.
+
+\subsection*{Cross-checking a proposed correction}
+An optional camera check retains independent classical and learned measurements
+of every frame. When classical continuation fails but correction is possible,
+each view assesses corrections proposed by both. A jointly passing alternative
+can replace a correction rejected by the other view. Without one, preserve the
+original proposal. Passing classical continuation remains unchanged. These are
+two interpretations of one image, not two physical cameras.
+
+In the completed Cartesian cup-shift diagnostic at seed 1002, both the neural
+policy and actual Qwen now finish successfully with one correction, while contour
+scraps. Qwen makes 11 validated requests. Ignore also succeeds, so this preserves
+a recoverable print rather than rescuing a harmful fault. The predeclared 36-run
+comparison includes three other failures, two clean controls and matched earlier
+camera ablations. Both collapse cases and both clean controls now pass for all
+four methods in that slice; the thinning case and matched ablations remain pending.
+
+\subsection*{More image context, with a matched ablation}
+A diagnostic confirms that the known thin cup wall still encloses its cavity
+after the existing scene rasterization. Renderer and functional checks remain
+unchanged. The next learned camera adds a stride-four 9-by-9 image patch to the
+fine patch. Both inputs come solely from the same camera frame.
+
+The experiment uses all 66 training and 36 validation container trajectories,
+with 86,400 patches and whole-trajectory separation. A fine-only model trains on
+the identical rows, targets, seed and optimizer schedule. Both complete 160
+epochs with verified NumPy export. On the same 30,600 validation patches, boundary
+error is 0.06493 mm for the fine-only model and 0.04817 mm with context. Both receive
+the full 2,040-frame geometry check. This matched ablation is
+needed because the resource-bounded dataset differs from earlier training sets.
+The consumed cup-thinning recovery trial runs only if the context model first
+passes the unchanged measured full-stack specification. No completed-print success
+result is claimed for this experiment yet; seeds 2001--2004 remain reserved.
 
 \subsection*{Evidence and next acceptance check}
 Training manifests, diagnostics, compact audits and paired regression evidence

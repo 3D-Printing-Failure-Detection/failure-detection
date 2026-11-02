@@ -85,6 +85,7 @@ class LocalSupervisor:
                 'uncertainty_mm', 'adapts_remaining', 'fidelity', 'functional_rank', 'review_eligible', 'review_exclusion')
         keys += ('observation_model', 'fallback_after_no_primary_plan')
         keys += ('both_forecasts_pass', 'analytical_violations')
+        keys += ('both_camera_forecasts_pass', 'other_camera_violations')
 
         def compact(value):
             if isinstance(value, float):

@@ -64,6 +64,13 @@ def main():
                          and row.get('has_fit_constraints'))
         if not joint_enabled:
             assert joint_checks == 0
+        camera_checks = row.get('joint_camera_checks', 0)
+        assert type(camera_checks) is int and camera_checks >= 0
+        camera_joint_enabled = (config.get('boundary_joint_forecast', False)
+            and config.get('boundary_fallback', False) and row['method'].startswith('neural')
+            and not row.get('has_fit_constraints'))
+        if not camera_joint_enabled:
+            assert camera_checks == 0
         if manifest.get('instrumentation_version', 1) >= 2:
             uses_camera = (bool(config.get('boundary_checkpoint')) and row['method'].startswith('neural')
                            and (config.get('boundary_scope', 'all') == 'all' or not row['has_fit_constraints']))

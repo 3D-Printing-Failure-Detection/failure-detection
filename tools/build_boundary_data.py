@@ -19,7 +19,7 @@ import shapely
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from recovery import camera
 from recovery.eval.mujoco_eval import source_digest
-from recovery.models.boundary import PATCH_SIZE, normalized_gray, subpixel_offsets
+from recovery.models.boundary import PATCH_SIZE, normalized_gray, subpixel_offsets, camera_patches
 from recovery.parts import get_part
 from recovery.printer.mujoco import MujocoPrinter
 from recovery.types import Layer
@@ -30,6 +30,7 @@ def build_case(job):
     all_profiles, dense_start = job[3:5] if len(job) > 3 else (False, False)
     output_upsample = job[5] if len(job) > 5 else 1
     include_base, focus_deformed = job[6:8] if len(job) > 6 else (False, False)
+    input_scales = job[8] if len(job) > 8 else (1,)
     offsets = subpixel_offsets(output_upsample)
     with gzip.open(path, 'rt') as stream:
         record = json.load(stream)
@@ -81,9 +82,7 @@ def build_case(job):
                                rng.choice(len(y), n_pixels-n_focus, replace=len(y) < n_pixels-n_focus)]
                 yy = np.r_[y[chosen], rng.integers(PATCH_SIZE, gray.shape[0]-PATCH_SIZE, n_pixels // 4)]
                 xx = np.r_[x[chosen], rng.integers(PATCH_SIZE, gray.shape[1]-PATCH_SIZE, n_pixels // 4)]
-                pad = PATCH_SIZE // 2
-                padded = cv2.copyMakeBorder(gray, pad, pad, pad, pad, cv2.BORDER_REFLECT_101)
-                patches = np.lib.stride_tricks.sliding_window_view(padded, (PATCH_SIZE, PATCH_SIZE))[yy, xx]
+                patches = camera_patches(gray, np.column_stack([xx, yy]), input_scales)
                 query_pixels = np.column_stack([xx, yy])[:, None, :] + offsets[None, :, :]
                 points = camera.px_to_mm(query_pixels.reshape(-1, 2))
                 inside = shapely.contains_xy(layer.region, points[:, 0], points[:, 1])
@@ -91,7 +90,7 @@ def build_case(job):
                 target = np.clip(distance * np.where(inside, 1, -1), -1, 1).astype('float32')
                 if output_upsample > 1:
                     target = target.reshape(-1, output_upsample**2)
-                xs.append(patches.reshape(-1, PATCH_SIZE ** 2).astype('float16'))
+                xs.append(patches.astype('float16'))
                 ys.append(target)
     return np.concatenate(xs), np.concatenate(ys), dict(group=record['group'],
         validation=record['validation'], frames=len(indices)*(len(profiles) if all_profiles else 1),
@@ -113,7 +112,11 @@ def main():
     parser.add_argument('--include-base-frames', action='store_true', help='include every solid container base layer')
     parser.add_argument('--focus-deformed', action='store_true',
                         help='sample half of boundary patches near deposited/command differences; training sampling only')
+    parser.add_argument('--input-scales', type=int, nargs='+', choices=[1, 2, 4], default=[1],
+                        help='pixel strides for each 9x9 image patch; 1 4 adds wider visual context')
     args = parser.parse_args()
+    if len(set(args.input_scales)) != len(args.input_scales):
+        parser.error('input scales must be distinct')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('training data must stay on the data volume')
     args.out.mkdir(parents=True, exist_ok=True)
@@ -129,14 +132,16 @@ def main():
         script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         domain='MuJoCo renders of retained deposited geometry, with three camera profiles',
-        input='normalized 9x9 grayscale camera patch', target='true signed distance in mm clipped to [-1,1]',
+        input=f'normalized 9x9 grayscale camera patches at pixel strides {args.input_scales}',
+        target='true signed distance in mm clipped to [-1,1]',
         output_upsample=args.output_upsample, output_offsets_xy_px=subpixel_offsets(args.output_upsample).tolist())
     manifest['capture_manifest_sha256'] = hashlib.sha256((args.trajectories.parent / 'manifest.json').read_bytes()).hexdigest()
     (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     rows = []
     with ProcessPoolExecutor(args.workers, mp_context=multiprocessing.get_context('spawn')) as executor:
         futures = [executor.submit(build_case, (p, args.frames, args.pixels, args.all_profiles, args.dense_start,
-                                               args.output_upsample, args.include_base_frames, args.focus_deformed)) for p in paths]
+                                               args.output_upsample, args.include_base_frames, args.focus_deformed,
+                                               args.input_scales)) for p in paths]
         for future in as_completed(futures):
             row = future.result()
             rows.append(row)
@@ -147,7 +152,7 @@ def main():
     validation = np.concatenate([np.full(len(x), info['validation'], dtype=bool) for x, _, info in rows])
     group = np.concatenate([np.full(len(x), info['group']) for x, _, info in rows])
     np.savez_compressed(args.out / 'data.npz', x=x, y=y, validation=validation, group=group,
-                        output_upsample=np.array(args.output_upsample))
+                        output_upsample=np.array(args.output_upsample), input_scales=np.array(args.input_scales))
     manifest.update(status='complete', groups=[row[2] for row in rows], rows=len(x),
                     final_source_sha256=source_digest())
     (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))

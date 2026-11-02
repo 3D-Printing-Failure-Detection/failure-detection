@@ -4,7 +4,7 @@ import pytest
 from shapely.geometry import Point
 
 from recovery import camera
-from recovery.models.boundary import BoundarySegmenter, normalized_gray, subpixel_offsets
+from recovery.models.boundary import BoundarySegmenter, normalized_gray, subpixel_offsets, camera_patches
 
 
 def checkpoint(path, weights, **metadata):
@@ -134,3 +134,27 @@ def test_shared_query_decoder_can_represent_a_subpixel_wall(tmp_path):
     with pytest.raises(ValueError, match='query weights'):
         BoundarySegmenter(checkpoint(tmp_path/'bad-query.npz', weights, output_upsample=np.array(4),
                                     query_weights=np.zeros((2, 3), dtype='float32')))
+
+
+def test_wider_context_export_matches_strided_patch_inputs_at_edges(tmp_path):
+    rng = np.random.default_rng(31)
+    weights = [(rng.normal(0, .05, (outputs, inputs)).astype('float32'),
+                rng.normal(0, .02, outputs).astype('float32'))
+               for inputs, outputs in ((162, 8), (8, 4), (4, 1))]
+    model = BoundarySegmenter(checkpoint(tmp_path/'context.npz', weights, input_scales=np.array([1, 4])))
+    image = rng.integers(0, 255, (23, 29), dtype='uint8')
+    gray = normalized_gray(image)
+    yy, xx = np.mgrid[:23, :29]
+    pixels = np.column_stack([xx.ravel(), yy.ravel()])
+    patches = camera_patches(gray, pixels, (1, 4))
+    reflected = np.pad(gray, 16, mode='reflect')
+    expected = []
+    for x, y in pixels:
+        expected.append(np.concatenate([reflected[y+16-4*s:y+16+4*s+1:s,
+                                                 x+16-4*s:x+16+4*s+1:s].ravel() for s in (1, 4)]))
+    assert np.array_equal(patches, np.asarray(expected))
+    assert np.allclose(model.signed_distance(image), model.predict_patches(patches).reshape(23, 29), atol=1e-6)
+    with pytest.raises(ValueError, match='input scales'):
+        BoundarySegmenter(checkpoint(tmp_path/'repeat-context.npz', weights, input_scales=np.array([1, 1])))
+    with pytest.raises(ValueError, match='shape'):
+        BoundarySegmenter(checkpoint(tmp_path/'missing-context.npz', weights))

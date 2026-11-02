@@ -1,0 +1,158 @@
+{
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-main/results",
+      "manifest_sha256": "3718b3c145c9f36daaad2e429b6b9ac993c4aa6b7f4bb1c5526f08e790c89974",
+      "audit_sha256": "b900070d2111187ec54dbdfedf57f2101ffccea6227c04d532a690bbe7e0b22c",
+      "runs_sha256": "0b63182202196ca31a6b26e68bbb4dc879599b5f80e7ac79f07db4e7a2a6567b",
+      "labels": {}
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-heldout/results",
+      "manifest_sha256": "27d49681669de499f474bd23c4cbbbf235b312004a878e3d47eb70631f9be6a2",
+      "audit_sha256": "5471585ffe97ff6481e623ab4962ed520b1431cf08995bb5a884749e5bfdb25b",
+      "runs_sha256": "ef256f6fc6c3541f3e2fcee146cb2f46f4afd120a5deeab10552b4f20a92905f",
+      "labels": {}
+    }
+  ],
+  "source_sha256": "26eaa8ee2ba0f8c7197d06e8dea9c04c44ba6fad7b281d50abbd7410192529f4",
+  "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+  "candidate": "neural_risk_agent",
+  "boundary_checkpoint_sha256": null,
+  "boundary_training_manifest_sha256": null,
+  "stages": [
+    "historical"
+  ],
+  "failure_cases": 50,
+  "clean_cases": 10,
+  "summary": {
+    "contour": {
+      "failure": {
+        "n": 50,
+        "in_place": 30,
+        "scrapped": 19,
+        "defective_finished": 1,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 316.2552278508665,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8454966418979751,
+        "mean_filament_with_assumed_clean_restart": 1.2254966418979751
+      },
+      "clean": {
+        "n": 10,
+        "in_place": 10,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 64.33476708922535,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999878076097884,
+        "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+      }
+    },
+    "neural_risk": {
+      "failure": {
+        "n": 50,
+        "in_place": 33,
+        "scrapped": 17,
+        "defective_finished": 0,
+        "neural_queries": 58444,
+        "agent_requests": 0,
+        "seconds": 489.3063857057132,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8539994835155427,
+        "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+      },
+      "clean": {
+        "n": 10,
+        "in_place": 10,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 860,
+        "agent_requests": 0,
+        "seconds": 65.39312583091669,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999878076097884,
+        "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+      }
+    },
+    "neural_risk_agent": {
+      "failure": {
+        "n": 50,
+        "in_place": 33,
+        "scrapped": 17,
+        "defective_finished": 0,
+        "neural_queries": 58444,
+        "agent_requests": 40,
+        "seconds": 709.3148554671789,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8539994835155427,
+        "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+      },
+      "clean": {
+        "n": 10,
+        "in_place": 10,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 860,
+        "agent_requests": 0,
+        "seconds": 65.13303930894472,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999878076097884,
+        "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "contour",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          10
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          10
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          10
+        ]
+      ],
+      "lost": [],
+      "net_gain": 3,
+      "extra_defective_finishes": -1
+    },
+    {
+      "baseline": "neural_risk",
+      "required_baseline": false,
+      "gained": [],
+      "lost": [],
+      "net_gain": 0,
+      "extra_defective_finishes": 0
+    }
+  ],
+  "actual_learning": true,
+  "actual_agent": true,
+  "candidate_has_best_completion_count": true,
+  "best_methods": [
+    "neural_risk",
+    "neural_risk_agent"
+  ],
+  "strictly_more_completions_than_every_baseline": true,
+  "no_lost_baseline_successes": true,
+  "no_higher_defective_finish_count": true,
+  "all_candidate_clean_controls_pass": true,
+  "limitation": "Paired simulation outcomes; no physical reliability claim. Restart filament is hypothetical."
+}

@@ -11,14 +11,14 @@ import torch
 from torch import nn
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from recovery.models.boundary import PATCH_SIZE, BoundarySegmenter, subpixel_offsets
+from recovery.models.boundary import PATCH_SIZE, BoundarySegmenter, subpixel_offsets, validate_input_scales
 
 
 class QueryBoundaryNetwork(nn.Module):
     """One distance decoder shared across subpixel query coordinates."""
-    def __init__(self, h1, h2, scale):
+    def __init__(self, h1, h2, scale, input_width):
         super().__init__()
-        self.first, self.second, self.last = nn.Linear(PATCH_SIZE**2, h1), nn.Linear(h1, h2), nn.Linear(h2, 1)
+        self.first, self.second, self.last = nn.Linear(input_width, h1), nn.Linear(h1, h2), nn.Linear(h2, 1)
         self.query = nn.Linear(2, h2, bias=False)
         self.register_buffer('offsets', torch.from_numpy(subpixel_offsets(scale)))
 
@@ -43,6 +43,8 @@ def main():
                         help='learn a conditional distance quantile with pinball loss instead of a central estimate')
     parser.add_argument('--query-conditioned', action='store_true',
                         help='share one distance decoder across native subpixel XY queries')
+    parser.add_argument('--select-input-scales', type=int, nargs='+', choices=[1, 2, 4],
+                        help='train a matched ablation using a subset of the saved camera inputs')
     args = parser.parse_args()
     if min(args.hidden) < 1:
         parser.error('hidden widths must be positive')
@@ -54,24 +56,39 @@ def main():
     with np.load(args.data, allow_pickle=False) as data:
         x, y, split, group = [data[k] for k in ('x', 'y', 'validation', 'group')]
         output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
+        input_scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
     sources = [dict(path=str(args.data.resolve()), sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(), rows=len(x))]
     seen_groups = set(group.tolist())
     for path in args.extra_data:
         with np.load(path, allow_pickle=False) as data:
             xx, yy, ss, gg = [data[k] for k in ('x', 'y', 'validation', 'group')]
             scale = int(data['output_upsample']) if 'output_upsample' in data else 1
-        if scale != output_upsample or xx.shape[1:] != x.shape[1:] or yy.shape[1:] != y.shape[1:]:
+            scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
+        if (scale != output_upsample or scales != input_scales
+                or xx.shape[1:] != x.shape[1:] or yy.shape[1:] != y.shape[1:]):
             raise ValueError('additional dataset has incompatible camera inputs or output targets')
         if seen_groups & set(gg.tolist()):
             raise ValueError('additional dataset repeats an existing trajectory')
         seen_groups.update(gg.tolist())
         x, y, split, group = [np.concatenate([a, b]) for a, b in zip((x, y, split, group), (xx, yy, ss, gg))]
         sources.append(dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest(), rows=len(xx)))
+    dataset_input_scales = input_scales
+    if args.select_input_scales is not None:
+        selected = validate_input_scales(args.select_input_scales)
+        if not set(selected).issubset(input_scales):
+            parser.error('selected input scales must exist in every dataset')
+        columns = np.concatenate([np.arange(PATCH_SIZE**2) + input_scales.index(s)*PATCH_SIZE**2
+                                  for s in selected])
+        x = x[:, columns]
+        input_scales = selected
     if output_upsample > 1 and args.augment_dihedral:
         parser.error('D4 augmentation requires rotating the subpixel targets and is not implemented')
     if args.query_conditioned and output_upsample == 1:
         parser.error('--query-conditioned requires native subpixel targets')
     y = y.reshape(len(x), -1)
+    input_width = PATCH_SIZE**2 * len(input_scales)
+    if x.ndim != 2 or x.shape[1] != input_width:
+        raise ValueError('boundary inputs do not match the declared context scales')
     if y.shape[1] != output_upsample**2:
         raise ValueError('boundary targets do not match the declared output grid')
     if set(group[~split]) & set(group[split]) or not split.any() or split.all():
@@ -83,12 +100,14 @@ def main():
     xval, yval = torch.from_numpy(x[split].astype('float32')), torch.from_numpy(y[split])
     edge = torch.abs(yval) < .5
     h1, h2 = args.hidden
-    model = (QueryBoundaryNetwork(h1, h2, output_upsample) if args.query_conditioned else
-             nn.Sequential(nn.Linear(PATCH_SIZE**2, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
+    model = (QueryBoundaryNetwork(h1, h2, output_upsample, input_width) if args.query_conditioned else
+             nn.Sequential(nn.Linear(input_width, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
                            nn.Linear(h2, output_upsample**2)))
     grid = np.arange(PATCH_SIZE**2).reshape(PATCH_SIZE, PATCH_SIZE)
-    transforms = torch.from_numpy(np.stack([np.rot90(np.fliplr(grid) if flip else grid, rotation).ravel().copy()
-                                           for flip in (False, True) for rotation in range(4)]))
+    permutations = [np.rot90(np.fliplr(grid) if flip else grid, rotation).ravel().copy()
+                    for flip in (False, True) for rotation in range(4)]
+    transforms = torch.from_numpy(np.stack([np.concatenate([p + i*PATCH_SIZE**2 for i in range(len(input_scales))])
+                                           for p in permutations]))
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
     best, history, started = float('inf'), [], time.time()
     checkpoint = args.out / 'boundary.npz'
@@ -134,7 +153,8 @@ def main():
         history.append(row)
         if score < best:
             best = score
-            arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(output_upsample))
+            arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(output_upsample),
+                          input_scales=np.array(input_scales))
             if args.distance_quantile is not None:
                 arrays['distance_quantile'] = np.array(args.distance_quantile)
             layers = (model.first, model.second, model.last) if args.query_conditioned else (model[0], model[2], model[4])
@@ -156,6 +176,8 @@ def main():
     assert abs(score-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
     manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> {output_upsample**2} tanh distances',
         output_upsample=output_upsample,
+        input_scales=list(input_scales), input_width=input_width,
+        dataset_input_scales=list(dataset_input_scales),
         subpixel_decoder='shared XY-conditioned distance' if args.query_conditioned else 'independent distance heads',
         distance_quantile=args.distance_quantile,
         validation_selection_score=score,
@@ -173,6 +195,9 @@ def main():
         limitation='patch validation is not full-frame or closed-loop recovery validation')
     if args.query_conditioned:
         manifest['architecture'] = f'9x9 grayscale patch -> {h1} ReLU -> {h2} plus XY query ReLU -> shared tanh distance'
+    if len(input_scales) > 1:
+        manifest['architecture'] = manifest['architecture'].replace('9x9 grayscale patch',
+            f'9x9 grayscale patches at strides {input_scales}')
     (args.out / 'training.json').write_text(json.dumps(manifest, indent=2))
     print('Exported', checkpoint, 'boundary MAE mm', error, flush=True)
 

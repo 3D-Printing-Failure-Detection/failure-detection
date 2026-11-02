@@ -135,6 +135,7 @@ def run_case(job):
                         policies = {'neural': FallbackNeuralPolicy, 'neural_agent': AgentFallbackNeuralPolicy,
                                     'neural_risk': FallbackRiskNeuralPolicy, 'neural_risk_agent': AgentFallbackRiskNeuralPolicy}
                         policy_options['dual_segmenter'] = learned_segmenter
+                        policy_options['joint_camera'] = options.get('boundary_joint_forecast', False)
                     policy = policies[method](part.spec, nominal, part.layer_h, **policy_options)
                 elif method in ("guarded", "contour", "contour_risk", "neural_camera"):
                     from ..loop.risk_neural import RiskAwareContourPolicy
@@ -183,6 +184,7 @@ def run_case(job):
                 executed_waypoints=pr.executed_waypoints,
                 neural_queries=getattr(getattr(policy, 'state', None), 'neural_queries', 0),
                 analytical_candidate_checks=getattr(policy, 'analytical_candidate_checks', 0),
+                joint_camera_checks=getattr(policy, 'joint_camera_checks', 0),
                 has_fit_constraints=bool(part.spec.get('holes')),
                 forecast_source=getattr(policy, 'forecast_source',
                     'analytical' if getattr(policy, 'state', None) is not None else None),
@@ -304,6 +306,8 @@ def main(argv=None):
                         help='nonfits retains classical measurements for specified fits and uses the learned camera elsewhere')
     parser.add_argument('--boundary-fallback', action='store_true',
                         help='retain feasible classical-camera plans; consult an independent learned-camera history otherwise')
+    parser.add_argument('--boundary-joint-forecast', action='store_true',
+                        help='cross-check adaptation candidates under both camera histories when the primary continuation fails')
     parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
     parser.add_argument('--supervisor-model', default='local-qwen3')
     parser.add_argument('--supervisor-timeout', type=float, default=120.)
@@ -323,6 +327,8 @@ def main(argv=None):
         parser.error('the temporal calibrator was trained on classical measurements; do not apply it to learned camera output')
     if args.boundary_scope == 'nonfits' and not args.boundary_checkpoint:
         parser.error('nonfits boundary scope requires --boundary-checkpoint')
+    if args.boundary_joint_forecast and not args.boundary_fallback:
+        parser.error('--boundary-joint-forecast requires --boundary-fallback')
     if args.boundary_fallback and (not args.boundary_checkpoint or args.boundary_scope != 'nonfits'
                                   or args.neural_forecast_scope != 'fits'
                                   or any(m in args.methods for m in ('neural_camera', 'neural_camera_agent'))):
@@ -342,6 +348,7 @@ def main(argv=None):
                    boundary_checkpoint=str(args.boundary_checkpoint.resolve()) if args.boundary_checkpoint else None,
                    boundary_scope=args.boundary_scope,
                    boundary_fallback=args.boundary_fallback,
+                   boundary_joint_forecast=args.boundary_joint_forecast,
                    neural_calibrate_measurements=args.neural_calibrate_measurements,
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,
