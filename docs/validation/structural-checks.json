@@ -1,0 +1,83 @@
+[
+  {
+    "part": "bracket",
+    "stress_ok": true,
+    "cases": [
+      {
+        "name": "100 N out-of-plane at one bolt, other bolt fixed",
+        "ok": true,
+        "converged": true,
+        "safety_factor": 4.165635795256711,
+        "max_disp_mm": 0.7963135623943466,
+        "leak": null,
+        "violations": []
+      }
+    ],
+    "heuristic_verified": true,
+    "heuristic_issues": [],
+    "seconds": 0.11818742752075195
+  },
+  {
+    "part": "cup",
+    "stress_ok": true,
+    "cases": [
+      {
+        "name": "full of water on a table",
+        "ok": true,
+        "converged": true,
+        "safety_factor": 13556.735108038221,
+        "max_disp_mm": 2.9620379315220036e-05,
+        "leak": false,
+        "violations": []
+      }
+    ],
+    "heuristic_verified": true,
+    "heuristic_issues": [],
+    "seconds": 0.37179040908813477
+  },
+  {
+    "part": "mug",
+    "stress_ok": true,
+    "cases": [
+      {
+        "name": "full of water on a table",
+        "ok": true,
+        "converged": true,
+        "safety_factor": 16733.152204482234,
+        "max_disp_mm": 5.360422167452186e-05,
+        "leak": false,
+        "violations": []
+      },
+      {
+        "name": "lifted by the handle (30 N pull on the handle)",
+        "ok": true,
+        "converged": true,
+        "safety_factor": 17.056147911007802,
+        "max_disp_mm": 0.08322870203925749,
+        "leak": null,
+        "violations": []
+      }
+    ],
+    "heuristic_verified": true,
+    "heuristic_issues": [],
+    "seconds": 0.6173386573791504
+  },
+  {
+    "part": "spacer",
+    "stress_ok": true,
+    "cases": [
+      {
+        "name": "clamped, 6 kN bolt preload",
+        "ok": true,
+        "converged": true,
+        "safety_factor": 2.5902408733699516,
+        "max_disp_mm": 0.08891122218864547,
+        "leak": null,
+        "violations": []
+      }
+    ],
+    "heuristic_verified": true,
+    "heuristic_issues": [],
+    "seconds": 0.06856584548950195
+  }
+]

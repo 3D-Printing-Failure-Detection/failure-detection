@@ -1,0 +1,74 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian"
+    ],
+    "parts": [
+      "bracket"
+    ],
+    "kinds": [
+      "warp"
+    ],
+    "methods": [
+      "ignore",
+      "ours",
+      "predictive",
+      "functional",
+      "guarded"
+    ],
+    "n": 1,
+    "seed": 10,
+    "workers": 1,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/guarded-regression-v1"
+  },
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "deaecaa32e522111a947c059f60f958d62f5d0d2",
+  "source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db",
+  "expected_runs": 5,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "completed_runs": 5,
+  "errors": [],
+  "final_source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db"
+}

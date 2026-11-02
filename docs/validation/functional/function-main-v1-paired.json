@@ -1,0 +1,845 @@
+[
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "ours",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 33,
+    "treatment_in_place": 24,
+    "gained": [],
+    "lost": [
+      [
+        "bedslinger",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "collapse",
+        10
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "measured",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "measured",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 33,
+    "treatment_in_place": 24,
+    "gained": [],
+    "lost": [
+      [
+        "bedslinger",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "collapse",
+        10
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "predictive",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "predictive",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 33,
+    "treatment_in_place": 27,
+    "gained": [
+      [
+        "bedslinger",
+        "mug",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        10
+      ]
+    ],
+    "lost": [
+      [
+        "bedslinger",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "warp",
+        10
+      ]
+    ]
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "functional",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ignore",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 33,
+    "treatment_in_place": 13,
+    "gained": [
+      [
+        "bedslinger",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        10
+      ]
+    ],
+    "lost": [
+      [
+        "bedslinger",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "spacer",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "warp",
+        10
+      ]
+    ]
+  },
+  {
+    "baseline": "ours",
+    "treatment": "measured",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "measured",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 24,
+    "treatment_in_place": 24,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "measured",
+    "treatment": "predictive",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "measured",
+    "treatment": "predictive",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 24,
+    "treatment_in_place": 27,
+    "gained": [
+      [
+        "bedslinger",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        10
+      ]
+    ],
+    "lost": [
+      [
+        "bedslinger",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "warp",
+        10
+      ]
+    ]
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "functional",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "predictive",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 27,
+    "treatment_in_place": 13,
+    "gained": [],
+    "lost": [
+      [
+        "bedslinger",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "shift",
+        10
+      ],
+      [
+        "bedslinger",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "spacer",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "warp",
+        10
+      ]
+    ]
+  },
+  {
+    "baseline": "ours",
+    "treatment": "functional",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "ours",
+    "treatment": "functional",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 24,
+    "treatment_in_place": 13,
+    "gained": [
+      [
+        "bedslinger",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "under_extrusion",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        10
+      ]
+    ],
+    "lost": [
+      [
+        "bedslinger",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "bedslinger",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "bedslinger",
+        "spacer",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "bracket",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "cup",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "mug",
+        "warp",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "collapse",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "warp",
+        10
+      ]
+    ]
+  }
+]

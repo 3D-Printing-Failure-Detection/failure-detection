@@ -1,0 +1,26 @@
+[
+  {
+    "experiment": "function-main-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/function-main-v1",
+    "runs": 360,
+    "source_sha256": "f0b319f6073b6562feafe061f26b8fb90030da183605d32e91a3e374517d4e70",
+    "baseline_replays_matched": 144,
+    "raw_sha256": "d7bf22f21a55a93be942c25871907556b27d24906fbc2bd1d9addf354ab73c38"
+  },
+  {
+    "experiment": "function-heldout-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/function-heldout-v1",
+    "runs": 120,
+    "source_sha256": "f0b319f6073b6562feafe061f26b8fb90030da183605d32e91a3e374517d4e70",
+    "baseline_replays_matched": 0,
+    "raw_sha256": "2e9149e5e718dcea0ab70b21e00928fe866692333afa80fedb0f3770255ae4ae"
+  },
+  {
+    "experiment": "function-target-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/function-target-v1",
+    "runs": 5,
+    "source_sha256": "f0b319f6073b6562feafe061f26b8fb90030da183605d32e91a3e374517d4e70",
+    "baseline_replays_matched": 0,
+    "raw_sha256": "fa141a41c8cfcb31aca3c72057c7a98b640a754bc1a3db97688a945378a57312"
+  }
+]

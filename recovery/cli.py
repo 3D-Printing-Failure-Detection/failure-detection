@@ -17,6 +17,18 @@ from pathlib import Path
 
 
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    # Delegate before argparse consumes the child command's flags.
+    if argv and argv[0] in {"eval", "mujoco-eval", "gen-data", "train"}:
+        if argv[0] == "gen-data":
+            import runpy
+            sys.argv = ["synth_data"] + argv[1:]
+            runpy.run_module("recovery.models.synth_data", run_name="__main__")
+            return
+        import importlib
+        module = {"eval": ".eval.run_eval", "mujoco-eval": ".eval.mujoco_eval",
+                  "train": ".models.train"}[argv[0]]
+        return importlib.import_module(module, "recovery").main(argv[1:])
     ap = argparse.ArgumentParser(prog="recovery")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -26,9 +38,11 @@ def main(argv=None):
     d.add_argument("--seed", type=int, default=3)
     d.add_argument("--severity", type=float, default=None)
     d.add_argument("--models", default="classical", choices=["classical", "torch"])
+    d.add_argument("--policy", default="ours", choices=["ours", "alert", "functional", "guarded", "contour"],
+                   help="functional/guarded/contour: experimental measured-state and predictive recovery")
     d.add_argument("--out", default="results/demo")
 
-    for name in ("eval", "gen-data", "train"):
+    for name in ("eval", "mujoco-eval", "gen-data", "train"):
         p = sub.add_parser(name, add_help=False)
         p.add_argument("rest", nargs=argparse.REMAINDER)
     sub.add_parser("app")
@@ -118,7 +132,7 @@ def main(argv=None):
     if a.cmd == "demo":
         from .run import run_scenario
         from .viz import event_figure
-        sc = run_scenario(a.part, a.kind, a.seed, a.severity, models=a.models, log=print)
+        sc = run_scenario(a.part, a.kind, a.seed, a.severity, models=a.models, policy=a.policy, log=print)
         res = sc.result
         print(f"injected {sc.failure.kind} at layer {sc.failure.k0}; if ignored: {sc.ignore_verdict}")
         print(f"outcome: {res.outcome}; final: {res.final}")

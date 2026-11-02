@@ -1,0 +1,550 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.72in,headheight=16pt,footskip=25pt]{geometry}
+\usepackage{graphicx,booktabs,tabularx,array,amsmath,enumitem}
+\usepackage{xcolor,tikz,tcolorbox,fancyhdr,titlesec,fancyvrb}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{237F73}
+\definecolor{pale}{HTML}{EFF7F5}
+\definecolor{ink}{HTML}{243443}
+\definecolor{muted}{HTML}{586877}
+\definecolor{amber}{HTML}{A85D1F}
+\usepackage[colorlinks=true,linkcolor=teal,urlcolor=teal,
+  pdftitle={Functional Recovery from 3D-Print Failures},
+  pdfauthor={Failure Detection Project},
+  pdfsubject={System architecture, implementation, experimental results and project state}]{hyperref}
+\hypersetup{bookmarksnumbered=true}
+\urlstyle{tt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\arraystretch}{1.22}
+\setlist[itemize]{leftmargin=1.25em,itemsep=3pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.45em,itemsep=4pt,topsep=3pt}
+\titleformat{\section}{\Large\bfseries\color{navy}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{navy}}{}{0em}{}
+\titlespacing*{\section}{0pt}{0pt}{10pt}
+\titlespacing*{\subsection}{0pt}{9pt}{3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}FUNCTIONAL RECOVERY FROM 3D-PRINT FAILURES}
+\fancyhead[R]{\small\color{muted}Project report}
+\fancyfoot[L]{\small\color{muted}Research prototype\quad\textbullet\quad 2 November 2026}
+\fancyfoot[R]{\small\color{muted}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\repourl}{https://github.com/3D-Printing-Failure-Detection/failure-detection/blob/9770276}
+\newcommand{\repo}[2]{\href{\repourl/#1}{#2}}
+\newcommand{\note}[1]{\begin{tcolorbox}[colback=pale,colframe=teal!55,boxrule=0.5pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt]#1\end{tcolorbox}}
+\newcommand{\nextpage}{\clearpage}
+\DefineVerbatimEnvironment{Code}{Verbatim}{fontsize=\small,frame=single,rulecolor=\color{teal!40},framesep=6pt}
+\begin{document}
+\color{ink}
+
+{\color{teal}\bfseries SYSTEM OVERVIEW AND CURRENT STATE}\par
+\vspace{8pt}
+{\fontsize{29}{33}\selectfont\bfseries\color{navy}Functional recovery\newline from 3D-print failures}\par
+\vspace{5pt}
+{\large How the loop works, what changed, and what the evidence supports}\par
+\vspace{9pt}
+
+\note{\textbf{The goal: finish a part that still does its job after a printing error.}
+A deformed cup that still holds liquid can be a success. A visually similar cup
+that leaks is a failure. The controller should intervene only when doing so helps
+preserve the part's functional requirements.}
+
+The project is a Python research prototype that measures each printed layer,
+estimates how commands turn into deposited material, and chooses whether to
+continue, replace the remaining layer plan, or stop. The newest experimental
+policy, \code{contour}, separates inner and outer wall boundaries when predicting
+deformation. It retains the function checks and action limits of \code{guarded}.
+
+\begin{center}
+\begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
+\toprule
+{\Large\bfseries\color{teal}62/100} & {\Large\bfseries 43/100} & {\Large\bfseries 53/100}\\
+New contour policy & Previous guarded policy & Ignore the failure\\
+\bottomrule
+\end{tabular*}
+\end{center}
+These are functional completions in the latest \emph{paired simulated failure
+scenarios}. The new policy preserves all 53 ignore-baseline successes and adds
+nine genuine rescues. Against guarded, it gains twenty cases and loses one.
+It also permits one defective spacer to finish. Scraps and defective completions
+are never counted as successes.
+
+\subsection*{Where the project stands}
+\begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
+\toprule
+Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
+Validation & 53 tests passed, one optional neural module skipped; 484 final audited simulator runs.\\
+Controls & All 80 clean runs passed; zero alarms in 6,000 monitored clean frames.\\
+Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
+Integration & Branch \code{review/mujoco-generalization}; \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} was open and unmerged when this report was prepared.\\
+\bottomrule
+\end{tabularx}
+
+\subsection*{What this report covers}
+The system and its functional contract (page 2); observation and prediction
+(page 3); recovery decisions and cost assumptions (page 4); implementation
+history and evaluation design (page 5); results (page 6); limitations and next
+work (page 7); code and operation (page 8); evidence and reproducibility (page 9).
+
+{\small\color{muted}Implementation snapshot: \code{9770276}. Results describe the
+recorded experiments, not real-printer reliability. Detailed evidence is linked
+throughout the report.}
+
+\nextpage
+\section{The system and its functional contract}
+
+A part is represented as a stack of planar material regions, each with a height.
+The region can contain holes and multiple components. Geometry comes from YAML
+constructive shapes, STL cross-sections, or parsed sliced G-code. A separate
+functional specification expresses what the finished part must retain.
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,
+ stage/.style={draw=teal!65,fill=pale,rounded corners=2pt,text width=11.6cm,align=center,minimum height=0.85cm,font=\small},
+ action/.style={draw=navy!50,fill=white,rounded corners=2pt,text width=3.2cm,align=center,minimum height=1.1cm,font=\small}]
+\node[stage] (input) {\textbf{Part geometry + functional specification}\\Nominal layers, dimensions, required holes, walls, connections and optional loads};
+\node[stage,below=0.35cm of input] (measure) {\textbf{Execute a layer; acquire and rectify its camera image}\\Segment current material; compare with the commanded layer};
+\node[stage,below=0.35cm of measure] (state) {\textbf{Keep the measured history and update deposition-error estimates}\\Every frame contributes, including deviations below the main alarm threshold};
+\node[stage,below=0.35cm of state] (assess) {\textbf{On a warning, assess the predicted finished part}\\Keep the printed prefix fixed; forecast continuation and feasible replacements};
+\node[action,below=0.55cm of assess] (adapt) {\textbf{Adapt}\\Replace only future layers if continuation fails and recovery passes};
+\node[action,left=0.35cm of adapt] (cont) {\textbf{Continue}\\Keep commands when predicted continuation passes};
+\node[action,right=0.35cm of adapt] (stop) {\textbf{Stop}\\Detach, or no allowed recovery passes the checks};
+\draw[->] (input)--(measure);
+\draw[->] (measure)--(state);
+\draw[->] (state)--(assess);
+\draw[->] (assess)--(adapt);
+\draw[->] (assess.south) -- ++(0,-0.2) -| (cont.north);
+\draw[->] (assess.south) -- ++(0,-0.2) -| (stop.north);
+\end{tikzpicture}
+\end{center}
+{\small\color{muted}Continue and adapt return to the next layer. The diagram
+summarizes the experimental guarded/contour path; a detach alarm stops directly.}
+
+\subsection*{What is checked}
+\begin{tabularx}{\linewidth}{@{}p{1.5in}Y@{}}
+\toprule
+Container function & Solid base, closed walls and an allowed capacity range. Closure is inferred from cross-sectional geometry, not a physical leak test.\\
+Dimensions and fit & Through-hole diameter and center tolerance, including the intersection of holes through the stack.\\
+Material and structure & Minimum wall thickness, allowed material volume, required components and feature area.\\
+Layer support & Excess overhang relative to the nominal design; optional finite-element checks can filter load-bearing candidates.\\
+\bottomrule
+\end{tabularx}
+
+\subsection*{Success is an observed outcome, not an action name}
+In simulation, a successful completion means the full deposited stack passes the
+original specification. An adaptation is only an attempted recovery. A stop
+remains a failed in-place completion even if a later clean restart is assumed in
+a cost calculation. In a live print, geometry is estimated from images, so a
+passing software verdict is not independently verified physical success.
+
+\nextpage
+\section{Seeing and predicting the build}
+
+\subsection*{Perception used in the reported experiments}
+The evaluated pipeline uses classical OpenCV perception, not a newly trained
+network. A calibrated camera view is rectified to the current layer plane. The
+segmenter extracts material contours from controlled current-layer illumination.
+The detector measures boundary deviation and uses geometric changes to assign a
+failure label. Its main deviation threshold is 1 mm.
+
+The experimental policies also issue functional warnings for smaller changes:
+a thinning wall, a blocked or displaced required hole, an opening in a container,
+lost material, a broken connection or deteriorating support. Measurements are
+retained even when the detector says the frame is normal.
+
+\subsection*{Three distinct geometries}
+\begin{tabularx}{\linewidth}{@{}p{1.55in}Y@{}}
+\toprule
+Nominal design & The original intended geometry, used as a reference for function and support.\\
+Commanded geometry & The layer the printer is asked to produce; compensation can make this differ from the desired deposited shape.\\
+Measured / predicted deposit & What the camera observes now, and what the estimator expects the current or replacement commands to produce later.\\
+\bottomrule
+\end{tabularx}
+For example, if commands consistently deposit material 1 mm to the right, a
+desired wall at its nominal position may require a command displaced to the
+left. Simply asking for the desired final outline would leave the bias in place.
+
+\subsection*{The contour predictor}
+\begin{enumerate}
+\item Estimate global translation between commanded and measured outlines.
+\item Associate exterior rings with exterior rings and hole rings with holes.
+Use one-to-one associations based on geometry after translation; compute nearest
+positions along continuous measured contours.
+\item Fit local offsets, smoothed at a 1 mm spatial scale. Keep exterior and
+interior samples separate when forecasting and computing compensation.
+\item Retain four recent residual fields. Estimate a median change between
+fields, clip each coordinate of the trend to $\pm0.5$ mm per layer, extrapolate
+for at most three layers, then hold that estimate for the more distant future.
+\end{enumerate}
+
+The previous fit could match an outside wall point to the inside of the same
+wall when the deformation approached the wall thickness. This could create a
+false opening in the forecast. Separating boundary roles directly addresses that
+failure mode. If the observed ring counts are incompatible, the affected role
+falls back to the earlier residual fit; the measured shape is not repaired.
+
+\subsection*{Forecasting and inverse compensation}
+Writing a geometric warp as $T_u$, the forward model is
+\[
+\widehat{\text{deposit}}_{k+h}=T_{u_{k,h}}(\text{command}_{k+h}).
+\]
+The inverse step uses four fixed-point updates to find commands whose predicted
+deposit approaches each recovery target. Candidate checks then evaluate the
+measured prefix plus this forecast, not the command shapes alone.
+
+\note{\textbf{This is an analytical short-history estimator.} Its uncertainty
+scale comes from spatial resolution and changes between observations. It is not
+a calibrated probability of failure, and simulator truth is never passed to it.}
+
+\nextpage
+\section{How the controller chooses recovery}
+
+\subsection*{Function first; intervene only when continuation fails}
+The \code{contour} policy inherits the guarded decision process. A passing
+continuation is retained without requesting a replan just to improve geometric
+margin. A warning is still assessed; it is not suppressed because an earlier
+frame already warned. The controller supplies the remaining adaptation budget
+and a replacement-plan validator as explicit decision inputs.
+
+\begin{enumerate}
+\item \textbf{Validate and forecast continuation.} If the measured prefix plus
+predicted remaining deposit passes the function checks, continue.
+\item \textbf{Generate recovery targets if allowed.} Try a held measured shape,
+a bounded return or partial correction, and slower blends. Permanent deformation
+is allowed when it still meets the specification.
+\item \textbf{Convert targets into compensating commands.} Reject replacements
+that change the remaining layer count/heights or violate the backend validator.
+MuJoCo checks bed, build-height and inspection-field bounds.
+\item \textbf{Check function and select.} Among passing, executable candidates,
+rank by uncertainty-envelope margin, central margin, smaller command change,
+then nominal fidelity. Optional FEA operates on predicted deposits.
+\item \textbf{Stop if none passes.} An exhausted budget cannot force a passing
+continuation to stop, but it rules out another adaptation when continuation fails.
+\end{enumerate}
+
+The default cap is three adaptations per print. Printed layers remain fixed in
+all candidate checks. Forecasting a healthy future cannot erase a measured
+broken base or a previously opened wall.
+
+\subsection*{A correction budget inspired by the Colab notebook}
+The notebook separated functional adequacy, correction reachability and expected
+cost. We adapted those ideas into the existing geometry loop:
+\[
+N_{\mathrm{required}}=\left\lceil
+\frac{\text{estimated correction (mm)}}{\text{assumed correction per layer (mm)}}
+\right\rceil.
+\]
+The default assumption is 0.25 mm of correction per layer. A 2 mm displacement
+therefore needs at least eight layers under this model. The budget describes a
+sampled fitted displacement schedule, not a measured physical printer limit.
+When full restoration will not fit, held or partial shapes can still be accepted
+if their predicted function passes.
+
+\subsection*{Cost is logged without inventing success probabilities}
+The notebook's recovery-versus-restart comparison was extended to include
+continuing. In one common cost unit, let $C_c$ be remaining continuation cost,
+$C_a$ recovery cost, $C_i$ intervention cost and $C_r$ a full restart cost:
+\begin{align*}
+E[C_{\mathrm{continue}}]&=C_c+(1-p_c)C_r,\\
+E[C_{\mathrm{recover}}]&=C_i+C_a+(1-p_a)C_r.
+\end{align*}
+Recovery is cheaper when
+\[
+p_a-p_c>\frac{C_i+C_a-C_c}{C_r}.
+\]
+The current policy logs the required success gain using a material-volume proxy.
+Unknown probabilities stay unknown; expected savings remain null. This is a
+diagnostic calculation, not the implemented intervention gate or a measured
+time-saving claim. The implemented gate is predicted functional feasibility.
+
+\nextpage
+\section{What changed and how it was evaluated}
+
+\subsection*{The implementation progression}
+\begin{tabularx}{\linewidth}{@{}p{1.05in}Y@{}}
+\toprule
+\code{ours} & Original function-checking rule policy; remains the default.\\
+\code{measured} & Retains measured state on every layer and adds functional warnings.\\
+\code{predictive} & Adds persistent command-to-deposit error prediction and inverse compensation.\\
+\code{functional} & Ranks feasible plans by functional margin. Experiments exposed unnecessary replans and interaction with the action cap.\\
+\code{guarded} & Keeps passing continuation, checks action budget and bounds before selection, and uses correction budgets and smaller-change tie-breaking.\\
+\code{contour} & Keeps guarded decisions and replaces the residual estimator with separate exterior/hole contour fitting.\\
+\bottomrule
+\end{tabularx}
+The benchmark also provides ignore, scrap-on-alarm and alert-only baselines.
+Earlier work added the multi-rig backend, continuous monitoring, regression
+coverage and corrections to geometry parsing, rasterization, G-code handling,
+FEA filtering and live-interface checks. A later cache fix replaced recycled
+object IDs with persistent tokens and included the full nominal reference.
+
+\subsection*{What MuJoCo supplies}
+Position-actuated stages execute extrusion waypoints; realized nozzle motion
+relative to the bed is converted into geometric beads. Small bead-fusion closing
+is applied before the prescribed failure, then a perspective RGB image is
+rendered and rectified. The policy sees this image-derived measurement.
+
+\begin{tabularx}{\linewidth}{@{}lYYY@{}}
+\toprule
+Profile & Motion & Bed (mm) & Line width (mm)\\
+\midrule
+Cartesian & Independent head axes & $220\times220$ & 0.42\\
+CoreXY & Ideal diagonal motor coordinates & $256\times256$ & 0.45\\
+Moving bed & X/Z head; moving Y bed & $180\times180$ & 0.48\\
+\bottomrule
+\end{tabularx}
+Camera view, color and noise also vary. These are illustrative rigs, not calibrated
+commercial-printer models. The simulator does not model molten plastic, adhesion,
+thermal contraction or a complete firmware interpreter.
+
+\subsection*{Latest frozen experiment}
+Four parts (bracket, cup, mug, spacer) face five prescribed failures: collapse,
+warp, shift, under-extrusion and detach, plus clean controls. The latest comparison
+uses \code{ignore}, \code{ours}, \code{guarded} and \code{contour}.
+
+\begin{tabularx}{\linewidth}{@{}YYYr@{}}
+\toprule
+Study & Profiles & Seeds & Runs\\
+\midrule
+Main & All three & 10 & 288\\
+Fresh-seed check & Cartesian & 22 and 23 & 192\\
+Selected rescue confirmation & Cartesian cup starvation & 0 & 4\\
+\bottomrule
+\end{tabularx}
+The first two studies contain 100 paired failure scenarios and 20 paired clean
+scenarios across four methods. The selected rescue is excluded from benchmark
+totals. Every monitored print begins at layer zero; faults are not cleared by
+adaptation. Parameters were frozen before the fresh seeds. The same fault draws
+repeat across profiles, so scenario counts are not independent failure samples.
+
+\nextpage
+\section{Measured results}
+
+\begin{tabularx}{\linewidth}{@{}Yrrrrr@{}}
+\toprule
+Policy & Main & Fresh & Total good & Scrap & Defective\\
+ & /60 & /40 & /100 & /100 & /100\\
+\midrule
+Ignore & 33 & 20 & 53 & 0 & 47\\
+Original rules & 24 & 14 & 38 & 55 & 7\\
+Guarded & 29 & 14 & 43 & 57 & 0\\
+\textbf{Contour} & \textbf{40} & \textbf{22} & \textbf{62} & \textbf{37} & \textbf{1}\\
+\bottomrule
+\end{tabularx}
+
+\begin{center}
+\includegraphics[width=\linewidth]{docs/validation/contour/outcomes.png}
+\end{center}
+{\small\color{muted}Counts are from the final audited runs. Scraps and defective
+finishes are displayed separately from functional completion.}
+
+\subsection*{What improved}
+\begin{itemize}
+\item \textbf{Versus guarded:} twenty gained successes and one lost rescue,
+for a net gain of nineteen. All twelve main-study warped/collapsed cup and mug
+cases that guarded lost are restored; eight more are restored on fresh seeds.
+\item \textbf{Versus ignoring failure:} all 53 successful prints are preserved,
+and nine additional prints are genuinely rescued. Thus 62/100 is not a 62\%
+rescue rate among harmful failures: the rescue count is 9 of 47 ignore failures.
+\item \textbf{Fresh-seed consistency:} seed 22 improves from 6/20 guarded successes
+to 10/20; seed 23 improves from 8/20 to 12/20. No guarded success is lost there.
+\end{itemize}
+
+\subsection*{Did the forecast itself improve?}
+Eight selected, untouched development trajectories supplied identical commands
+and camera measurements to both estimators. On the five functional trajectories,
+false full-continuation failure forecasts fell from \textbf{19/70 sampled
+checkpoints to 0/70}. On the three defective trajectories, missed failure
+forecasts increased from \textbf{10/42 to 11/42}. These are correlated development
+checkpoints, not calibrated probabilities or an independent classifier test.
+
+One-step forecasts were scored before the current measurement entered the model.
+For the cup-collapse trajectory, mean boundary error fell from 1.116 mm to
+0.313 mm. Better contour accuracy helps, but it does not guarantee a correct
+functional verdict in every case.
+
+\note{\textbf{Validation:} 53 tests passed; one optional neural module skipped.
+All 80 clean runs passed with zero alarms in 6,000 monitored frames. All 216
+overlapping baseline replays matched the prior study. The audit covers all 484
+final runs with stable source hashes and complete, unique scenario grids.}
+
+\nextpage
+\section{Readiness, limitations and next work}
+
+\subsection*{Two observed problems remain visible}
+\textbf{Lost moving-bed mug rescue.} At seed 10, guarded rescues a shifted mug
+with adaptations at layers 108 and 113. Contour adapts at 108 and stops at 111;
+every candidate reports one leaking layer. The logs establish the estimator's
+belief, not whether the stopped physical geometry was actually open. This is
+counted as a lost guarded success.
+
+\textbf{Missed spacer tolerance.} A seed-10 Cartesian spacer finishes after two
+adaptations, but its actual through-hole is 8.4 mm against an 8.5 mm minimum.
+Guarded stops this case. The new policy's measured-prefix check passes with only
+0.013 normalized margin. Its uncertainty envelope perturbs future layers, not
+the already-measured prefix; at completion no future layers remain. This is
+counted as a defective finish, with the original threshold unchanged.
+
+\subsection*{Implemented is not the same as validated}
+\begin{tabularx}{\linewidth}{@{}p{1.35in}Y@{}}
+\toprule
+Simulation recovery & Runs end to end with classical perception; strongest current evidence is the paired geometric benchmark.\\
+Live Bambu path & Camera calibration, telemetry, pause/cancel and replacement-job code exist. Physical resume behavior and recovery remain unvalidated. \code{run_live} still selects \code{RulePolicy}; contour is not wired into live mode.\\
+Optional FEA & Coarse linear-elastic screening exists, including loads and leak/connectivity checks. Latest success counts are geometry-only, not load-bearing validation.\\
+Neural / LLM paths & Neural detector/segmenter training and optional LLM spec/planning code exist. They were not used to produce these results; the latest predictor is analytical.\\
+Deployment & Open PR; experimental policies are opt-in. Existing hardware/platform/parser concerns require their own checks before release.\\
+\bottomrule
+\end{tabularx}
+
+\subsection*{Prioritized next work}
+\begin{enumerate}
+\item \textbf{Model measurement uncertainty on the printed prefix.} Evaluate
+confidence for hole size, wall thickness and openings near tolerance boundaries,
+using labeled geometry or independent physical measurements.
+\item \textbf{Resolve the moving-bed shift regression.} Compare command choices,
+observed contours and actual deposits through the first adaptation. Preserve
+this case as a regression when changing compensation or estimator selection.
+\item \textbf{Expand validation.} Add fault seeds, shapes, lighting/calibration
+variation and eventually real camera data. Keep false interventions, genuine
+rescues and defective completions separate; reserve new data before tuning.
+\item \textbf{Integrate and qualify hardware deliberately.} Add policy selection
+to the live path, exercise it without commanding recovery first, then validate
+position retention, clearance and resume behavior before physical recovery trials.
+\end{enumerate}
+
+The useful current conclusion is that separating wall contours substantially
+improves functional completion in the tested conditions. It does not establish
+unattended real-printer reliability or justify treating margins as success
+probabilities. The new policy remains opt-in.
+
+\nextpage
+\section{Code map and operation}
+
+\begin{tabularx}{\linewidth}{@{}p{2.7in}Y@{}}
+\toprule
+Repository area & Responsibility\\
+\midrule
+\code{parts/*.yaml}; \code{recovery/parts.py} & Example parts, geometry loading and functional specs.\\
+\code{recovery/models/classical.py} & Image segmentation and geometric failure detection.\\
+\code{recovery/loop/controller.py} & Per-layer observation, warnings, decisions and printer actions.\\
+\code{recovery/loop/contour.py} & New residual estimator, forecast and inverse compensation.\\
+\code{recovery/loop/guarded.py} & Continuation-first policy, candidate filtering and selection.\\
+\code{recovery/loop/recoverability.py} & Correction-layer budget and expected-cost diagnostics.\\
+\code{recovery/geometry/}; \code{recovery/fea/} & Contour operations, targets, function checks and optional structural screening.\\
+\code{recovery/printer/}; \code{recovery/live.py} & MuJoCo/Bambu backends and live entry point.\\
+\code{recovery/eval/mujoco_eval.py} & Paired scenarios, final truth-based evaluation and manifests.\\
+\code{tools/}; \code{docs/validation/} & Auditing, plotting, diagnostics and committed compact evidence.\\
+\bottomrule
+\end{tabularx}
+
+\subsection*{Run the current simulation comparison}
+Use the existing environment on this machine. Long evaluations should start
+inside tmux; keep raw outputs on the data volume and choose a fresh output
+directory for every run.
+\begin{Code}
+tmux new -A -s failure-recovery
+cd /home/ishaan/failure-detection
+export OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MUJOCO_GL=egl
+FD_RESULTS=/mnt/data/ishaan/hri-workspace/failure-detection
+
+.venv/bin/python -m recovery.cli mujoco-eval \
+  --methods ignore ours guarded contour \
+  --n 1 --seed 10 --workers 8 \
+  --out "$FD_RESULTS/new-main-study"
+\end{Code}
+The fresh-seed study adds \code{--profiles cartesian --n 2 --seed 22} and a
+different output directory. Exact audit/plot commands are in
+\repo{docs/contour-prediction-trial.md}{the contour prediction trial report}.
+For environment setup elsewhere, use \code{requirements-sim.txt} and a suitable
+data disk. The local \code{.venv} is a symlink into that disk.
+
+\subsection*{Tests, demos and persistent sessions}
+\begin{Code}
+.venv/bin/python -m pytest -q
+tmux attach -t failure-recovery
+\end{Code}
+Detach from tmux with Ctrl-b, then d. The existing session's progress and audit
+windows retain completed results. Repository \code{AGENTS.md} records the tmux
+preference; interactive agent sessions should also be launched inside tmux.
+
+The CLI demo accepts \code{--policy contour}, but its older simulator clears the
+failure after adaptation. Use MuJoCo without \code{--clear-failure-on-adapt} for
+persistent-failure evidence. The legacy demo exports deposited geometry rather
+than the executed command plan, so its G-code export does not validate inverse
+compensation. A passing simulation does not qualify that export or the live
+adapter for physical recovery.
+
+\nextpage
+\section{Evidence, provenance and report maintenance}
+
+\subsection*{Evidence to read first}
+\begin{enumerate}
+\item \repo{docs/contour-prediction-trial.md}{Contour prediction trial}: latest
+method, same-frame diagnostics, paired results, regressions and reproduction.
+\item \repo{docs/validation/contour/outcomes.csv}{Outcome counts} and
+\repo{docs/validation/contour/runs.csv}{per-run records}: machine-readable evidence
+behind the tables in this PDF.
+\item \repo{docs/validation/contour/audit.json}{Final audit}: complete grids,
+source fingerprints, raw-result hashes and 216 matching baseline replays.
+\item \repo{docs/validation/contour/contour-main-v1-paired.json}{Main paired cases},
+\repo{docs/validation/contour/contour-heldout-v1-paired.json}{fresh-seed paired cases}
+and \repo{docs/validation/contour/changed-cases.jsonl}{changed-case decision traces}:
+the exact gained and lost scenarios, not only aggregate rates.
+\item \repo{docs/validation/contour/forecast-diagnostics.json}{Forecast diagnostics}:
+identical-input comparisons, checkpoint outcomes and source/input hashes.
+\end{enumerate}
+
+\subsection*{How we reached this version}
+\begin{itemize}
+\item \repo{docs/mujoco-report.md}{Original repository review and multi-printer
+study}: infrastructure, earlier defect repairs, structural checks and the initial
+negative recovery result. It uses a different experimental set.
+\item \repo{docs/functional-policy-trial.md}{Measured-state and predictive-policy
+trial}: why observation history and compensation helped, and margin ranking
+caused unnecessary interventions.
+\item \repo{docs/notebook-recovery-trial.md}{Notebook-inspired guarded policy}:
+function, reachability and cost were separated; passing continuation was retained
+and executable-action limits were made explicit.
+\item \href{https://colab.research.google.com/drive/1qsvnBkzzJ74yCOGFyT7BJHdNe8Nc2IIN}{HW4 Print Recovery Assistant notebook}:
+inspiration for the correction budget and expected-cost decomposition. Its
+assumed probabilities were not adopted as learned estimates.
+\end{itemize}
+
+\note{\textbf{Do not pool unrelated study totals.} The latest headline uses
+seed 10 on three profiles plus fresh seeds 22--23 on Cartesian. Earlier reports
+used other seed sets and policy combinations. Compare paired methods within a
+study, or explicitly verified overlapping replays.}
+
+\subsection*{Exact latest-study footprint}
+\begin{tabularx}{\linewidth}{@{}p{1.6in}Y@{}}
+\toprule
+Implementation & Commit \code{9770276} on \code{review/mujoco-generalization}.\\
+Final audit & 288 main + 192 fresh-seed + 4 selected-rescue runs = 484.\\
+Separate development & 27 development-policy runs and eight untouched diagnostic trajectories; excluded from the final benchmark totals.\\
+Raw data location & \path{/mnt/data/ishaan/hri-workspace/failure-detection/}\\
+Active integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{GitHub PR \#1}; open at preparation time.\\
+\bottomrule
+\end{tabularx}
+
+Frozen production/spec source SHA-256:
+\begin{center}
+{\small\ttfamily 46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800}
+\end{center}
+The hash covers Python files under \code{recovery/} and YAML specifications under
+\code{parts/}. Audit records retain the initial and final experiment fingerprints.
+Documentation edits do not alter that experimental source set.
+
+\subsection*{Maintaining this document}
+This PDF is generated from \code{docs/report.tex}; its results figure comes from
+the committed contour evidence. Run \code{python3 tools/build_report.py} from the
+repository to rebuild root-level \code{report.pdf}. Update the narrative, tables
+and evidence links together when a new experiment changes the project state.
+
+\end{document}

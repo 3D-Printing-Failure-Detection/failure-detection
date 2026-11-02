@@ -1,0 +1,73 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian"
+    ],
+    "parts": [
+      "cup"
+    ],
+    "kinds": [
+      "under_extrusion"
+    ],
+    "methods": [
+      "ignore",
+      "ours",
+      "guarded",
+      "contour"
+    ],
+    "n": 1,
+    "seed": 0,
+    "workers": 1,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/contour-rescue-v1"
+  },
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "0af02bde2856a8ac96caa028a3ba59d06ca58747",
+  "source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800",
+  "expected_runs": 4,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "completed_runs": 4,
+  "errors": [],
+  "final_source_sha256": "46f242da2c1ab8ce82a293ecb0d60040c2993eb84a362585260b7bdf84f14800"
+}

@@ -9,6 +9,9 @@ from .gcode import write_gcode
 from .geometry.spec import Verdict, check
 from .loop.controller import Controller, Result
 from .loop.decide import AlertOnlyPolicy, RulePolicy
+from .loop.functional import FunctionalPolicy
+from .loop.guarded import GuardedPolicy
+from .loop.contour import ContourPolicy
 from .models.classical import ClassicalDetector, ClassicalSegmenter
 from .parts import Part, get_part
 from .sim import SimPrinter
@@ -40,12 +43,13 @@ def run_scenario(part_name, kind="collapse", seed=0, severity=None, policy="ours
     rng = np.random.default_rng(seed)
     f = random_failure(nom, rng, kind=kind, severity=severity)
     seg, det = make_models(models)
-    pol_cls = AlertOnlyPolicy if policy == "alert" else RulePolicy
+    pol_cls = {"ours": RulePolicy, "alert": AlertOnlyPolicy, "functional": FunctionalPolicy,
+               "guarded": GuardedPolicy, "contour": ContourPolicy}[policy]
     pol = pol_cls(part.spec, nom, part.layer_h, use_fea=use_fea)
     # layers before the failure are clean; skip imaging them unless asked (full-print run)
-    pr = SimPrinter(nom, f, seed=seed, start_idx=0 if from_start else f.k0)
+    pr = SimPrinter(nom, f, seed=seed, start_idx=0 if from_start or policy in ("functional", "guarded", "contour") else f.k0)
     res = Controller(pr, seg, det, pol, part.spec, nom, part.layer_h,
-                     quiet_horizon=None if from_start else 25, log=log).run()
+                     log=log).run()
     ig = SimPrinter(nom, f, seed=seed, start_idx=f.k0)
     ig.fast_forward()
     gcode, _ = write_gcode(pr.printed if not pr.cancelled else nom[:pr.n_done], part.layer_h,

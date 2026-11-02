@@ -45,10 +45,10 @@ def excess_overhang(layer: Layer, prev: Layer, p_layer: Layer, p_prev: Layer, r=
     also hang over. Slivers narrower than 2r are ignored."""
     if layer is p_layer and prev is p_prev:
         return 0.0
-    key = ("oh", id(prev))
+    key = ("oh", prev.cache_token, p_layer.cache_token, p_prev.cache_token, r)
     v = layer.cache.get(key)
     if v is None:
-        pk = ("punsup", id(p_prev))
+        pk = ("punsup", p_prev.cache_token)
         pu = p_layer.cache.get(pk)
         if pu is None:
             pu = _unsupported(p_layer, p_prev).buffer(0.8, quad_segs=4)
@@ -62,7 +62,7 @@ def excess_overhang(layer: Layer, prev: Layer, p_layer: Layer, p_prev: Layer, r=
 def inscribed(poly):
     """Centre and diameter of the largest inscribed circle of a polygon."""
     pt = polylabel(poly, tolerance=0.05)
-    return (pt.x, pt.y), 2 * poly.exterior.distance(pt)
+    return (pt.x, pt.y), 2 * poly.boundary.distance(pt)
 
 
 def hole_near(layer: Layer, centre, radius):

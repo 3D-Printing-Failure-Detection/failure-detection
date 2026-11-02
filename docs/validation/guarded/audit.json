@@ -1,0 +1,34 @@
+[
+  {
+    "experiment": "guarded-main-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/guarded-main-v1",
+    "runs": 360,
+    "source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db",
+    "baseline_replays_matched": 288,
+    "raw_sha256": "8b060398fd609809903e83c26512b750e80f644c3bdf7c9dda9b0ef26f8376b7"
+  },
+  {
+    "experiment": "guarded-heldout-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/guarded-heldout-v1",
+    "runs": 120,
+    "source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db",
+    "baseline_replays_matched": 0,
+    "raw_sha256": "d306cd845a2fa9ca3196a3e6db56fbf2fc14acf1e93dfda2c043ee642e9daefc"
+  },
+  {
+    "experiment": "guarded-rescue-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/guarded-rescue-v1",
+    "runs": 5,
+    "source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db",
+    "baseline_replays_matched": 0,
+    "raw_sha256": "3224e7e5101317a7611a39a8003abe28a0a7d5d21ce1f71b8a229b6c7b608680"
+  },
+  {
+    "experiment": "guarded-regression-v1",
+    "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/guarded-regression-v1",
+    "runs": 5,
+    "source_sha256": "8767444770139cee94b9b2d8b150d696600cb09383f3fd406d4a54c7915614db",
+    "baseline_replays_matched": 4,
+    "raw_sha256": "1589f1e9a439653633a8275420b4ff52c28691f119a5b8f444c3b6a848522e21"
+  }
+]

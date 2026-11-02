@@ -1,0 +1,63 @@
+{
+  "profile": "cartesian",
+  "part": "cup",
+  "seed": 10,
+  "failure": {
+    "z0": 26.75,
+    "layer_h": 0.25,
+    "c": [
+      6.838255066900306,
+      25.109110786023827
+    ],
+    "n0": [
+      -0.2627710193117439,
+      -0.964858223436487
+    ],
+    "sigma": 9.142224426372653,
+    "severity": 0.4940667600066263,
+    "duration": 5,
+    "radius": 10.10243693149252
+  },
+  "observations": [
+    {
+      "layer": 107,
+      "label": "ok",
+      "deviation_mm": 0.5049386190214042,
+      "true_holes": 1,
+      "measured_holes": 1,
+      "iou": 0.8618884134720608
+    },
+    {
+      "layer": 108,
+      "label": "ok",
+      "deviation_mm": 0.5301114425182624,
+      "true_holes": 0,
+      "measured_holes": 1,
+      "iou": 0.8680245615799385
+    },
+    {
+      "layer": 109,
+      "label": "ok",
+      "deviation_mm": 0.646191134007936,
+      "true_holes": 1,
+      "measured_holes": 0,
+      "iou": 0.8607392359314829
+    },
+    {
+      "layer": 110,
+      "label": "ok",
+      "deviation_mm": 0.6552694939780626,
+      "true_holes": 1,
+      "measured_holes": 0,
+      "iou": 0.8575940455624077
+    },
+    {
+      "layer": 111,
+      "label": "ok",
+      "deviation_mm": 0.6501515397973802,
+      "true_holes": 1,
+      "measured_holes": 0,
+      "iou": 0.8572167000779558
+    }
+  ]
+}

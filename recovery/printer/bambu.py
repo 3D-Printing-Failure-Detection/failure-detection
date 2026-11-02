@@ -199,6 +199,9 @@ class BambuPrinter:
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
                  rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600):
         self.ip, self.code, self.plan, self.layer_h = ip, code, list(planned), layer_h
+        if mode != "restart":
+            raise ValueError("stream mode lacks execution acknowledgements; use restart")
+        self.printed: List[Layer] = []  # measured observations, not physical ground truth
         self.link = BambuLink(ip, serial, code)
         self.cam = BambuCamera(ip, code)
         self.bed_cam = bed_camera
@@ -228,9 +231,18 @@ class BambuPrinter:
         while printing layer L (1-based), so layer i is done once layer_num >= i + 2."""
         t0 = time.time()
         while time.time() - t0 < self.timeout:
-            if self._layer_num() >= self._layer + 2 or self.link.get("gcode_state") in ("FINISH", "IDLE"):
+            state = self.link.get("gcode_state")
+            if state == "FAILED":
+                raise RuntimeError("printer reports FAILED")
+            reported = self._layer_num()
+            if reported > self._layer + 2 or (state == "FINISH" and self._layer != self.n_total - 1):
+                raise RuntimeError("missed completed layers; cannot reconstruct them from the latest frame")
+            if reported == self._layer + 2 or state == "FINISH":
                 break
             time.sleep(0.5)
+        else:
+            raise TimeoutError("timed out waiting for the next completed layer")
+        self.printed.append(self.plan[self._layer])
         self._layer += 1
         time.sleep(self.settle)          # head parks (timelapse 'traditional') and the image settles
 
@@ -242,16 +254,19 @@ class BambuPrinter:
     def expected_layer(self) -> Layer:
         return self.plan[self._layer - 1]
 
+    def record_measurement(self, layer: Layer):
+        self.printed[-1] = layer
+
     def pause(self):
         self.link.command("pause")
-        self.link.wait_state({"PAUSE"}, timeout=60)
+        if not self.link.wait_state({"PAUSE"}, timeout=60):
+            raise TimeoutError("printer did not acknowledge pause")
 
     def resume(self):
         self.link.command("resume")
 
     def replace_remaining(self, layers: List[Layer]):
         keep = self._layer
-        self.plan = self.plan[:keep] + list(layers)
         gc = resume_gcode(layers, self.layer_h, keep, self.origin, self.nozzle, self.bed, self.rehome)
         if self.mode == "stream":
             lines = [l for l in gc.splitlines() if l and not l.startswith(";")]
@@ -262,9 +277,13 @@ class BambuPrinter:
             return
         name = f"adapted_{int(time.time())}.gcode"
         self.link.command("stop")
-        self.link.wait_state({"IDLE", "FINISH", "FAILED"}, timeout=120)
+        if not self.link.wait_state({"IDLE", "FINISH", "FAILED"}, timeout=120):
+            raise TimeoutError("printer did not acknowledge stop; replacement aborted")
         upload_ftps(self.ip, self.code, name, gc.encode())
         self.link.command("gcode_file", f"/sdcard/{name}")
+        if not self.link.wait_state({"RUNNING"}, timeout=120):
+            raise TimeoutError("printer did not start the replacement job")
+        self.plan = self.plan[:keep] + list(layers)
         self._offset = 0                                  # `M73 L<n>` in the file keeps layer_num absolute
 
     def cancel(self):

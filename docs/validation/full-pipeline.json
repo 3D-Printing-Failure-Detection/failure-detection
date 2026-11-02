@@ -1,0 +1,64 @@
+[
+  {
+    "profile": "cartesian",
+    "authored_spec_verified": true,
+    "preprint_fea_ok": true,
+    "candidate_stress_checks": 29,
+    "outcome": "finished",
+    "functional": true,
+    "geometry_violations": [],
+    "final_fea_ok": true,
+    "frames": 160,
+    "adaptations": 1,
+    "gcode_roundtrips": [
+      {
+        "layers": 41,
+        "expected_layers": 41,
+        "min_iou": 0.9902285775897229
+      }
+    ],
+    "clear_failure_on_adapt": true
+  },
+  {
+    "profile": "corexy",
+    "authored_spec_verified": true,
+    "preprint_fea_ok": true,
+    "candidate_stress_checks": 23,
+    "outcome": "finished",
+    "functional": false,
+    "geometry_violations": [
+      "wall below 1.1 mm in 5 layers"
+    ],
+    "final_fea_ok": true,
+    "frames": 160,
+    "adaptations": 1,
+    "gcode_roundtrips": [
+      {
+        "layers": 42,
+        "expected_layers": 42,
+        "min_iou": 0.987270191756815
+      }
+    ],
+    "clear_failure_on_adapt": true
+  },
+  {
+    "profile": "bedslinger",
+    "authored_spec_verified": true,
+    "preprint_fea_ok": true,
+    "candidate_stress_checks": 23,
+    "outcome": "finished",
+    "functional": true,
+    "geometry_violations": [],
+    "final_fea_ok": true,
+    "frames": 160,
+    "adaptations": 1,
+    "gcode_roundtrips": [
+      {
+        "layers": 42,
+        "expected_layers": 42,
+        "min_iou": 0.9797189163891648
+      }
+    ],
+    "clear_failure_on_adapt": true
+  }
+]

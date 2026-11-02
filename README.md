@@ -6,8 +6,66 @@ remaining layers, or scrap**, so the finished part still does its job even if it
 Target hardware: **Bambu Lab P1S + Bambu Studio**. Based on the [Project 2 plan](#project-plan)
 (also in [docs/project-plan.pdf](docs/project-plan.pdf)).
 
-> **Status: research prototype.** Much of the code was written but not executed; see
-> [Status](#status-what-has-and-hasnt-been-verified) before relying on any of it.
+> **Status: research prototype.** The classical loop now runs against three MuJoCo
+> printer rigs, with paired failure evaluations and regression tests. See the
+> [review and generalization report](docs/mujoco-report.md) for measured results,
+> corrected errors, reproduction commands, and simulation limits. Real-printer
+> recovery and trained-model accuracy remain unvalidated.
+
+The repository-root [project report (PDF)](report.pdf) explains the system,
+current implementation, experimental results, limitations, and next steps.
+Its source is `docs/report.tex`; rebuild it with `python3 tools/build_report.py`.
+
+## MuJoCo across printer configurations
+
+The optional backend executes extrusion waypoints on Cartesian, ideal CoreXY,
+and moving-bed rigs. The same perception and policy consume calibrated MuJoCo RGB
+images on all three. These are illustrative configurations, not calibrated models
+of commercial machines. Deposition and failure evolution remain explicit geometric
+surrogates; this does not simulate molten plastic or adhesion.
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-sim.txt
+MUJOCO_GL=egl OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
+  .venv/bin/python -m recovery.cli mujoco-eval --n 2 --seed 10 --workers 6 \
+  --out results/mujoco-persistent
+```
+
+This images every monitored layer, includes clean controls and all four policies,
+and leaves injected failures active after adaptation. Use a fresh output directory
+for each run. The optimistic assumption in the older simulator can be measured
+separately with `--clear-failure-on-adapt --methods ours`. Results report observed
+in-place success separately from a hypothetical restart's filament cost. Raw runs,
+summary tables, environment metadata, and a source digest are saved together.
+
+On this machine, the environment and raw experiment outputs live under
+`/mnt/data/ishaan/hri-workspace/failure-detection`; `.venv` is a local symlink.
+On another machine, choose an appropriate disk for environments and results.
+
+The [follow-up policy trial](docs/functional-policy-trial.md) tests three cumulative
+changes: `measured` retains every measured layer and adds functional alarms;
+`predictive` also forecasts persistent deposition error and compensates commands;
+`functional` also ranks feasible plans by functional margin under geometric
+uncertainty. These are experimental options; `ours` remains the default. Compare
+them with `--methods ignore ours measured predictive functional`. The CLI demo
+also accepts `--policy functional`, but its older simulator clears failures after
+adaptation; use MuJoCo without `--clear-failure-on-adapt` to test persistence.
+
+The [notebook-inspired constrained policy](docs/notebook-recovery-trial.md),
+available as `guarded`, separates function, executable recovery and intervention
+cost. It retains a passing continuation, checks the remaining replan budget and
+printer bounds, and builds corrections using an explicit per-layer assumption.
+Compare it with `--methods ignore ours predictive functional guarded`. The
+notebook's success probability remains an unknown input; a geometry margin is
+not used as a probability. This policy also remains opt-in.
+
+The [contour prediction trial](docs/contour-prediction-trial.md) adds the opt-in
+`contour` policy. It matches inner and outer wall boundaries separately when
+forecasting deposition and computing compensation, while retaining the guarded
+policy's functional checks and action limits. Compare with
+`--methods ignore ours guarded contour`; the demo also accepts `--policy contour`.
+Use the persistent-failure MuJoCo evaluation for recovery evidence.
 
 ## The idea in physical terms
 
@@ -205,23 +263,21 @@ adapter (`BambuPrinter.replace_remaining`) pauses, stops, uploads a self-contain
 (heat, no homing, adapted layers, `M73 L<n>` so `layer_num` keeps counting) over FTPS and starts it
 with `gcode_file`. That works only if the P1S still knows its position after STOP; if it does not,
 pass `--rehome-gcode` (re-home XY and re-reference Z at a bed corner away from the part; never
-`G28` over the part). `--mode stream` (send adapted layers via `gcode_line` while paused) is
-experimental. **Test both on a scrap print before anything else**: this is the hinge of the
+`G28` over the part). Streaming mode is rejected because it has no execution acknowledgements.
+Pause, stop, and replacement-start timeouts now abort instead of silently proceeding.
+**Validate restart behavior on a scrap print first**: this is the hinge of the
 project (the plan's week-1 "pause, edit, resume" test).
 
 ## Status: what has and hasn't been verified
 
-Written **and** exercised: the 4 parts pass their own specs; G-code write→parse round-trips
-(IoU > 0.99); the classical segmenter/detector show 0 false alarms on clean layers in a spot
-check and classify shift/warp/detach well, but collapse vs under-extrusion labels are often
-confused; single scenarios (mug collapse, mug shift, cup collapse) are recovered in place where
-the alert-only baseline scrapped; the training script ran 1 epoch on 120 samples.
-
-**Not verified (and unrun since the latest round):** the voxel FEA solver, `specgen`, the ConvNeXt-V2/SegFormer models, the `specgen`/`stress` CLI commands and the pre-print gate; the full evaluation (an early 40-scenario smoke run showed *ours* and
-*ignore* both ending functional in ~48% of cases and ours restarting less than scrap/alert, but
-that was before later fixes and is far too small to quote); `pytest tests` (written, never run, including the new FEA, spec-author and model tests);
-the Gradio app, `slicing.py`, `llm.py`; the whole Bambu path (MQTT/FTPS/camera/Bambu Studio CLI were written from community protocol docs, never run against a printer); real images; trained-model
-accuracy (only a smoke run).
+The [dated report](docs/mujoco-report.md) and [validation records](docs/validation/)
+supersede the original branch's unexecuted-test claims. Validation includes the
+classical loop, all four part specifications, G-code parsing, actual MuJoCo camera
+and motion tests, an analytical FEA patch test, nominal structural loads, offline
+spec generation, STL cross-section smoke testing, and saved SegFormer architecture
+reload/inference. Full learned-model training and accuracy, live LLM calls, the
+Gradio UI, Bambu Studio CLI, and physical MQTT/FTPS/camera/resume behavior remain
+outside those results.
 
 ## Modelling assumptions to state in the report
 
@@ -232,7 +288,8 @@ accuracy (only a smoke run).
   physical test. Validate with real prints (e.g. fill the mug with water).
 - Abrupt shifts and gaps through already-printed walls are unrecoverable by design → scrap.
 - Detection threshold is 1.0 mm; smaller deviations are treated as benign.
-- A scrapped print counts as restarted successfully; methods differ in filament wasted.
+- The legacy `eval` command assumes a clean restart succeeds. The new `mujoco-eval`
+  reports a scrap as a scrap; a restart is only a separately named cost assumption.
 
 ## Project plan
 

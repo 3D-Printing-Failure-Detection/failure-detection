@@ -2,7 +2,7 @@
 continue / adapt / scrap. Rules first; an LLM planner can pick among the rule-verified
 candidates (loop/llm.py) but can never pick one that fails the spec check."""
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 from shapely.ops import unary_union
 
@@ -19,6 +19,13 @@ class Decision:
     plan: Optional[A.Plan] = None
     verdict: Optional[Verdict] = None
     considered: List[dict] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class DecisionContext:
+    """Executable-action limits, without access to printer truth or fault state."""
+    adapts_remaining: Optional[int] = None
+    validate_remaining: Optional[Callable[[List[Layer]], None]] = None
 
 
 class RulePolicy:
@@ -58,21 +65,19 @@ class RulePolicy:
 
     def _stress_filter(self, known, cands):
         """Geometry says a candidate is fine; now simulate the loads on the finished part.
-        Stops at the first candidate that passes both (the rest are left untested: expensive)."""
+        Check every eligible candidate: optional policies may select any passing option."""
         from ..fea import stress_test
         for c in cands:
             v = c["verdict"]
             if not v.ok:
                 continue
-            rep = stress_test(known + c["plan"].layers, self.spec, self.h, self.fea_h)
+            rep = stress_test(known + c.get("predicted", c["plan"].layers), self.spec, self.h, self.fea_h)
             c["stress"] = rep
             if not rep.ok:
                 v.ok = False
                 v.violations += rep.violations
-            else:
-                break
 
-    def decide(self, known: List[Layer], current_plan: List[Layer], detection) -> Decision:
+    def decide(self, known: List[Layer], current_plan: List[Layer], detection, *, context=None) -> Decision:
         k = len(known) - 1
         if detection.label == "detach":
             return Decision("scrap", "part detached: nothing to build on")
