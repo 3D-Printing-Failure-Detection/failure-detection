@@ -74,8 +74,8 @@ without an API key. Its optional `neural_risk` and `neural_risk_agent` policies 
 intervene before a tight fit becomes unusable. The combined model and Qwen
 completed 67/100 historical failure cases versus contour's 62/100, preserving its
 successes with zero defective finishes instead of one. All 20 clean controls
-passed. The untouched comparison remains incomplete, so these policies remain
-opt-in.
+passed. A frozen comparison across 15 configurations (4,320 runs on fresh seeds)
+started on 2026-11-02 and remains incomplete, so these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.

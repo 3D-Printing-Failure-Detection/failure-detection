@@ -570,7 +570,8 @@ Training labels use simulated deposited geometry; runtime inputs never receive
 that geometry, failure parameters, random seeds or final truth verdicts.
 
 Whole trajectories are separated by seed: training uses 60--63, validation
-70--71. Seeds 1001--1004 remain reserved for a frozen final comparison. The
+70--71. The frozen final comparison on seeds 1001--1004 started on November 2;
+its results are pending. These seeds may not be used to tune this candidate. The
 classical-camera model's validation displacement error is 0.1921 mm, versus
 0.3435 mm for the analytical forecast. These are point-displacement errors,
 not print-completion rates. Training manifests pin dataset and checkpoint hashes.
@@ -657,9 +658,10 @@ model combinations are rejected before evaluation.
 The full hybrid finishes at \textbf{65/100}; the combined models finish at
 \textbf{67/100 versus contour's 62/100}. Both retain every contour success and
 produce zero defective finishes. Qwen matches the combined neural-only result
-with 201 validated requests; all 20 clean controls pass. The reserved untouched
-test must still compare all nine earlier baselines and the neural ablations
-before claiming broader superiority.
+with 201 validated requests; all 20 clean controls pass. The frozen fresh test
+started on November 2 at 21:13 UTC: 240 failure cases and 48 clean controls per
+configuration, across all nine earlier baselines and six candidate/ablation
+configurations (4,320 runs). Results are pending before claiming broader superiority.
 
 \note{\textbf{Acceptance remains open.} A useful trained model, lower forecast
 error and three selected rescues are insufficient. The final candidate must

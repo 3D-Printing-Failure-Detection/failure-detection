@@ -85,6 +85,19 @@ training/validation/test seeds. Raw records are never relabeled or edited to
 combine variants; report labels are explicit input metadata. Historical
 regression and the other acceptance requirements above remain necessary.
 
+The test started at 2026-11-02 21:13:45 UTC from commit
+`a27847b324da18b6c40b9b8108b6240d022c8892`, with runtime/specification digest
+`4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3`.
+All 4,320 runs use the frozen source and copied checkpoints under
+`/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1`.
+The [launch protocol](validation/neural/frozen-test-v1-protocol.json) records
+every command, model hash and comparison label. Seeds 1001–1004 are now consumed
+by this test and must not be reused as untouched data for a tuned replacement.
+Results are pending. Attach with `tmux attach -t neural-recovery`; the
+`test-status` window reports progress and `test-audit` runs the final comparison
+after all jobs finish. A successful audit exit confirms integrity, not superiority:
+all outcome criteria in `comparison.json` must also pass.
+
 ## Development record (2026-11-02)
 
 Qwen3-0.6B Q8_0 and llama.cpp b12057 are downloaded with pinned SHA-256 checksums.
@@ -204,8 +217,9 @@ full historical run compares this hybrid, with and without Qwen, against contour
 Its completed 60-case main grid now scores 43/60 for both hybrid variants versus
 40/60 for contour, with zero versus one defective finish. Every contour success
 is retained, all 12 clean controls pass, and the agent makes 121 validated calls
-with 577 separately audited continuation-review reuses. The remaining 40-case
-historical slice and untouched final test are still required.
+with 577 separately audited continuation-review reuses. The subsequent 40-case
+historical slice completes at 22/40 for all three methods, yielding 65/100 for
+both hybrids versus contour's 62/100 overall. The frozen fresh test remains required.
 
 The unrestricted model's full 100-case historical run is now complete: 56/100
 functional completions versus contour's 62/100, with three versus one defective
@@ -252,5 +266,5 @@ not silently substitute an unsupervised decision.
 All completed comparisons, including unsuccessful ablations, have compact audits
 and training manifests in `docs/validation/neural`. Full source snapshots, model
 weights, training data and request/response logs remain on the data volume. The
-100 historical failure cases and untouched final comparison are still required
-before accepting the new policy as better overall.
+100-case historical regression has passed; the frozen fresh comparison is still
+required before accepting the new policy as better overall.
