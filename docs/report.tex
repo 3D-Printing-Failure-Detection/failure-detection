@@ -83,7 +83,7 @@ are never counted as successes.
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
-Validation & 75 tests passed, one optional module skipped. The established contour study contains 484 audited runs; neural development trials are separate.\\
+Validation & 77 tests passed, one optional module skipped. The established contour study contains 484 audited runs; neural development trials are separate.\\
 Controls & All 80 clean runs passed; zero alarms in 6,000 monitored clean frames.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
@@ -95,7 +95,7 @@ The system and its functional contract (page 2); observation and prediction
 (page 3); recovery decisions and cost assumptions (page 4); implementation
 history and evaluation design (page 5); results (page 6); limitations and next
 work (page 7); code and operation (page 8); evidence and reproducibility (page 9);
-trained recovery and local supervision (pages 10--11).
+trained recovery and local supervision (from page 10).
 
 {\small\color{muted}Historical contour snapshot: \code{9770276}. Neural experiments
 retain separate frozen source hashes. Results describe simulated experiments,
@@ -638,18 +638,28 @@ on these cases. It does not prove that a language model improved success.
 \subsection*{A wider regression found a limitation}
 Using the learned forecast on every part lost cup and mug successes that contour
 kept, including shifts and material starvation. That unrestricted replacement
-scored 35/60 functional completions versus contour's 40/60 on the completed
-main grid, with two versus one defective finishes. Its three gains were spacers;
-all eight losses were containers. It is not accepted. An explicit hybrid variant selects the trained forecast only
+scored 56/100 functional completions versus contour's 62/100 on the complete
+historical grid, with three versus one defective finishes. Its three gains were
+spacers; all nine losses were containers. Both passed 20 clean controls. It is not
+accepted. An explicit hybrid variant selects the trained forecast only
 when the original part specification contains through-hole fit constraints;
 other parts retain analytical contour forecasting. The selection is made from
 the specification before observations, never from simulator outcomes or fault
 labels. Each result records which forecast ran and its actual neural-call count.
 
-The hybrid comparison includes all 100 historical failure cases and 20 clean
-controls, with neural-only and actual-Qwen variants. It is still in progress.
-After development is frozen, the full untouched comparison must include every
-earlier baseline. No overall superiority claim is made at this stage.
+The learned camera also recovered the known bedslinger mug-shift case that
+contour had lost to guarded: it and guarded completed 3/3 mug-shift cases across
+profiles, versus contour's 2/3. A combined variant now uses that learned camera
+for containers and the trained forecast for tight-fit parts. Classical camera
+measurements remain paired with the fit forecast's training domain; incompatible
+model combinations are rejected before evaluation.
+
+The hybrid's completed main grid scores \textbf{43/60 versus contour's 40/60},
+with zero versus one defective finish and no lost contour success. Qwen matches
+the neural-only result with 121 validated requests; all 12 clean controls pass.
+The remaining 40 historical cases and the combined-camera trial are still
+running. The untouched test must still compare every earlier baseline before
+claiming overall superiority.
 
 \note{\textbf{Acceptance remains open.} A useful trained model, lower forecast
 error and three selected rescues are insufficient. The final candidate must
@@ -659,22 +669,17 @@ must be reported separately. None of these simulation results is a physical
 printer validation.}
 
 \subsection*{Reproduction and retained evidence}
-The \repo{docs/neural-recovery-plan.md}{neural recovery plan} records the split,
-acceptance rules, failed attempts and model identities. Compact training and
-experiment audits are in \repo{docs/validation/neural}{docs/validation/neural}.
-Full datasets, checkpoints, source snapshots and model request logs are under
-\path{/mnt/data/ishaan/hri-workspace/failure-detection/}. Failed runs are retained,
-including an agent-timeout trial; they are not counted as complete comparisons.
+The \repo{docs/neural-recovery-plan.md}{neural recovery plan} records the protocol,
+models and failed attempts; \repo{docs/validation/neural}{docs/validation/neural}
+contains compact audits. Full datasets, checkpoints, source snapshots and request
+logs remain under \path{/mnt/data/ishaan/hri-workspace/failure-detection/}.
 
 \begin{Code}
 tmux attach -t neural-recovery
 .venv/bin/python -m recovery.eval.mujoco_eval --help
-.venv/bin/python tools/audit_neural_experiment.py --help
-.venv/bin/python tools/compare_neural_experiments.py --help
 \end{Code}
-The hybrid uses \code{--neural-forecast-scope fits --neural-reserve-fit}, the
-rotation-equivariant classical-camera checkpoint and an explicit local-server
-manifest. It remains an experimental option; the live entry point's default
-policy is unchanged.
+The combined option pairs fit-only forecasting with learned measurements
+elsewhere. Both checkpoints and the local-server manifest are explicit inputs.
+It remains experimental; the live entry point's default is unchanged.
 
 \end{document}

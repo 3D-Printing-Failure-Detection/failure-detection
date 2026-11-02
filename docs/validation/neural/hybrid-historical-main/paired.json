@@ -1,0 +1,120 @@
+[
+  {
+    "baseline": "contour",
+    "treatment": "neural_risk",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "contour",
+    "treatment": "neural_risk",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 40,
+    "treatment_in_place": 43,
+    "gained": [
+      [
+        "bedslinger",
+        "spacer",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "shift",
+        10
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "neural_risk_agent",
+    "treatment": "neural_risk",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "neural_risk_agent",
+    "treatment": "neural_risk",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 43,
+    "treatment_in_place": 43,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "contour",
+    "treatment": "neural_risk_agent",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "contour",
+    "treatment": "neural_risk_agent",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 40,
+    "treatment_in_place": 43,
+    "gained": [
+      [
+        "bedslinger",
+        "spacer",
+        "shift",
+        10
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "shift",
+        10
+      ],
+      [
+        "corexy",
+        "spacer",
+        "shift",
+        10
+      ]
+    ],
+    "lost": []
+  },
+  {
+    "baseline": "neural_risk",
+    "treatment": "neural_risk_agent",
+    "split": "clean",
+    "n": 12,
+    "baseline_in_place": 12,
+    "treatment_in_place": 12,
+    "gained": [],
+    "lost": []
+  },
+  {
+    "baseline": "neural_risk",
+    "treatment": "neural_risk_agent",
+    "split": "failure",
+    "n": 60,
+    "baseline_in_place": 43,
+    "treatment_in_place": 43,
+    "gained": [],
+    "lost": []
+  }
+]

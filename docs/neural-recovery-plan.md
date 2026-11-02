@@ -174,6 +174,40 @@ labels, simulator outcomes or seed identities. The full benchmark still contains
 every part and failure kind. Each row records the selected forecast source and
 actual neural calls, including zero neural calls for analytical cases. A new
 full historical run compares this hybrid, with and without Qwen, against contour.
+Its completed 60-case main grid now scores 43/60 for both hybrid variants versus
+40/60 for contour, with zero versus one defective finish. Every contour success
+is retained, all 12 clean controls pass, and the agent makes 121 validated calls
+with 577 separately audited continuation-review reuses. The remaining 40-case
+historical slice and untouched final test are still required.
+
+The unrestricted model's full 100-case historical run is now complete: 56/100
+functional completions versus contour's 62/100, with three versus one defective
+finishes. All nine lost contour successes were containers; all three gains were
+spacer shifts. Both methods passed the 20 clean controls. This failed replacement
+remains in the evidence rather than being hidden behind the successful subset.
+
+A separate learned-camera check also restored the known bedslinger mug-shift
+success that contour had lost to guarded. Across the three profiles, guarded and
+the learned camera each completed 3/3 mug-shift cases; contour completed 2/3.
+The next full variant therefore combines learned camera measurements for parts
+without through-hole fits with the trained temporal forecast for fit parts.
+Use `--boundary-scope nonfits --neural-forecast-scope fits`; this retains the
+classical measurements on which the fit forecast was trained. Invalid camera/
+forecast domain combinations are rejected before a run. Every row records its
+actual measurement source, boundary inference count, forecast source and temporal
+inference count. The original benchmark parts, failures and specs remain intact.
+
+The combined comparison runs in `neural-combined-historical-v1` (deterministic)
+and `neural-combined-agent-historical-v1` (actual Qwen), using the exact same source
+snapshot and two checkpoints. A second CPU inference worker on localhost:8090
+shares the verified Qwen model file so it does not queue behind the earlier
+hybrid trial on localhost:8089. No second download or API access is required.
+Both combined runs are still in progress. The full source test suite passes
+77 tests, with one optional module skipped.
+The operator-facing agent reason now states only the selected candidate and the
+verified prediction check. Qwen's original prose remains in the raw audit;
+incorrect numerical explanations are not presented as tool findings. This changes
+display text, not model requests or selected plans.
 
 One preceding reserve-planner experiment failed after a local-model timeout; its
 failed manifest is retained. Requests now contain compact decision fields and

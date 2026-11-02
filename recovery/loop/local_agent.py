@@ -171,8 +171,11 @@ class LocalAgentMixin:
         self.last_continue_review = ((len(known), self.supervisor.audit[-1]['request_sha256'])
                                      if chosen['name'] == 'continue' else None)
         considered.append(dict(agent=self.supervisor.audit[-1]))
+        # The small model has misstated numerical margins in development. Its
+        # prose is preserved in the raw audit, but the operator-facing reason
+        # states only the selected action and the tool-verified prediction.
         return Decision('continue' if chosen['name'] == 'continue' else 'adapt',
-            'local Qwen selected ' + chosen['name'] + ': ' + selected['reason'],
+            'local Qwen selected ' + chosen['name'] + '; predicted function checks pass',
             chosen['plan'], chosen['verdict'], considered)
 
 

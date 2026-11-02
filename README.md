@@ -68,11 +68,13 @@ policy's functional checks and action limits. Compare with
 `--methods ignore ours guarded contour`; the demo also accepts `--policy contour`.
 Use the persistent-failure MuJoCo evaluation for recovery evidence.
 
-The [learned recovery experiment](docs/neural-recovery-plan.md) trains a temporal
-neural network and runs a free local Qwen model in the decision loop, without an
-API key. Its optional `neural_risk` and `neural_risk_agent` policies can intervene
-before a tight fit becomes unusable. Selected development cases improved, but
-overall superiority is still being evaluated; these policies remain opt-in.
+The [learned recovery experiment](docs/neural-recovery-plan.md) trains camera and
+temporal neural networks and runs a free local Qwen model in the decision loop,
+without an API key. Its optional `neural_risk` and `neural_risk_agent` policies can
+intervene before a tight fit becomes unusable. The fit-only forecast hybrid
+improved a 60-case historical comparison from 40 to 43 functional completions,
+with zero defective finishes instead of one. The wider and untouched comparisons
+remain incomplete, so these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.

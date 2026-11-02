@@ -92,7 +92,8 @@ def run_case(job):
                             render=method != "ignore") as pr:
             learned_segmenter = None
             if (method.startswith('neural')
-                    and options.get('boundary_checkpoint')):
+                    and options.get('boundary_checkpoint')
+                    and (options.get('boundary_scope', 'all') == 'all' or not part.spec.get('holes'))):
                 from ..models.boundary import BoundarySegmenter
                 learned_segmenter = BoundarySegmenter(options['boundary_checkpoint'])
             seg = ObservedSegmenter(pr, learned_segmenter)
@@ -174,6 +175,7 @@ def run_case(job):
                 forecast_source=getattr(policy, 'forecast_source',
                     'analytical' if getattr(policy, 'state', None) is not None else None),
                 boundary_queries=getattr(learned_segmenter, 'queries', 0),
+                measurement_source=getattr(learned_segmenter, 'sha256', 'classical'),
                 agent_requests=len(getattr(getattr(policy, 'supervisor', None), 'audit', [])),
                 agent_accepted=sum(a['accepted'] for a in getattr(getattr(policy, 'supervisor', None), 'audit', [])),
                 violations=verdict.violations if verdict else [events[-1].reason],
@@ -279,6 +281,8 @@ def main(argv=None):
                         help='offer a bounded clearance-reserve candidate to the preventive learned policy')
     parser.add_argument('--boundary-checkpoint', type=Path,
                         help='learned camera boundary model for neural methods; historical baselines stay classical')
+    parser.add_argument('--boundary-scope', choices=('all', 'nonfits'), default='all',
+                        help='nonfits retains classical measurements for specified fits and uses the learned camera elsewhere')
     parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
     parser.add_argument('--supervisor-model', default='local-qwen3')
     parser.add_argument('--supervisor-timeout', type=float, default=120.)
@@ -296,17 +300,22 @@ def main(argv=None):
         parser.error('learned-camera methods require --boundary-checkpoint')
     if args.boundary_checkpoint and args.neural_calibrate_measurements:
         parser.error('the temporal calibrator was trained on classical measurements; do not apply it to learned camera output')
+    if args.boundary_scope == 'nonfits' and not args.boundary_checkpoint:
+        parser.error('nonfits boundary scope requires --boundary-checkpoint')
     if neural:
+        if args.boundary_scope == 'nonfits' and args.neural_forecast_scope != 'fits':
+            parser.error('nonfits camera scope requires fits forecast scope to keep model input domains consistent')
         from ..models.temporal import TemporalModel
         temporal_model = TemporalModel(args.neural_checkpoint)
         measurement_source = (hashlib.sha256(args.boundary_checkpoint.read_bytes()).hexdigest()
-                              if args.boundary_checkpoint else 'classical')
+                              if args.boundary_checkpoint and args.boundary_scope == 'all' else 'classical')
         if temporal_model.measurement_source != measurement_source:
             parser.error('temporal checkpoint was trained on a different measurement model; retrain or use its matching segmenter')
     if any(m.endswith('_agent') for m in args.methods) and not args.supervisor_manifest:
         parser.error('agent evaluation requires --supervisor-manifest')
     options = dict(neural_checkpoint=str(args.neural_checkpoint.resolve()) if args.neural_checkpoint else None,
                    boundary_checkpoint=str(args.boundary_checkpoint.resolve()) if args.boundary_checkpoint else None,
+                   boundary_scope=args.boundary_scope,
                    neural_calibrate_measurements=args.neural_calibrate_measurements,
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,
@@ -323,7 +332,7 @@ def main(argv=None):
             for p in args.profiles for part in args.parts for kind in args.kinds
             for seed in range(args.seed, args.seed + args.n)]
     manifest = dict(arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
-                    instrumentation_version=2,
+                    instrumentation_version=3,
                     profiles={k: asdict(PROFILES[k]) for k in args.profiles},
                     python=platform.python_version(),
                     packages={p: importlib.metadata.version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},

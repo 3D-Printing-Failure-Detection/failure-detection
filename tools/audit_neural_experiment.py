@@ -24,6 +24,8 @@ def main():
             checkpoints[kind] = manifest[key]
     assert checkpoints, 'no trained model provenance'
     config = manifest['arguments']
+    if any(m in ('neural', 'neural_agent', 'neural_risk', 'neural_risk_agent') for m in config['methods']):
+        assert 'neural' in checkpoints
     assert not config['clear_failure_on_adapt']
     expected = set(itertools.product(config['profiles'], config['parts'], config['kinds'],
         range(config['seed'], config['seed'] + config['n']), config['methods']))
@@ -36,20 +38,33 @@ def main():
         assert sum(bool(row[k]) for k in ('in_place', 'scrapped', 'defective_finished')) == 1
         assert row['frames'] == (0 if row['method'] == 'ignore' else row['layers_printed'])
         if manifest.get('instrumentation_version', 1) >= 2:
-            uses_camera = bool(config.get('boundary_checkpoint')) and row['method'].startswith('neural')
+            uses_camera = (bool(config.get('boundary_checkpoint')) and row['method'].startswith('neural')
+                           and (config.get('boundary_scope', 'all') == 'all' or not row['has_fit_constraints']))
             assert row['boundary_queries'] == (row['frames'] if uses_camera else 0)
-        assert row['adaptations'] <= 3
+            if manifest.get('instrumentation_version', 1) >= 3:
+                assert row['measurement_source'] == (checkpoints['boundary'] if uses_camera else 'classical')
+        assert row['adaptations'] == sum(event['action'] == 'adapt' for event in row['actions']) <= 3
         if (config.get('neural_forecast_scope') == 'fits' and row['method'] in
                 ('neural', 'neural_agent', 'neural_risk', 'neural_risk_agent')):
             assert row['forecast_source'] == ('trained' if row['has_fit_constraints'] else 'analytical')
             if not row['has_fit_constraints']:
                 assert row['neural_queries'] == 0
-        calls = 0
+        calls, adaptations_used, last_continue_review = 0, 0, None
         for event in row['actions']:
             considered = event['considered'] or []
+            assert 0 <= event['layer'] < row['layers_printed']
+            assert sum('agent' in item for item in considered) <= 1
             for item in considered:
+                if 'adapts_remaining' in item:
+                    assert item['adapts_remaining'] == 3-adaptations_used
                 if 'agent_review_reused' in item:
                     assert item['fresh_function_checks_passed'] and event['action'] == 'continue'
+                    assert last_continue_review == (item['reviewed_at_layer'], item['agent_review_reused'])
+                    assert 0 < event['layer']+1-item['reviewed_at_layer'] < config.get('supervisor_review_interval', 8)
+                    candidates = [c for c in considered if 'id' in c]
+                    assert len(candidates) == 1 and candidates[0]['name'] == 'continue'
+                    assert candidates[0]['ok'] and candidates[0]['executable']
+                    assert not any('agent' in c for c in considered)
                     reused += 1
                 if 'agent' not in item:
                     continue
@@ -59,10 +74,21 @@ def main():
                 assert request_hash == audit['request_sha256']
                 answer = json.loads(audit['response']['choices'][0]['message']['content'])
                 assert answer == audit['selected']
+                assert audit['response']['choices'][0]['finish_reason'] == 'stop'
+                evidence = json.loads(audit['request']['messages'][1]['content'])
+                assert evidence['observation']['printed_layers'] == event['layer']+1
+                assert evidence['observation']['adapts_remaining'] == 3-adaptations_used
+                schema = audit['request']['response_format']['json_schema']['schema']
+                assert answer['candidate'] in schema['properties']['candidate']['enum']
+                sent_candidate = next(c for c in evidence['candidates'] if c['id'] == answer['candidate'])
+                assert sent_candidate['ok'] and sent_candidate['executable'] and sent_candidate.get('review_eligible', True)
                 candidate = next(c for c in considered if c.get('id') == answer['candidate'])
                 assert candidate['ok'] and candidate['executable'] and candidate.get('review_eligible', True)
                 assert event['action'] == ('continue' if candidate['name'] == 'continue' else 'adapt')
+                last_continue_review = ((event['layer']+1, request_hash)
+                                        if event['action'] == 'continue' else None)
                 calls += 1
+            adaptations_used += event['action'] == 'adapt'
         assert calls == row['agent_requests'] == row['agent_accepted']
         total_calls += calls
     if any(m.endswith('_agent') for m in config['methods']):

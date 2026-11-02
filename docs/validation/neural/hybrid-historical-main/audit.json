@@ -1,0 +1,82 @@
+{
+  "status": "passed",
+  "source_sha256": "b723b3f2222a6160fd9387dba9d5a69d64168d4afc3cfff1d2d23a4764ddb22a",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+  },
+  "runs_sha256": "724c2dc23c87c0fcccad47f7ab4d7478956ba9d57daa1cba92eaadb449e92be6",
+  "rows": 216,
+  "actual_agent_calls": 121,
+  "reused_reviews": 577,
+  "summary": [
+    {
+      "method": "contour",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 172.52935026807245
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 60,
+      "in_place": 40,
+      "scrapped": 19,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 1097.9431612830376
+    },
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 173.38630474335514
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 60,
+      "in_place": 43,
+      "scrapped": 17,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 24349,
+      "seconds": 1125.575211589341
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 12,
+      "in_place": 12,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 164.45566750189755
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 60,
+      "in_place": 43,
+      "scrapped": 17,
+      "defective_finished": 0,
+      "agent_requests": 121,
+      "neural_queries": 24349,
+      "seconds": 2033.8180646580877
+    }
+  ],
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}

@@ -31,7 +31,8 @@ def main():
         assert manifest['completed_runs'] == manifest['expected_runs'] == audit['rows']
         assert not manifest['arguments']['clear_failure_on_adapt']
         sources.add(manifest['source_sha256'])
-        checkpoints.add(manifest['neural_checkpoint_sha256'])
+        if 'neural_checkpoint_sha256' in manifest:
+            checkpoints.add(manifest['neural_checkpoint_sha256'])
         batch = [json.loads(line) for line in (directory/'runs.jsonl').read_text().splitlines()]
         assert len(batch) == audit['rows']
         rows.extend(batch)

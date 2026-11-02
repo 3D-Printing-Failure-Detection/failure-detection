@@ -79,6 +79,19 @@ def test_checkpoint_and_input_validation(persistence_model, tmp_path):
         TemporalModel(bad)
 
 
+@pytest.mark.parametrize('camera_scope,forecast_scope', [('all', 'fits'), ('nonfits', 'all')])
+def test_evaluator_rejects_mismatched_measurement_domains(persistence_model, tmp_path, camera_scope, forecast_scope):
+    from recovery.eval.mujoco_eval import main
+    boundary = tmp_path/'boundary.npz'
+    boundary.write_bytes(b'different camera identity')
+    with pytest.raises(SystemExit) as error:
+        main(['--methods', 'neural_risk', '--neural-checkpoint', str(persistence_model),
+              '--boundary-checkpoint', str(boundary), '--boundary-scope', camera_scope,
+              '--neural-forecast-scope', forecast_scope, '--out', str(tmp_path/'results')])
+    assert error.value.code == 2
+    assert not (tmp_path/'results').exists()
+
+
 def test_equivariant_forecast_rotates_with_observed_motion(persistence_model, tmp_path):
     with np.load(persistence_model) as data:
         arrays = dict(data)
@@ -149,12 +162,14 @@ def test_actual_agent_choice_controls_feasible_recovery(monkeypatch, persistence
                        verdict=Verdict(i != 0, []), margin=.5, robust_margin=.4)
                   for i, p in enumerate(plans)]
     monkeypatch.setattr(policy, 'candidates', lambda *args: candidates)
-    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=2, reason='better recovery'))),
+    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=2, reason='robust margin is 123 mm'))),
                                   finish_reason='stop')])
     monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw: io.BytesIO(json.dumps(response).encode()))
     decision = policy.decide([layer], [layer] * 4, Detection('shift', 2, {}), context=DecisionContext(2))
     assert decision.action == 'adapt' and decision.plan is plans[2]
     assert policy.supervisor.audit[-1]['accepted']
+    assert 'candidate B' in decision.reason and '123' not in decision.reason
+    assert policy.supervisor.audit[-1]['selected']['reason'] == 'robust margin is 123 mm'
 
 
 def test_local_endpoint_cannot_send_state_to_external_service():
