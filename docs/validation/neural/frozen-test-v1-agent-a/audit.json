@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "1636d8c00f00095d0c52b0e9bcfc1149ddbe18ca9ec394dd4af8496ce7237e0d",
+  "rows": 144,
+  "actual_agent_calls": 276,
+  "reused_reviews": 1307,
+  "summary": [
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 24,
+      "in_place": 24,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 1032,
+      "seconds": 804.9781328671379
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 120,
+      "in_place": 67,
+      "scrapped": 48,
+      "defective_finished": 5,
+      "agent_requests": 276,
+      "neural_queries": 89303,
+      "seconds": 7623.310069027124
+    }
+  ],
+  "stage": "frozen-test",
+  "limitation": "frozen simulation comparison; not physical-printer validation",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}

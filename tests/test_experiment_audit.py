@@ -2,7 +2,7 @@ from copy import deepcopy
 
 import pytest
 
-from tools.audit_neural_experiment import validate_outcomes
+from tools.audit_neural_experiment import validate_outcomes, agent_decision_opportunities
 
 
 def paired_rows():
@@ -43,3 +43,19 @@ def test_clean_control_cannot_hide_an_injected_failure():
         row['kind'] = 'clean'
     with pytest.raises(AssertionError, match='clean control'):
         validate_outcomes(rows)
+
+
+def test_agent_unreached_when_no_eligible_correction_exists():
+    rows = [dict(method='neural_risk_agent', actions=[dict(action='scrap', considered=[
+        dict(id='continue', ok=False, executable=True),
+        dict(id='correction', ok=True, executable=False)])])]
+    assert agent_decision_opportunities(rows) == 0
+
+
+def test_zero_calls_cannot_hide_a_bypassed_eligible_agent_decision():
+    rows = [dict(method='neural_risk_agent', actions=[dict(action='adapt', considered=[
+        dict(id='correction', ok=True, executable=True)])])]
+    with pytest.raises(AssertionError, match='bypassed the agent'):
+        agent_decision_opportunities(rows)
+    rows[0]['actions'][0]['considered'].append(dict(agent={'accepted': True}))
+    assert agent_decision_opportunities(rows) == 1

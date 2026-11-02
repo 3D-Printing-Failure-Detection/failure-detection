@@ -27,10 +27,29 @@ def validate_outcomes(rows, clear_failure_on_adapt=False):
             assert row['k0'] == -1 and row['severity'] == 0, 'failure injected into a clean control'
 
 
+def agent_decision_opportunities(rows):
+    """A zero-request shard is valid only if no eligible decision was bypassed."""
+    opportunities = 0
+    for row in rows:
+        if not row['method'].endswith('_agent'):
+            continue
+        for event in row['actions']:
+            considered = event['considered'] or []
+            eligible = any('id' in item and item['ok'] and item['executable']
+                           and item.get('review_eligible', True) for item in considered)
+            reviewed = any('agent' in item or 'agent_review_reused' in item for item in considered)
+            assert not eligible or reviewed, 'eligible decision bypassed the agent'
+            assert not reviewed or eligible, 'agent review has no eligible decision'
+            opportunities += eligible
+    return opportunities
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory', type=Path)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--allow-unreached-agent', action='store_true',
+                        help='audit a shard with no eligible agent decision; never counts it as actual supervision')
     args = parser.parse_args()
     manifest = json.loads((args.directory / 'manifest.json').read_text())
     rows = [json.loads(line) for line in (args.directory / 'runs.jsonl').read_text().splitlines()]
@@ -135,8 +154,10 @@ def main():
             adaptations_used += event['action'] == 'adapt'
         assert calls == row['agent_requests'] == row['agent_accepted']
         total_calls += calls
-    if any(m.endswith('_agent') for m in config['methods']):
-        assert total_calls > 0, 'no actual model decisions in this agent evaluation'
+    opportunities = agent_decision_opportunities(rows)
+    has_agent = any(m.endswith('_agent') for m in config['methods'])
+    if has_agent and not total_calls:
+        assert args.allow_unreached_agent and opportunities == 0, 'no actual model decisions in this agent evaluation'
     summary = []
     for method in config['methods']:
         for clean in (True, False):
@@ -151,6 +172,8 @@ def main():
     report = dict(status='passed', source_sha256=manifest['source_sha256'],
         checkpoints=checkpoints, runs_sha256=raw_sha,
         rows=len(rows), actual_agent_calls=total_calls, reused_reviews=reused, summary=summary,
+        agent_decision_opportunities=opportunities,
+        agent_review_status='exercised' if total_calls else 'not_reached' if has_agent else 'not_requested',
         stage=config.get('experiment_stage', 'development'),
         limitation=('frozen simulation comparison; not physical-printer validation'
                     if config.get('experiment_stage') == 'frozen-test' else

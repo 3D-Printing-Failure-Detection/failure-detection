@@ -1,0 +1,195 @@
+{
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/joint-cup-shift/results",
+      "manifest_sha256": "f6da7c478ae192252bd37cb4cbcaf8be3d3800d3582bc8b65773f4c9ff1e9905",
+      "audit_sha256": "2cfff706bbc907c624a9aa8ff07dda72be06fe29297dd97f170495a8f7a29f29",
+      "runs_sha256": "3d852d924b818b1c485ef0b7b9d61a0f0a952d8dc6b4be4c3f4664a45d84a0d6",
+      "labels": {}
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/joint-collapse-controls/results",
+      "manifest_sha256": "b1aeea2d36ee0e64a6c49a7e698cd00f8125af8d06d6ac82eb1e6c2742fbb714",
+      "audit_sha256": "12df50e793676e6732b8ab9047c2914c12f630e15ae625acb829ad0539014d92",
+      "runs_sha256": "bce9cfdcb8dd6fd54d9353892b657890d7c4fd6d1ad7d8bf61bd6a1119e39edc",
+      "labels": {}
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/joint-cup-thinning/results",
+      "manifest_sha256": "ca10ce929c9515e297e1f8450d72ceee6ffb9410edc47da8e0a9615b34428d02",
+      "audit_sha256": "30cf87d525a1aac1537a7a79716c7004ab3eb785cd279b8c0103b17d34b9d405",
+      "runs_sha256": "87809bb2f0d7efa8ad0532f51918b2a3b0767677b57bfcfcf0167cfc6f2956f3",
+      "labels": {}
+    }
+  ],
+  "source_sha256": "b84e8001caca497fe81cf5ce92241238711314d14a20c08690758abb1a7f098d",
+  "comparator_sha256": "1ddc899ca9fcdfc6675737896fe33de4110b5163785eab9a45bc48d25edf51c8",
+  "provenance_verifier_sha256": "36922289f10cce18d172465fe4509f45d5ff7d15f03fbf3a9626b8a753def64d",
+  "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+  "candidate": "neural_risk_agent",
+  "boundary_checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+  "boundary_training_manifest_sha256": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d",
+  "stages": [
+    "development"
+  ],
+  "failure_cases": 4,
+  "clean_cases": 2,
+  "summary": {
+    "ignore": {
+      "failure": {
+        "n": 4,
+        "in_place": 4,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 63.15137185691856,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9969237206869491,
+        "mean_filament_with_assumed_clean_restart": 0.9969237206869491
+      },
+      "clean": {
+        "n": 2,
+        "in_place": 2,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 34.584877732093446,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999562951867866,
+        "mean_filament_with_assumed_clean_restart": 0.9999562951867866
+      }
+    },
+    "contour": {
+      "failure": {
+        "n": 4,
+        "in_place": 2,
+        "scrapped": 2,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 178.96009810175747,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8027501752266354,
+        "mean_filament_with_assumed_clean_restart": 1.3027501752266353
+      },
+      "clean": {
+        "n": 2,
+        "in_place": 2,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 64.41054734901991,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.999956294319459,
+        "mean_filament_with_assumed_clean_restart": 0.999956294319459
+      }
+    },
+    "neural_risk": {
+      "failure": {
+        "n": 4,
+        "in_place": 3,
+        "scrapped": 1,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 369.2520744209178,
+        "boundary_queries": 566,
+        "mean_actual_filament_ratio": 0.9080268768417452,
+        "mean_filament_with_assumed_clean_restart": 1.1580268768417452
+      },
+      "clean": {
+        "n": 2,
+        "in_place": 2,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 105.6513131520478,
+        "boundary_queries": 320,
+        "mean_actual_filament_ratio": 0.999956294319459,
+        "mean_filament_with_assumed_clean_restart": 0.999956294319459
+      }
+    },
+    "neural_risk_agent": {
+      "failure": {
+        "n": 4,
+        "in_place": 3,
+        "scrapped": 1,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 19,
+        "seconds": 459.3218126881402,
+        "boundary_queries": 566,
+        "mean_actual_filament_ratio": 0.9080268768417452,
+        "mean_filament_with_assumed_clean_restart": 1.1580268768417452
+      },
+      "clean": {
+        "n": 2,
+        "in_place": 2,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 108.04847541206982,
+        "boundary_queries": 320,
+        "mean_actual_filament_ratio": 0.999956294319459,
+        "mean_filament_with_assumed_clean_restart": 0.999956294319459
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "ignore",
+      "required_baseline": true,
+      "gained": [],
+      "lost": [
+        [
+          "cartesian",
+          "cup",
+          "under_extrusion",
+          1002
+        ]
+      ],
+      "net_gain": -1,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "contour",
+      "required_baseline": true,
+      "gained": [
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 1,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "neural_risk",
+      "required_baseline": false,
+      "gained": [],
+      "lost": [],
+      "net_gain": 0,
+      "extra_defective_finishes": 0
+    }
+  ],
+  "actual_learning": true,
+  "actual_agent": true,
+  "candidate_has_best_completion_count": false,
+  "best_methods": [
+    "ignore"
+  ],
+  "strictly_more_completions_than_every_baseline": false,
+  "no_lost_baseline_successes": false,
+  "no_higher_defective_finish_count": true,
+  "all_candidate_clean_controls_pass": true,
+  "limitation": "Paired simulation outcomes; no physical reliability claim. Restart filament is hypothetical."
+}

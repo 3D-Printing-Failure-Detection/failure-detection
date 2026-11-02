@@ -1,0 +1,15 @@
+{
+  "status": "complete",
+  "integrity": "passed",
+  "outcome_criteria": {
+    "actual_learning": true,
+    "actual_agent": true,
+    "candidate_has_best_completion_count": false,
+    "strictly_more_completions_than_every_baseline": false,
+    "no_lost_baseline_successes": false,
+    "no_higher_defective_finish_count": false,
+    "all_candidate_clean_controls_pass": true
+  },
+  "outcome_criteria_passed": false,
+  "finished_at": "2026-11-02T23:46:28.047240+00:00"
+}

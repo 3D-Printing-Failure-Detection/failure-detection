@@ -1,0 +1,278 @@
+{
+  "status": "complete",
+  "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+  "script_sha256": "f89a768362f0fce0d0c45b0c2cf33e9b2cb64d5d4c3d45794998729c5289c807",
+  "feature_script_sha256": "cd169ab51ff1aeb8a3e096450cbf5863d0bb64ad8c8062803fcb345096be052b",
+  "groups": [
+    "cartesian-cup-clean-70",
+    "cartesian-cup-clean-71",
+    "cartesian-cup-clean-72",
+    "cartesian-cup-clean-73",
+    "cartesian-cup-collapse-70",
+    "cartesian-cup-collapse-71",
+    "cartesian-cup-shift-70",
+    "cartesian-cup-shift-71",
+    "cartesian-cup-under_extrusion-400",
+    "cartesian-cup-under_extrusion-410",
+    "cartesian-cup-under_extrusion-417",
+    "cartesian-cup-under_extrusion-420",
+    "cartesian-cup-under_extrusion-70",
+    "cartesian-cup-under_extrusion-71",
+    "cartesian-cup-under_extrusion-72",
+    "cartesian-cup-under_extrusion-73",
+    "cartesian-cup-warp-70",
+    "cartesian-cup-warp-71",
+    "cartesian-mug-clean-70",
+    "cartesian-mug-clean-71",
+    "cartesian-mug-clean-72",
+    "cartesian-mug-clean-73",
+    "cartesian-mug-collapse-70",
+    "cartesian-mug-collapse-71",
+    "cartesian-mug-shift-70",
+    "cartesian-mug-shift-71",
+    "cartesian-mug-under_extrusion-400",
+    "cartesian-mug-under_extrusion-410",
+    "cartesian-mug-under_extrusion-417",
+    "cartesian-mug-under_extrusion-420",
+    "cartesian-mug-under_extrusion-70",
+    "cartesian-mug-under_extrusion-71",
+    "cartesian-mug-under_extrusion-72",
+    "cartesian-mug-under_extrusion-73",
+    "cartesian-mug-warp-70",
+    "cartesian-mug-warp-71"
+  ],
+  "expected_frames": 2040,
+  "checkpoints": [
+    [
+      "fine",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz",
+      "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525"
+    ],
+    [
+      "context",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz",
+      "ea1683a04e34ef655e11e0cf0723afc723d010b240a8ad6f7323f4e03b1c4bdb"
+    ]
+  ],
+  "training_manifests": {
+    "fine": {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/training.json",
+      "sha256": "d658a104ee69be4722c686bd477b001434f4467a9d5e118601074589749c9ea5"
+    },
+    "context": {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/training.json",
+      "sha256": "55b35688abe7dd8257a09da35ebf6bdb6ef3f7435ff6dbf941a90873318dc46d"
+    }
+  },
+  "arguments": {
+    "collections": [
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories"
+    ],
+    "validation_seeds": [
+      70,
+      71,
+      72,
+      73,
+      400,
+      410,
+      417,
+      420
+    ],
+    "expected_groups": 36,
+    "parts": [
+      "cup",
+      "mug"
+    ],
+    "checkpoint": [
+      "fine=/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz",
+      "context=/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz"
+    ],
+    "frames": 12,
+    "workers": 2,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/geometry-validation"
+  },
+  "limitation": "Selected validation camera frames and per-layer flags; not complete-print or recovery success rates",
+  "frames": 2040,
+  "completed_groups": [
+    {
+      "group": "cartesian-cup-clean-70",
+      "frames": 45,
+      "trajectory_sha256": "2cccfd0d3fe6b97509cdbcc0dbd6159f1a2972c1d11a580b630c74af6b9e575b"
+    },
+    {
+      "group": "cartesian-cup-clean-71",
+      "frames": 45,
+      "trajectory_sha256": "f9db0428f15e47e89c430fbc07509afeffd954c26700ab557cab0bc9e5b915d4"
+    },
+    {
+      "group": "cartesian-cup-clean-72",
+      "frames": 45,
+      "trajectory_sha256": "ba2330fa18ca5d0b4b55925c4918f887cc0add8233d9b45635baf89b72544c70"
+    },
+    {
+      "group": "cartesian-cup-clean-73",
+      "frames": 45,
+      "trajectory_sha256": "d6dce44815208bd4f04f7a03cbaec305679a51f4a26fe0d90379520c2bd73228"
+    },
+    {
+      "group": "cartesian-cup-collapse-70",
+      "frames": 60,
+      "trajectory_sha256": "a6cefddd17cae04270d357061b04d09756cdbf07b36c28417d9381b45551ff82"
+    },
+    {
+      "group": "cartesian-cup-collapse-71",
+      "frames": 60,
+      "trajectory_sha256": "2de9078226d27f3b788be670da39fce0f1fd878a5524d46d89b78d8cb36b9b29"
+    },
+    {
+      "group": "cartesian-cup-shift-70",
+      "frames": 60,
+      "trajectory_sha256": "f8dc570224d5388f25dd77165d3a7c17297bd8ee521bb957942bf06f5fc48917"
+    },
+    {
+      "group": "cartesian-cup-shift-71",
+      "frames": 60,
+      "trajectory_sha256": "fba44e9bc42be8a6d838fea3c001d3de718f0e91e07ce483ce85f130de10eca1"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-400",
+      "frames": 60,
+      "trajectory_sha256": "d43a1d991e9e17fc1ab8df5017081d6cece64bada2cb6625d8f14e70c58f6a9d"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-410",
+      "frames": 60,
+      "trajectory_sha256": "e3e31b6f847325d79b2c7267fe8513e13006046049555b917081490426a8047d"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-417",
+      "frames": 60,
+      "trajectory_sha256": "a07c4beaf751b105fdf19ac0326789c90bccd0e76e64c2d777b7252e3674997e"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-420",
+      "frames": 60,
+      "trajectory_sha256": "5f386dafb3753b8b0c2c91cb458e60d6482d62172cbf487ae45db4774498550e"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-70",
+      "frames": 60,
+      "trajectory_sha256": "9705a81a09ff371b090d59f995388398989612355b8522cbb5b14b95d99696b9"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-71",
+      "frames": 60,
+      "trajectory_sha256": "529cee49a254ca7049db4906294638293789cd1724da80fbcd0b77412e2099b6"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-72",
+      "frames": 60,
+      "trajectory_sha256": "b3a12bca6d8afe6f5863a629527ec2b29909e2f8a4d7d7e8fad3f42958c80b33"
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-73",
+      "frames": 60,
+      "trajectory_sha256": "de6b09d8fed92f281c6e6b223fab6919d946d41073810129e5c2ddf9c100fda6"
+    },
+    {
+      "group": "cartesian-cup-warp-70",
+      "frames": 60,
+      "trajectory_sha256": "5c7c368f29c95968ad684286fc2c9a997d9d2ca9538cf3d52391a718b5ce9f2a"
+    },
+    {
+      "group": "cartesian-cup-warp-71",
+      "frames": 60,
+      "trajectory_sha256": "477c1bb0f1f07e90fc052a83ab2ede7b0a3ddc2d74f262cdad89edcc13e71fc6"
+    },
+    {
+      "group": "cartesian-mug-clean-70",
+      "frames": 45,
+      "trajectory_sha256": "1a9200fff5c51e4886f0f807e5e178ca0d8e89ebf247d2b2b4f7c163e6b8f8de"
+    },
+    {
+      "group": "cartesian-mug-clean-71",
+      "frames": 45,
+      "trajectory_sha256": "7745913cfc65a173c9cb6392823528dad2f77b6939655e28970ff12e79cb592b"
+    },
+    {
+      "group": "cartesian-mug-clean-72",
+      "frames": 45,
+      "trajectory_sha256": "b4a699ed01cdd47007188fbd1f284338bf310e65275cd6ed610276134039288d"
+    },
+    {
+      "group": "cartesian-mug-clean-73",
+      "frames": 45,
+      "trajectory_sha256": "d53da2519c7875cc3ff08172f5f11f77e026c30e0cefb9d5e9666a859ee34ca5"
+    },
+    {
+      "group": "cartesian-mug-collapse-70",
+      "frames": 60,
+      "trajectory_sha256": "e8844ec50732a3f99d187a22735bb56877de5da509f57319c6e838e061f485d4"
+    },
+    {
+      "group": "cartesian-mug-collapse-71",
+      "frames": 60,
+      "trajectory_sha256": "76c885bd4edfdc54c91a0876777bbd797c546b421a67734064fec041518977cc"
+    },
+    {
+      "group": "cartesian-mug-shift-70",
+      "frames": 60,
+      "trajectory_sha256": "268aaee065fd80d9e23593a1f27126692691e640d18580d9a051a528b358197b"
+    },
+    {
+      "group": "cartesian-mug-shift-71",
+      "frames": 60,
+      "trajectory_sha256": "0859c0bb7f49474457bc68da080c9c8ae694c5ecb893cd43651366102c670734"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-400",
+      "frames": 60,
+      "trajectory_sha256": "ac83e4651b289b6e123a7abb4f20ea0ce161322f192956552b7c99d08b574de1"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-410",
+      "frames": 60,
+      "trajectory_sha256": "d6dae58b09f0226458ed8bf3fd0434c97158d4d2339db57e9721584132032721"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-417",
+      "frames": 60,
+      "trajectory_sha256": "227a2f2f1a8fc938303a5deaa2c6b888d22203a90b2ccfd68a8eeb62c616eeb5"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-420",
+      "frames": 60,
+      "trajectory_sha256": "fc1af501f1b64e9b0559d402c1612b02f57ed3305fba41cf257bf0cdbedb6d83"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-70",
+      "frames": 60,
+      "trajectory_sha256": "b7754a1a25cea70210bc92ec478784a3e52977adf70c8610845c7b479288d1c8"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-71",
+      "frames": 60,
+      "trajectory_sha256": "e0f85ac5fe677595c142a86586fef38eb37328a01049046aa08c39d9d059bd4f"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-72",
+      "frames": 60,
+      "trajectory_sha256": "d879ad9e8522b2e47acf987822da2753fcf1c422c21c968bc467285fad0e82e1"
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-73",
+      "frames": 60,
+      "trajectory_sha256": "691f6f099620c6d58d634c7d1e5a8528da1a9e313540aea5c82df23aada364b8"
+    },
+    {
+      "group": "cartesian-mug-warp-70",
+      "frames": 60,
+      "trajectory_sha256": "c2bb35d9561002ef9efb807055c238715f58205475d432c1ce5a3b6ec1c471c2"
+    },
+    {
+      "group": "cartesian-mug-warp-71",
+      "frames": 60,
+      "trajectory_sha256": "b570282eb3a252e4205ffe38912703f80053dd39ff94311007df6fd722fd956c"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "job_exits": {
+    "matrix": 0,
+    "agent-a": 0,
+    "agent-b": 0,
+    "ablations": 0
+  },
+  "audit_exit": 0,
+  "finished_at": "2026-11-02T23:46:15.808179+00:00"
+}

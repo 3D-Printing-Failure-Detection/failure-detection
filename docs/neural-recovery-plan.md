@@ -6,7 +6,9 @@ or a successful language-model request alone does not satisfy that objective.
 
 Current verdict: ahead on historical cases, not yet accepted as better overall.
 The original combined candidate reached 67/100 versus contour's 62/100 but failed
-its first fresh test. The newer paired-forecast fit policy reaches 33/50 versus
+its complete fresh test: 126/240 versus contour's 128/240 and the analytical
+preventive planner's 133/240. It finished five defective prints versus three for
+that strongest baseline. The newer paired-forecast fit policy reaches 33/50 versus
 30/50 historical fit failures and 12/20 versus 10/20 validation failures, with
 zero versus one defective finish in each set. It still loses a bracket case
 that contour saves. The first earlier-continuation check restored that bracket
@@ -15,7 +17,9 @@ It passes all nine selected failure cases and four clean controls with actual
 Qwen, and its completed 50-case historical fit comparison scores 33/50 versus
 30/50, with zero versus one defective finish, every contour success retained,
 all ten clean controls passed and 40 actual Qwen requests. Separate fit validation
-is running.
+finishes at 13/20 versus contour's 10/20 and the earlier neural revision's 12/20,
+with zero defective finishes, no lost successes against either, all four clean
+controls passed and 32 actual Qwen requests. Qwen matches neural-only completion.
 New camera models remain experimental.
 
 ## Current camera cross-check and context experiments
@@ -34,10 +38,23 @@ fallback and learned-camera-only ablations. The completed shifted-cup case
 (Cartesian, seed 1002) now finishes successfully with one adaptation for both
 neural-only and actual Qwen, versus a scrap for contour. Ignore also passes;
 this is preservation of a recoverable print, not a rescue of an otherwise harmful
-fault. Qwen makes 11 validated requests. Both cup/mug collapse cases and both clean
-controls also pass for all four methods in that completed slice. The thinning
-case and matched ablations remain pending; the option is not accepted as a general
-replacement.
+fault. The completed candidate comparison scores 3/4 failures versus contour's
+2/4 and ignore's 4/4, with no defective finishes and both clean controls passed.
+Qwen makes 19 validated requests and matches neural-only outcomes. The false-gap
+thinning case still scraps; this loses an ignore success and fails acceptance.
+The completed matched ablations score 2/4 for the previous fallback and 1/4 for
+the learned camera alone, which also finishes one defective print. All six methods
+pass both clean controls. All 36 planned rows are retained and audited.
+
+The original wrapper exits unsuccessfully after the thinning case because its
+shard auditor requires a Qwen request even when no eligible choice exists. The
+completed raw case is retained, including zero requests. An explicit
+`--allow-unreached-agent` audit option now verifies that no eligible decision was
+bypassed and reports `agent_review_status: not_reached`; it never counts the shard
+as actual supervision. The aggregate still requires actual agent requests. The
+failure log and frozen runtime remain unchanged, and `camera-joint-completion-v2`
+executes only the originally planned remaining jobs. No print is rerun or relabeled
+as successful to repair the audit.
 
 The repaired contour conversion's 36-group, 2,040-frame camera validation is
 complete. Among 1,176 wall frames, 57 truly contain an opening. Classical
@@ -64,14 +81,51 @@ same validation points, boundary MAE is 0.06493 mm for the matched fine-only
 model and 0.04817 mm with wider context. The existing central and shared-query
 models score 0.06575 and 0.06876 mm on those same points; these values are not their
 earlier full-dataset scores. Full-stack diagnostics and the 2,040-frame geometric
-validation remain pending; no print-success improvement is inferred from MAE. The consumed
-cup-thinning recovery check runs only if the context model's measured full stack
-passes the original specification. Seeds 2001--2004 remain untouched.
+validation are separate from patch MAE. The completed cup diagnostic still reports
+two false wall gaps and a 24 mm2 false support violation. Its conditional recovery
+run is skipped. The complete 2,040-frame geometry check also favors the matched
+fine-only model over wider context: 48 versus 51 false wall gaps, five versus six
+missed gaps, and 55 versus 134 false base alarms. Wider context is therefore not
+an improvement in the relevant geometry despite its lower patch error. A retained image/geometry
+plot shows the visible thin arc fragmented by the prediction. In that diagnostic
+arc, only 48.2% of true positive samples within 0.15 mm of the boundary receive a
+positive prediction, versus 88.3% elsewhere. This identifies a local failure hidden
+by the average metric; it is not an independent benchmark.
 
-The current source passes 110 tests, with one optional module skipped. Long runs
+`context-query-camera-v9` combines the wider inputs with a shared subpixel distance
+decoder, using the identical data, split and 160-epoch schedule. It completes
+training at 0.04462 mm validation boundary MAE, with verified export. The full-stack
+cup diagnostic still reports two false gaps, a 26 mm2 false support violation and
+one false base-problem layer. Recovery and wider geometry checks are skipped as
+predeclared. This model is also rejected; lower patch error did not repair the gap.
+Seeds 2001--2004 remain untouched.
+
+The current source passes 129 tests, with one optional module skipped. Long runs
 remain in tmux session `neural-recovery`; attach with
 `tmux attach -t neural-recovery`. Full evidence stays on the data volume, with
 compact manifests and completed audits under `docs/validation/neural`.
+
+## Comparing actual earlier implementations
+
+`tools/compare_neural_experiments.py --configurations PATH` accepts an explicit
+per-report-label provenance document instead of one shared training manifest.
+Each label pins its raw method, source directory and digest, every behavioral
+argument, checkpoint and training-manifest hashes, and supervisor provenance.
+Unknown future behavioral arguments are pinned too. Runtime source and weights
+are checked from disk; changed versions cannot be pooled under one label.
+
+All configurations must share the same simulator, configuration, deposition and
+toolpath code, controller/action limits, geometry scoring, part specifications,
+camera projection/resolution, packages and printer profiles. Pixel-mask conversion
+is allowed to differ as part of the explicitly pinned measurement implementation.
+All other camera code remains fixed. Test seeds must be disjoint from every model's
+training and validation groups. The existing single-version mode remains strict.
+
+The retained `cross-version-v2-*` documents exercise this path on actual completed
+earlier/current fit runs. Historical completion ties at 21/30 in the main slice;
+validation improves from 12/20 to 13/20 without lost successes. This is a retrospective
+harness check, not newly generated print evidence or a new frozen test. Final
+configuration pins must be established before the untouched comparison starts.
 
 The user requested a free model without an API key instead of Gemini. The first
 supervisor is Qwen3-0.6B Q8_0, served on localhost by llama.cpp on CPU. This is a
@@ -169,11 +223,16 @@ All 4,320 runs use the frozen source and copied checkpoints under
 The [launch protocol](validation/neural/frozen-test-v1-protocol.json) records
 every command, model hash and comparison label. Seeds 1001–1004 are now consumed
 by this test and must not be reused as untouched data for a tuned replacement.
-Complete results are pending, but the candidate has already failed acceptance
-as recorded below. Attach with `tmux attach -t neural-recovery`; the
-`test-status` window reports progress and `test-audit` runs the final comparison
-after all jobs finish. A successful audit exit confirms integrity, not superiority:
-all outcome criteria in `comparison.json` must also pass.
+All 4,320 runs and both final audits complete successfully at 23:46 UTC. The
+outcome criteria fail: the candidate completes 126/240 failures, versus contour's
+128/240 and preventive analytical recovery's 133/240. It loses ten contour
+successes and thirteen preventive-analytical successes, while gaining eight and
+six respectively. It finishes five defective prints, versus six and three.
+All methods pass their 48 clean controls. Qwen makes 488 actual requests but
+reduces the unsupervised combined policy's 129 completions to 126, losing three
+cases and adding one defective finish. The complete ranking and every paired
+gain/loss are retained in `frozen-test-v1-comparison.json`. Successful audit exits
+confirm integrity, not superiority; `outcome_criteria_passed` is false.
 
 A supplementary integrity audit was scheduled at 21:23 UTC, without changing
 the frozen policy, weights, data or outcome criteria. It verifies that a finished
@@ -183,8 +242,8 @@ failure, and paired runs agree on onset, severity and nominal layer count across
 profiles and separately launched jobs. The same checks pass all 600 historical
 combined-model records; nine corruption/validity tests cover the added checks.
 The [audit addendum](validation/neural/frozen-test-v1-integrity-addendum.json)
-pins both audit scripts. Its `test-integrity` tmux window waits for the original
-comparison, retains separate outputs under `integrity-v2`, and explicitly
+pins both audit scripts. Its completed `test-integrity` check
+retains separate outputs under `integrity-v2`, and explicitly
 distinguishes completed audits from passed outcome criteria.
 
 ### First frozen candidate rejected; revision under development
@@ -195,8 +254,7 @@ scrapped by the combined candidate. The
 [retained counterexample](validation/neural/frozen-test-v1-early-rejection.json)
 pins both records and their matched failure conditions. Candidate records also
 contain defective bracket and mug finishes. The original 4,320-run benchmark
-continues unchanged; a partial counterexample proves rejection but does not
-supply an overall success-rate estimate. Seeds 1001–1004 are now diagnostic data,
+has now completed unchanged and confirms the early rejection. Seeds 1001–1004 are now diagnostic data,
 never untouched evidence for a revision. Seeds 2001–2004 are
 [reserved](validation/neural/next-test-seed-reservation.json) for the next frozen
 test; they have not been launched.
@@ -353,9 +411,15 @@ the original neural choice remains. The bracket and spacer stages now complete:
 both neural variants pass all six failure diagnostics and all four clean controls,
 with no defective finishes, versus contour's five of six failures. Qwen makes
 20 actual requests. This restores the one-adaptation spacer success while keeping
-the bracket rescue. The historical-gain gate and broader results remain pending
-in `robust-joint-fit-v4`. Reserved seeds 2001--2004 remain untouched.
-The complete source suite passes 106 tests, with one optional module skipped.
+the bracket rescue. All three historical gains also pass. The completed broader
+fit comparison scores 33/50 historical and 13/20 validation, versus contour's
+30/50 and 10/20, preserving all its successes with zero defective finishes.
+An explicit comparison against the actual earlier neural source confirms the
+validation gain from 12/20 to 13/20 without losses. `fit-consumed-grid-v5` now
+tests every consumed fit case across three profiles, including the strongest
+analytical preventive baseline: 576 runs over 120 failures and 24 clean controls
+per method. This is a development regression, not a fresh acceptance test.
+Reserved seeds 2001--2004 remain untouched.
 
 ### Camera uncertainty and additional deformation coverage did not resolve the diagnostic
 

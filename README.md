@@ -74,11 +74,14 @@ without an API key. Its optional `neural_risk` and `neural_risk_agent` policies 
 intervene before a tight fit becomes unusable. The combined model and Qwen
 completed 67/100 historical failure cases versus contour's 62/100, preserving its
 successes with zero defective finishes instead of one. All 20 clean controls
-passed. The first frozen comparison across 15 configurations (4,320 runs)
-has already exposed a lost contour success and defective finishes; its complete
-results are still running. That candidate fails acceptance. A camera fallback
-and clearer Qwen action identifiers are in development, with new untouched seeds
-reserved for another final test. These policies remain opt-in.
+passed. The complete first frozen comparison across 15 configurations (4,320 runs)
+rejects that candidate: 126/240 successes versus contour's 128/240 and analytical
+preventive recovery's 133/240, with five defective finishes versus three for the
+strongest baseline. The revised fit policy reaches 13/20 validation successes
+versus contour's 10/20 and the earlier neural policy's 12/20, preserving both
+methods' passing cases with no defective finishes. Camera regressions remain
+unresolved. New untouched seeds are reserved for another final test; these
+policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.

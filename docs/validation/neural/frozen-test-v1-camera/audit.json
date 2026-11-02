@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+  "checkpoints": {
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "9147e71fa0567fdf308d6a452b60b9105299665255e7abe852ef93f0825332bb",
+  "rows": 288,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "neural_camera",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 1664.646495655994
+    },
+    {
+      "method": "neural_camera",
+      "split": "failure",
+      "n": 240,
+      "in_place": 129,
+      "scrapped": 106,
+      "defective_finished": 5,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 8193.386695643305
+    }
+  ],
+  "stage": "frozen-test",
+  "limitation": "frozen simulation comparison; not physical-printer validation",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}
