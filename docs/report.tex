@@ -1516,4 +1516,12 @@ comparisons remain conditional on that gate passing. This is an experimental
 learned output layer, not calibrated confidence or a fixed mask repair. Passing
 a known camera diagnostic earns no recovery credit.
 
+The conditional \texttt{refined-recovery-gate-v29} run is queued. It retains all
+prior configurations in two separate paired comparisons: four fault cases and
+two clean controls from the camera gate, plus two historical rescues and their
+clean controls. Thirty new rows include actual Qwen, neural-only and an ablation
+without the classical-base split. Both main variants must pass all six fault
+cases and four clean controls without defective finishes before broader
+regression. Neither an incomplete grid nor a failed geometry gate advances.
+
 \end{document}

@@ -270,6 +270,19 @@ loss, never by the cup outcome. This is
 an experimental learned output layer, not calibrated confidence or a fixed mask
 repair. No recovery gain or fresh-test superiority is established by training.
 
+`refined-recovery-gate-v29` is queued behind completed real-gap validation and
+the matched analytical-control run. It will run only if the existing geometry
+gate passes, after checking available storage. Its 30 new rows test the refined
+policy with and without actual Qwen, plus a neural-only ablation without the
+classical-base split. Two comparisons remain separate: the four-fault/two-clean
+camera gate retains all nine earlier configurations (72 total rows), while the
+two-fault/two-clean historical gate retains all six earlier configurations (36
+total rows). The same frozen policy must complete all six faults and all four
+clean controls with no defective finishes and actual model calls before broader
+regression. This preserves the earlier shifted-cup and historical rescue cases;
+it does not treat the passed nominal-camera diagnostic as a recovery outcome.
+The waiting runner is in tmux window `neural-recovery:refined-recovery-v29`.
+
 ## Preserving historical container rescues
 
 `joint-historical-gate-v23` compares the complete improved fit policy with

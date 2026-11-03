@@ -1,0 +1,6 @@
+{
+  "status": "waiting_for_prerequisites",
+  "recovery_rows": 0,
+  "geometry_gate_passes": null,
+  "limitation": "Two separate paired grids retain every earlier configuration and raw result. Unequal old grids are not pooled. Complete historical and all-part comparisons plus a new untouched test remain required."
+}
