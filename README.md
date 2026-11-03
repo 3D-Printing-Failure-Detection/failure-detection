@@ -149,8 +149,16 @@ action sequences, physics and policy options.
 The trend correction also passes its complete 46-row targeted regression:
 both variants preserve all ten earlier fault successes, add one usable mug
 completion, and pass all six clean controls with only the same existing defect.
-Qwen makes 62 calls and ties neural-only. The 864-row full follow-up is running
-in `neural-recovery:trend-full-v38`, including a matched analytical control.
+Qwen makes 62 calls and ties neural-only. The 864-row full follow-up is complete:
+**both variants finish 142/240 fault cases (59.2%), with one defective completion
+and all 48 clean controls passing**. This exceeds the previous best count of 141
+and retains every active recovery baseline success. Qwen makes 518 actual calls
+but adds no completions over neural-only. Four ignore successes remain lost;
+genuine rescues remain 18 versus matched analytical's 15. All 22 earlier summaries
+are unchanged in the 7,200-row comparison. A reporting-only label repair resolves
+an old/new source collision; the original failed report record and all simulation
+results are preserved. The new analytical trend control regresses to 127/240
+with three defects, so all stronger earlier analytical controls remain included.
 Copies of all earlier policy sources now support camera traces for the final
 comparison; all 25 configurations preserve their parsed policy options and
 model paths. This preparation executes no simulations or fresh test cases.
@@ -158,7 +166,7 @@ Ten real checks across all four earlier runtime versions now preserve outcomes,
 actions, measurements and inference counts, with 561 matching paired camera
 frames. Completed results can also be stored losslessly: packing copied real
 evidence preserves every restored byte, audit and comparison result exactly.
-The historical follow-up is queued in `neural-recovery:trend-history-v43`;
+The historical follow-up is running in `neural-recovery:trend-history-resume-v43`;
 eligibility follows the full neural-plus-agent system, with the neural-only
 ablation still evaluated and reported.
 The final 7,200-row command matrix is prepared and passes all 300 argument checks,
@@ -181,17 +189,15 @@ while slightly reducing boundary sign accuracy. Its linear control reproduces
 exactly and both exports pass. It passes the complete known cup diagnostic,
 but the completed 2,040-frame check misses eleven real gaps versus the original
 camera's five. It is rejected before recovery evaluation.
-This experiment does not change the guarded policy currently being benchmarked.
+This experiment does not change the policy in the completed benchmark.
 A separate replay attributes a lost mug success to a false future connection
 prediction, while both complete camera histories pass. An opt-in
 `--contour-trend-shrinkage` discounts existing measurement uncertainty from
 analytical trend magnitudes. Both candidate variants finish the mug without
 adaptation, while both matched controls scrap it. Qwen makes three candidate
-calls and ties neural-only. The 42-run preservation regression is now running;
-this retained usable print does not establish a new overall gain.
-A full comparison is queued only if that regression passes. It adds a matched
-analytical trend control, retains all 22 previous configurations, and waits for
-the current validation jobs before starting its 864 new simulations.
+calls and ties neural-only. Its complete preservation regression passes, followed
+by the 142/240 full comparison above. This added completion avoids an unnecessary
+scrap; it does not add a genuine rescue over the preceding guarded policy.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.

@@ -1,0 +1,28 @@
+{
+  "created_at": "2026-11-03T08:06:50.390316+00:00",
+  "reason": "Resume the terminal zero-row historical watcher after a reporting-only repair completed the audited full comparison. Original exit and skip records are preserved. Every simulation command, model, source, numerical gate and historical label mapping is unchanged.",
+  "prior_rows": 0,
+  "original_terminal_exit": 0,
+  "original_condition": {
+    "status": "skipped",
+    "new_rows": 0,
+    "reason": "full trend comparison did not complete"
+  },
+  "all_existing_historical_configuration_labels_verified": true,
+  "new_simulation_commands_equal_original": true,
+  "storage_reserve_includes_live_camera_diagnostic": true,
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/protocol.json": "a6bfb0e6a15496a8f42ee72af709f9a669fe4f41dd13ae969f2b08fd72d70289",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/run.py": "784d5113fcce01099a292027cb06bbef89d21154c7a2e0d0691f5643e5911bf5",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/report-resume.py": "3bd297f1c84e89e38bd4375adbf6ddf7fe88ca2fa980b059288e315700769362",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/report-resume.diff": "8cd56b56b5abdef5d997d4131d9980c36d6bd0a999449efbdcfc618cef60de60",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/condition-before-report-resume.json": "dbebe6b8c44559e4dbad409549639eab18543f9c04203f825c2e3f2075a72a92",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/run.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/report-resume.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/reporting-repair.json": "6e556de0947daa8de16acbfea1255529ae9374ef0d479841a6583b0f88c4cadd",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/completion.json": "e4a11d3fd26ee640163472370c47572f2e5e5f20929e322aaf8c7dbeaedbcd27",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/comparison.json": "d36979a75c539dc24a67ac9b6fe16bcb1a53986d8bf329bf1bb2e32a2e8d8dfe",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural-only-comparison.json": "849ad3afc7d6ea760a63b0eac28a6672b9d2c2aec7091256e56ed88882a57fa4"
+  }
+}

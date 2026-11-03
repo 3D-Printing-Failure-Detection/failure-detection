@@ -62,31 +62,32 @@ estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
 policy separates inner and outer boundaries when predicting deformation. Trained
 models and a free local Qwen supervisor are implemented. The latest complete
-policy increases completions but also defective finishes. Some earlier successes
-remain lost. An earlier candidate failed its fresh test. The overall objective
-is still unmet; historical regression and a new frozen test are required.
+policy exceeds the previous development success count while keeping the same
+single defective finish. Four ignore successes remain lost. An earlier candidate
+failed its fresh test. The overall objective is still unmet; regression checks,
+resolution of those lost successes and a new frozen test are required.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
-{\Large\bfseries\color{teal}141/240} & {\Large\bfseries 136/240} & {\Large\bfseries 133/240}\\
-Joint camera + Qwen & Prior neural + Qwen & Matched analytical\\
+{\Large\bfseries\color{teal}142/240} & {\Large\bfseries 141/240} & {\Large\bfseries 133/240}\\
+Trend neural + Qwen & Prior guarded + Qwen & Matched analytical\\
 \bottomrule
 \end{tabular*}
 \end{center}
 These are functional completions on the same \emph{240 simulated fault cases
-across all four parts}. Defective finishes are respectively \textbf{five, one
-and one}; all pass 48 clean controls. The latest policy preserves every active
-recovery baseline's success but still loses five ignore successes. Qwen makes
-527 actual requests and matches neural-only. These are consumed development
-cases. The higher completion count does not waive the defect regression.
+across all four parts}. All three finish \textbf{one defective print} and pass
+48 clean controls. The latest policy preserves every active recovery baseline's
+success but still loses four ignore successes. Qwen makes 518 actual requests
+and matches neural-only. Genuine rescues remain 18 versus matched analytical's
+15. These are consumed development cases, not proof of fresh-test superiority.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The completed guard comparison records 141/240 successes and one defect with Qwen, versus matched analytical 133/240 and one defect. Historical regression passes at 67/100 with zero defects. The trend correction passes 46 targeted runs; its full comparison is running. Fresh-test superiority remains unproven.\\
+Latest checks & The completed trend comparison records 142/240 successes and one defect, with or without Qwen. All 22 previous summaries are preserved. The preceding guarded policy passed historical regression at 67/100 with zero defects; the changed policy's historical run is underway. Fresh-test superiority remains unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1721,22 +1722,28 @@ the existing horizon and propagation to both camera forecasts. The experiment
 runs in \texttt{neural-recovery:trend-shrinkage-v37} with at most two simulation
 workers and an 8 MB artifact allowance. Older validations keep their frozen sources.
 
-The \texttt{trend-full-v38} comparison has started after all 46 targeted
+The \texttt{trend-full-v38} comparison completed after all 46 targeted
 rows passed and existing jobs finished. It adds 576 neural/agent rows and
 288 matched analytical rows using the same trend correction, retaining all
 22 previous configurations. Its 7,200-row, 25-configuration comparison separates
 the forecast correction's benefit from the learned policy's contribution.
-The full run is underway; historical regression of
-the changed policy and untouched evaluation remain required.
+Both variants finish 142/240 faults, one defective print and all 48 clean
+controls. Every prior active recovery success is retained; four ignore successes
+remain lost. Qwen makes 518 actual calls and ties neural-only. The same-source
+analytical trend control reaches 127/240 with three defects: container successes
+rise from 57 to 63, but fit successes fall from 76 to 64. The neural candidate
+retains its learned fit forecast, and all stronger earlier controls stay included.
 
-The historical follow-up is queued in \texttt{neural-recovery:trend-history-v43},
-conditional on the full neural-plus-agent system passing its prerequisites. It adds
+The historical follow-up is running in the \texttt{neural-recovery} tmux session,
+window \texttt{trend-history-resume-v43}, after the full system passed its
+prerequisites. It adds
 240 neural/agent and 120 matched analytical rows, retaining every completed
 earlier historical configuration, including failed variants. Configuration
-preflight passes; no new simulation rows have run. Three commands with four
-workers each start only after the full comparison finishes and the 24 MB
-artifact allowance fits. Historical success still cannot establish an untouched
-test result.
+preflight passes. The original report rejected an omitted old-policy label
+mapping; a reporting-only repair preserves every result and all original failure
+records. The zero-row historical watcher then resumes with unchanged commands
+and numerical gates. Three four-worker commands share a 24 MB allowance.
+Historical success still cannot establish an untouched test result.
 
 \clearpage
 \section{Checking a pre-fault measurement discrepancy}
@@ -1799,9 +1806,9 @@ original benchmark results.
 \section{Preparing the untouched comparison}
 
 The completed guarded policy improves the development completion/defect tradeoff
-and preserves the historical best counts. The trend correction also passes its
-complete targeted regression. Its full comparison is running, followed
-conditionally by historical regression of the changed policy. Seeds 2001--2004
+and preserves the historical best counts. The trend correction passes its
+complete targeted regression and reaches 142/240 in the full comparison.
+Historical regression of the changed policy is running. Seeds 2001--2004
 remain untouched; no final superiority claim is justified yet.
 
 The \texttt{fresh-preparation-v42} preparation covers all 25 configurations from
@@ -1868,5 +1875,65 @@ strict development improvement, historical regression, all clean controls,
 actual neural and accepted agent decisions, no higher defect count and no lost
 passing case against any included policy. Fresh seeds remain unused; no final
 runner is launched or queued.
+
+\clearpage
+\section{Completed development result and remaining perception errors}
+
+The full trend comparison now contains 7,200 audited rows across 25
+configurations. All 22 earlier summaries are reproduced exactly. Both neural
+variants exceed the previous best completion count, while the unchanged trained
+fit forecast avoids the regressions of applying trend damping to every part.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Policy & Successes & Genuine rescues & Defects \\
+\midrule
+Matched analytical & 133/240 & 15 & 1 \\
+Previous guarded + Qwen & 141/240 & 18 & 1 \\
+Trend neural & 142/240 & 18 & 1 \\
+Trend neural + Qwen & 142/240 & 18 & 1 \\
+Analytical with trend damping & 127/240 & 3 & 3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+All five pass 48/48 clean controls. Qwen makes 518 actual calls and adds no
+completions over neural-only. The latest gain preserves an ignore-successful mug;
+it is not an additional genuine rescue. All 3,719 completed unadapted rows in
+the comparison agree with their paired ignore outcomes. Four ignore successes
+remain lost: cup under-extrusion seed 1002 on Cartesian and bedslinger, and mug
+under-extrusion seed 1003 on Cartesian and CoreXY. These losses still block
+acceptance and the untouched test.
+
+\subsection*{Reporting repair without changing results}
+The original comparison command rejected an old/new source collision: the v33
+input lacked its two preregistered renamed labels. A separate repaired label
+file fixes only those mappings and passes all 25 configuration checks. No
+simulation is repeated or altered. The failed exit, original labels and protocol
+remain retained. The historical watcher had skipped with zero rows; its resumed
+runner accepts the pinned repaired report and retains every command and
+numerical gate. That historical run is now underway.
+
+\subsection*{A supplemental camera hypothesis fails the mug checks}
+The rejected nonlinear camera misses six additional leak labels, but all six
+are still classified as hard-thin defects under the unchanged specification.
+Across 2,040 retained validation frames, with classical specified bases, it
+detects 95/99 immediate functional violations versus the original camera's
+90/99, retaining every original true detection. False positives rise from 33
+to 35. This does not validate inter-layer support or the soft-thin layer budget;
+true base and connection faults are absent from these selected frames.
+
+The separate \texttt{functional-camera-gate-v48} diagnostic then replays 480
+actual frames from the remaining bedslinger cup and two mug cases. The cup
+passes, agreeing with the retained Cartesian cup. Both mugs fail despite valid
+actual printed geometry: a false leak occurs at layer 45, with large apparent
+overhang; Cartesian also has a false broken connection at layer 46. The proposed
+general supplemental camera is rejected, with no recovery trial or promotion.
+Its earlier per-feature rejection is also retained. Next work must resolve
+these measurement errors without hiding real defects or changing the print spec.
+
+To fund the historical run within quota, 279 duplicate exports covering 833
+completed rows are actually restored and verified before compaction, reclaiming
+13.6 MB of allocated space. Primary results and provenance remain unchanged.
 
 \end{document}

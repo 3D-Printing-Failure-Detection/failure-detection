@@ -4,19 +4,19 @@ The objective is more functional completed prints and genuine recovery from
 failures, compared on identical cases with every earlier policy. A trained model
 or a successful language-model request alone does not satisfy that objective.
 
-Current verdict: the complete guarded policy with Qwen records **141/240 fault
-successes and one defective finish**, versus matched analytical 133/240 and one
-defect. It retains the preceding joint-camera policy's 141 successes while
-reducing its five defective finishes to one. All 48 clean controls pass, all
-active recovery baselines' successes are retained, and five ignore successes
-remain lost. The 6,336-row comparison preserves all 20 previous configuration
-summaries. Qwen makes 523 actual calls. Neural-only records 140/240 with one
-defect; the additional loss has an anomalous pre-fault measurement trace before
-any agent decision. The completed repeatability diagnostic does not reproduce
-that discrepancy; its cause remains unresolved and the original row is retained.
-Guarded historical regression passes at 67/100 with zero defects and all 20 clean
-controls. The trend correction passes all 46 targeted runs; its full comparison
-is running. Agent causality and untouched-test superiority remain unproven.
+Current verdict: the complete trend-corrected neural policy with Qwen records
+**142/240 fault successes and one defective finish**, versus matched analytical
+133/240 and one defect. This exceeds the previous best count of 141 while
+preserving every active recovery baseline's successful case. All 48 clean
+controls pass; four prints that ignore completes successfully are still scrapped.
+The audited 7,200-row comparison preserves all 22 previous configuration
+summaries. Qwen makes 518 actual calls and ties neural-only at 142/240. Genuine
+rescues remain 18 versus matched analytical's 15; the latest added completion
+avoids an unnecessary scrap rather than rescuing another defective print.
+The changed policy's historical regression is running. The preceding guarded
+variant passed at 67/100 with zero defects and all 20 clean controls. Overall
+acceptance remains unmet: lost passing cases and untouched-test superiority
+are unresolved, and an added benefit from Qwen is unproven.
 
 The complete analytical-container/learned-fit policy finishes **136/240
 fault cases**, versus the matched current analytical policy's **133/240**,
@@ -445,12 +445,33 @@ fault types plus clean controls, and development seeds 1001–1004. Eight neural
 workers and four analytical workers run in `neural-recovery:trend-full-v38`.
 All 22 previous configuration summaries must remain identical, yielding 7,200
 rows across 25 configurations. The analytical control isolates the correction's
-benefit from the learned policy's contribution. The full run is underway. Its
-result still requires historical regression of the changed
-policy and untouched evaluation before any overall superiority claim.
+benefit from the learned policy's contribution. All 864 new simulations and
+their audits are now complete. Both neural variants finish 142/240 faults with
+one defective completion and all 48 clean controls; Qwen makes 518 actual calls.
+The complete 7,200-row report preserves all 22 earlier summaries. Every active
+recovery baseline success is retained. The remaining four lost ignore successes
+are cup under-extrusion seed 1002 on Cartesian and bedslinger, and mug
+under-extrusion seed 1003 on Cartesian and CoreXY. All four are scrapped without
+adaptation. Genuine rescues remain 18, and 3,719 completed unadapted rows agree
+with their paired ignore outcomes.
 
-The changed-policy historical check is queued as `trend-historical-v43`
-in `neural-recovery:trend-history-v43`. It runs only after the requested neural-plus-
+The same-source analytical trend control falls from 133 to 127 successes and
+increases defects from one to three. Container successes rise from 57/120 to
+63/120, while fit successes fall from 76/120 to 64/120. The candidate uses the
+unchanged learned forecast for fit parts. Every stronger earlier analytical
+configuration remains in the comparison; the weaker new control is not used
+to inflate the gain.
+
+The original report command failed its source-consistency check because its
+labels omitted the preregistered `robust_camera_neural` and `robust_camera_agent`
+names for v33. A separate reporting repair adds only those two mappings, verifies
+all 25 configurations, and reruns comparison and attribution. It runs no new
+simulations and changes no raw result, manifest, audit, model or policy. The
+original failed exit, labels and protocol remain retained alongside the repaired
+report and successful `report-resume.exit`.
+
+The changed-policy historical check is running as `trend-historical-v43`
+in `neural-recovery:trend-history-resume-v43`. It runs only after the requested neural-plus-
 agent system meets the completion, defect, clean-control, actual-inference and
 active-recovery preservation prerequisites. The original `v39` watcher also
 required the neural-only ablation to tie the best score, which could block a
@@ -467,9 +488,47 @@ With that predecessor complete, the full comparison has 1,920 rows across
 16 configurations, and the fit-only comparison has 660 rows across eleven.
 Otherwise they contain 1,680 rows across fourteen and 540 across nine. An
 incomplete predecessor must be repaired before this follow-up runs. Configuration
-preflight matches the audited neural and analytical policy arguments; the live
-watcher has produced zero new simulation rows. Its 24 MB allowance is reserved
-only after the full trend comparison terminates and storage fits.
+preflight matches the audited neural and analytical policy arguments. The original
+zero-row watcher skipped after the reporting failure. Its terminal records are
+preserved; a separate resumed runner accepts the pinned reporting repair and
+keeps every simulation command and numerical gate unchanged. All existing
+historical input labels pass source verification before launch. The 24 MB
+allowance includes a separate reservation for the live camera diagnostic.
+
+## Functional camera diagnostic after the completed trend comparison
+
+`functional-camera-gate-v48` tests a separate hypothesis using the retained v35
+nonlinear checkpoint. Its earlier per-feature gate remains rejected. All six
+additional missed leak labels are still classified as hard-thin defects, which
+also fail the unchanged print specification. Across all 2,040 retained validation
+frames, using classical observations on specified bases, the nonlinear model
+detects 95/99 frames with an immediate functional violation versus the original
+model's 90/99. Every original true detection is retained. False positives increase
+from 33 to 35. This union includes open walls, hard thinning, bad bases and broken
+connections; it does not cover the soft-thin layer budget or inter-layer support,
+and these frames contain no true base or connection faults.
+
+The new complete-print diagnostic is **rejected**. Three additional unchanged-
+command trajectories supply 480 actual frames. The bedslinger cup now passes the
+unchanged full specification, agreeing with the retained Cartesian cup result.
+Both mugs still fail: each has a false leak at layer 45 and excessive apparent
+overhang; Cartesian also has a false broken connection at layer 46. All three
+actual printed geometries pass, reproducing the paired ignore successes.
+Thus the checkpoint fixes two of the four selected perception problems but does
+not qualify as the proposed general supplemental camera. No recovery trial is
+run, no model is promoted, and no benchmark success is replaced by these
+diagnostic results. The next measurement change must address the mug's abrupt
+layer geometry while retaining real-defect detection.
+
+The complete trend evidence and reporting repair are retained in
+[the comparison](validation/neural/trend-full-v38-comparison.json) and
+[repair record](validation/neural/trend-full-v38-reporting-repair.json).
+The [camera diagnostic](validation/neural/functional-camera-v48-comparison.json)
+records the rejected hypothesis and all full-specification failures.
+Another 279 exactly reconstructible exports from twelve completed inputs
+covering 833 rows were actually restored, verified, then compacted, reclaiming
+13.6 MB of allocated space. Primary rows, manifests and audits remain unchanged;
+the receipt and quota-checked restore helper are retained.
 
 ## Preserving historical container rescues
 
