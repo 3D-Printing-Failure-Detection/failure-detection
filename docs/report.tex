@@ -86,7 +86,7 @@ cases. The higher completion count does not waive the defect regression.
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The completed guard comparison records 141/240 successes and one defect with Qwen, versus matched analytical 133/240 and one defect. Historical regression is running. A neural-only input discrepancy is under investigation; fresh-test superiority is unproven.\\
+Latest checks & The completed guard comparison records 141/240 successes and one defect with Qwen, versus matched analytical 133/240 and one defect. Historical regression passes at 67/100 with zero defects. The trend correction passes 46 targeted runs; its full comparison is running. Fresh-test superiority remains unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1609,10 +1609,11 @@ to one, and passes all 48 clean controls, with 523 actual agent calls.
 Neural-only records 140/240 and one defect; its extra loss has an anomalous
 pre-fault camera/measurement trace, so the agent's apparent advantage needs
 investigation. Both retain 18 genuine rescues. The complete
-\texttt{robust-historical-v34} follow-up has started on 100 historical faults
-and 20 clean cases, retaining eleven earlier full-domain configurations and
-six prior fit-only configurations. Five ignore losses remain, and untouched
-evaluation is still required.
+\texttt{robust-historical-v34} follow-up completes 240 new rows and passes regression: both variants
+retain 67/100 historical successes with zero defects and all 20 clean controls,
+including every prior successful case. Fit-only results retain 33/50 successes
+with zero defects. Qwen makes 200 calls and ties neural-only. Five development
+ignore losses remain, and untouched evaluation is still required.
 
 \clearpage
 \section{A nonlinear camera refinement experiment}
@@ -1708,9 +1709,10 @@ The first four rows complete and pass audit. Both default controls reproduce the
 prior scrap and action sequence; both candidates finish with zero adaptations or
 defective finishes. Each records 1,190 shrinkage queries. Qwen makes three actual
 candidate calls and ties neural-only. This preserves an ignore-successful print;
-it does not add a genuine rescue. The 42-row preservation regression is running.
-Full comparisons and untouched evaluation remain required; no overall count is
-inferred from this single case.
+it does not add a genuine rescue. All 46 rows now pass: both candidates retain
+every earlier success, complete 11/16 fault cases and all six clean controls,
+with only the same existing defective finish. Qwen makes 62 calls and ties
+neural-only. Full comparisons and untouched evaluation remain required.
 
 All 164 repository tests pass, with three optional modules skipped. The 21 focused
 forecast/fallback tests check unchanged observations and learned fit states,
@@ -1719,12 +1721,12 @@ the existing horizon and propagation to both camera forecasts. The experiment
 runs in \texttt{neural-recovery:trend-shrinkage-v37} with at most two simulation
 workers and an 8 MB artifact allowance. Older validations keep their frozen sources.
 
-The conditional \texttt{trend-full-v38} comparison waits for all 46 targeted
-rows to pass and existing jobs to finish. It adds 576 neural/agent rows and
+The \texttt{trend-full-v38} comparison has started after all 46 targeted
+rows passed and existing jobs finished. It adds 576 neural/agent rows and
 288 matched analytical rows using the same trend correction, retaining all
 22 previous configurations. Its 7,200-row, 25-configuration comparison separates
 the forecast correction's benefit from the learned policy's contribution.
-It is queued with zero new rows at this checkpoint; historical regression of
+The full run is underway; historical regression of
 the changed policy and untouched evaluation remain required.
 
 The historical follow-up is queued in \texttt{neural-recovery:trend-history-v39},
@@ -1792,5 +1794,44 @@ recovery's triggering frame. Both methods reproduce the control outcomes,
 action sequences and mean measurement IoU exactly; Qwen makes four actual calls.
 This validates instrumentation without claiming new recovery or replacing the
 original benchmark results.
+
+\clearpage
+\section{Preparing the untouched comparison}
+
+The completed guarded policy improves the development completion/defect tradeoff
+and preserves the historical best counts. The trend correction also passes its
+complete targeted regression. Its full comparison is running, followed
+conditionally by historical regression of the changed policy. Seeds 2001--2004
+remain untouched; no final superiority claim is justified yet.
+
+The \texttt{fresh-preparation-v42} preparation covers all 25 configurations from
+the full comparison. Five earlier snapshot directories contain four distinct
+runtime versions. A source-copy utility adds camera trace collection to each
+version without changing the original snapshots. It inserts exactly five
+evaluation-only additions: the helper import, trace initialization, image
+fingerprinting before segmentation, the result trace and the manifest version.
+Removing those five AST nodes must reproduce the original evaluator exactly.
+Every other runtime file remains byte-identical, and the simulator contract
+is unchanged. The independent legacy instrumentation version is retained.
+
+All 25 configurations pass a separate argument-parsing check with their original
+policy settings and model paths. Execution is intercepted immediately after
+parsing, before any simulation. This prepares camera evidence collection for
+the final test; it neither executes fresh cases nor retroactively validates
+old inputs. Final audits and the cross-configuration comparison must require
+camera traces. The final protocol and supervisor runtime provenance will be
+frozen only after complete development and historical validation.
+
+All 186 repository tests pass, with three optional modules skipped. The 45
+focused camera/provenance tests include rejection of altered policy behavior,
+altered trace collection, duplicate or missing insertion sites and attempts to
+overwrite original snapshots. The earlier four real instrumentation checks
+remain separate evidence of matching images and unchanged outcomes.
+
+To preserve the shared storage allowance, 124 duplicate journals and CSV exports
+from the completed historical run are compressed from 6,384,738 to 424,298 bytes.
+Every archive member is verified before removing its duplicate. Actual sample
+restores from all four shards pass. Primary raw results, manifests, audits and
+completed comparison files remain unchanged and available.
 
 \end{document}

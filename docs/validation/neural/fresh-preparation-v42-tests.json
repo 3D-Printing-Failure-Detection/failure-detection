@@ -1,0 +1,13 @@
+{
+  "repository_tests": {
+    "passed": 186,
+    "skipped": 3,
+    "seconds": 30.24
+  },
+  "focused_tests": {
+    "passed": 45,
+    "seconds": 5.4
+  },
+  "test_output_sha256": "69ddab201b17e8ab99455fa9810aff3d50e2529c08b95c9820a106e72cbe0cc5",
+  "instrumenter_sha256": "69fdcc7b3dcf4cb6446b17488cd3574cc28c8ff18c3aa5c4febe163a36070aad"
+}

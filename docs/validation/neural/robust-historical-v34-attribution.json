@@ -1,0 +1,204 @@
+{
+  "status": "complete",
+  "comparison": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/comparison.json",
+  "comparison_sha256": "a15f681dd83bcc9f1df410392ae6c8695e4fcac48be5bf6c1c48f0f28ed427af",
+  "script_sha256": "8f0227caaef7358314c852bf8c6b550ec97b46fd9d9a785105253b6847d53bc4",
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/main/results",
+      "runs_sha256": "b11eb66b38c81c383b31b1dc33060def8a383f95dfacb3d42399908f78b853a5"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/heldout/results",
+      "runs_sha256": "760679db5bcbc7cb5f6b341db2f1d9b7bee380535bded2b2dcf8947ac1001bd2"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/main/results",
+      "runs_sha256": "ce5f600125cba6a696cecd25e12897230a258d4b043f2a8f688d6f530aaba88e"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/heldout/results",
+      "runs_sha256": "73109b7176622849e040ce39ecfcdda4882a36d9d05448ff56a64420b1c84c14"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/main/results",
+      "runs_sha256": "63567cc5bfaf7ebffba0d25eb6477b5d321cec85497b73f452a880ca59ee218c"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/heldout/results",
+      "runs_sha256": "db8b35fd1f1650205a0c4c43dc969fd29d43c2904fcf2d9cd50caad7df5bfaaf"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hybrid-historical-v1/main/results",
+      "runs_sha256": "724c2dc23c87c0fcccad47f7ab4d7478956ba9d57daa1cba92eaadb449e92be6"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hybrid-historical-v1/heldout/results",
+      "runs_sha256": "3769edf9e914c2b1352a3d3548e37645438a19aa96b25b3443032c8b00e18dbd"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-fits/results",
+      "runs_sha256": "27f1a3eea04e11045f292f309b1a0954956f86c0e8578836b1b575cd9007abaa"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-containers/results",
+      "runs_sha256": "6a2d2e81fee8ef76bfa6f135a48d51a1d9bc153d95ef1444badbc225e42dd4a9"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-fits/results",
+      "runs_sha256": "37540ac5ce942fad974e23a15de03c736f14c62a88db714f0c1c060df2fd0a06"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-containers/results",
+      "runs_sha256": "30beb15b34f154509bf2ca08ad22ba19dd09636f029e577358d5a73bbbfca72d"
+    }
+  ],
+  "verified_completed_unadapted_rows": 1024,
+  "unadapted_counterfactual_mismatches": 0,
+  "summary": {
+    "ignore": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 0,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 47,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 0
+    },
+    "guarded": {
+      "functional_without_adaptation": 33,
+      "functional_after_adaptation": 10,
+      "rescued_vs_ignore": 10,
+      "lost_ignore_successes": 20,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 3,
+      "adaptations_total": 45
+    },
+    "contour": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 9,
+      "rescued_vs_ignore": 9,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 1,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 19
+    },
+    "combined_neural": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 14,
+      "rescued_vs_ignore": 14,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 21
+    },
+    "combined_agent": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 14,
+      "rescued_vs_ignore": 14,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 21
+    },
+    "unrestricted_ignore": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 0,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 47,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 0
+    },
+    "unrestricted_contour": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 9,
+      "rescued_vs_ignore": 9,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 1,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 19
+    },
+    "unrestricted_neural": {
+      "functional_without_adaptation": 51,
+      "functional_after_adaptation": 5,
+      "rescued_vs_ignore": 5,
+      "lost_ignore_successes": 2,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 3,
+      "lost_ignore_successes_without_adaptation": 2,
+      "adaptations_total": 9
+    },
+    "hybrid_contour": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 9,
+      "rescued_vs_ignore": 9,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 1,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 19
+    },
+    "hybrid_neural": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 12,
+      "rescued_vs_ignore": 12,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 17
+    },
+    "hybrid_agent": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 12,
+      "rescued_vs_ignore": 12,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 17
+    },
+    "neural_risk": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 14,
+      "rescued_vs_ignore": 14,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 21
+    },
+    "neural_risk_agent": {
+      "functional_without_adaptation": 53,
+      "functional_after_adaptation": 14,
+      "rescued_vs_ignore": 14,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 20
+    }
+  },
+  "limitation": "Retrospective simulation attribution on paired seeds. A successful completion is only counted as a rescue when the matched ignore print fails. This does not establish fresh-test superiority or physical reliability."
+}

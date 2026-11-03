@@ -419,8 +419,12 @@ pass audit. Both default controls reproduce the earlier scrap and action sequenc
 both candidates finish successfully with zero adaptations or defective finishes.
 Each records 1,190 shrinkage queries; Qwen makes three actual candidate calls and
 ties neural-only. This preserves a print that ignore already finishes, rather
-than adding a genuine rescue. The full 42-row preservation regression is running.
-Broader comparisons remain required; no overall count is inferred from this case.
+than adding a genuine rescue. The full 46-row study now passes: both variants
+retain all ten prior fault successes and add the mug completion, giving 11/16,
+with only the same existing defective finish and all six clean controls passing.
+Each makes 104,468 neural, 2,440 boundary and 107,877 shrinkage queries; Qwen makes
+62 actual calls and ties neural-only. No prior successful case is lost, and
+learned fit forecasts remain unchanged. Broader comparisons remain required.
 
 All 164 repository tests pass with three optional modules skipped; 21 focused
 forecast/fallback tests pass. They check retained current deformation, suppression
@@ -430,17 +434,17 @@ unchanged learned fit states. The experiment runs in
 `neural-recovery:trend-shrinkage-v37`, with at most two simulation workers and
 an 8 MB artifact allowance. Older full and camera jobs retain their frozen sources.
 
-`trend-full-v38` is queued conditionally on all 46 targeted rows and their audits
-passing. It also waits for the current full, historical and camera jobs to
-terminate before reserving storage. The rejected nonlinear camera is not used.
+`trend-full-v38` has started after all 46 targeted rows and their audits passed
+and the earlier full, historical and camera jobs terminated. It verified their
+retained results before reserving storage. The rejected nonlinear camera is not used.
 The new comparison adds 576 neural-only/Qwen rows and 288 same-source analytical
 rows with the same trend correction, across three profiles, four parts, five
 fault types plus clean controls, and development seeds 1001–1004. Eight neural
 workers and four analytical workers run in `neural-recovery:trend-full-v38`.
 All 22 previous configuration summaries must remain identical, yielding 7,200
 rows across 25 configurations. The analytical control isolates the correction's
-benefit from the learned policy's contribution. No new rows have run at this
-checkpoint. A full result still requires historical regression of the changed
+benefit from the learned policy's contribution. The full run is underway. Its
+result still requires historical regression of the changed
 policy and untouched evaluation before any overall superiority claim.
 
 The changed-policy historical check is now also queued as `trend-historical-v39`
@@ -587,19 +591,42 @@ and mean measurement IoU exactly. Qwen makes four actual calls across the two
 cases. These are instrumentation checks, not new policy gains. Existing full
 and trend runs retain their frozen sources.
 
-`robust-historical-v34` has started after that full comparison. Before starting, the
-candidate must have the best completion count, no higher defect count, all clean
+`robust-historical-v34` has completed and passed after that full comparison.
+Its launch required the best completion count, no higher defect count, all clean
 controls passing and no lost active-recovery baseline successes. Any remaining
-ignore losses stay visible and do not count as acceptance. A separate storage
-check reserves 16 MB. This follow-up runs 240 new rows on all 100 historical
+development-grid ignore losses stay visible and do not count as acceptance.
+This follow-up completed 240 new rows on all 100 historical
 fault cases and 20 clean controls with and without Qwen. Eleven earlier full-domain
 configurations remain in the resulting 1,560-row comparison. A separate 480-row
 comparison retains all six prior fit-only configurations on 50 faults and ten
 clean cases. Splitting new jobs by declared part domain supplies both complete
 grids without filtering or fabricating old results. All historical source
 snapshots, model hashes and the shared simulation contract have been verified.
-Its tmux window is `neural-recovery:robust-history-v34`. The former held-out seeds
-22–23 are explicitly historical development data; seeds 2001–2004 remain untouched.
+Both variants retain 67/100 successes with zero defective finishes and all 20
+clean controls, preserving every earlier successful case. The fit-only result
+retains 33/50 successes with zero defects and all ten clean controls. Qwen makes
+200 actual calls across the full grid and ties neural-only. These match earlier
+best counts rather than establish a new gain. The run exited successfully from
+`neural-recovery:robust-history-v34`. The former held-out seeds 22–23 are explicitly
+historical development data; seeds 2001–2004 remain untouched.
+
+`fresh-preparation-v42` prepares camera evidence for all 25 final configurations
+without launching simulations. The five old snapshot directories contain four
+distinct runtime versions. `tools/instrument_camera_snapshot.py` copies each
+version, adds the five evaluation-only camera trace sites, and verifies that
+removing those AST nodes exactly restores the original evaluator. Every other
+runtime file and the simulator contract remain identical; original snapshots
+are untouched. All 25 configurations pass argument parsing with their exact old
+policy options and model paths, intercepted before evaluation. The preparation
+adds no new policy behavior. All 186 repository tests pass with three optional
+modules skipped; 45 focused camera/provenance checks pass. Launch-time supervisor
+provenance and the final protocol remain to be frozen after full development and
+historical validation. Every final audit and comparison must require camera traces.
+
+The completed historical run's 124 duplicate journals/CSV exports are archived
+from 6,384,738 bytes to 424,298 bytes in `completed-report-archive-v7`. Every member
+is verified before unlinking, and actual sample restores from all four shards
+pass. Raw results, manifests, audits and completed comparisons remain unchanged.
 
 ## Earlier joint-camera and measurement studies
 

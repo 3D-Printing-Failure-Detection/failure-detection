@@ -1,0 +1,682 @@
+{
+  "created_at": "2026-11-03T06:56:55.579008+00:00",
+  "root": "/mnt/data/ishaan/hri-workspace/failure-detection",
+  "archive": "completed-report-archive-v7/duplicate-reports.tar.gz",
+  "archive_sha256": "2750db7b5147efb08c95124dc4cfca12056fc27f0d690d110ec172e95d869e83",
+  "archive_bytes": 424298,
+  "files": [
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/019768483e2ce6b2.jsonl",
+      "original_bytes": 2644,
+      "original_sha256": "c8d0f1894f27b5a402c564d8e0e9da9f654ba966ad34bf507668e7c0af73dbe6"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/0245bc05258c2dd9.jsonl",
+      "original_bytes": 2784,
+      "original_sha256": "321079d2d4562070ba6638b144b78eed47e93f27c9f85ce09bc0d16f86c6c455"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/03ae192d4c243c55.jsonl",
+      "original_bytes": 2778,
+      "original_sha256": "23bb9f86267683556e95afd3c3a21cebecb3a2e1e0b841cd3b6a850ec2ddde38"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/07bd819a0c4ed733.jsonl",
+      "original_bytes": 25302,
+      "original_sha256": "2fa6f7bcd71c8c738a73826b97c06e45875a562bed9a5e8a36c6abc6c3616edd"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/20625b3835d33696.jsonl",
+      "original_bytes": 12749,
+      "original_sha256": "0641358d89ed6bbb92c25d5079b6502252a34e6ec1d3643fe299319f75621ed0"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/224beb59ded4da54.jsonl",
+      "original_bytes": 12527,
+      "original_sha256": "89197768ffff4546ae354c233c18abbe4d62f0b8a509effaec6d31f4b3757fb7"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/23a582981f0a5802.jsonl",
+      "original_bytes": 15492,
+      "original_sha256": "e82c69469e6b0b365477960e943354258a7434c04d1e9d3aec71022f7b279123"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/2960220a34bba65f.jsonl",
+      "original_bytes": 10889,
+      "original_sha256": "a06e64efc27d646e0fc1ba8157215a2982d491e5dcf62b945b5ac2b4e7cd5f6d"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/2a71477e12e42079.jsonl",
+      "original_bytes": 2770,
+      "original_sha256": "c36e610890af56983efd4afe0332373640731a9ff50b59f800484ce7f947b147"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/3e25c185b1fae711.jsonl",
+      "original_bytes": 3034,
+      "original_sha256": "c01e897cbba3ccc5fe6ed27abb755e8c30e34fd704379fd6703dce23c89245b0"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/4c13ee5778a57f53.jsonl",
+      "original_bytes": 88717,
+      "original_sha256": "19635bd693b8817478ed726e899b255cf78c20d60343b0d100a14a28029ce662"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/4d114a7fa351cfb2.jsonl",
+      "original_bytes": 15158,
+      "original_sha256": "1821bd3f61845c70c1a432b1157c194249893524a228a8dd6d33b0c425b32f81"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/59b916a218c710f3.jsonl",
+      "original_bytes": 3030,
+      "original_sha256": "fbce08ac0ab7c87b444cebd1e26dbb6c241c0fb60a933bfdcb1994f55fbc6353"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/5c3d2a86efab2186.jsonl",
+      "original_bytes": 15166,
+      "original_sha256": "ff2cd29884d042f8a583fe09afab7744efd3cc0bc1353bb17a928949f16e81a2"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/5ed14caba19e4a8d.jsonl",
+      "original_bytes": 12780,
+      "original_sha256": "7ce16131ec5a3d286b06aff414fbb28dc6ccb8a7068716dfe8feeb3ee0971d00"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/5fb2db7fb1df076a.jsonl",
+      "original_bytes": 2785,
+      "original_sha256": "e8abd31a5c5a434d79bd9473ef325fc628c3b5a3a1e7ef1322b2eb5aa90c0cb5"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/670de0d32842c811.jsonl",
+      "original_bytes": 49268,
+      "original_sha256": "e2adf12bb8cb62d4e0458f17a61b1450f9d28f048b1d6865bf2d452d510c48f4"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/6fc62fc3ea551921.jsonl",
+      "original_bytes": 2786,
+      "original_sha256": "044fea9ceb4f0b304b7531772dae262814ce26f24bd4c46161ae02cc7b0d34ef"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/72617c1e1637755e.jsonl",
+      "original_bytes": 3028,
+      "original_sha256": "8ad54b67e236eb54b6d475eecbcdf0f07b4993fe45beb283e2b6700245f50609"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/73d6492b09da64c9.jsonl",
+      "original_bytes": 25303,
+      "original_sha256": "a72856de38d0ccde46379dd5cd292e86e21e6f75eb9855cb5da355d63962ec00"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/798db1ee65452b02.jsonl",
+      "original_bytes": 2782,
+      "original_sha256": "69e091d6b7aabeff4899cc18140467efdb0509022c2ee292d6292a63d0d7970d"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/7bf6670c01de2943.jsonl",
+      "original_bytes": 25583,
+      "original_sha256": "7d54ac22579310ea8f69a19c21bff3bacd59d13c2c1fc44a8e3346ffb4c31c65"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/87a0959efe13cb77.jsonl",
+      "original_bytes": 2638,
+      "original_sha256": "b9fb1e7c209f77a0a61986a8abbb5cdb0e7dfad4020a48c6617c3c209c822dd3"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/8c0acf69fafd9908.jsonl",
+      "original_bytes": 9327,
+      "original_sha256": "8e1ab289261388af4160c745ed4cdbff1b1e6e180a899f8b376bdab60ecf6c6f"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/91eef76924b7b662.jsonl",
+      "original_bytes": 2653,
+      "original_sha256": "158c0853d764a1fa5662e50f8271726894cd52d7f3337ab55e88e132909bf8e2"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/9b315a3bf4d7568c.jsonl",
+      "original_bytes": 15746,
+      "original_sha256": "a974ab2dfcc40cfc548d255ec3ba395bcfb7d0fcd5652d54fcf43c4eb61c06c8"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/a7b1b154cfbaf900.jsonl",
+      "original_bytes": 3024,
+      "original_sha256": "bd3191310f07a6bf6007340a2aac04a451cc8e5e451cdbf980b24b3367687ea8"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/bb61e2b62fec8563.jsonl",
+      "original_bytes": 49442,
+      "original_sha256": "38eec448ea5a482b82f1035f40dc1b7402144a8e4e2de3f4fadcff4d3ece9f6c"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/bceb091214ca12f1.jsonl",
+      "original_bytes": 2652,
+      "original_sha256": "89d7bdea5751f688687522959b2a1592cabf24d0155060a5bbb41be5f2648a55"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/bd51c475c278c991.jsonl",
+      "original_bytes": 2654,
+      "original_sha256": "2267f764a2d63ae6effe89db934d511a92d6c5e87ded6794c867dd378b17cc53"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/bf5b0c451cd666fd.jsonl",
+      "original_bytes": 15286,
+      "original_sha256": "4e4915580f1311b5dfdc6168f185383beb593760cd79bad3924f3f85192c0537"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/bf5bde0497680e9c.jsonl",
+      "original_bytes": 2648,
+      "original_sha256": "b668d687855216fe5aa622b657e08f82d6d3f68ea55e82bb25bac1f49f239cab"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/c011f8f136edcfd2.jsonl",
+      "original_bytes": 3014,
+      "original_sha256": "8f81142db8d8dd958038da248cdd509ce5d7add4e75be2887f7ab86f5a99015a"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/d44f78cb56a8d393.jsonl",
+      "original_bytes": 3026,
+      "original_sha256": "4ec2efeafcbb28b2be251e2ab7d030d04db5f2f9f380dc1b1c70fe0f316de5c6"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/dbd32fa43df2cd72.jsonl",
+      "original_bytes": 15654,
+      "original_sha256": "4a40e2eb1e44c460ebc82174ed469e6b1fdd62090066df7a253c72c2ff1ef013"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/cases/dde2d7af4e6edb2f.jsonl",
+      "original_bytes": 9338,
+      "original_sha256": "042ab1dfc81ef30fb21cc6ec02fd894d6498b570c9ef6a1c23c3a9e59013033d"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-fits/results/runs.csv",
+      "original_bytes": 400148,
+      "original_sha256": "6b1f58e1db731f8317ba5f5a2645275a2cdfa9d884e9b721e571818578e2b798"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/00d57b26fc2e3d35.jsonl",
+      "original_bytes": 2789,
+      "original_sha256": "168ce90db34b2e5af6418626fa0edd318db644611f56f3d2084ebaa5d862a7c0"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/07ddeccca8b7007b.jsonl",
+      "original_bytes": 2789,
+      "original_sha256": "7f708e463a7a1e67a2190d522cc432d8c599d4e847e7a2a80a8be8bfaeec55ea"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/08e44185e57e3334.jsonl",
+      "original_bytes": 30764,
+      "original_sha256": "cceba46c9c98655e7e893a76967443f98ed11903a84806bca37949503a741d08"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/0b1d03edaf6812a7.jsonl",
+      "original_bytes": 2779,
+      "original_sha256": "87c2cc9937a0fffa1aca34a1bfcb8c35f9a081d326b34ba055a312d186ab5e8c"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/10d2aeca0b6d8193.jsonl",
+      "original_bytes": 13996,
+      "original_sha256": "444c4085089e2bd493359977b981ea27ba75446e895d5530dc75b94555a13587"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/14cb28cb858b21f2.jsonl",
+      "original_bytes": 84897,
+      "original_sha256": "d147d2c797a778f7f466d7c667dc3d66bd7f13c696f5f9c86a9a5e197abc133f"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/24125eb16dd36fc1.jsonl",
+      "original_bytes": 30854,
+      "original_sha256": "1dd1e02a5ce1099756e936f79825e1d1c51698d083fce2f7fff5e32a323c65dc"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/2986b778c2a323fe.jsonl",
+      "original_bytes": 83366,
+      "original_sha256": "68c81dd1e3f00291d12109b54a6389053ca871c351a0b58755434a34b8b02296"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/2ffa802ec1b3d5eb.jsonl",
+      "original_bytes": 44406,
+      "original_sha256": "e445772bfeece9c66e3e13748e05db96c70c3569596f20063fb051bef4b7da9e"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/32caeda70259b736.jsonl",
+      "original_bytes": 83916,
+      "original_sha256": "9502da2e83139d6d29c6cc397e6affabb1feb335855eb07fe820a41fbd1dbbd2"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/381b218627a89b62.jsonl",
+      "original_bytes": 3177,
+      "original_sha256": "b06e7c1b2a489832051d1431ed06e8f22ccff3bde96b4941e6e77e3be15e6ad0"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/3ebf6d70c31d9778.jsonl",
+      "original_bytes": 35911,
+      "original_sha256": "8cc989df553864be234a12d58bebb819595b3574bae612a2abd758a54093e854"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/51ae0de86e40f189.jsonl",
+      "original_bytes": 85758,
+      "original_sha256": "2030d84954e77d8db0fb50e7ec41ab3cff049d222146e28c84adea22b35d95bb"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/5d44114058fc2907.jsonl",
+      "original_bytes": 11496,
+      "original_sha256": "b16ab77a85e6e79ef744b6ddbc4da71f967db3e110353ccccfb42c55037de068"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/67247d0aa186ab99.jsonl",
+      "original_bytes": 11527,
+      "original_sha256": "6620c1d08b3d35ce145f2277e05a5fe296986602da0c2ae9687cb717a6a6082f"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/7072f00d9bf738db.jsonl",
+      "original_bytes": 14771,
+      "original_sha256": "76e8db9f4399245f47921640ae03562ba4325f4b98b141a9571d3a45b99a2220"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/7d0603a53465a874.jsonl",
+      "original_bytes": 96189,
+      "original_sha256": "aac999c02c782a8c1670255e5549530613bdbf3663d2d5d9a6a0c8383e48e1fa"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/7fa88f1a25cb31a9.jsonl",
+      "original_bytes": 3169,
+      "original_sha256": "469fe283e903721d70c7c35347dd5dfefbd4f1119fcea71f6e1f8c5765c46de7"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/88a19549ec840dcb.jsonl",
+      "original_bytes": 11627,
+      "original_sha256": "72f5da02135b1aee88d66d8ad3dfa77455e2fc1262a3cd03b8a8a814384244cd"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/9084f6b5c91e19fd.jsonl",
+      "original_bytes": 96695,
+      "original_sha256": "3b4104c08a990e80ccde268515db8cebaf11de948ea084ad66d2c71924363ccf"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/9283fafab39345a1.jsonl",
+      "original_bytes": 35763,
+      "original_sha256": "d2bef182bf8a2b36e6ef7d855990440ab3616c64d1fd11b0570f098ba1e7bba9"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/9b051465b234cab1.jsonl",
+      "original_bytes": 186778,
+      "original_sha256": "25b810a72a016a5112f86705c96b3b837f0ff95df34ea1d767b89f6b0595efeb"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/9cb1d8020409c578.jsonl",
+      "original_bytes": 186329,
+      "original_sha256": "c604231dcbe07a2719cc85bd124f63069ea366a4c002637b2e23bbfa0faaac48"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/9e623422e4efbde7.jsonl",
+      "original_bytes": 3165,
+      "original_sha256": "43f9f469d1e6051420cd760dc5ab64350953dabaab6a463ba2eebdad0e001464"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/a1732f03ad668918.jsonl",
+      "original_bytes": 88893,
+      "original_sha256": "23da4815bcfe8d158eb0ac047242c914dbeab231f763f96de3a9c7283294b34c"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/b5071f8913222dac.jsonl",
+      "original_bytes": 2790,
+      "original_sha256": "bb30460b10365d524167884658b3c75d9e62ef06f10472930a27c0ca33db049d"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/b681263f22afa943.jsonl",
+      "original_bytes": 165807,
+      "original_sha256": "ee83cade1820f16758433d4b757b2e969af87769e44314f3085fbfd37cb3d743"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/c0295da0de74cbde.jsonl",
+      "original_bytes": 96302,
+      "original_sha256": "d4c1525d60d9d8ad47c751c8b6c4080bc5193f4fb27d3777c99a01eda12404c1"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/c20b5b725222e1f6.jsonl",
+      "original_bytes": 3162,
+      "original_sha256": "61c8346f223fe4bf638b1f215bb3fe6b59e61a25fcdca1cb6398bff8172f0bda"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/cc251238257830a2.jsonl",
+      "original_bytes": 85885,
+      "original_sha256": "8e877b985aad97a1ffa4ed9b8c39ad6aad9ff1fd6c264a41a703ae95be2d924f"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/d1ee4d0e6aff277c.jsonl",
+      "original_bytes": 3172,
+      "original_sha256": "66dedde24e126a7a46463b159146e33b9a6a61d66ed40788c262a8b01c9eecde"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/de736ad7dcf02dfd.jsonl",
+      "original_bytes": 3160,
+      "original_sha256": "247b51e52b5df94127395d179bfe87fd12423ea2d17ff8e72ce4e1cf7a4c7631"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/e07fbe50e3b370b2.jsonl",
+      "original_bytes": 35528,
+      "original_sha256": "ee69a21887b04fa7e69162b0530f6ceb45c262c013030e2908da28c324292475"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/ee5c074d008f14ad.jsonl",
+      "original_bytes": 2776,
+      "original_sha256": "af35a6bab0b9d0358ddb462bdaae0c403fbfcf31b507acc82ad68ac9aad84e0e"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/f2a277b26a4fda98.jsonl",
+      "original_bytes": 2790,
+      "original_sha256": "479d9e26eda3fb92cf5d54a36cc52164eec4e0ce4df5ab869c4dedd9da56d180"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/cases/fa56f77ff7237a36.jsonl",
+      "original_bytes": 11488,
+      "original_sha256": "47d9cb0587c443a4713f3a9716599947d4217d828f83d490f8cfbbc0d7648e6d"
+    },
+    {
+      "original": "neural-robust-historical-v34/main-containers/results/runs.csv",
+      "original_bytes": 1590775,
+      "original_sha256": "434feee225169611bbed60c252d97471b6605880ec277c2ae73bbfbc322f358a"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/0381a785dbf9de2e.jsonl",
+      "original_bytes": 18988,
+      "original_sha256": "8880d88a19afb97096dc1e762715e64ce4db864d323bcb98d10838280c94b0f5"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/04ea81ca05ba2550.jsonl",
+      "original_bytes": 31770,
+      "original_sha256": "11b45a1b147b7d361167de41f1fea785871b450c114ac86c0f7839d8c5883418"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/13e59fe882eceb55.jsonl",
+      "original_bytes": 23592,
+      "original_sha256": "515d5c9026775709d58bf9d3ade95249652bfbe553f42514ba49934d0962eb12"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/1a1931b076dbda24.jsonl",
+      "original_bytes": 2652,
+      "original_sha256": "36fc1415b59b5432adadec53bb8eeb8b630e9488113dbeda5a4892f86bdda17b"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/1ee087dfe36ab806.jsonl",
+      "original_bytes": 33040,
+      "original_sha256": "0e3c2930da617de09484e6aa503b6d6d9d08fca6f8e4d5a4e379161637ae3cd9"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/32e6eb4f509f9855.jsonl",
+      "original_bytes": 3028,
+      "original_sha256": "d30658878b152899663ec49c4dd247cabcc4302cb25b5b123eac2464fec890fb"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/4a0548c8506b0f0a.jsonl",
+      "original_bytes": 3028,
+      "original_sha256": "4d1bb375a22bef4ac591b950ab628498309a2cfb8eed907748df928c4d2428b8"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/5f97858d06dc4268.jsonl",
+      "original_bytes": 9723,
+      "original_sha256": "90dff99a5cf84c529c849e8223de678b43f88a3fa5eaf116e2ecad69774cf391"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/5fa99ab81d771ac7.jsonl",
+      "original_bytes": 15210,
+      "original_sha256": "cecc16a8df20c40aa053610b1436c241517262082418c062929ffed421910bb9"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/62b67aefc69ca00c.jsonl",
+      "original_bytes": 2649,
+      "original_sha256": "bfdeb25ea48327d0a2cff6b3b72ac4b16889a48d44f24bb044708bd197132531"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/6fee83887ab79f13.jsonl",
+      "original_bytes": 15218,
+      "original_sha256": "d5aed96f3a2bd77a882a4a46a0c48d84098c004af2ff5ace9f66bf8a0103c5c8"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/7533b3d2ea3c95b6.jsonl",
+      "original_bytes": 3018,
+      "original_sha256": "f5ac7aa85ea48314c7b9c5cebf3e750c75afdbc329b8fe590d838dd76729d4a8"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/7b8968794982b382.jsonl",
+      "original_bytes": 2753,
+      "original_sha256": "1146a5d807d373f3ba8cfd5d9c6e8f8b666ad31aeb225967fc05f3e4a71ce8e1"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/8ea721198fd1b9df.jsonl",
+      "original_bytes": 15298,
+      "original_sha256": "4491cdc7f4d6d651e1f9936dbcd3fd47c79b703ef46b14b0c6e5f901340e39c0"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/913537692de1342f.jsonl",
+      "original_bytes": 9451,
+      "original_sha256": "763b2da85135185f36cbc9e04e216c7c87a3042fe5e5c5f35062f056d5f6b9d4"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/97781f810017a9b2.jsonl",
+      "original_bytes": 7797,
+      "original_sha256": "00f192529de28a96e506f3d7752ec9729ca50155751e7b06f253cccdffbdaa5e"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/a705e136c869905e.jsonl",
+      "original_bytes": 66713,
+      "original_sha256": "2d4881bcd631a1e06a466e8af392acf92c3a7669bca9f456c36e8da5c00cf68d"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/bb88f9b16d60a48e.jsonl",
+      "original_bytes": 2786,
+      "original_sha256": "a14fdf6da2efa2b183106c11a5696d9baed985a041bd93cacb4d62bb1ce8869c"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/c9c72c316a0bfd3f.jsonl",
+      "original_bytes": 15651,
+      "original_sha256": "e88b830dbe6b00ffd0ec15d2cfdc51ba81dd23832511e8bc1213624837821441"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "original_bytes": 2648,
+      "original_sha256": "7e3b4b4c636b34b3b2a37863e3a529708bb8660628af19c065f042d9fca6ece5"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/def4b311296f4c94.jsonl",
+      "original_bytes": 16103,
+      "original_sha256": "75e3305d0d475c5c0cdc1eb91229afbae0df33b42ac904bce701f48f3926455c"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/e607c1d370b1f278.jsonl",
+      "original_bytes": 2778,
+      "original_sha256": "01a8532d3bae61fe638d22e844073e76ede17c4e29d5444908964285762bcf58"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/f1285a7eb615c1f9.jsonl",
+      "original_bytes": 2652,
+      "original_sha256": "2d102b9a20501162afb81f388fe55f4a4e39f60c78ae329680f12018ff24f2db"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/cases/f9e40a7f7fe32454.jsonl",
+      "original_bytes": 3020,
+      "original_sha256": "26efea57f44eb02421c9abd964437f075585941221948c5787a164d52c710906"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-fits/results/runs.csv",
+      "original_bytes": 260237,
+      "original_sha256": "1b1f730daaa404f24f4760de14e4acf6b5dcc8804b28c9d692836d6caf571677"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/01a7aff8541b73ba.jsonl",
+      "original_bytes": 25111,
+      "original_sha256": "7ed6935c2180efd3ce581fa9e04cd603e64770a42c3ac7675066bbe5b460b204"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/12fc97bafebfeea1.jsonl",
+      "original_bytes": 2788,
+      "original_sha256": "b0b8205b4403a0f15b46ba1525c334ba33a2c265359ad79aeba11b6e71fb39ce"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/13ae38132031d2d7.jsonl",
+      "original_bytes": 11924,
+      "original_sha256": "9ca938efbf583cf86b7f00914e49f55828c6e31a34205aca857ba10e3c829811"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/1ed0bb549cbc5152.jsonl",
+      "original_bytes": 27114,
+      "original_sha256": "8c67bd455676fdadf1209d00d6d0a4e3d1f89d98225358ccb62c1a9d3cb88557"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/20abb8d8a17fa9b0.jsonl",
+      "original_bytes": 26714,
+      "original_sha256": "4b38b6727a52749b24fe6a7a87a8be11b5fe414c14dac578d0f9a81d5e997d3a"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/3100166f0d5abfa1.jsonl",
+      "original_bytes": 3150,
+      "original_sha256": "a52e224bc5f17c765479e9941e05965aefc0aad36487a948105af20864eff641"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/39b9eea8ea8c7c86.jsonl",
+      "original_bytes": 23115,
+      "original_sha256": "1b27b83aecc12650c6e3460dee3dcf0f939f092edd1ef821c2cb29bf84466e71"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/49fa816d45aa0c4a.jsonl",
+      "original_bytes": 23165,
+      "original_sha256": "4c503240fe3bcef5772a5b3cc07bcc3939e7866c7fc31aab8247a49462546ee7"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/54426e3622c09a96.jsonl",
+      "original_bytes": 23135,
+      "original_sha256": "77b82b52c47635364facd5cb26610cfefaa518070b574f2012a5fae1077bf9d3"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/5de4aa880c35db52.jsonl",
+      "original_bytes": 35589,
+      "original_sha256": "97e6decc9ff659d831320bf418a8b727661ee6f0e1c717b68a9a9878413bed24"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/770079203caaad41.jsonl",
+      "original_bytes": 3159,
+      "original_sha256": "e59e453bce084d3fba3a1460345e7722a6154f95492c2c95bbd06d64e1027042"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/7e399724baf3694a.jsonl",
+      "original_bytes": 11485,
+      "original_sha256": "3e5ec572bef683269a6e89c9f8774dd3b84e23cd0b012074759295ebf0701110"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/8785c5a75643fcc7.jsonl",
+      "original_bytes": 2785,
+      "original_sha256": "d0cb6ef6363d24c4aca7a269ea20bd75086d7f9d3c2a2b614f24ab435e1ad9ad"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/8a7e6b6c0e117b2c.jsonl",
+      "original_bytes": 2787,
+      "original_sha256": "7e2d05dcd116b290374f308d882c290933562897e0aeda6b8350f6edaa490fb9"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/95d71f3b7f6f026c.jsonl",
+      "original_bytes": 254581,
+      "original_sha256": "2cf7dfec13c96281e81aecb389caba194ff4f0dce3772d7ff99533068e3de519"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/98f6e835ce24559b.jsonl",
+      "original_bytes": 102189,
+      "original_sha256": "05c2bb6741c30a260f18cbf666886c2482a1d9440851b2a97fba92dc5fb32e24"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/a8c34f0c32b21d17.jsonl",
+      "original_bytes": 2789,
+      "original_sha256": "ef811c25ed76be82d456a4bcd9903995b2fdc367c6c2d098560f624df2033b91"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/a98f970235328dfa.jsonl",
+      "original_bytes": 36871,
+      "original_sha256": "bbcfb528ec1e156ba032ae36a3143efdb6fcda213c47821336dbd6982119fa06"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/b380e8784f9c566a.jsonl",
+      "original_bytes": 3173,
+      "original_sha256": "69899c68daba04ce509c924f0d802aa7e003958f7c2e51cd4deea8890e758886"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/cd47915dd7dff1c1.jsonl",
+      "original_bytes": 93670,
+      "original_sha256": "5018e2d01a8094a17c4b8527d0d549351f425fd3787a65ee9ea45ad7a496284e"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/d36020e6db915aca.jsonl",
+      "original_bytes": 29919,
+      "original_sha256": "2a0f8b2bbe59d8ecafc8e6bf45c0f5bb70b03eac4418a0e06c4e5394db9ac6f1"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/d8a9499028b2eba3.jsonl",
+      "original_bytes": 95499,
+      "original_sha256": "f39d4e175d01e12badfc17763230138b97a29105501196a39bb9b73d8b6a01f3"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/e026f98929c4a36b.jsonl",
+      "original_bytes": 23089,
+      "original_sha256": "466a96910ee0116dcb1bca931b8c273a784faf2556c8cae197d4ea8dbb412760"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/cases/f8f56cfed3e1a112.jsonl",
+      "original_bytes": 3171,
+      "original_sha256": "b1fa0e2eca1eb249b9d8101368ef69d6f884444d33fd1ef5fab6339fa6103f96"
+    },
+    {
+      "original": "neural-robust-historical-v34/heldout-containers/results/runs.csv",
+      "original_bytes": 817919,
+      "original_sha256": "63671d65897d60cf7be9455233f7060af5602d18990de67fe44a63f4822e9334"
+    }
+  ],
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-fits/results",
+      "rows": 72,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-robust-historical-v34/main-fits/results/runs.jsonl": "27f1a3eea04e11045f292f309b1a0954956f86c0e8578836b1b575cd9007abaa",
+        "neural-robust-historical-v34/main-fits/results/manifest.json": "0e91c7c027451cd507be2bfe1901da95a7b6e8c4492b607413d5d46daa71f749",
+        "neural-robust-historical-v34/main-fits/audit/audit.json": "d8b0552b4d3045fcbe1c57abcd4e774d9b99cfab25ea940767e6c11ba0666801",
+        "neural-robust-historical-v34/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "neural-robust-historical-v34/comparison.json": "a15f681dd83bcc9f1df410392ae6c8695e4fcac48be5bf6c1c48f0f28ed427af",
+        "neural-robust-historical-v34/neural-only-comparison.json": "0cfb39bfe5859fda02b9c741a202401104742c6e545e0f52582c78ede85858d7",
+        "neural-robust-historical-v34/fits-comparison.json": "639ed197ac98059e4908757705571db80c267c88a99bec8847cb3b8849417bda",
+        "neural-robust-historical-v34/fits-neural-only-comparison.json": "c82588bfdeca90c8b964b1fbe5461c90296acfb57ffba735372e1c690b9b2469",
+        "neural-robust-historical-v34/completion.json": "f11659795f3a8bbb0fc8fe73f08c2ab563cc3bfb6f417b676f2b05a795702f75",
+        "neural-robust-historical-v34/attribution.json": "3041a5e0adade5cc77ca4b9dff5c6ee3b4f78d78e89ecf4391d0eb6d6036474d"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-containers/results",
+      "rows": 72,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-robust-historical-v34/main-containers/results/runs.jsonl": "6a2d2e81fee8ef76bfa6f135a48d51a1d9bc153d95ef1444badbc225e42dd4a9",
+        "neural-robust-historical-v34/main-containers/results/manifest.json": "ac9b7b7a03307d3c01e7a1139963df653edb187a45f882549ad3de29ca3b48cb",
+        "neural-robust-historical-v34/main-containers/audit/audit.json": "81fe59f254b2afd02e8b6592c7e121c872f8891f5ade0577950cd4917ea69bfe",
+        "neural-robust-historical-v34/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-fits/results",
+      "rows": 48,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-robust-historical-v34/heldout-fits/results/runs.jsonl": "37540ac5ce942fad974e23a15de03c736f14c62a88db714f0c1c060df2fd0a06",
+        "neural-robust-historical-v34/heldout-fits/results/manifest.json": "40ffe058d549cd08421ba93ccee6aa2d7d4821f1e5c9abafc84d31c78df9a2b7",
+        "neural-robust-historical-v34/heldout-fits/audit/audit.json": "cf2b11227d5b35d5bd6d536af8cf5730eca7a8ab9027c084fee2c8ca9308d18f",
+        "neural-robust-historical-v34/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-containers/results",
+      "rows": 48,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-robust-historical-v34/heldout-containers/results/runs.jsonl": "30beb15b34f154509bf2ca08ad22ba19dd09636f029e577358d5a73bbbfca72d",
+        "neural-robust-historical-v34/heldout-containers/results/manifest.json": "d809b38139d7fbe53f839503a80ec6152899c02d7f5b0856046fda0311a4a8f3",
+        "neural-robust-historical-v34/heldout-containers/audit/audit.json": "1522b7d6e77abe63e7844540472dcac7fb250d0b5f47e30a7fc6b7f3409a4aaf",
+        "neural-robust-historical-v34/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    }
+  ],
+  "all_members_restored_and_verified_before_unlink": true
+}

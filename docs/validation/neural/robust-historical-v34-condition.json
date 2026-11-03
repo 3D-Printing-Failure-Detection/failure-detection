@@ -1,6 +1,5 @@
 {
-  "status": "running",
-  "new_rows": 0,
-  "storage_bytes_at_launch": 99949481984,
-  "full_comparison_sha256": "97cb0218e1c578ef1fd0a7e23c0e863efdbd30f6a6a7092091b2a61ebaed55db"
+  "status": "evaluation_audit_and_comparison_complete",
+  "new_rows": 240,
+  "regression_passes": true
 }
