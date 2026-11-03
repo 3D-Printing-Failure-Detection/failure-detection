@@ -12,19 +12,26 @@ from tools.boundary_tiles import tile_inputs
 from tools.train_boundary_tiles import TileNetwork
 from tools.train_boundary_refinement import (
     export_refinement, exported_refined_tiles, frozen_tile_logits, verify_base_training,
-    refinement_distance_loss,
+    refinement_distance_loss, ResidualRefinement,
 )
 
 
 @pytest.mark.parametrize('precision', ['float32', 'float64'])
-def test_learned_refinement_matches_full_camera_across_native_block_seams(tmp_path, precision):
+@pytest.mark.parametrize('nonlinear', [False, True])
+def test_learned_refinement_matches_full_camera_across_native_block_seams(tmp_path, precision, nonlinear):
     torch.manual_seed(9)
     base_path = tmp_path/'base.npz'
     TileNetwork(include_expected_mask=True).export(base_path, precision)
-    refinement = nn.Conv2d(1, 1, 3)
-    with torch.no_grad():
-        refinement.weight.copy_(torch.tensor([[[[.02, -.03, .01], [.04, .9, .06], [-.02, .03, .01]]]]))
-        refinement.bias.fill_(.01)
+    if nonlinear:
+        refinement = ResidualRefinement(8)
+        with torch.no_grad():
+            refinement.output.weight.uniform_(-.2, .2)
+            refinement.output.bias.fill_(.01)
+    else:
+        refinement = nn.Conv2d(1, 1, 3)
+        with torch.no_grad():
+            refinement.weight.copy_(torch.tensor([[[[.02, -.03, .01], [.04, .9, .06], [-.02, .03, .01]]]]))
+            refinement.bias.fill_(.01)
     path = tmp_path/'refined.npz'
     export_refinement(base_path, refinement, path, precision)
     model = BoundarySegmenter(path)
@@ -46,15 +53,19 @@ def test_learned_refinement_matches_full_camera_across_native_block_seams(tmp_pa
         model.predict_patches(np.zeros((1, 243)))
 
 
-def test_identity_refinement_preserves_existing_camera_and_weights(tmp_path):
+@pytest.mark.parametrize('nonlinear', [False, True])
+def test_identity_refinement_preserves_existing_camera_and_weights(tmp_path, nonlinear):
     torch.manual_seed(5)
     path = tmp_path/'base.npz'
     TileNetwork(include_expected_mask=True).export(path)
-    refinement = nn.Conv2d(1, 1, 3)
-    with torch.no_grad():
-        refinement.weight.zero_()
-        refinement.weight[0, 0, 1, 1] = 1
-        refinement.bias.zero_()
+    if nonlinear:
+        refinement = ResidualRefinement(8)
+    else:
+        refinement = nn.Conv2d(1, 1, 3)
+        with torch.no_grad():
+            refinement.weight.zero_()
+            refinement.weight[0, 0, 1, 1] = 1
+            refinement.bias.zero_()
     updated = tmp_path/'identity.npz'
     export_refinement(path, refinement, updated, 'float32')
     with np.load(path) as old, np.load(updated) as new:
@@ -80,6 +91,32 @@ def test_refinement_rejects_partial_and_invalid_weights(tmp_path):
         np.savez_compressed(tmp_path/'bad.npz', **changed)
         with pytest.raises(ValueError, match='native refinement weights'):
             BoundarySegmenter(tmp_path/'bad.npz')
+
+
+def test_residual_refinement_rejects_partial_conflicting_and_invalid_weights(tmp_path):
+    path = tmp_path/'base.npz'
+    TileNetwork(include_expected_mask=True).export(path)
+    export_refinement(path, ResidualRefinement(8), tmp_path/'residual.npz', 'float32')
+    with np.load(tmp_path/'residual.npz') as data:
+        arrays = {key: data[key] for key in data.files}
+    cases = [dict(arrays, native_residual_kernels=np.zeros((8, 2, 2))),
+             dict(arrays, native_residual_kernels=np.zeros((3, 3))),
+             dict(arrays, native_residual_kernels=np.zeros((0, 3, 3))),
+             dict(arrays, native_residual_bias=np.zeros(7)),
+             dict(arrays, native_residual_output_weights=np.full(8, np.nan)),
+             dict(arrays, native_residual_output_bias=np.array(np.inf)),
+             dict(arrays, native_residual_output_bias=np.zeros(1)),
+             dict(arrays, native_refinement_kernel=np.eye(3), native_refinement_bias=np.array(0.))]
+    for key in ['native_residual_kernels', 'native_residual_bias',
+                'native_residual_output_weights', 'native_residual_output_bias']:
+        cases.append({name: value for name, value in arrays.items() if name != key})
+    for changed in cases:
+        np.savez_compressed(tmp_path/'bad.npz', **changed)
+        with pytest.raises(ValueError, match='native.*refinement'):
+            BoundarySegmenter(tmp_path/'bad.npz')
+    inputs = torch.zeros((1, 3, 24, 24))
+    with pytest.raises(ValueError, match='unrefined native camera'):
+        frozen_tile_logits(tmp_path/'residual.npz', inputs)
 
 
 def test_refinement_cannot_inherit_weights_trained_on_its_validation_split(tmp_path):

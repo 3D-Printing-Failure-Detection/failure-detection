@@ -347,6 +347,35 @@ and [comparison](validation/neural/gap-sensitive-refinement-v30-comparison.json)
 record this negative result. The completed recovery comparison below redirects
 work toward unsupported corrections; seeds 2001–2004 remain untouched.
 
+`nonlinear-refinement-v35` tests whether a local nonlinear correction can avoid
+the linear filter's missed real gaps. It freezes the same commanded temporal
+camera and adds a 3×3 convolution with eight hidden channels, ReLU, a 1×1 output
+and a residual connection before tanh. Only 89 parameters are trained. Zero
+output weights and bias initially preserve the original logits exactly. The
+linear control, dataset, 66/36 trajectory groups, sampling, symmetric loss and
+40-epoch schedule remain matched. Neither diagnostic outcomes nor gap counts
+select the checkpoint.
+
+The retrained linear control reproduces v28's checkpoint hash exactly. Both
+heads begin with identical validation predictions and preserve every backbone
+weight. The nonlinear head's boundary MAE is 0.071095 mm versus 0.072209 for the
+linear head; near-boundary sign accuracy is 80.39% versus 80.50%. Export error
+is 0.000008285 mm, within the unchanged 0.000010 mm tolerance. These tile scores
+do not establish fewer missed gaps or better recovery.
+
+The full 160-frame cup diagnostic runs first. Only a passing complete-print
+check permits the same 2,040-frame, 36-group geometry comparison. The original
+camera and linear control must reproduce all prior frame measurements. Gap
+false positives, gap misses and severe-thinning misses may not exceed the
+original camera's counts. Failed gates skip recovery; fresh seeds stay untouched.
+The experiment runs in `neural-recovery:nonlinear-v35`, using two CPU threads and
+an 8 MB artifact allowance that reserves space for the live full policy test.
+All 159 repository tests pass with three optional modules skipped; all 22
+focused camera/export tests pass in the existing Torch environment. They cover
+full images, native block seams, float32/float64 export, exact identity behavior,
+invalid weights and conflicting heads. The running guarded policy keeps its
+separate frozen source and original camera checkpoint.
+
 ## Preserving historical container rescues
 
 `joint-historical-gate-v23` compares the complete improved fit policy with

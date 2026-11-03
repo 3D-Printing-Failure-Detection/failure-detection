@@ -138,6 +138,10 @@ conditional recovery run is skipped; no new recovery gain is claimed.
 A follow-up doubles the training penalty for invented material. Its matched
 control reproduces exactly, but the candidate introduces two false wall gaps in
 the full cup diagnostic, so it is also rejected before recovery evaluation.
+A further 89-parameter nonlinear camera head slightly lowers tile boundary error
+while slightly reducing boundary sign accuracy. Its linear control reproduces
+exactly and both exports pass; complete-print and real-gap checks are pending.
+This experiment does not change the guarded policy currently being benchmarked.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.

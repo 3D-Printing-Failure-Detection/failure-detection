@@ -1,6 +1,6 @@
 """Fit a native-grid spatial output layer while freezing the existing camera.
 
-The learned 3x3 convolution acts on distance logits before tanh, not on a binary
+The learned spatial head acts on distance logits before tanh, not on a binary
 mask. Valid convolutions exclude tile-edge padding from training and validation.
 Full-image inference uses the same weights and reflect padding at image edges.
 """
@@ -19,6 +19,32 @@ from torch.nn import functional as F
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from recovery.models.boundary import BoundarySegmenter, PATCH_SIZE
 from tools.train_boundary_tiles import TileNetwork, training_sampling_probabilities
+
+
+class ResidualRefinement(nn.Module):
+    """An identity-initialized nonlinear correction on the native logit grid."""
+    def __init__(self, hidden_channels):
+        super().__init__()
+        if hidden_channels < 1:
+            raise ValueError('residual refinement needs positive hidden channels')
+        self.hidden = nn.Conv2d(1, hidden_channels, 3)
+        self.output = nn.Conv2d(hidden_channels, 1, 1)
+        with torch.no_grad():
+            self.output.weight.zero_()
+            self.output.bias.zero_()
+
+    def forward(self, logits):
+        return logits[:, :, 1:-1, 1:-1] + self.output(torch.relu(self.hidden(logits)))
+
+
+def refinement_parameters(layer):
+    if isinstance(layer, ResidualRefinement):
+        return dict(hidden_kernels=layer.hidden.weight.detach().numpy()[:, 0].tolist(),
+                    hidden_bias=layer.hidden.bias.detach().numpy().tolist(),
+                    output_weights=layer.output.weight.detach().numpy()[0, :, 0, 0].tolist(),
+                    output_bias=float(layer.output.bias.detach()[0]))
+    return dict(kernel=layer.weight.detach().numpy()[0, 0].tolist(),
+                bias=float(layer.bias.detach()[0]))
 
 
 def refinement_distance_loss(prediction, target, overprediction_weight=1.):
@@ -45,7 +71,7 @@ def verify_base_training(checkpoint, data_sha256, groups, validation):
 
 def frozen_tile_logits(checkpoint, inputs, batch_size=32):
     exported = BoundarySegmenter(checkpoint)
-    if (exported.query_weights is not None or exported.native_refinement is not None
+    if (exported.query_weights is not None or exported.has_native_refinement
             or exported.input_scales != (1,) or exported.output_upsample != 4):
         raise ValueError('refinement requires an unrefined native camera with fine inputs')
     network = TileNetwork(exported.input_frames,
@@ -68,8 +94,14 @@ def frozen_tile_logits(checkpoint, inputs, batch_size=32):
 def export_refinement(base_checkpoint, layer, path, inference_dtype):
     with np.load(base_checkpoint, allow_pickle=False) as data:
         arrays = {key: data[key] for key in data.files}
-    arrays['native_refinement_kernel'] = layer.weight.detach().numpy()[0, 0].copy()
-    arrays['native_refinement_bias'] = layer.bias.detach().numpy()[0].copy()
+    if isinstance(layer, ResidualRefinement):
+        arrays['native_residual_kernels'] = layer.hidden.weight.detach().numpy()[:, 0].copy()
+        arrays['native_residual_bias'] = layer.hidden.bias.detach().numpy().copy()
+        arrays['native_residual_output_weights'] = layer.output.weight.detach().numpy()[0, :, 0, 0].copy()
+        arrays['native_residual_output_bias'] = layer.output.bias.detach().numpy()[0].copy()
+    else:
+        arrays['native_refinement_kernel'] = layer.weight.detach().numpy()[0, 0].copy()
+        arrays['native_refinement_bias'] = layer.bias.detach().numpy()[0].copy()
     if inference_dtype != 'float32':
         arrays['inference_dtype'] = np.array(inference_dtype)
     else:
@@ -100,6 +132,8 @@ def main():
     parser.add_argument('--epochs', type=int, default=40)
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--seed', type=int, default=2026)
+    parser.add_argument('--hidden-channels', type=int, default=0,
+                        help='positive enables a nonlinear residual head; zero retains the linear control')
     parser.add_argument('--overprediction-weight', type=float, default=1.,
                         help='training cost multiplier when predicted signed distance exceeds its target')
     parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32')
@@ -107,6 +141,8 @@ def main():
     args = parser.parse_args()
     if min(args.epochs, args.batch_size) < 1:
         parser.error('epochs and batch size must be positive')
+    if args.hidden_channels < 0:
+        parser.error('hidden channels must be nonnegative')
     if not np.isfinite(args.overprediction_weight) or args.overprediction_weight < 1:
         parser.error('overprediction weight must be finite and at least one')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')) or args.out.exists():
@@ -137,12 +173,18 @@ def main():
     started = time.time()
     logits = frozen_tile_logits(args.base_checkpoint, torch.from_numpy(x.astype('float32')), args.batch_size)
     target = torch.from_numpy(y[:, :, 1:-1, 1:-1].astype('float32'))
-    layer = nn.Conv2d(1, 1, 3)
-    with torch.no_grad():
-        layer.weight.zero_()
-        layer.weight[0, 0, 1, 1] = 1.
-        layer.bias.zero_()
-    initial_kernel = layer.weight.detach().numpy()[0, 0].tolist()
+    if args.hidden_channels:
+        layer = ResidualRefinement(args.hidden_channels)
+        architecture = ('frozen commanded temporal camera -> native logits -> '
+                        '3x3 convolution + ReLU + 1x1 convolution + residual -> tanh')
+    else:
+        layer = nn.Conv2d(1, 1, 3)
+        with torch.no_grad():
+            layer.weight.zero_()
+            layer.weight[0, 0, 1, 1] = 1.
+            layer.bias.zero_()
+        architecture = 'frozen commanded temporal camera -> native logits -> learned 3x3 convolution -> tanh'
+    initial_parameters = refinement_parameters(layer)
     optimizer = torch.optim.AdamW(layer.parameters(), lr=.002, weight_decay=.0001)
     train_indices, val_indices = np.flatnonzero(~validation), np.flatnonzero(validation)
 
@@ -205,17 +247,17 @@ def main():
     export_passes = (verification['export_max_abs_error'] <= 1e-5
                      and abs(verification['validation_selection_score']-best) <= 1e-5)
     manifest = dict(status='complete' if export_passes else 'export_verification_failed',
-        architecture='frozen commanded temporal camera -> native logits -> learned 3x3 convolution -> tanh',
-        trained_parameters=10, base_weights_unchanged=True,
+        architecture=architecture,
+        trained_parameters=sum(parameter.numel() for parameter in layer.parameters()), base_weights_unchanged=True,
         base_checkpoint=str(args.base_checkpoint), base_checkpoint_sha256=base_hash,
         base_training_manifest=base_training,
         data_sha256=data_hash, checkpoint_sha256=digest(checkpoint), trainer_sha256=digest(Path(__file__)),
         training_groups=sorted(set(groups[~validation].tolist())), validation_groups=sorted(set(groups[validation].tolist())),
         train_rows=len(train_indices), validation_rows=len(val_indices),
-        native_target_crop=1, initial_kernel=initial_kernel,
+        native_target_crop=1, initial_parameters=initial_parameters,
         distance_objective=dict(beta_mm=.05, overprediction_weight=args.overprediction_weight,
                                 underprediction_weight=1., calibrated_probability=False),
-        kernel=layer.weight.detach().numpy()[0, 0].tolist(), bias=float(layer.bias.detach()[0]),
+        **refinement_parameters(layer),
         sampling=dict(audit_sha256=digest(args.sampling_audit), critical_training_tiles=critical_count,
                       critical_probability_mass=args.critical_tile_fraction),
         control=control, identity_export_verification=identity_verification,
@@ -223,10 +265,12 @@ def main():
         args={key:str(value) if isinstance(value,Path) else value for key,value in vars(args).items()},
         history=history, seconds=time.time()-started, **verification,
         limitation='Learned output refinement, not a fixed contour repair or calibrated confidence bound. Tile validation cannot establish gap preservation or successful recovery.')
+    if not args.hidden_channels:
+        manifest['initial_kernel'] = initial_parameters['kernel']
     (args.out/('training.json' if export_passes else 'export-failure.json')).write_text(json.dumps(manifest, indent=2)+'\n')
     if not export_passes:
         raise ValueError('exported native refinement differs from the trained model')
-    print(json.dumps({key:manifest[key] for key in ['checkpoint_sha256', 'kernel', 'bias', *verification]}), flush=True)
+    print(json.dumps({key:manifest[key] for key in ['checkpoint_sha256', 'trained_parameters', *verification]}), flush=True)
 
 
 if __name__ == '__main__':

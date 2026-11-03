@@ -70,6 +70,15 @@ class BoundarySegmenter:
             self.native_refinement = None
             if refinement_keys <= set(data.files):
                 self.native_refinement = (data['native_refinement_kernel'], data['native_refinement_bias'])
+            residual_keys = ('native_residual_kernels', 'native_residual_bias',
+                             'native_residual_output_weights', 'native_residual_output_bias')
+            if set(residual_keys) & set(data.files) and not set(residual_keys) <= set(data.files):
+                raise ValueError('incomplete native residual refinement weights')
+            self.native_residual_refinement = None
+            if set(residual_keys) <= set(data.files):
+                if self.native_refinement is not None:
+                    raise ValueError('multiple native refinement heads')
+                self.native_residual_refinement = tuple(data[key] for key in residual_keys)
         if self.inference_dtype not in ('float32', 'float64'):
             raise ValueError('unsupported boundary inference dtype')
         if self.inference_dtype == 'float64':
@@ -99,6 +108,15 @@ class BoundarySegmenter:
                 raise ValueError('invalid native refinement weights')
             self.native_refinement = (kernel.astype(self.inference_dtype),
                                       bias.astype(self.inference_dtype))
+        if self.native_residual_refinement is not None:
+            kernels, bias, output_weights, output_bias = self.native_residual_refinement
+            if (kernels.ndim != 3 or kernels.shape[1:] != (3, 3) or not len(kernels)
+                    or bias.shape != (len(kernels),) or output_weights.shape != (len(kernels),)
+                    or output_bias.shape != () or self.output_upsample == 1
+                    or not all(np.isfinite(value).all() for value in self.native_residual_refinement)):
+                raise ValueError('invalid native residual refinement weights')
+            self.native_residual_refinement = tuple(
+                value.astype(self.inference_dtype) for value in self.native_residual_refinement)
         outputs = 1 if self.query_weights is not None else self.output_upsample**2
         if (width != outputs or upsample < self.output_upsample
                 or upsample % self.output_upsample):
@@ -107,6 +125,10 @@ class BoundarySegmenter:
         self._sampling_grid = None
         self._previous_gray = None
         self.queries = 0
+
+    @property
+    def has_native_refinement(self):
+        return self.native_refinement is not None or self.native_residual_refinement is not None
 
     def reset_history(self):
         self._previous_gray = None
@@ -133,7 +155,7 @@ class BoundarySegmenter:
 
     def predict_patches(self, patches):
         """Export verification on normalized patches, without camera state."""
-        if self.native_refinement is not None:
+        if self.has_native_refinement:
             raise ValueError('native refinement requires a spatial distance grid')
         weights, bias = self.weights[0]
         return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0))
@@ -144,15 +166,22 @@ class BoundarySegmenter:
         return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0), activate=False)
 
     def refine_native_logits(self, logits):
-        """Apply the checkpoint's learned spatial layer before its tanh output."""
+        """Apply the checkpoint's learned spatial head before its tanh output."""
         logits = np.asarray(logits, dtype=self.inference_dtype)
         if logits.ndim != 2:
             raise ValueError('native refinement requires a two-dimensional grid')
-        if self.native_refinement is None:
-            return logits
-        kernel, bias = self.native_refinement
         depth = cv2.CV_64F if self.inference_dtype == 'float64' else cv2.CV_32F
-        return cv2.filter2D(logits, depth, kernel, borderType=cv2.BORDER_REFLECT_101) + bias
+        if self.native_residual_refinement is not None:
+            kernels, bias, output_weights, output_bias = self.native_residual_refinement
+            residual = np.full_like(logits, output_bias)
+            for kernel, offset, weight in zip(kernels, bias, output_weights):
+                feature = cv2.filter2D(logits, depth, kernel, borderType=cv2.BORDER_REFLECT_101)
+                residual += weight*np.maximum(feature + offset, 0)
+            return logits + residual
+        if self.native_refinement is not None:
+            kernel, bias = self.native_refinement
+            return cv2.filter2D(logits, depth, kernel, borderType=cv2.BORDER_REFLECT_101) + bias
+        return logits
 
     def signed_distance(self, image, expected_mask=None):
         gray = normalized_gray(image).astype(self.inference_dtype, copy=False)
@@ -185,7 +214,7 @@ class BoundarySegmenter:
             channels.append(channel)
         hidden = np.stack(channels, axis=-1)
         hidden = np.maximum(hidden, 0)
-        distance = self._distance_outputs(hidden, activate=self.native_refinement is None)
+        distance = self._distance_outputs(hidden, activate=not self.has_native_refinement)
         scale = self.output_upsample
         height, width = gray.shape
         # Each output distance represents its own position within a camera pixel.
@@ -193,7 +222,7 @@ class BoundarySegmenter:
         # positive region when every surrounding pixel centre lies outside it.
         distance = distance.reshape(height, width, scale, scale).transpose(
             0, 2, 1, 3).reshape(height*scale, width*scale)
-        if self.native_refinement is not None:
+        if self.has_native_refinement:
             distance = np.tanh(self.refine_native_logits(distance))
         return distance
 

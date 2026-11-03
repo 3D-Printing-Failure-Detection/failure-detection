@@ -1,0 +1,34 @@
+{
+  "control_checkpoint_reproduced_exactly": true,
+  "matched_base_data_groups_sampling_loss_and_initial_predictions": true,
+  "models": {
+    "control": {
+      "checkpoint_sha256": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+      "architecture": "frozen commanded temporal camera -> native logits -> learned 3x3 convolution -> tanh",
+      "trained_parameters": 10,
+      "validation_boundary_mae_mm": 0.07220857169764187,
+      "near_boundary_sign_accuracy": 0.8049735836500282,
+      "export_max_abs_error": 6.5267086029052734e-06,
+      "distance_objective": {
+        "beta_mm": 0.05,
+        "overprediction_weight": 1.0,
+        "underprediction_weight": 1.0,
+        "calibrated_probability": false
+      }
+    },
+    "nonlinear": {
+      "checkpoint_sha256": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b",
+      "architecture": "frozen commanded temporal camera -> native logits -> 3x3 convolution + ReLU + 1x1 convolution + residual -> tanh",
+      "trained_parameters": 89,
+      "validation_boundary_mae_mm": 0.07109507772478228,
+      "near_boundary_sign_accuracy": 0.8039203356769411,
+      "export_max_abs_error": 8.285045623779297e-06,
+      "distance_objective": {
+        "beta_mm": 0.05,
+        "overprediction_weight": 1.0,
+        "underprediction_weight": 1.0,
+        "calibrated_probability": false
+      }
+    }
+  }
+}

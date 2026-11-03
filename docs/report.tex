@@ -1613,4 +1613,47 @@ separate fit-only comparison retaining six earlier configurations. Both jobs
 check storage before execution. Remaining ignore losses stay visible; these
 conditional stages do not establish fresh-test superiority.
 
+\clearpage
+\section{A nonlinear camera refinement experiment}
+
+The linear spatial head removes false alarms in a known cup print but misses
+more real gaps in broader validation. The \texttt{nonlinear-refinement-v35}
+experiment tests whether a local nonlinear correction can distinguish those
+patterns. It freezes the same commanded temporal camera and learns 89 parameters:
+a $3\times3$ convolution with eight hidden channels, ReLU, a $1\times1$ output
+and a residual connection before tanh. Zero output weights and bias initially
+preserve the original logits exactly. The dataset, 66 training and 36 validation
+groups, sampling, symmetric loss and 40-epoch schedule remain matched.
+
+The retrained linear control reproduces the v28 checkpoint hash exactly. Both
+heads start with identical validation predictions and preserve every backbone
+weight. Only full tile validation loss selects the saved checkpoint.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Refinement & Parameters & Boundary MAE (mm) & Sign accuracy \\
+\midrule
+Linear control & 10 & 0.072209 & 80.50\% \\
+Nonlinear residual & 89 & 0.071095 & 80.39\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The candidate's maximum Torch/NumPy export difference is 0.000008285 mm, within
+the unchanged 0.000010 mm tolerance. Lower tile error does not establish fewer
+missed gaps or better recovery. The full 160-frame cup diagnostic runs first;
+only a passing complete-print check permits the same 2,040-frame geometry
+comparison. Gap false positives, missed gaps and severe-thinning misses may not
+exceed the original camera's counts. All prior control frames must reproduce
+exactly. Failed gates skip recovery, and untouched seeds remain reserved.
+
+All 159 repository tests pass, with three optional modules skipped. In the
+existing Torch environment, all 22 focused camera/export tests pass, covering
+full images, native block seams, both inference precisions, exact identity
+behavior and invalid checkpoint rejection. Training and diagnostics run in
+\texttt{neural-recovery:nonlinear-v35} with two CPU threads and an 8 MB artifact
+allowance. The separate guarded-policy benchmark retains its frozen source,
+original camera and unchanged model weights.
+
 \end{document}
