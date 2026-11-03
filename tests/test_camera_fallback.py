@@ -57,6 +57,34 @@ def test_alternative_measurement_must_be_from_the_current_frame():
         policy.observe(layers[0], layers[0], Detection('ok', 0., {}), 0)
 
 
+def test_classical_base_selection_keeps_both_models_observing_every_frame(monkeypatch):
+    import recovery.models.dual_camera as module
+    classical, learned = box(-5, -5, 5, 5), box(-4, -4, 4, 4)
+    calls = []
+
+    class Learner:
+        sha256 = 'trained-camera'
+        queries = 0
+
+        def measure(self, image, mask):
+            self.queries += 1
+            calls.append((image, mask))
+            return learned
+
+    monkeypatch.setattr(module, 'BoundarySegmenter', lambda path: Learner())
+    monkeypatch.setattr(module, 'ClassicalSegmenter', lambda: SimpleNamespace(measure=lambda *args: classical))
+    model = module.DualCameraSegmenter('model', classical_base_layers=[0])
+    assert model.measure('first-image', 'first-command') is classical
+    first_estimate = model.alternative_region
+    assert first_estimate is classical
+    assert model.measure('second-image', 'adapted-command') is classical
+    assert model.alternative_region is learned
+    assert first_estimate is classical  # Previously recorded measurement is untouched.
+    assert calls == [('first-image', 'first-command'), ('second-image', 'adapted-command')]
+    assert (model.frames, model.queries, model.classical_base_frames, model.learned_frames) == (2, 2, 1, 1)
+    assert model.alternative_description == 'learned walls with classical base'
+
+
 @pytest.mark.parametrize('joint_alternative', [False, True])
 def test_cross_camera_recovery_needs_a_jointly_passing_alternative(monkeypatch, joint_alternative):
     layers, camera, policy = setup_policy()

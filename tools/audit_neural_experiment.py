@@ -45,6 +45,15 @@ def agent_decision_opportunities(rows):
     return opportunities
 
 
+def validate_base_camera_counts(row, uses_dual, base_indices):
+    assert len(base_indices) == len(set(base_indices))
+    assert all(type(i) is int and 0 <= i < row['n_layers'] for i in base_indices)
+    expected_base = sum(i < row['frames'] for i in base_indices) if uses_dual else 0
+    expected_learned = row['frames']-expected_base if uses_dual else 0
+    assert row['alternative_classical_base_frames'] == expected_base, 'base-camera frame count differs'
+    assert row['alternative_learned_frames'] == expected_learned, 'learned-wall frame count differs'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('directory', type=Path)
@@ -101,6 +110,10 @@ def main():
                 if fallback:
                     assert row['alternative_measurement_source'] == (checkpoints['boundary'] if uses_camera else None)
                     assert row['alternative_observations'] == (row['frames'] if uses_camera else 0)
+            if manifest.get('instrumentation_version', 1) >= 4:
+                base_indices = manifest['boundary_classical_base_layers'][row['part']]
+                assert config.get('boundary_classical_base', False) or not base_indices
+                validate_base_camera_counts(row, uses_camera and config.get('boundary_fallback', False), base_indices)
         assert row['adaptations'] == sum(event['action'] == 'adapt' for event in row['actions']) <= 3
         if (config.get('neural_forecast_scope') == 'fits' and row['method'] in
                 ('neural', 'neural_agent', 'neural_risk', 'neural_risk_agent')):

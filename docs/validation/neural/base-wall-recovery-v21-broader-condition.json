@@ -1,0 +1,31 @@
+{
+  "status": "skipped",
+  "gate_passes": false,
+  "candidate": {
+    "failure": {
+      "n": 4,
+      "in_place": 2,
+      "scrapped": 2,
+      "defective_finished": 0,
+      "neural_queries": 0,
+      "agent_requests": 12,
+      "seconds": 511.94872667989694,
+      "boundary_queries": 500,
+      "mean_actual_filament_ratio": 0.803935813082963,
+      "mean_filament_with_assumed_clean_restart": 1.303935813082963
+    },
+    "clean": {
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 0,
+      "agent_requests": 0,
+      "seconds": 191.97822153312154,
+      "boundary_queries": 320,
+      "mean_actual_filament_ratio": 0.999956294319459,
+      "mean_filament_with_assumed_clean_restart": 0.999956294319459
+    }
+  },
+  "reason": "the actual recovery gate remains unmet"
+}

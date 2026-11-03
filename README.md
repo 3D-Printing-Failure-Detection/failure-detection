@@ -98,7 +98,12 @@ eight false base alarms, so that model is also rejected. Adding the commanded
 layer mask removes both false gaps, but leaves two false base alarms and one
 false hard-thin layer; this model still fails. Longer training, verified through
 higher-precision inference, reintroduces one gap and retains those extra alarms.
-It is also rejected. New untouched seeds are reserved for another final test;
+It is also rejected. Spatial-gradient training reintroduces two gaps, and an
+actual recovery trial using classical bases with learned walls scores 2/4 versus
+the previous camera policy's 3/4, so both changes are rejected. The next full-grid
+trial combines the improved learned fit forecast with analytical containers:
+576 new runs with and without Qwen, currently in progress. Its overall outcome
+is not yet known. New untouched seeds are reserved for another final test;
 these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a

@@ -1,0 +1,32 @@
+{
+  "status": "skipped",
+  "control_diagnostic_identical": true,
+  "passing_candidates": [],
+  "verdicts": {
+    "gradient01": {
+      "ok": false,
+      "violations": [
+        "walls not closed in 2 layers (leaks)",
+        "base not flat/solid in 1 layers",
+        "wall far below 1.4 mm in 1 layers"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 0.0,
+        "capacity_mm3": 64055.0272331284,
+        "thin_layers": 2
+      }
+    },
+    "gradient03": {
+      "ok": false,
+      "violations": [
+        "walls not closed in 2 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 0.0,
+        "capacity_mm3": 64245.638537556086,
+        "thin_layers": 0
+      }
+    }
+  },
+  "reason": "all candidate full-stack diagnostics fail"
+}

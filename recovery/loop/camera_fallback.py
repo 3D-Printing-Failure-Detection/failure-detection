@@ -1,6 +1,7 @@
 """Retain classical-camera plans, with optional joint checks of corrections.
 
-Both histories contain independent measurements of every actual camera frame.
+Both histories contain measurements of every actual camera frame. An optional
+specification-based camera view shares classical measurements on solid bases.
 Neither rewrites an earlier observation. The alternative is assessed against the
 same complete functional specification and the same remaining command plan.
 The optional joint check compares corrections only when continuation fails.
@@ -45,7 +46,7 @@ class CameraFallbackMixin:
         alternative_known = self.alternative.state.observations
         alternative = [dict(c) for c in self.alternative.candidates(alternative_known, current_plan, context)]
         for candidate in alternative:
-            candidate['observation_model'] = 'learned camera'
+            candidate['observation_model'] = getattr(self.dual_segmenter, 'alternative_description', 'learned camera')
             candidate['fallback_after_no_primary_plan'] = not primary_passes
         if not primary_passes:
             return primary + alternative

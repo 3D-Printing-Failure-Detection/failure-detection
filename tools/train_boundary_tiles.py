@@ -18,6 +18,23 @@ from torch.nn import functional as F
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from recovery.models.boundary import BoundarySegmenter, PATCH_SIZE
+from recovery import camera
+
+
+def distance_gradient_loss(prediction, target, spacing_mm):
+    """Match adjacent native-grid distance changes, including pixel-block seams.
+
+    This supervises the observed geometry's gradients, rather than smoothing
+    every edge indiscriminately. Target gaps and thin walls retain their gradients.
+    """
+    if not np.isfinite(spacing_mm) or spacing_mm <= 0:
+        raise ValueError('distance grid spacing must be finite and positive')
+    losses = []
+    for axis in (-2, -1):
+        predicted = torch.diff(prediction, dim=axis)/spacing_mm
+        actual = torch.diff(target, dim=axis)/spacing_mm
+        losses.append(F.smooth_l1_loss(predicted, actual, beta=.1))
+    return .5*(losses[0]+losses[1])
 
 
 def soft_skeleton(probability, iterations):
@@ -120,6 +137,8 @@ def main():
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--seed', type=int, default=2026)
     parser.add_argument('--topology-weight', type=float, default=0.)
+    parser.add_argument('--gradient-weight', type=float, default=0.,
+                        help='supervise adjacent signed-distance gradients on the native output grid')
     parser.add_argument('--skeleton-iterations', type=int, default=20)
     parser.add_argument('--temperature-mm', type=float, default=.1)
     parser.add_argument('--sampling-audit', type=Path,
@@ -133,6 +152,8 @@ def main():
     args = parser.parse_args()
     if not np.isfinite(args.topology_weight) or args.topology_weight < 0:
         parser.error('topology weight must be finite and nonnegative')
+    if not np.isfinite(args.gradient_weight) or args.gradient_weight < 0:
+        parser.error('gradient weight must be finite and nonnegative')
     if not np.isfinite(args.temperature_mm) or args.temperature_mm <= 0:
         parser.error('temperature must be finite and positive')
     if min(args.epochs, args.batch_size, args.skeleton_iterations) < 1:
@@ -197,6 +218,9 @@ def main():
         actual = target[indices]
         weight = .25 + .75*(torch.abs(actual) < .5)
         loss = (F.smooth_l1_loss(prediction, actual, beta=.05, reduction='none')*weight).mean()
+        if args.gradient_weight:
+            loss = loss + args.gradient_weight * distance_gradient_loss(
+                prediction, actual, 1/(camera.CAM.px_per_mm*scale))
         if args.topology_weight:
             dice, cldice = connectivity_losses(torch.sigmoid(prediction/args.temperature_mm),
                 truth[indices], skeleton[indices], args.skeleton_iterations)
@@ -272,7 +296,7 @@ def main():
         seconds=time.time()-started, data_sha256=data_sha256, sampling=sampling_metadata,
         checkpoint_sha256=exported.sha256, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         initialization_sha256=hashlib.sha256(initial_arrays).hexdigest(), history=history, **verification,
-        selection_metric='weighted smooth-L1 plus optional equal-weight Dice and clDice loss',
+        selection_metric='weighted smooth-L1 plus optional native distance-gradient and equal-weight Dice/clDice losses',
         topology_reference='https://arxiv.org/abs/2003.07311',
         limitation='Dense tile validation is not whole-image topology or closed-loop recovery evidence; no runtime repair')
     (args.out/'training.json').write_text(json.dumps(manifest, indent=2)+'\n')

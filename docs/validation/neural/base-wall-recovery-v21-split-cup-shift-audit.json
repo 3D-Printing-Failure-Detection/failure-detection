@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54"
+  },
+  "runs_sha256": "62812625a05596bb8dd1bfc54ce6b4f92093066b60f07ce12166e12f404015d2",
+  "rows": 2,
+  "actual_agent_calls": 3,
+  "reused_reviews": 4,
+  "summary": [
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 1,
+      "in_place": 0,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 109.58108433801681
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 1,
+      "in_place": 0,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 3,
+      "neural_queries": 0,
+      "seconds": 120.9384877049597
+    }
+  ],
+  "agent_decision_opportunities": 7,
+  "agent_review_status": "exercised",
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "cc1c0a0bcbc76fc80cbff8285f5b3be0a76f0ed263691af0b597a8f4008e4167",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

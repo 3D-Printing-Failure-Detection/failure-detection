@@ -24,6 +24,9 @@ sampling removes one gap but introduces eight false base alarms, so it is reject
 as well. Commanded-mask conditioning removes both gaps but still has false base
 and thinning alarms. Longer training, verified with higher-precision inference,
 reintroduces one gap and is also rejected. Fresh seeds 2001–2004 are untouched.
+Spatial-gradient training and the subsequent base/wall camera split also fail.
+The next full-grid trial retains analytical containers and the improved learned
+fit forecast; it is running, with no overall gain claimed yet.
 
 ## Current camera cross-check and context experiments
 
@@ -97,6 +100,75 @@ distances below -0.05 mm. Missing-material point recall is 91.70% for 40 epochs 
 98.27%. Thus the extra command input still permits detection of deviations, but
 these correlated tile scores neither establish complete-gap recall nor replace
 the failed whole-print check. No candidate from these camera trials is promoted.
+
+`gradient-camera-v18` tests a spatial distance-gradient loss on the same commanded
+tiles, with weights 0.1 and 0.3 alongside a zero-weight control. The loss matches
+adjacent signed-distance differences to their training labels; it does not simply
+smooth the output or repair geometry at runtime. Both candidates retain the same
+initialization, sampling, split and 40-epoch schedule. The control reproduces v15
+arrays and its checkpoint hash exactly. Every export passes. Boundary errors
+are 0.07876 mm (control), 0.08678 mm (0.1) and 0.08631 mm (0.3). Both candidates
+reintroduce two false wall gaps. The 0.3 model removes false base and hard-thin
+alarms, but still fails the full-print gate. Both are rejected and their
+conditional recovery and wider geometry trials are skipped.
+
+The retrospective `distance-offset-audit-v19` checks whether a simple signed
+distance offset is supported by training residuals. For points within 0.15 mm of
+the true boundary, mean target minus prediction is -0.01629 mm in training and
+-0.01377 mm in validation. The corresponding wall-only means are -0.00715 and
+-0.00299 mm. A blanket positive offset to thicken the estimate therefore opposes
+the average residual; none is applied. These averages do not establish accuracy
+on rare thin walls.
+
+`command-base-topology-v20` inspects the commanded model's raw output on the first
+five cup frames. The false holes at layers 0 and 4 are disconnected from exterior
+background under both four- and eight-neighbor connectivity, before contour
+conversion. Each converted hole has area 0.000335 mm², versus 0.003906 mm² per
+native output pixel. The layer-0 hole lies inside actual material; the two layer-4
+holes are background pockets enclosed by an erroneous predicted bulge. This is
+distinct from the earlier diagonal-connectivity conversion issue. No hole filling,
+measurement offset or change to the functional specification is applied.
+
+`base-wall-recovery-v21` evaluates a separate hybrid policy in the actual recovery
+loop. The optional `--boundary-classical-base` uses classical measurements for
+the solid-base indices declared by the original part specification and learned
+measurements for walls in the alternative history. Both models still observe
+every image, including after a changed command; earlier measurements are never
+rewritten. Primary history stays classical. The split requires
+`--boundary-fallback`; all existing proposal, execution and functional checks
+remain in force. A matched ablation uses the identical checkpoint without the
+base split. The predeclared comparison retains all six previous methods on four
+failure cases and two clean controls: 18 new rows plus 36 prior rows, with source,
+model and supervisor provenance pinned separately. The reserved fresh seeds are
+not used. All 54 rows are complete and audited. Both new variants score 2/4
+fault cases, versus the previous joint-camera policy's 3/4 and ignore's 4/4,
+with zero defective finishes and both clean controls passed. Qwen makes 12
+actual requests and ties neural-only. Removing the base split also scores 2/4,
+so the split adds no completion. The thinning case still scraps at layer 86
+after the learned alternative permitted continuation at layer 85. The shifted
+cup also scraps after one adaptation, losing a previous joint-camera success.
+The hybrid is rejected and its conditional broader container run is skipped.
+
+## Full comparison of learned fit recovery and analytical containers
+
+`fit-analytical-containers-v22` returns to the direct overall comparison. One
+frozen policy uses classical camera measurements for every part, the trained
+equivariant forecast and shared-hole proposal for specification-defined fit
+parts, and analytical forecasts for containers. It runs with and without actual
+local Qwen. The earlier 79/120 fit result motivates this test; it is not added
+arithmetically to old container results or credited to this new run.
+
+The protocol fixes all three printer profiles, all four parts, all five failure
+kinds plus clean, and consumed seeds 1001–1004: 576 new rows. The comparison will
+retain the original 4,320 raw rows across all 15 full-grid configurations, with
+their original sources and model provenance. Both lost baseline successes and
+defective finishes must remain visible. The old agent shards have an asset-only
+attestation and a richer server attestation for the same Qwen/runtime assets;
+their original records must be preserved when verifying cross-version results.
+Evaluation and audit run in tmux window `neural-recovery:hybrid-all-v22`, with
+logs and exit status on the data volume. The study is running; comparison,
+historical regression and a new untouched test remain required. No result from
+this consumed grid can establish fresh-test superiority.
 
 The optional `--boundary-joint-forecast` extends `--boundary-fallback`. When the
 classical-camera continuation fails but a correction is feasible, both camera

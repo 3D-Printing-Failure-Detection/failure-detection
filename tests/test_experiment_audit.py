@@ -2,7 +2,8 @@ from copy import deepcopy
 
 import pytest
 
-from tools.audit_neural_experiment import validate_outcomes, agent_decision_opportunities
+from tools.audit_neural_experiment import (validate_outcomes, agent_decision_opportunities,
+                                           validate_base_camera_counts)
 
 
 def paired_rows():
@@ -65,3 +66,15 @@ def test_agent_cannot_adapt_without_any_recorded_candidate_or_review():
     rows = [dict(method='neural_risk_agent', actions=[dict(action='adapt', considered=[])])]
     with pytest.raises(AssertionError, match='adaptation bypassed the agent'):
         agent_decision_opportunities(rows)
+
+
+def test_base_camera_audit_accounts_for_each_observed_frame():
+    row = dict(n_layers=6, frames=4, alternative_classical_base_frames=2,
+               alternative_learned_frames=2)
+    validate_base_camera_counts(row, True, [0, 1])
+    with pytest.raises(AssertionError, match='base-camera'):
+        validate_base_camera_counts(row, True, [0, 1, 2])
+    row.update(frames=1, alternative_classical_base_frames=1, alternative_learned_frames=0)
+    validate_base_camera_counts(row, True, [0, 1])
+    row.update(alternative_classical_base_frames=0)
+    validate_base_camera_counts(row, False, [0, 1])

@@ -1,0 +1,82 @@
+{
+  "status": "complete",
+  "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+  "source_sha256": "f1d62fdf989e52d039636f0011730ac98127836ca0be8e0b93b93e415b7483c3",
+  "script_sha256": "ac68dbb4ab1bde0691b0906d765d6f55a98f8b1ce0a31b7a2174f3a673e37388",
+  "rows": [
+    {
+      "layer": 0,
+      "image_sha256": "e7d7cac4af9af02a52f47447cc36e55099d2a450790149cea0980a9ef8f72f58",
+      "raw_mask_sha256": "ed1c5b08271abdf2f73534ea66069caed3295d8a07b0a0f53971bda864735a8b",
+      "holes": [
+        {
+          "area_mm2": 0.0003351032719800844,
+          "output_pixel_area_mm2": 0.00390625,
+          "centroid_mm": [
+            14.943601942058613,
+            15.999999999999998
+          ],
+          "nearest_background_pixel": [
+            1263,
+            768
+          ],
+          "background_connected_to_exterior": {
+            "4": false,
+            "8": false
+          },
+          "truth_contains_centroid": true,
+          "raw_distance_at_centroid_mm": -0.008617053739726543,
+          "crop": "/mnt/data/ishaan/hri-workspace/failure-detection/camera-command-base-topology-v20/mask-000-hole-0.png",
+          "crop_sha256": "7785e1e328e58fe34cf0bb06376a35b1dbd2d106117d671d65a85e853f13ef26"
+        }
+      ]
+    },
+    {
+      "layer": 4,
+      "image_sha256": "fc95fcad6f19f86f6a16deb7817bbb41a73420acd1bba0d3e0cd7eef1fdaba45",
+      "raw_mask_sha256": "a7762f76ad2125bd1bb06a1d8e03ed11e0fdc7de35e9928af190739a63fc32a2",
+      "holes": [
+        {
+          "area_mm2": 0.00033510327198008847,
+          "output_pixel_area_mm2": 0.00390625,
+          "centroid_mm": [
+            0.6813980579413865,
+            -22.1875
+          ],
+          "nearest_background_pixel": [
+            1035,
+            1379
+          ],
+          "background_connected_to_exterior": {
+            "4": false,
+            "8": false
+          },
+          "truth_contains_centroid": false,
+          "raw_distance_at_centroid_mm": -0.009599659591913223,
+          "crop": "/mnt/data/ishaan/hri-workspace/failure-detection/camera-command-base-topology-v20/mask-004-hole-0.png",
+          "crop_sha256": "17f7ff47d9adcde4d298517afe0e6bc56a85471af8682a68d34095fcbb9f9678"
+        },
+        {
+          "area_mm2": 0.00033510327198008744,
+          "output_pixel_area_mm2": 0.00390625,
+          "centroid_mm": [
+            0.43139805794138647,
+            -22.1875
+          ],
+          "nearest_background_pixel": [
+            1031,
+            1379
+          ],
+          "background_connected_to_exterior": {
+            "4": false,
+            "8": false
+          },
+          "truth_contains_centroid": false,
+          "raw_distance_at_centroid_mm": -0.0014279475435614586,
+          "crop": "/mnt/data/ishaan/hri-workspace/failure-detection/camera-command-base-topology-v20/mask-004-hole-1.png",
+          "crop_sha256": "0ce421d4b8b766439c47e38600d0a71f1705b9feb81fbff89acfc463f7a8959a"
+        }
+      ]
+    }
+  ]
+}

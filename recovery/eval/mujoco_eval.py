@@ -97,7 +97,10 @@ def run_case(job):
                 from ..models.boundary import BoundarySegmenter
                 if options.get('boundary_fallback'):
                     from ..models.dual_camera import DualCameraSegmenter
-                    learned_segmenter = DualCameraSegmenter(options['boundary_checkpoint'])
+                    base_h = part.spec.get('container', {}).get('base_h', float('-inf'))
+                    base_layers = ([i for i, layer in enumerate(nominal) if layer.z <= base_h]
+                                   if options.get('boundary_classical_base') else [])
+                    learned_segmenter = DualCameraSegmenter(options['boundary_checkpoint'], base_layers)
                 else:
                     learned_segmenter = BoundarySegmenter(options['boundary_checkpoint'])
             seg = ObservedSegmenter(pr, learned_segmenter)
@@ -196,6 +199,8 @@ def run_case(job):
                     if options.get('boundary_fallback') and learned_segmenter is not None else None),
                 alternative_observations=len(getattr(getattr(getattr(policy, 'alternative', None), 'state', None),
                                                      'observations', [])),
+                alternative_classical_base_frames=getattr(learned_segmenter, 'classical_base_frames', 0),
+                alternative_learned_frames=getattr(learned_segmenter, 'learned_frames', 0),
                 agent_requests=len(getattr(getattr(policy, 'supervisor', None), 'audit', [])),
                 agent_accepted=sum(a['accepted'] for a in getattr(getattr(policy, 'supervisor', None), 'audit', [])),
                 violations=verdict.violations if verdict else [events[-1].reason],
@@ -311,6 +316,8 @@ def main(argv=None):
                         help='retain feasible classical-camera plans; consult an independent learned-camera history otherwise')
     parser.add_argument('--boundary-joint-forecast', action='store_true',
                         help='cross-check adaptation candidates under both camera histories when the primary continuation fails')
+    parser.add_argument('--boundary-classical-base', action='store_true',
+                        help='use classical measurements for specified solid base layers in the alternative camera history')
     parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
     parser.add_argument('--supervisor-model', default='local-qwen3')
     parser.add_argument('--supervisor-timeout', type=float, default=120.)
@@ -332,6 +339,8 @@ def main(argv=None):
         parser.error('nonfits boundary scope requires --boundary-checkpoint')
     if args.boundary_joint_forecast and not args.boundary_fallback:
         parser.error('--boundary-joint-forecast requires --boundary-fallback')
+    if args.boundary_classical_base and not args.boundary_fallback:
+        parser.error('--boundary-classical-base requires --boundary-fallback')
     if args.neural_hole_envelope and not args.neural_joint_forecast:
         parser.error('--neural-hole-envelope requires --neural-joint-forecast')
     if args.boundary_fallback and (not args.boundary_checkpoint or args.boundary_scope != 'nonfits'
@@ -354,6 +363,7 @@ def main(argv=None):
                    boundary_scope=args.boundary_scope,
                    boundary_fallback=args.boundary_fallback,
                    boundary_joint_forecast=args.boundary_joint_forecast,
+                   boundary_classical_base=args.boundary_classical_base,
                    neural_calibrate_measurements=args.neural_calibrate_measurements,
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,
@@ -372,7 +382,7 @@ def main(argv=None):
             for p in args.profiles for part in args.parts for kind in args.kinds
             for seed in range(args.seed, args.seed + args.n)]
     manifest = dict(arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
-                    instrumentation_version=3,
+                    instrumentation_version=4,
                     profiles={k: asdict(PROFILES[k]) for k in args.profiles},
                     python=platform.python_version(),
                     packages={p: importlib.metadata.version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},
@@ -384,6 +394,13 @@ def main(argv=None):
                     "geometry-only function verdicts", "restart cost is hypothetical"])
     if neural:
         manifest['neural_checkpoint_sha256'] = hashlib.sha256(args.neural_checkpoint.read_bytes()).hexdigest()
+    manifest['boundary_classical_base_layers'] = {name: [] for name in args.parts}
+    if args.boundary_classical_base:
+        for name in args.parts:
+            base_part = get_part(name)
+            base_h = base_part.spec.get('container', {}).get('base_h', float('-inf'))
+            manifest['boundary_classical_base_layers'][name] = [
+                i for i, layer in enumerate(base_part.layers()) if layer.z <= base_h]
     if args.boundary_checkpoint:
         manifest['boundary_checkpoint_sha256'] = hashlib.sha256(args.boundary_checkpoint.read_bytes()).hexdigest()
     if args.supervisor_manifest:

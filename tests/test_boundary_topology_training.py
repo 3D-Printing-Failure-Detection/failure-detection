@@ -5,7 +5,8 @@ torch = pytest.importorskip('torch')
 from recovery.models.boundary import BoundarySegmenter, normalized_gray
 from tools.boundary_tiles import tile_inputs
 from tools.train_boundary_tiles import (TileNetwork, exported_tiles, soft_skeleton,
-                                       connectivity_losses, training_sampling_probabilities)
+                                       connectivity_losses, training_sampling_probabilities,
+                                       distance_gradient_loss)
 
 
 @pytest.mark.parametrize('include_expected_mask', [False, True])
@@ -72,3 +73,26 @@ def test_critical_sampling_uses_only_training_rows_and_bound_data():
     audit['rows'][0]['validation'] = True
     with pytest.raises(ValueError, match='row differs'):
         training_sampling_probabilities(audit, groups, validation, 'bound-data', .5)
+
+
+def test_gradient_supervision_penalizes_invented_holes_but_preserves_real_edges():
+    target = torch.ones(1, 1, 8, 8)*.2
+    # Equal pointwise absolute errors: a uniform bias and a spurious hole have
+    # different spatial geometry. The original distance loss still handles bias.
+    bias = target-.3
+    hole = target+.3
+    hole[:, :, 3:5, 3:5] = target[:, :, 3:5, 3:5]-.3
+    assert torch.allclose(torch.abs(bias-target), torch.abs(hole-target))
+    assert float(distance_gradient_loss(bias, target, .0625)) == 0
+    assert float(distance_gradient_loss(hole, target, .0625)) > 0
+    hole.requires_grad_()
+    distance_gradient_loss(hole, target, .0625).backward()
+    assert hole.grad[0, 0, 3, 3] < 0  # Restore material at the invented hole.
+    assert hole.grad[0, 0, 2, 3] > 0  # Reduce the artificial step around it.
+    assert float(distance_gradient_loss(hole.detach(), hole.detach(), .0625)) == 0
+    # A real sharp edge has zero loss when matched, unlike generic smoothing.
+    edge = target.clone()
+    edge[:, :, :, :4] = -.2
+    assert float(distance_gradient_loss(edge, edge, .0625)) == 0
+    with pytest.raises(ValueError, match='spacing'):
+        distance_gradient_loss(target, target, 0.)
