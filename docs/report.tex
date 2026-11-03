@@ -60,32 +60,33 @@ preserve the part's functional requirements.}
 The project is a Python research prototype that measures each printed layer,
 estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
-policy separates inner and outer boundaries when predicting deformation. A new
-camera model, neural forecast and local Qwen supervisor improve the historical
-comparison below. The first fresh test has exposed lost successes and defective
-finishes, so that candidate is rejected. Further development and a new frozen
-test are required; see the learning follow-up from page 10.
+policy separates inner and outer boundaries when predicting deformation. Trained
+models and a free local Qwen supervisor are implemented. The latest fit policy
+improves the development comparison below, but container perception remains
+unresolved. An earlier all-part candidate failed its fresh test. The overall
+objective is still unmet; further development and a new frozen test are required.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
-{\Large\bfseries\color{teal}67/100} & {\Large\bfseries 62/100} & {\Large\bfseries 53/100}\\
-Combined models + Qwen & Established contour policy & Ignore the failure\\
+{\Large\bfseries\color{teal}79/120} & {\Large\bfseries 76/120} & {\Large\bfseries 78/120}\\
+Latest neural + Qwen & Analytical preventive policy & Previous neural policy\\
 \bottomrule
 \end{tabular*}
 \end{center}
-These are functional completions on the same \emph{100 historical simulated
-failure scenarios}. The combined model preserves all 62 contour successes and
-adds five, with zero defective finishes versus one. Qwen matches the neural-only
-result; it does not add a completion. Scraps and defective completions are never
-counted as successes. These development cases are not the reserved untouched test.
+These are functional completions on the same \emph{120 simulated bracket and
+spacer failure cases}. The latest policy preserves every analytical and
+previous-neural success, with zero defective finishes and all 24 clean controls
+passed. Qwen makes 161 actual requests and matches neural-only outcomes. These
+are consumed development cases, not fresh all-part acceptance evidence. The
+earlier combined model's 67/100 historical result is detailed later.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Controls & The combined candidate passes all 20 clean controls. The earlier contour study's 80 clean runs also passed.\\
+Latest checks & Fit historical/validation results preserve the previous best at 33/50 and 13/20. Camera false gaps remain; dense connectivity training is running.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule

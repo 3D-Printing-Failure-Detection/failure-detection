@@ -4,23 +4,22 @@ The objective is more functional completed prints and genuine recovery from
 failures, compared on identical cases with every earlier policy. A trained model
 or a successful language-model request alone does not satisfy that objective.
 
-Current verdict: ahead on historical cases, not yet accepted as better overall.
-The original combined candidate reached 67/100 versus contour's 62/100 but failed
-its complete fresh test: 126/240 versus contour's 128/240 and the analytical
-preventive planner's 133/240. It finished five defective prints versus three for
-that strongest baseline. The newer paired-forecast fit policy reaches 33/50 versus
-30/50 historical fit failures and 12/20 versus 10/20 validation failures, with
-zero versus one defective finish in each set. It still loses a bracket case
-that contour saves. The first earlier-continuation check restored that bracket
-but harmed a spacer. A revised guard compares fit robustness before intervening.
-It passes all nine selected failure cases and four clean controls with actual
-Qwen, and its completed 50-case historical fit comparison scores 33/50 versus
-30/50, with zero versus one defective finish, every contour success retained,
-all ten clean controls passed and 40 actual Qwen requests. Separate fit validation
-finishes at 13/20 versus contour's 10/20 and the earlier neural revision's 12/20,
-with zero defective finishes, no lost successes against either, all four clean
-controls passed and 32 actual Qwen requests. Qwen matches neural-only completion.
-New camera models remain experimental.
+Current verdict: modest fit gains; not yet accepted as better overall. The latest
+shared-hole proposal completes **79/120 fit failures**, versus analytical
+preventive recovery's **76/120** and the preceding neural policy's **78/120**.
+Both neural-only and Qwen variants preserve every success from those methods,
+finish zero defective prints, and pass all 24 clean controls. Qwen makes 161
+actual requests and adds no completions over neural-only. Historical and
+validation fit checks preserve the previous best at 33/50 and 13/20, with no
+defective finishes and all ten/four clean controls passed.
+
+These are consumed development cases, covering brackets and spacers. Container
+perception remains unresolved. The original combined candidate reached 67/100
+historical successes versus contour's 62/100 but failed its complete first fresh
+test: 126/240 versus contour's 128/240 and analytical preventive recovery's
+133/240, with five defective finishes versus three. That result is retained as a
+rejection. The latest two-image camera also fails its geometric diagnostic;
+dense connectivity training is now running. Fresh seeds 2001–2004 are untouched.
 
 ## Current camera cross-check and context experiments
 
@@ -245,9 +244,9 @@ the existing Torch environment for training and export small NumPy weights for
 inference in the project's existing environment. Respect the shared 100 GB quota
 and avoid taking over the GPU already used by other jobs.
 
-## Frozen comparison matrix
+## Original frozen comparison matrix (completed and rejected)
 
-The reserved final grid is seeds 1001--1004, all three printer profiles, all four
+The original final grid used seeds 1001--1004, all three printer profiles, all four
 parts, all five failure kinds and clean controls: 240 failure cases and 48 clean
 cases per method. Freeze source, weights and options before the first case. The
 required earlier baselines remain `ignore`, `scrap`, `alert`, `ours`, `measured`,
@@ -271,6 +270,13 @@ controls, real model calls, both trained checkpoint identities and disjoint
 training/validation/test seeds. Raw records are never relabeled or edited to
 combine variants; report labels are explicit input metadata. Historical
 regression and the other acceptance requirements above remain necessary.
+
+Seeds 1001–1004 are now consumed development evidence. The next acceptance run
+must freeze the final candidate before using reserved seeds 2001–2004 on the same
+three-profile, four-part, five-failure-kind plus clean grid. It must include the
+required earlier baselines and separately pinned actual strongest prior neural
+implementations. A newer implementation under an old method label does not
+substitute for those earlier versions. No fresh cases have been run yet.
 
 An independent [checkpoint recheck](validation/neural/training-provenance-check.json)
 loads the retained datasets and frozen NumPy weights, verifies their hashes and
