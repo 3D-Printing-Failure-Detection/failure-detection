@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "rows": 5760,
+  "configurations": 20,
+  "comparison_sha256": "44735f6a2c90f754a8723d6399d143211ff640c51378ce84836c9c8b7cd664a1",
+  "replayed_comparison_sha256": "44735f6a2c90f754a8723d6399d143211ff640c51378ce84836c9c8b7cd664a1",
+  "byte_identical": true
+}

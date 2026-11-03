@@ -140,6 +140,7 @@ def run_case(job):
                                     'neural_risk': FallbackRiskNeuralPolicy, 'neural_risk_agent': AgentFallbackRiskNeuralPolicy}
                         policy_options['dual_segmenter'] = learned_segmenter
                         policy_options['joint_camera'] = options.get('boundary_joint_forecast', False)
+                        policy_options['robust_fallback'] = options.get('boundary_robust_fallback', False)
                     policy = policies[method](part.spec, nominal, part.layer_h, **policy_options)
                 elif method in ("guarded", "contour", "contour_risk", "neural_camera"):
                     from ..loop.risk_neural import RiskAwareContourPolicy
@@ -318,6 +319,8 @@ def main(argv=None):
                         help='cross-check adaptation candidates under both camera histories when the primary continuation fails')
     parser.add_argument('--boundary-classical-base', action='store_true',
                         help='use classical measurements for specified solid base layers in the alternative camera history')
+    parser.add_argument('--boundary-robust-fallback', action='store_true',
+                        help='require the existing uncertainty envelope to pass for learned-camera corrections when no classical plan passes')
     parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
     parser.add_argument('--supervisor-model', default='local-qwen3')
     parser.add_argument('--supervisor-timeout', type=float, default=120.)
@@ -341,6 +344,8 @@ def main(argv=None):
         parser.error('--boundary-joint-forecast requires --boundary-fallback')
     if args.boundary_classical_base and not args.boundary_fallback:
         parser.error('--boundary-classical-base requires --boundary-fallback')
+    if args.boundary_robust_fallback and not args.boundary_fallback:
+        parser.error('--boundary-robust-fallback requires --boundary-fallback')
     if args.neural_hole_envelope and not args.neural_joint_forecast:
         parser.error('--neural-hole-envelope requires --neural-joint-forecast')
     if args.boundary_fallback and (not args.boundary_checkpoint or args.boundary_scope != 'nonfits'
@@ -364,6 +369,7 @@ def main(argv=None):
                    boundary_fallback=args.boundary_fallback,
                    boundary_joint_forecast=args.boundary_joint_forecast,
                    boundary_classical_base=args.boundary_classical_base,
+                   boundary_robust_fallback=args.boundary_robust_fallback,
                    neural_calibrate_measurements=args.neural_calibrate_measurements,
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,

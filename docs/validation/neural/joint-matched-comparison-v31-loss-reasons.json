@@ -1,0 +1,1378 @@
+{
+  "status": "complete",
+  "comparison_sha256": "44735f6a2c90f754a8723d6399d143211ff640c51378ce84836c9c8b7cd664a1",
+  "script_sha256": "3be2bdf94faa890252c5f0e82d4b1ee926fbd88a98e4b2901162876afe055b83",
+  "rows": {
+    "neural_risk_agent": {
+      "lost_any_method_successes": 5,
+      "lost_ignore_successes": 5,
+      "lost_ignore_without_adaptation": 5,
+      "cases": [
+        {
+          "case": [
+            "bedslinger",
+            "cup",
+            "under_extrusion",
+            1002
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 86,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 85,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 20 layers (leaks)",
+                    "wall far below 1.4 mm in 2 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "classical camera"
+                },
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 23 layers (leaks)",
+                    "wall far below 1.4 mm in 2 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "learned camera"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "collapse",
+            1001
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 138,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 137,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=35.2, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "classical camera"
+                },
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=35.2, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "learned camera"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "under_extrusion",
+            1002
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 86,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 85,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 18 layers (leaks)",
+                    "wall below 1.4 mm in 4 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "classical camera"
+                },
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 19 layers (leaks)",
+                    "wall far below 1.4 mm in 2 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "learned camera"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "mug",
+            "under_extrusion",
+            1003
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 46,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 45,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 113 layers (leaks)",
+                    "capacity 15.8 ml outside [46,76]"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "classical camera"
+                },
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 1 layers (leaks)"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "learned camera"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "under_extrusion",
+            1003
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 46,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 45,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 115 layers (leaks)",
+                    "capacity 15.0 ml outside [46,76]",
+                    "expected 1 piece(s) near z=11.8, found 3",
+                    "expected 1 piece(s) near z=30.5, found 3"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "classical camera"
+                },
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 1 layers (leaks)",
+                    "wall far below 1.6 mm in 16 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0,
+                  "observation_model": "learned camera"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "analytical_containers_agent": {
+      "lost_any_method_successes": 10,
+      "lost_ignore_successes": 10,
+      "lost_ignore_without_adaptation": 9,
+      "cases": [
+        {
+          "case": [
+            "bedslinger",
+            "cup",
+            "under_extrusion",
+            1002
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 86,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 85,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 20 layers (leaks)",
+                    "wall far below 1.4 mm in 2 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "collapse",
+            1001
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 138,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 137,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=35.2, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "warp",
+            1001
+          ],
+          "passing_methods": [
+            "ignore",
+            "measured",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 128,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 127,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=32.8, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "collapse",
+            1003
+          ],
+          "passing_methods": [
+            "ignore",
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "neural_camera",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 57,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 56,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "wall below 1.4 mm in 45 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "shift",
+            1002
+          ],
+          "passing_methods": [
+            "ignore",
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "neural_camera",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 1,
+          "layers_printed": 93,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 89,
+              "action": "adapt",
+              "reason": "local Qwen selected compensate:hold measured shape; predicted function checks pass",
+              "candidates": [
+                {
+                  "name": "compensate:hold measured shape",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 120 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 60 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 30 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 15 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:bounded return",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "wall below 1.4 mm in 68 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            },
+            {
+              "layer": 92,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 1 layers (leaks)"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "under_extrusion",
+            1002
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 86,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 85,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 18 layers (leaks)",
+                    "wall below 1.4 mm in 4 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "mug",
+            "under_extrusion",
+            1003
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 46,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 45,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 113 layers (leaks)",
+                    "capacity 15.8 ml outside [46,76]"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "collapse",
+            1001
+          ],
+          "passing_methods": [
+            "ignore",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 132,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 131,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=33.8, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "under_extrusion",
+            1003
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 46,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 45,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 115 layers (leaks)",
+                    "capacity 15.0 ml outside [46,76]",
+                    "expected 1 piece(s) near z=11.8, found 3",
+                    "expected 1 piece(s) near z=30.5, found 3"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "warp",
+            1001
+          ],
+          "passing_methods": [
+            "ignore",
+            "measured",
+            "predictive",
+            "functional",
+            "guarded",
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "neural_camera",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 129,
+          "violations": [
+            "no executable recovery meets the functional spec"
+          ],
+          "events": [
+            {
+              "layer": 128,
+              "action": "scrap",
+              "reason": "no executable recovery meets the functional spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=33.0, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "matched_analytical": {
+      "lost_any_method_successes": 13,
+      "lost_ignore_successes": 10,
+      "lost_ignore_without_adaptation": 9,
+      "cases": [
+        {
+          "case": [
+            "bedslinger",
+            "cup",
+            "under_extrusion",
+            1002
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 86,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 85,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 20 layers (leaks)",
+                    "wall far below 1.4 mm in 2 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "collapse",
+            1001
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 138,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 137,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=35.2, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "warp",
+            1001
+          ],
+          "passing_methods": [
+            "ignore",
+            "measured",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 128,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 127,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=32.8, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "bedslinger",
+            "spacer",
+            "shift",
+            1002
+          ],
+          "passing_methods": [
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "previous_classical_camera_neural",
+            "analytical_containers_neural",
+            "analytical_containers_agent",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": false,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 28,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 27,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "hole at [0, 0] diameter 6.0 outside [8.5, 11.5]"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "collapse",
+            1003
+          ],
+          "passing_methods": [
+            "ignore",
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "neural_camera",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 57,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 56,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "wall below 1.4 mm in 45 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "shift",
+            1002
+          ],
+          "passing_methods": [
+            "ignore",
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "neural_camera",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 1,
+          "layers_printed": 93,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 89,
+              "action": "adapt",
+              "reason": "continuation fails; choose a feasible correction within the action limits",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "wall below 1.4 mm in 68 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                },
+                {
+                  "name": "compensate:hold measured shape",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:bounded return",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 15 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 30 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 60 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                },
+                {
+                  "name": "compensate:blend over 120 layers",
+                  "ok": true,
+                  "executable": true,
+                  "violations": [],
+                  "margin": 0.5,
+                  "robust_margin": 0.5
+                }
+              ]
+            },
+            {
+              "layer": 92,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 1 layers (leaks)"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "cup",
+            "under_extrusion",
+            1002
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 86,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 85,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 18 layers (leaks)",
+                    "wall below 1.4 mm in 4 layers"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "mug",
+            "under_extrusion",
+            1003
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 46,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 45,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 113 layers (leaks)",
+                    "capacity 15.8 ml outside [46,76]"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "cartesian",
+            "spacer",
+            "shift",
+            1002
+          ],
+          "passing_methods": [
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "previous_classical_camera_neural",
+            "analytical_containers_neural",
+            "analytical_containers_agent",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": false,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 28,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 27,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "hole at [0, 0] diameter 6.0 outside [8.5, 11.5]"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "collapse",
+            1001
+          ],
+          "passing_methods": [
+            "ignore",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 132,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 131,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=33.8, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "under_extrusion",
+            1003
+          ],
+          "passing_methods": [
+            "ignore"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 46,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 45,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "walls not closed in 115 layers (leaks)",
+                    "capacity 15.0 ml outside [46,76]",
+                    "expected 1 piece(s) near z=11.8, found 3",
+                    "expected 1 piece(s) near z=30.5, found 3"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "mug",
+            "warp",
+            1001
+          ],
+          "passing_methods": [
+            "ignore",
+            "measured",
+            "predictive",
+            "functional",
+            "guarded",
+            "neural",
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "neural_camera",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": true,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 129,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 128,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "expected 1 piece(s) near z=33.0, found 2"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "case": [
+            "corexy",
+            "spacer",
+            "shift",
+            1002
+          ],
+          "passing_methods": [
+            "previous_combined_neural",
+            "previous_combined_agent",
+            "previous_classical_camera_neural",
+            "analytical_containers_neural",
+            "analytical_containers_agent",
+            "neural_risk",
+            "neural_risk_agent"
+          ],
+          "ignore_passes": false,
+          "outcome": "scrapped",
+          "defective_finished": false,
+          "adaptations": 0,
+          "layers_printed": 28,
+          "violations": [
+            "continuation fails and no executable recovery meets the spec"
+          ],
+          "events": [
+            {
+              "layer": 27,
+              "action": "scrap",
+              "reason": "continuation fails and no executable recovery meets the spec",
+              "candidates": [
+                {
+                  "name": "continue",
+                  "ok": false,
+                  "executable": true,
+                  "violations": [
+                    "hole at [0, 0] diameter 6.0 outside [8.5, 11.5]"
+                  ],
+                  "margin": -1.0,
+                  "robust_margin": -1.0
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "limitation": "Retrospective recorded decision reasons on complete paired development cases. Reasons are model assessments, not ground-truth diagnoses; no new recovery trial or runtime truth access."
+}

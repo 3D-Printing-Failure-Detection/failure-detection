@@ -32,7 +32,7 @@
 \fancyhf{}
 \fancyhead[L]{\small\color{muted}FUNCTIONAL RECOVERY FROM 3D-PRINT FAILURES}
 \fancyhead[R]{\small\color{muted}Project report}
-\fancyfoot[L]{\small\color{muted}Research prototype\quad\textbullet\quad 2 November 2026}
+\fancyfoot[L]{\small\color{muted}Research prototype\quad\textbullet\quad 3 November 2026}
 \fancyfoot[R]{\small\color{muted}\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
@@ -62,31 +62,31 @@ estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
 policy separates inner and outer boundaries when predicting deformation. Trained
 models and a free local Qwen supervisor are implemented. The latest complete
-policy improves the development comparison below, but some earlier successes
+policy increases completions but also defective finishes. Some earlier successes
 remain lost. An earlier candidate failed its fresh test. The overall objective
 is still unmet; historical regression and a new frozen test are required.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
-{\Large\bfseries\color{teal}136/240} & {\Large\bfseries 133/240} & {\Large\bfseries 126/240}\\
-Latest neural + Qwen & Matched analytical & Earlier neural + Qwen\\
+{\Large\bfseries\color{teal}141/240} & {\Large\bfseries 136/240} & {\Large\bfseries 133/240}\\
+Joint camera + Qwen & Prior neural + Qwen & Matched analytical\\
 \bottomrule
 \end{tabular*}
 \end{center}
 These are functional completions on the same \emph{240 simulated fault cases
-across all four parts}. The latest policy preserves every matched analytical
-success, with one defective finish each and all 48 clean controls passed. Qwen
-makes 499 actual requests and matches neural-only outcomes. These are consumed
-development cases. The three-print gain survives the same-code control; the
-older baseline's reduction from three defects to one also occurs without learning.
+across all four parts}. Defective finishes are respectively \textbf{five, one
+and one}; all pass 48 clean controls. The latest policy preserves every active
+recovery baseline's success but still loses five ignore successes. Qwen makes
+527 actual requests and matches neural-only. These are consumed development
+cases. The higher completion count does not waive the defect regression.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The 5,184-row comparison confirms 136/240 versus matched analytical 133/240. Other prior successes remain lost. New camera refinements fail validation; a further recovery comparison is running. Fresh-test superiority is unproven.\\
+Latest checks & The 5,760-row comparison finds 141/240 completions but five defective finishes, versus matched analytical 133/240 and one defect. A guard on unsupported corrections is under regression. Fresh-test superiority is unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1366,10 +1366,10 @@ cup uses one adaptation and the mug three. Qwen makes 11 actual requests and
 matches neural-only outcomes. These are preserved historical rescues, not new
 untouched successes or proof of the best overall policy.
 
-The gate passes. Its predeclared 576-row full-grid follow-up is now running after
-the analytical-container run completed. Each uses one frozen policy on every part,
-with separate raw results and matched neural-only/Qwen outcomes. Historical
-regression and a new untouched comparison remain required before acceptance.
+The gate passes. Its complete 576-row follow-up reaches 141/240 successes but
+five defective finishes, detailed on page 25. Each run uses one frozen policy on
+every part, with separate raw results and matched neural-only/Qwen outcomes.
+Historical regression and a new untouched comparison remain required.
 
 \subsection*{Verify earlier workers without rewriting their records}
 The original Qwen workers recorded an asset-only attestation and a richer server
@@ -1536,5 +1536,67 @@ reproduces v28 exactly. Boundary error is 0.074073 mm versus the control's 0.072
 both exports pass. However, two false wall gaps return in the full cup diagnostic,
 with or without classical bases. The model is rejected before broader validation
 or recovery. All 25 focused tests pass; camera improvement remains unproven.
+
+\clearpage
+\section{More completions, but an unacceptable defect trade-off}
+
+\subsection*{The complete joint-camera comparison}
+The \texttt{joint-historical-gate-v23} follow-up completes all 576 rows. Adding
+the same-code analytical control in \texttt{joint-matched-comparison-v31} produces
+5,760 audited rows across 20 configurations. All 19 earlier summaries remain
+identical; no simulation is rerun or pooled under a changed policy label.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Policy & Successes & Rescues & Defective & Clean \\
+\midrule
+Matched analytical & 133/240 & 15 & 1 & 48/48 \\
+Prior neural + Qwen & 136/240 & 18 & 1 & 48/48 \\
+Joint-camera neural & 141/240 & 18 & 5 & 48/48 \\
+Joint-camera neural + Qwen & 141/240 & 18 & 5 & 48/48 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every success from the active recovery baselines is retained. Five ignore
+successes remain lost, down from ten. Qwen makes 527 actual requests and adds
+no completions over neural-only. The five gains over the prior candidate are
+cartesian cup collapse/1003 and shift/1002, corexy mug collapse/1001 and warp/1001,
+and bedslinger mug warp/1001. Four finish without adaptation; one uses a
+correction. These restore usable prints; genuine rescues remain 18.
+
+Four additional defective finishes follow corrections supported only by the
+learned camera when no classical plan passes: mug under-extrusion/1002 on all
+three profiles and corexy mug under-extrusion/1004. All those alternatives have
+robust margin $-1$: their existing uncertainty envelope fails. The prior
+bedslinger mug under-extrusion/1004 defect remains. The five remaining lost
+ignore successes are all scrapped before adaptation. Recorded reasons guide
+the next experiment; they are not causal proof of a simulation failure.
+
+\subsection*{Test a guard on unsupported corrections}
+The opt-in \texttt{--boundary-robust-fallback} requires a finite existing robust
+margin of at least zero for a learned-camera correction when no classical plan
+passes. Rejected alternatives remain in the audit and cannot be eligible Qwen
+choices. Passing continuations and jointly checked corrections keep their
+existing behavior. Both historical rescues and successful container corrections
+in the full grid used jointly checked plans, motivating this distinction.
+The geometry specification and uncertainty calculation do not change; the
+guard is not a calibrated probability.
+
+The \texttt{robust-fallback-v32} run tests 42 rows: five new gains, four extra
+defects, the prior defect, two historical rescues, three learned fit gains and
+six clean controls, with and without Qwen. Both methods must retain all ten
+reference fault successes and six clean controls, introduce no new defective
+case and finish at most the one previously defective case. Actual neural,
+camera and agent calls are required. It runs in tmux; a pass would justify a
+full rerun, not acceptance.
+
+All 159 repository tests pass, with three optional modules skipped. They check
+negative/nonfinite and zero margins, default behavior, preserved continuations
+and joint plans, and audit rejection of missing or bypassed guards. Re-auditing
+the completed 576-row comparison preserves every prior field except the auditor
+digest, including all 527 Qwen calls. Full historical regression and untouched
+seeds 2001--2004 remain outstanding. No physical-printer reliability is claimed.
 
 \end{document}

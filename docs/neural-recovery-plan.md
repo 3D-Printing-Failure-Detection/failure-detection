@@ -4,8 +4,16 @@ The objective is more functional completed prints and genuine recovery from
 failures, compared on identical cases with every earlier policy. A trained model
 or a successful language-model request alone does not satisfy that objective.
 
-Current verdict: a modest full-grid development gain; not yet accepted as better
-overall. The complete analytical-container/learned-fit policy finishes **136/240
+Current verdict: higher completion counts, but no accepted overall improvement.
+The complete joint-camera policy finishes **141/240 fault cases with five
+defective finishes**, versus the preceding candidate's 136 successes and one
+defect. All active recovery baselines' successes are retained, but five ignore
+successes remain lost. Qwen makes 527 calls and ties neural-only. The complete
+matched comparison covers 5,760 rows across 20 configurations. A new guard on
+uncertain, unsupported camera corrections is undergoing a 42-row regression;
+its success is not yet established.
+
+The complete analytical-container/learned-fit policy finishes **136/240
 fault cases**, versus the matched current analytical policy's **133/240**,
 retaining all of that baseline's successes. Both have one defective finish and
 pass all 48 clean controls. Qwen makes 499 actual calls and ties neural-only.
@@ -39,7 +47,8 @@ The completed full-grid trial retains analytical containers and the improved
 learned fit forecast; its result is the 136/240 development count above.
 An actual historical check confirms that this simpler variant loses two earlier
 container rescues. Keeping the earlier learned camera as a joint-forecast
-alternative restores both; its full-grid follow-up is now running.
+alternative restores both; its complete full-grid follow-up produces the
+141-success/five-defect trade-off above.
 
 ## Current camera cross-check and context experiments
 
@@ -332,8 +341,8 @@ The loss is not a calibrated confidence bound. All 25 focused camera/training
 tests pass, including the unchanged unit-weight objective and asymmetric gradient.
 The retained [condition](validation/neural/gap-sensitive-refinement-v30-condition.json)
 and [comparison](validation/neural/gap-sensitive-refinement-v30-comparison.json)
-record this negative result. Further camera tuning awaits the complete recovery
-comparison of the existing joint-camera policy; seeds 2001–2004 remain untouched.
+record this negative result. The completed recovery comparison below redirects
+work toward unsupported corrections; seeds 2001–2004 remain untouched.
 
 ## Preserving historical container rescues
 
@@ -352,11 +361,52 @@ passing. The cup uses one adaptation and the mug three. Qwen makes 11 actual
 requests and matches neural-only. This preserves two earlier rescues that the
 simpler variant loses; it does not establish a new overall best result.
 
-The predeclared gate passes. Its 576-row full-grid follow-up is running after v22
-finished successfully, using one frozen configuration over every part, profile
-and fault. Its tmux window is `neural-recovery:joint-history-v23`. Source and model
-pins, complete gate audits and original failed outcomes are retained. This full
-comparison, historical regression and an untouched test remain outstanding.
+The predeclared gate passes and its full 576-row follow-up completes. Both
+variants finish 141/240 faults, five defective prints and all 48 clean controls.
+Qwen makes 527 calls and adds no completions. Every success from the 136-success
+candidate and the other active recovery baselines is retained; five ignore
+successes remain lost. `joint-matched-comparison-v31` adds the completed same-code
+analytical control without rerunning any simulation. All previous 19 summaries
+remain identical in the resulting 5,760-row, 20-configuration comparison. The
+analytical control remains 133/240 with one defect. Source/model pins, all raw
+outcomes, gate failures and audits remain retained.
+
+The five gains over v22 are cartesian cup collapse/1003 and shift/1002, corexy
+mug collapse/1001 and warp/1001, and bedslinger mug warp/1001. Four finish without
+adaptation; one follows adaptation. Genuine rescues remain 18, while lost ignore
+successes fall from ten to five. All four extra defects follow a learned-camera
+correction when no classical plan passes and every alternative has robust margin
+-1. They occur on mug under-extrusion/1002 on all three profiles and
+corexy mug under-extrusion/1004. The prior bedslinger mug under-extrusion/1004
+defect remains. These are recorded model assessments, not causal proof of why
+the physical simulation failed. The count gain does not waive the defect regression.
+
+## Guarding unsupported camera corrections
+
+`--boundary-robust-fallback` is opt-in. When no classical-camera plan passes, a
+learned-camera correction must also pass its existing uncertainty envelope:
+finite `robust_margin >= 0`. Failed alternatives remain visible in the decision
+record and cannot be offered to Qwen as eligible. A passing continuation and a
+jointly checked correction retain their existing behavior. This uses the
+unchanged functional check; it is not a calibrated probability or a new geometry
+tolerance. Both historical rescues and successful container corrections in the
+completed full grid used jointly checked plans, motivating this distinction.
+
+`robust-fallback-v32` freezes the guard with the same trained forecast, original
+camera and local Qwen. Its 42 rows cover the five new gains, four additional
+defects, the prior defect, two historical rescues, three learned fit gains and
+six clean controls, with and without Qwen. Both methods must preserve all ten
+reference fault successes and six clean controls, introduce no new defective
+case, and finish at most the one already defective case. Actual neural/camera
+queries and actual Qwen calls are required. The run is in tmux window
+`neural-recovery:robust-fallback-v32`; a pass would trigger full regression,
+not acceptance. Historical full regression and untouched evaluation remain required.
+
+All 159 repository tests pass, with three optional modules skipped. Tests cover
+default behavior, negative/nonfinite versus zero uncertainty margins, preserved
+continuations and joint plans, and audit rejection of missing or bypassed guards.
+Re-auditing the completed 576-row joint-camera grid preserves every earlier
+audit field except the auditor digest, including all 527 actual Qwen calls.
 
 ## Earlier joint-camera and measurement studies
 
@@ -524,6 +574,15 @@ audits, manifests, source and checkpoints remain unchanged. The full 4,320-run
 comparison reproduces all outcome counts and gained/lost cases after archival.
 The linked receipt identifies a quota-checked restore tool and a verified sample
 restoration. An initial wrapper-format verification aborted before changing files.
+
+The later [v3 archive](validation/neural/completed-report-archive-v3-summary.json)
+and [v4 archive](validation/neural/completed-report-archive-v4-summary.json)
+retain 867 additional duplicate journals and CSV exports from completed v22,
+v23 and v26 runs: 37.66 MB compressed to 2.55 MB. Every journal row equals its
+retained aggregate, every archive member reproduces its original bytes, and
+both restore utilities pass an actual sample restoration. Raw result JSON,
+manifests and audits retain identical hashes. Receipts and quota-checked restore
+scripts remain under the corresponding data-volume archive directories.
 
 ## Comparing actual earlier implementations
 

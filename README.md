@@ -115,7 +115,16 @@ historical check shows that analytical
 containers lose two earlier rescues; using the original learned camera as a
 joint-forecast alternative retains both, with no defective finishes and all
 clean controls passed. Qwen makes 11 calls and ties neural-only. That variant's
-full-grid follow-up is now running. Fixed averaging and asymmetric camera
+full-grid follow-up is complete: **141/240 successes but five defective finishes**,
+versus the prior candidate's 136 successes and one defect. All active recovery
+baselines' successes are retained; five ignore successes remain lost. The
+5,760-row comparison covers 20 configurations. Qwen makes 527 actual calls and
+ties neural-only. The extra five successes restore usable prints rather than
+add genuine rescues; those remain 18. Four additional defects follow corrections
+supported only by the learned camera despite failed uncertainty checks. An
+opt-in guard now rejects such corrections, with 159 tests passed and a targeted
+42-row recovery regression running. This trade-off is not accepted as a win.
+Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup
 diagnostic, removing its false gap/base/thickness alarms. However, its complete

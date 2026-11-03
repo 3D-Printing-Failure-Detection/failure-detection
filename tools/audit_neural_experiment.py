@@ -4,6 +4,7 @@ import csv
 import hashlib
 import itertools
 import json
+import math
 from pathlib import Path
 
 
@@ -52,6 +53,20 @@ def validate_base_camera_counts(row, uses_dual, base_indices):
     expected_learned = row['frames']-expected_base if uses_dual else 0
     assert row['alternative_classical_base_frames'] == expected_base, 'base-camera frame count differs'
     assert row['alternative_learned_frames'] == expected_learned, 'learned-wall frame count differs'
+
+
+def validate_fallback_uncertainty(considered, enabled):
+    for candidate in considered:
+        if 'name' not in candidate:
+            continue
+        required = bool(enabled and candidate.get('fallback_after_no_primary_plan')
+                        and candidate['name'] != 'continue')
+        assert candidate.get('fallback_uncertainty_required', False) is required, 'fallback uncertainty guard not recorded'
+        if required:
+            margin = candidate['robust_margin']
+            passes = math.isfinite(margin) and margin >= 0
+            assert candidate['fallback_uncertainty_passes'] is passes, 'fallback uncertainty margin differs'
+            assert passes or not candidate['ok'], 'uncertain fallback correction remains eligible'
 
 
 def validate_model_provenance(manifest, rows, analytical_only=False):
@@ -144,6 +159,7 @@ def main():
         calls, adaptations_used, last_continue_review = 0, 0, None
         for event in row['actions']:
             considered = event['considered'] or []
+            validate_fallback_uncertainty(considered, config.get('boundary_robust_fallback', False))
             assert 0 <= event['layer'] < row['layers_printed']
             assert sum('agent' in item for item in considered) <= 1
             for item in considered:

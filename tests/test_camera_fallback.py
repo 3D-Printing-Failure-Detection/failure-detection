@@ -12,12 +12,12 @@ from recovery.models.classical import Detection
 from recovery.types import Layer
 
 
-def setup_policy():
+def setup_policy(**options):
     layers = [Layer(z, box(-5, -5, 5, 5)) for z in (.25, .5, .75)]
     spec = {'present': [{'z': [0., 1.], 'min_area_frac': .8}]}
     camera = SimpleNamespace(frames=1, alternative_region=layers[0].region)
     policy = FallbackNeuralPolicy(spec, layers, .25, checkpoint='unused-for-nonfits',
-                                 forecast_scope='fits', dual_segmenter=camera)
+                                 forecast_scope='fits', dual_segmenter=camera, **options)
     return layers, camera, policy
 
 
@@ -86,8 +86,9 @@ def test_classical_base_selection_keeps_both_models_observing_every_frame(monkey
 
 
 @pytest.mark.parametrize('joint_alternative', [False, True])
-def test_cross_camera_recovery_needs_a_jointly_passing_alternative(monkeypatch, joint_alternative):
-    layers, camera, policy = setup_policy()
+@pytest.mark.parametrize('cross_margin', [-1., .3])
+def test_cross_camera_recovery_needs_a_jointly_passing_alternative(monkeypatch, joint_alternative, cross_margin):
+    layers, camera, policy = setup_policy(robust_fallback=True)
     policy.joint_camera = True
     observed, _ = policy.observe(layers[0], layers[0], Detection('shift', 2., {}), 0)
     before = observed.region.wkb
@@ -105,7 +106,7 @@ def test_cross_camera_recovery_needs_a_jointly_passing_alternative(monkeypatch, 
     monkeypatch.setattr(policy.alternative, '_evaluate', lambda known, plan, *args:
                         candidate(plan.name, False))
     monkeypatch.setattr(policy, '_evaluate', lambda known, plan, *args:
-                        candidate(plan.name, joint_alternative, .3))
+                        candidate(plan.name, joint_alternative, cross_margin))
     candidates = policy.candidates([observed], layers, DecisionContext(3))
     decision = policy.pick_candidates(candidates, DecisionContext(3))
     assert policy.joint_camera_checks == 2
@@ -115,7 +116,47 @@ def test_cross_camera_recovery_needs_a_jointly_passing_alternative(monkeypatch, 
         assert decision.plan.name == 'learned correction'
         assert not candidates[1]['verdict'].ok
         assert candidates[-1]['both_camera_forecasts_pass']
-        assert candidates[-1]['robust_margin'] == .3
+        assert candidates[-1]['robust_margin'] == cross_margin
     else:
         assert decision.plan.name == 'classical correction'
         assert len(candidates) == len(primary)
+
+
+@pytest.mark.parametrize('enabled,margin,expected', [
+    (False, -1., 'adapt'), (True, -1., 'scrap'), (True, 0., 'adapt'),
+    (True, .2, 'adapt'), (True, float('nan'), 'scrap'), (True, float('inf'), 'scrap'),
+])
+def test_unsupported_camera_correction_requires_passing_uncertainty(monkeypatch, enabled, margin, expected):
+    layers, camera, policy = setup_policy(robust_fallback=enabled)
+    observed, detection = policy.observe(layers[0], layers[0], Detection('shift', 2., {}), 0)
+
+    def candidate(name, ok, score):
+        plan = Plan(name, layers[1:], 1.)
+        return dict(name=name, plan=plan, predicted=plan.layers, executable=True,
+                    verdict=Verdict(ok, [] if ok else ['forecast fails'], {}),
+                    margin=.5, robust_margin=score, command_change_fraction=.01)
+
+    primary = [candidate('continue', False, -1.)]
+    alternate = [candidate('continue', False, -1.), candidate('learned correction', True, margin)]
+    monkeypatch.setattr(NeuralPolicy, 'candidates', lambda *args: primary)
+    monkeypatch.setattr(policy.alternative, 'candidates', lambda *args: alternate)
+    before = [r.region.wkb for r in policy.alternative.state.observations]
+    decision = policy.decide([observed], layers, detection)
+    assert decision.action == expected
+    assert alternate[-1]['verdict'].ok  # Evaluation copies do not alter earlier assessments.
+    assert before == [r.region.wkb for r in policy.alternative.state.observations]
+    correction = decision.considered[-1]
+    assert correction.get('fallback_uncertainty_required', False) is enabled
+    if enabled:
+        assert correction['fallback_uncertainty_passes'] == (expected == 'adapt')
+        if expected == 'scrap':
+            assert 'uncertainty envelope' in correction['violations'][0]
+
+
+def test_robust_fallback_preserves_a_passing_alternative_continuation():
+    layers, camera, policy = setup_policy(robust_fallback=True)
+    measured = Layer(.25, box(-5, -5, 0, 5))
+    observed, detection = policy.observe(layers[0], measured, Detection('collapse', 2., {}), 0)
+    decision = policy.decide([observed], layers, detection)
+    assert decision.action == 'continue' and decision.verdict.ok
+    assert not any(c.get('fallback_uncertainty_required') for c in decision.considered if c['name']=='continue')

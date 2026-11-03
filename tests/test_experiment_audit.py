@@ -3,7 +3,8 @@ from copy import deepcopy
 import pytest
 
 from tools.audit_neural_experiment import (validate_outcomes, agent_decision_opportunities,
-                                           validate_base_camera_counts, validate_model_provenance)
+                                           validate_base_camera_counts, validate_model_provenance,
+                                           validate_fallback_uncertainty)
 
 
 def paired_rows():
@@ -87,6 +88,22 @@ def analytical_control():
         alternative_observations=0, measurement_source='classical',
         alternative_measurement_source=None, forecast_source='analytical')
     return manifest, [row]
+
+
+def test_audit_rejects_missing_or_bypassed_fallback_uncertainty_guard():
+    candidate = dict(name='correction',fallback_after_no_primary_plan=True,robust_margin=-1.,ok=False,
+        fallback_uncertainty_required=True,fallback_uncertainty_passes=False)
+    validate_fallback_uncertainty([candidate], True)
+    for change, message in [({'ok':True}, 'remains eligible'),
+                            ({'fallback_uncertainty_required':False}, 'not recorded'),
+                            ({'fallback_uncertainty_passes':True}, 'margin differs')]:
+        with pytest.raises(AssertionError, match=message):
+            validate_fallback_uncertainty([dict(candidate,**change)], True)
+    with pytest.raises(AssertionError, match='not recorded'):
+        validate_fallback_uncertainty([candidate], False)
+    validate_fallback_uncertainty([dict(candidate,robust_margin=0.,ok=True,fallback_uncertainty_passes=True)], True)
+    validate_fallback_uncertainty([dict(name='continue',fallback_after_no_primary_plan=True,robust_margin=-1.,ok=True)], True)
+    validate_fallback_uncertainty([dict(name='joint correction',both_camera_forecasts_pass=True,robust_margin=-1.,ok=True)], True)
 
 
 def test_analytical_control_requires_explicit_mode_and_zero_model_use():

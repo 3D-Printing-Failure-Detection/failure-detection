@@ -1,5 +1,5 @@
 {
-  "status": "waiting_for_main_run",
+  "status": "evaluation_and_audit_complete",
   "gate_passes": true,
   "candidate": {
     "failure": {
@@ -27,5 +27,6 @@
       "mean_filament_with_assumed_clean_restart": 0.9999440344205105
     }
   },
-  "reason": "Both historical rescues and clean controls pass with actual models; wait for the active main job before expanding"
+  "reason": "Both historical rescues and clean controls pass with actual models; wait for the active main job before expanding",
+  "full_comparison_status": "pending"
 }

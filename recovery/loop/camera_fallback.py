@@ -6,6 +6,8 @@ Neither rewrites an earlier observation. The alternative is assessed against the
 same complete functional specification and the same remaining command plan.
 The optional joint check compares corrections only when continuation fails.
 """
+import math
+
 from ..types import Layer
 from ..geometry.spec import Verdict
 from .decide import DecisionContext
@@ -15,10 +17,11 @@ from .risk_neural import RiskAwareNeuralPolicy
 
 
 class CameraFallbackMixin:
-    def __init__(self, *args, dual_segmenter=None, joint_camera=False, **kwargs):
+    def __init__(self, *args, dual_segmenter=None, joint_camera=False, robust_fallback=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.dual_segmenter = dual_segmenter
         self.joint_camera = joint_camera
+        self.robust_fallback = robust_fallback
         self.joint_camera_checks = 0
         self.alternative = (ContourPolicy(self.spec, self.nominal, self.h,
             allow_adapt=self.allow_adapt, use_fea=self.use_fea,
@@ -49,6 +52,17 @@ class CameraFallbackMixin:
             candidate['observation_model'] = getattr(self.dual_segmenter, 'alternative_description', 'learned camera')
             candidate['fallback_after_no_primary_plan'] = not primary_passes
         if not primary_passes:
+            if self.robust_fallback:
+                for candidate in alternative:
+                    if candidate['name'] == 'continue':
+                        continue
+                    margin = candidate.get('robust_margin', float('nan'))
+                    candidate['fallback_uncertainty_required'] = True
+                    candidate['fallback_uncertainty_passes'] = math.isfinite(margin) and margin >= 0
+                    if candidate['verdict'].ok and not candidate['fallback_uncertainty_passes']:
+                        candidate['verdict'] = Verdict(False,
+                            ['uncertainty envelope rejects an otherwise unsupported camera correction'],
+                            candidate['verdict'].metrics)
             return primary + alternative
         # A correction that works under only its own measurement model may
         # harm the print. Cross-check both sets of proposals, without merging
