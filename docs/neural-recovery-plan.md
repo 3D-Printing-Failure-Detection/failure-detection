@@ -6,12 +6,14 @@ or a successful language-model request alone does not satisfy that objective.
 
 Current verdict: a modest full-grid development gain; not yet accepted as better
 overall. The complete analytical-container/learned-fit policy finishes **136/240
-fault cases**, versus the earlier best analytical policy's **133/240**, retaining
-all of that baseline's successes. Defective finishes fall from three to one and
-all 48 clean controls pass. Qwen makes 499 actual calls and ties neural-only.
-Some other baseline and historical successes remain lost; a matched analytical
-control using the current measurement code is running. These counts do not yet
-isolate the model's contribution or establish fresh-test superiority.
+fault cases**, versus the matched current analytical policy's **133/240**,
+retaining all of that baseline's successes. Both have one defective finish and
+pass all 48 clean controls. Qwen makes 499 actual calls and ties neural-only.
+The older analytical version had three defective finishes; that reduction also
+occurs without learning. The matched comparison attributes three additional
+completions to the learned policy and associated proposals, not to accompanying
+measurement fixes. Some other baseline and historical successes remain lost;
+fresh-test superiority is unproven.
 
 The latest shared-hole proposal completes **79/120 fit failures**, versus analytical
 preventive recovery's **76/120** and the preceding neural policy's **78/120**.
@@ -208,11 +210,26 @@ successful continuations are not credited as recoveries.
 `matched-analytical-v26` reruns analytical preventive recovery using the exact
 current source and classical camera used by v22. This separates accompanying
 measurement fixes from the learned policy and its associated recovery proposals.
-The complete 288-row grid uses no neural or agent calls; it will join all 17
+The complete 288-row grid uses no neural or agent calls; it joins all 17
 existing configurations under a separate label, preserving their raw inputs.
-The run is in tmux window `neural-recovery:matched-analytical-v26`. Its result is
-pending; a fair comparison cannot attribute the full three-print gain to learning
-until this control completes.
+The run completes all 288 cases. The combined comparison now contains 5,184
+audited rows across 18 configurations: current analytical recovery scores 133/240,
+versus 136/240 for both learned variants. Every analytical success is retained;
+the three gains remain spacer shift at seed 1002 on all three profiles. Both
+policies finish one defective print and pass all 48 clean controls. Genuine
+rescues are 15 versus 18; both lose ten ignore successes. Thus the three-print
+gain survives the same-code control, while the old three-to-one defect reduction
+also occurs without learning. This compares the learned policy and associated
+proposals, not the forecast in isolation.
+
+The first audit stopped because it required a trained checkpoint even for this
+explicitly model-free control. No simulation is rerun. A new `--analytical-only`
+audit requires known analytical methods, no loaded model assets, zero neural/
+camera/agent calls and analytical measurement/forecast records. The default
+audit still requires trained-model provenance. All 38 audit/provenance checks
+pass. Re-auditing the 576 neural/Qwen rows preserves every prior audit field
+except the auditor digest, including all 499 actual calls. The original failed
+audit, successful audit-only resume and unchanged raw-result hashes are retained.
 
 Two further camera diagnostics are rejected. `camera-average-diagnostic-v24`
 averages the short- and long-trained models' signed distances with fixed equal
@@ -263,16 +280,27 @@ its classical-base/learned-wall alternative: zero false wall gaps, base failures
 hard/soft thickness failures and overhang failures. The original and identity
 controls reproduce the earlier two false base layers and one false hard-thin
 layer exactly. All models observe all 160 frames. The broader 2,040-frame
-validation containing real gaps is now running in
-`neural-recovery:native-refinement-v28`; actual recovery comparisons remain
-conditional on that gate passing. The weights are selected by tile validation
-loss, never by the cup outcome. This is
+validation is complete and rejects the model: it misses ten real gaps versus
+the original camera's five. Its false gap alarms fall from 63 to 35, and severe
+thinning misses from 40 to nine, but that does not waive the missed-gap gate.
+The weights are selected by tile validation loss, never by the cup outcome. This is
 an experimental learned output layer, not calibrated confidence or a fixed mask
 repair. No recovery gain or fresh-test superiority is established by training.
 
-`refined-recovery-gate-v29` is queued behind completed real-gap validation and
-the matched analytical-control run. It will run only if the existing geometry
-gate passes, after checking available storage. Its 30 new rows test the refined
+| Camera | False gaps | Missed gaps | False severe thinning | Missed severe thinning | False base alarms |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Original | 63 | 5 | 0 | 40 | 0 |
+| Commanded control | 34 | 13 | 53 | 9 | 452 |
+| Learned refinement | 35 | 10 | 16 | 9 | 5 |
+
+All methods see the same frames. There are 57 real open-wall frames and 48 real
+severe-thinning frames. The 864 base frames contain no actual base failures, so
+base-fault recall is not established. The refinement improves the commanded
+control substantially but still fails comparison with the original gap detector.
+
+`refined-recovery-gate-v29` was queued behind completed real-gap validation and
+the matched analytical-control run. It runs only if the existing geometry gate
+passes, after checking available storage. Its 30 planned rows test the refined
 policy with and without actual Qwen, plus a neural-only ablation without the
 classical-base split. Two comparisons remain separate: the four-fault/two-clean
 camera gate retains all nine earlier configurations (72 total rows), while the
@@ -281,7 +309,31 @@ total rows). The same frozen policy must complete all six faults and all four
 clean controls with no defective finishes and actual model calls before broader
 regression. This preserves the earlier shifted-cup and historical rescue cases;
 it does not treat the passed nominal-camera diagnostic as a recovery outcome.
-The waiting runner is in tmux window `neural-recovery:refined-recovery-v29`.
+The initial waiting runner stopped on the analytical audit failure before running
+any recovery rows. Its resumed runner pins the successful audit-only completion
+and retains the same model, cases and geometry gate, in tmux window
+`neural-recovery:refined-recovery-v29-resume`. Both original failed attempts remain
+available; only the waiting orchestration resumes.
+The completed geometry gate rejects v28, so the resumed runner terminates as
+`skipped`: zero recovery rows run and zero recovery outcomes are credited. The
+planned comparisons and original failures remain retained.
+
+`gap-sensitive-refinement-v30` tests whether penalizing invented material can
+address the missed gaps. It retains the frozen camera, data, groups, sampling,
+identity initialization and 40 epochs; only the SmoothL1 cost for predicted
+signed distances above their targets doubles. The unit-weight control reproduces
+v28's checkpoint and full cup diagnostic exactly. Both exports pass the original
+numerical tolerance. The candidate's boundary MAE is 0.074073 mm versus the
+control's 0.072209, and near-boundary sign accuracy is 79.98% versus 80.50%.
+The complete 160-frame cup diagnostic finds two false wall gaps for both the raw
+candidate and its classical-base hybrid. It is rejected; broader geometry
+validation and recovery are skipped, with zero recovery outcomes credited.
+The loss is not a calibrated confidence bound. All 25 focused camera/training
+tests pass, including the unchanged unit-weight objective and asymmetric gradient.
+The retained [condition](validation/neural/gap-sensitive-refinement-v30-condition.json)
+and [comparison](validation/neural/gap-sensitive-refinement-v30-comparison.json)
+record this negative result. Further camera tuning awaits the complete recovery
+comparison of the existing joint-camera policy; seeds 2001–2004 remain untouched.
 
 ## Preserving historical container rescues
 

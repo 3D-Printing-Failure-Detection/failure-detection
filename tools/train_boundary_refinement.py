@@ -21,6 +21,16 @@ from recovery.models.boundary import BoundarySegmenter, PATCH_SIZE
 from tools.train_boundary_tiles import TileNetwork, training_sampling_probabilities
 
 
+def refinement_distance_loss(prediction, target, overprediction_weight=1.):
+    """Penalize excessive signed distance without claiming calibrated confidence."""
+    if not np.isfinite(overprediction_weight) or overprediction_weight < 1:
+        raise ValueError('overprediction weight must be finite and at least one')
+    loss = F.smooth_l1_loss(prediction, target, beta=.05, reduction='none')
+    if overprediction_weight == 1:
+        return loss
+    return torch.where(prediction > target, loss*overprediction_weight, loss)
+
+
 def verify_base_training(checkpoint, data_sha256, groups, validation):
     path = checkpoint.parent/'training.json'
     training = json.loads(path.read_text())
@@ -90,11 +100,15 @@ def main():
     parser.add_argument('--epochs', type=int, default=40)
     parser.add_argument('--batch-size', type=int, default=32)
     parser.add_argument('--seed', type=int, default=2026)
+    parser.add_argument('--overprediction-weight', type=float, default=1.,
+                        help='training cost multiplier when predicted signed distance exceeds its target')
     parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32')
     parser.add_argument('--out', type=Path, required=True)
     args = parser.parse_args()
     if min(args.epochs, args.batch_size) < 1:
         parser.error('epochs and batch size must be positive')
+    if not np.isfinite(args.overprediction_weight) or args.overprediction_weight < 1:
+        parser.error('overprediction weight must be finite and at least one')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')) or args.out.exists():
         parser.error('output must be a new directory on the data volume')
     torch.set_num_threads(2)
@@ -135,7 +149,7 @@ def main():
     def objective(prediction, indices):
         actual = target[indices]
         weight = .25 + .75*(torch.abs(actual) < .5)
-        return (F.smooth_l1_loss(prediction, actual, beta=.05, reduction='none')*weight).mean()
+        return (refinement_distance_loss(prediction, actual, args.overprediction_weight)*weight).mean()
 
     def evaluate(exported=None):
         score = error = edge_n = correct = near_n = maximum = 0.
@@ -199,6 +213,8 @@ def main():
         training_groups=sorted(set(groups[~validation].tolist())), validation_groups=sorted(set(groups[validation].tolist())),
         train_rows=len(train_indices), validation_rows=len(val_indices),
         native_target_crop=1, initial_kernel=initial_kernel,
+        distance_objective=dict(beta_mm=.05, overprediction_weight=args.overprediction_weight,
+                                underprediction_weight=1., calibrated_probability=False),
         kernel=layer.weight.detach().numpy()[0, 0].tolist(), bias=float(layer.bias.detach()[0]),
         sampling=dict(audit_sha256=digest(args.sampling_audit), critical_training_tiles=critical_count,
                       critical_probability_mass=args.critical_tile_fraction),

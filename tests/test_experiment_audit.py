@@ -3,7 +3,7 @@ from copy import deepcopy
 import pytest
 
 from tools.audit_neural_experiment import (validate_outcomes, agent_decision_opportunities,
-                                           validate_base_camera_counts)
+                                           validate_base_camera_counts, validate_model_provenance)
 
 
 def paired_rows():
@@ -78,3 +78,48 @@ def test_base_camera_audit_accounts_for_each_observed_frame():
     validate_base_camera_counts(row, True, [0, 1])
     row.update(alternative_classical_base_frames=0)
     validate_base_camera_counts(row, False, [0, 1])
+
+
+def analytical_control():
+    manifest = dict(instrumentation_version=4, arguments=dict(methods=['contour_risk'],
+        neural_checkpoint=None, boundary_checkpoint=None, supervisor_manifest=None))
+    row = dict(neural_queries=0, boundary_queries=0, agent_requests=0, agent_accepted=0,
+        alternative_observations=0, measurement_source='classical',
+        alternative_measurement_source=None, forecast_source='analytical')
+    return manifest, [row]
+
+
+def test_analytical_control_requires_explicit_mode_and_zero_model_use():
+    manifest, rows = analytical_control()
+    with pytest.raises(AssertionError, match='no trained model provenance'):
+        validate_model_provenance(manifest, rows)
+    assert validate_model_provenance(manifest, rows, analytical_only=True) == {}
+    for key in ('neural_queries', 'boundary_queries', 'agent_requests', 'agent_accepted', 'alternative_observations'):
+        changed = deepcopy(rows)
+        changed[0][key] = 1
+        with pytest.raises(AssertionError, match='model calls'):
+            validate_model_provenance(manifest, changed, analytical_only=True)
+    for key, value in [('measurement_source', 'learned'), ('alternative_measurement_source', 'checkpoint'),
+                       ('forecast_source', 'trained')]:
+        changed = deepcopy(rows)
+        changed[0][key] = value
+        with pytest.raises(AssertionError, match='learned'):
+            validate_model_provenance(manifest, changed, analytical_only=True)
+
+
+def test_analytical_mode_cannot_waive_neural_policy_or_asset_provenance():
+    manifest, rows = analytical_control()
+    for method in ('neural_risk', 'neural_risk_agent', 'neural_camera', 'unknown'):
+        changed = deepcopy(manifest)
+        changed['arguments']['methods'] = [method]
+        with pytest.raises(AssertionError, match='model policy'):
+            validate_model_provenance(changed, rows, analytical_only=True)
+    for key in ('neural_checkpoint', 'boundary_checkpoint', 'supervisor_manifest'):
+        changed = deepcopy(manifest)
+        changed['arguments'][key] = 'model-asset'
+        with pytest.raises(AssertionError, match='model assets'):
+            validate_model_provenance(changed, rows, analytical_only=True)
+    changed = dict(manifest, neural_checkpoint_sha256='pinned', final_neural_checkpoint_sha256='pinned')
+    with pytest.raises(AssertionError, match='model provenance'):
+        validate_model_provenance(changed, rows, analytical_only=True)
+    assert validate_model_provenance(changed, rows) == {'neural': 'pinned'}

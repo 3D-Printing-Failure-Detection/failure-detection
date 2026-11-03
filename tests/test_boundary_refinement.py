@@ -12,6 +12,7 @@ from tools.boundary_tiles import tile_inputs
 from tools.train_boundary_tiles import TileNetwork
 from tools.train_boundary_refinement import (
     export_refinement, exported_refined_tiles, frozen_tile_logits, verify_base_training,
+    refinement_distance_loss,
 )
 
 
@@ -96,3 +97,18 @@ def test_refinement_cannot_inherit_weights_trained_on_its_validation_split(tmp_p
         path.write_text(json.dumps(dict(manifest, **{field:value})))
         with pytest.raises(ValueError, match='training provenance'):
             verify_base_training(checkpoint, 'same-data', groups, validation)
+
+
+def test_gap_sensitive_cost_preserves_control_and_penalizes_invented_material():
+    prediction = torch.tensor([.1, -.1], requires_grad=True)
+    target = torch.tensor([-.1, .1])
+    control = torch.nn.functional.smooth_l1_loss(prediction, target, beta=.05, reduction='none')
+    assert torch.equal(refinement_distance_loss(prediction, target), control)
+    loss = refinement_distance_loss(prediction, target, 2.)
+    assert torch.equal(loss, control*torch.tensor([2., 1.]))
+    loss.sum().backward()
+    assert torch.equal(prediction.grad, torch.tensor([2., -1.]))
+    assert float(refinement_distance_loss(target, target, 2.).sum()) == 0
+    for weight in [.5, float('nan'), float('inf')]:
+        with pytest.raises(ValueError, match='overprediction weight'):
+            refinement_distance_loss(prediction, target, weight)

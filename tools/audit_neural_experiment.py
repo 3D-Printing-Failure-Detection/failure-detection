@@ -54,27 +54,48 @@ def validate_base_camera_counts(row, uses_dual, base_indices):
     assert row['alternative_learned_frames'] == expected_learned, 'learned-wall frame count differs'
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('directory', type=Path)
-    parser.add_argument('--out', type=Path, required=True)
-    parser.add_argument('--allow-unreached-agent', action='store_true',
-                        help='audit a shard with no eligible agent decision; never counts it as actual supervision')
-    args = parser.parse_args()
-    manifest = json.loads((args.directory / 'manifest.json').read_text())
-    rows = [json.loads(line) for line in (args.directory / 'runs.jsonl').read_text().splitlines()]
-    assert manifest['status'] == 'complete' and not manifest.get('errors')
-    assert manifest['source_sha256'] == manifest['final_source_sha256']
+def validate_model_provenance(manifest, rows, analytical_only=False):
     checkpoints = {}
     for kind in ('neural', 'boundary'):
         key = kind + '_checkpoint_sha256'
         if key in manifest:
             assert manifest[key] == manifest['final_' + key]
             checkpoints[kind] = manifest[key]
-    assert checkpoints, 'no trained model provenance'
     config = manifest['arguments']
+    if analytical_only:
+        allowed = {'ignore', 'scrap', 'alert', 'ours', 'measured', 'predictive',
+                   'functional', 'guarded', 'contour', 'contour_risk'}
+        assert config['methods'] and set(config['methods']) <= allowed, 'analytical control contains a model policy'
+        assert not checkpoints and not manifest.get('supervisor'), 'analytical control contains model provenance'
+        assert not any(config.get(key) for key in ('neural_checkpoint', 'boundary_checkpoint', 'supervisor_manifest')), 'analytical control loads model assets'
+        assert manifest.get('instrumentation_version', 1) >= 3, 'analytical control needs camera-source instrumentation'
+        for row in rows:
+            for key in ('neural_queries', 'boundary_queries', 'agent_requests', 'agent_accepted', 'alternative_observations'):
+                assert type(row[key]) is int and row[key] == 0, 'analytical control contains model calls'
+            assert row['measurement_source'] == 'classical' and row['alternative_measurement_source'] is None, 'analytical control contains learned measurements'
+            assert row['forecast_source'] == 'analytical', 'analytical control contains learned forecasts'
+    else:
+        assert checkpoints, 'no trained model provenance'
     if any(m in ('neural', 'neural_agent', 'neural_risk', 'neural_risk_agent') for m in config['methods']):
         assert 'neural' in checkpoints
+    return checkpoints
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('directory', type=Path)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--allow-unreached-agent', action='store_true',
+                        help='audit a shard with no eligible agent decision; never counts it as actual supervision')
+    parser.add_argument('--analytical-only', action='store_true',
+                        help='require a model-free analytical control with zero neural, boundary and agent calls')
+    args = parser.parse_args()
+    manifest = json.loads((args.directory / 'manifest.json').read_text())
+    rows = [json.loads(line) for line in (args.directory / 'runs.jsonl').read_text().splitlines()]
+    assert manifest['status'] == 'complete' and not manifest.get('errors')
+    assert manifest['source_sha256'] == manifest['final_source_sha256']
+    checkpoints = validate_model_provenance(manifest, rows, args.analytical_only)
+    config = manifest['arguments']
     assert not config['clear_failure_on_adapt']
     expected = set(itertools.product(config['profiles'], config['parts'], config['kinds'],
         range(config['seed'], config['seed'] + config['n']), config['methods']))
@@ -184,6 +205,7 @@ def main():
     args.out.mkdir(parents=True, exist_ok=True)
     raw_sha = hashlib.sha256((args.directory / 'runs.jsonl').read_bytes()).hexdigest()
     report = dict(status='passed', source_sha256=manifest['source_sha256'],
+        analytical_only=args.analytical_only,
         checkpoints=checkpoints, runs_sha256=raw_sha,
         rows=len(rows), actual_agent_calls=total_calls, reused_reviews=reused, summary=summary,
         agent_decision_opportunities=opportunities,

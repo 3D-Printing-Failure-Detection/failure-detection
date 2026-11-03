@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "rows": 576,
+  "agent_calls": 499,
+  "all_original_audit_fields_preserved_except_auditor_digest": true,
+  "original_audit_sha256": "b7f998ec3c89cf10655b9a80774f149aa81ebdaca16cf7f20301e2f8fabe296d",
+  "new_audit_sha256": "c407cc3ac5fa03781e29fdc2062deb28a0ffb43921fd61ca95b8e30e945fc934"
+}

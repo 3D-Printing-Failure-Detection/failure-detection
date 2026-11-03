@@ -1,0 +1,66 @@
+{
+  "control_checkpoint_reproduced_exactly": true,
+  "matched_base_data_groups_sampling_and_initialization": true,
+  "models": {
+    "control": {
+      "checkpoint_sha256": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+      "validation_boundary_mae_mm": 0.07220857169764187,
+      "near_boundary_sign_accuracy": 0.8049735836500282,
+      "export_max_abs_error": 6.5267086029052734e-06,
+      "distance_objective": {
+        "beta_mm": 0.05,
+        "overprediction_weight": 1.0,
+        "underprediction_weight": 1.0,
+        "calibrated_probability": false
+      },
+      "kernel": [
+        [
+          0.31614434719085693,
+          -0.03121373988687992,
+          0.2016325145959854
+        ],
+        [
+          -0.033405523747205734,
+          0.3863062262535095,
+          -0.07896038889884949
+        ],
+        [
+          0.1391802430152893,
+          -0.08094165474176407,
+          0.18708674609661102
+        ]
+      ],
+      "bias": -0.023000814020633698
+    },
+    "gap_sensitive": {
+      "checkpoint_sha256": "94ba677d788f1d4a515e69e817ae857da082607383913279d45698dd7d8efa08",
+      "validation_boundary_mae_mm": 0.07407343734119458,
+      "near_boundary_sign_accuracy": 0.7997951144490164,
+      "export_max_abs_error": 6.496906280517578e-06,
+      "distance_objective": {
+        "beta_mm": 0.05,
+        "overprediction_weight": 2.0,
+        "underprediction_weight": 1.0,
+        "calibrated_probability": false
+      },
+      "kernel": [
+        [
+          0.29243770241737366,
+          -0.061570148915052414,
+          0.22371022403240204
+        ],
+        [
+          -0.05792614445090294,
+          0.4121223986148834,
+          -0.09632696211338043
+        ],
+        [
+          0.1845715343952179,
+          -0.09515969455242157,
+          0.1922319382429123
+        ]
+      ],
+      "bias": -0.046444669365882874
+    }
+  }
+}

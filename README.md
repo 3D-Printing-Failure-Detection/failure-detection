@@ -103,21 +103,28 @@ actual recovery trial using classical bases with learned walls scores 2/4 versus
 the previous camera policy's 3/4, so both changes are rejected. The completed
 full-grid trial combines the improved learned fit forecast with analytical
 containers: **136/240 functional completions**, with and without Qwen, versus
-the earlier best analytical policy's **133/240**. All of that baseline's successes
-are retained, defective finishes fall from three to one, and all 48 clean controls
-pass. The 576 new rows and original 4,320 rows are audited. Qwen makes 499 actual
+the matched analytical policy's **133/240** using the same current measurement
+code. All of that baseline's successes are retained; both have one defective
+finish and pass all 48 clean controls. The complete comparison has 5,184 audited
+rows across 18 configurations. Qwen makes 499 actual
 requests and adds no completions. These are consumed development cases; some
-successes from other earlier policies are still lost. A current-code analytical
-control is running to distinguish the learned policy's benefit from measurement
-fixes. A separate 24-run historical check shows that analytical
+successes from other earlier policies are still lost. The older analytical
+version had three defective finishes: the reduction to one also occurs without
+learning, so it is not a demonstrated neural-model benefit. A separate 24-run
+historical check shows that analytical
 containers lose two earlier rescues; using the original learned camera as a
 joint-forecast alternative retains both, with no defective finishes and all
 clean controls passed. Qwen makes 11 calls and ties neural-only. That variant's
 full-grid follow-up is now running. Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup
-diagnostic, removing its false gap/base/thickness alarms. Its broader 2,040-frame
-validation containing real gaps is running; no new recovery gain is claimed.
+diagnostic, removing its false gap/base/thickness alarms. However, its complete
+2,040-frame validation misses ten real gaps versus the original camera's five,
+despite reducing false gap alarms from 63 to 35. It fails that gate, and its
+conditional recovery run is skipped; no new recovery gain is claimed.
+A follow-up doubles the training penalty for invented material. Its matched
+control reproduces exactly, but the candidate introduces two false wall gaps in
+the full cup diagnostic, so it is also rejected before recovery evaluation.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.

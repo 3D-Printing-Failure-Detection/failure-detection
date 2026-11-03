@@ -70,23 +70,23 @@ is still unmet; historical regression and a new frozen test are required.
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
 {\Large\bfseries\color{teal}136/240} & {\Large\bfseries 133/240} & {\Large\bfseries 126/240}\\
-Latest neural + Qwen & Earlier best analytical & Earlier neural + Qwen\\
+Latest neural + Qwen & Matched analytical & Earlier neural + Qwen\\
 \bottomrule
 \end{tabular*}
 \end{center}
 These are functional completions on the same \emph{240 simulated fault cases
-across all four parts}. The latest policy preserves every success of the earlier
-best analytical policy, with one defective finish versus three and all 48 clean
-controls passed. Qwen makes 499 actual requests and matches neural-only outcomes.
-These are consumed development cases. A current-code analytical control is
-running to separate learned recovery gains from accompanying measurement fixes.
+across all four parts}. The latest policy preserves every matched analytical
+success, with one defective finish each and all 48 clean controls passed. Qwen
+makes 499 actual requests and matches neural-only outcomes. These are consumed
+development cases. The three-print gain survives the same-code control; the
+older baseline's reduction from three defects to one also occurs without learning.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The 4,896-row development comparison completes at 136/240. Other prior successes remain lost. A second camera variant and matched analytical control are running; fresh-test superiority is unproven.\\
+Latest checks & The 5,184-row comparison confirms 136/240 versus matched analytical 133/240. Other prior successes remain lost. New camera refinements fail validation; a further recovery comparison is running. Fresh-test superiority is unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1402,6 +1402,7 @@ included on consumed seeds 1001--1004.
 Policy & Completions & Rescues & Defective & Clean \\
 \midrule
 Earlier analytical preventive & 133/240 & 15 & 3 & 48/48 \\
+Matched current analytical & 133/240 & 15 & 1 & 48/48 \\
 Latest neural & 136/240 & 18 & 1 & 48/48 \\
 Latest neural + Qwen & 136/240 & 18 & 1 & 48/48 \\
 \bottomrule
@@ -1420,13 +1421,21 @@ cases and 2,064 on clean controls.
 
 \subsection*{Separate learning from accompanying measurement changes}
 The earlier analytical baseline used an older contour-conversion implementation.
-\texttt{matched-analytical-v26} therefore runs the complete 288-case analytical
-control with the exact current source and classical camera used above. It makes
-no neural or agent calls and retains a separate comparison label. Its result is
-pending. The difference includes learned forecasting and associated recovery
-proposals; it is not a pure forecast-only ablation. The second camera variant's
-full comparison is also running. Neither partial result nor a consumed grid can
-establish fresh-test superiority.
+\texttt{matched-analytical-v26} completes all 288 analytical-control cases with
+the exact current source and classical camera used above. It makes no neural or
+agent calls and retains a separate comparison label. The combined 5,184-row
+comparison confirms 136/240 versus 133/240, with every analytical success retained
+and one defective finish each. The three gains remain the spacer shifts. Thus
+the learned policy adds three rescues; the earlier reduction from three defects
+to one also occurs without learning. The difference includes forecasting and
+associated proposals, not a pure forecast-only ablation. Fresh-test superiority
+remains unproven.
+
+The initial neural-only auditor refused a control with no model. A tested
+\texttt{--analytical-only} mode now requires analytical methods, no model assets
+and zero learned/agent calls. All 38 audit/provenance checks pass. Re-auditing
+the 576 neural rows preserves the earlier results, including 499 agent calls.
+Only audit/comparison resumes; failed logs and all original raw runs are retained.
 
 \subsection*{Two additional camera ideas fail their gates}
 Fixed equal averaging of the short- and long-trained signed-distance outputs
@@ -1468,13 +1477,10 @@ Outside the actual deposited material & 2.0401 \\
 \end{tabular}
 \end{center}
 
-The spatial partition reproduces the exact metric after accounting for the
-opening's small exterior area. Predicted thin excess is 0.030745, above the
-unchanged 0.03 limit; actual excess is 0.024405. Removing all contour
-simplification worsens the prediction to 0.037241. Predicting more material or
-removing simplification is therefore not supported as a fix for this case.
-This retrospective use of truth explains the diagnostic; it does not supply a
-runtime measurement or prove a recovery improvement.
+The partition reproduces the metric after accounting for the opening's small
+exterior area. Predicted thin excess is 0.030745, above the unchanged 0.03 limit;
+actual excess is 0.024405. Removing contour simplification worsens it to 0.037241.
+Truth explains this error retrospectively; it is never a runtime input.
 
 \subsection*{Train a small spatial output layer with the camera held fixed}
 The \texttt{native-refinement-v28} experiment keeps every existing camera weight
@@ -1500,28 +1506,35 @@ Near-boundary sign accuracy & 78.16\% & 80.50\% \\
 \end{tabular}
 \end{center}
 
-Training takes 21.2 seconds. Every base weight remains identical. Maximum export
-disagreement is 0.000006527 mm, below the unchanged 0.000010 tolerance. Full-image
-inference agrees with the training computation across native block boundaries;
-the identity layer preserves the earlier camera field exactly. All 24 focused
-checks pass, including inherited training provenance. The repository suite
-passes 147 tests with three optional modules skipped.
+Training takes 21.2 seconds. Base weights remain identical. Export disagreement
+is 0.000006527 mm, below the unchanged 0.000010 tolerance. Full-image inference
+agrees across block boundaries; identity preserves the old field exactly.
+All 24 focused checks pass; the repository suite passes 147 tests with three
+optional modules skipped.
 
 The complete 160-frame cup diagnostic passes for both the raw refined camera and
 its classical-base alternative: no false gap, base, thickness or overhang
 failures. Original and identity controls exactly reproduce the earlier two false
 base layers and one false hard-thin layer. Every model observes all 160 frames.
-The 2,040-frame validation containing real gaps is now running; actual recovery
-comparisons remain conditional on that gate passing. This is an experimental
-learned output layer, not calibrated confidence or a fixed mask repair. Passing
-a known camera diagnostic earns no recovery credit.
+The complete 2,040-frame validation rejects the model: it misses ten of 57 real
+gap frames, versus five for the original camera. False gap alarms fall from 63
+to 35. Severe-thinning misses improve from 40 to nine, but false thinning alarms
+rise from zero to 16. False base alarms fall from the commanded control's 452
+to five; no true base failures occur in this validation set. These improvements
+do not waive the missed-gap gate. Passing a known diagnostic earns no recovery
+credit, and the learned output layer is not a calibrated confidence bound.
 
-The conditional \texttt{refined-recovery-gate-v29} run is queued. It retains all
-prior configurations in two separate paired comparisons: four fault cases and
-two clean controls from the camera gate, plus two historical rescues and their
-clean controls. Thirty new rows include actual Qwen, neural-only and an ablation
-without the classical-base split. Both main variants must pass all six fault
-cases and four clean controls without defective finishes before broader
-regression. Neither an incomplete grid nor a failed geometry gate advances.
+The conditional \texttt{refined-recovery-gate-v29} comparison requires both main
+variants to pass six fault cases and four clean controls without defective
+finishes. It retains earlier configurations and a camera ablation. The failed
+geometry gate skips this run: zero recovery rows are executed or credited.
+Original orchestration failures and the successful audit-only repair are retained.
+
+The follow-up \texttt{gap-sensitive-refinement-v30} doubles the training cost of
+invented material, retaining data, groups, initialization and epochs. Its control
+reproduces v28 exactly. Boundary error is 0.074073 mm versus the control's 0.072209;
+both exports pass. However, two false wall gaps return in the full cup diagnostic,
+with or without classical bases. The model is rejected before broader validation
+or recovery. All 25 focused tests pass; camera improvement remains unproven.
 
 \end{document}

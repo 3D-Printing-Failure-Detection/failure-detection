@@ -1,6 +1,7 @@
 {
-  "status": "waiting_for_prerequisites",
+  "status": "skipped",
   "recovery_rows": 0,
-  "geometry_gate_passes": null,
-  "limitation": "Two separate paired grids retain every earlier configuration and raw result. Unequal old grids are not pooled. Complete historical and all-part comparisons plus a new untouched test remain required."
+  "geometry_gate_passes": false,
+  "limitation": "Two separate paired grids retain every earlier configuration and raw result. Unequal old grids are not pooled. Complete historical and all-part comparisons plus a new untouched test remain required.",
+  "reason": "The predeclared real-gap validation gate did not pass; no recovery rows are run or credited."
 }
