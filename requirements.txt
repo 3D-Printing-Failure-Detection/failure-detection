@@ -1,21 +1,37 @@
-numpy
-scipy
+# One command installs everything:   pip install -r requirements.txt
+# Python 3.10 - 3.12 recommended.
+
+# --- core: geometry, images, G-code, specs, stress test ---
+numpy>=1.26
+scipy>=1.12
 shapely>=2.0
-opencv-python-headless
-matplotlib
-pyyaml
+opencv-python-headless>=4.9
+pyyaml>=6
+matplotlib>=3.8
 requests
-paho-mqtt         # Bambu P1S LAN MQTT
 pillow
-trimesh          # STL cross-sections (recovery.slicing)
-networkx         # trimesh path topology
-rtree            # trimesh polygon enclosure queries
-# Bambu Studio itself (GUI + CLI) is installed separately: https://bambulab.com/en/download/studio
-pytest
-# trained models (optional; the classical detector/segmenter run without these)
+trimesh            # STL cross-sections
+networkx           # trimesh path topology
+rtree              # trimesh polygon queries
+
+# --- Bambu Lab P1S (LAN mode: MQTT, FTPS, camera) ---
+paho-mqtt>=1.6
+
+# --- simulated printers (MuJoCo) used by the benchmark and tests ---
+mujoco==3.2.7
+
+# --- trained models (the default classical detector/segmenter needs none of these) ---
 torch
-timm            # ConvNeXt-V2 detector backbone
-transformers    # SegFormer segmenter
-# interface / LLM planner (optional)
+timm               # ConvNeXt-V2 detector
+transformers       # SegFormer segmenter
+
+# --- interface and LLM spec author ---
 gradio
 anthropic
+
+# --- tests ---
+pytest>=8
+
+# NOT installed by pip (see README):
+#   * Bambu Studio (slicer)          https://bambulab.com/en/download/studio
+#   * CalculiX `ccx` (optional, FE)  apt install calculix-ccx | conda install -c conda-forge calculix

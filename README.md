@@ -1,294 +1,222 @@
 # Functional recovery from 3D-print failures
 
-A feedback loop that **stress-tests a part before printing, images every layer while printing,
-and when something goes wrong measures the as-printed shape and decides to continue, adapt the
-remaining layers, or scrap**, so the finished part still does its job even if it looks different.
-Target hardware: **Bambu Lab P1S + Bambu Studio**. Based on the [Project 2 plan](#project-plan)
-(also in [docs/project-plan.pdf](docs/project-plan.pdf)).
+When a 3D print starts to fail halfway up, you normally have two bad options: throw it away or
+keep printing a broken part. This project adds a third: **watch every layer, measure what went
+wrong, check whether the part can still do its job, and if so re-plan the remaining layers and
+resume automatically.** A mug whose wall sagged into a teardrop becomes a teardrop mug that still
+holds water.
 
-> **Status: research prototype.** The classical loop now runs against three MuJoCo
-> printer rigs, with paired failure evaluations and regression tests. See the
-> [review and generalization report](docs/mujoco-report.md) for measured results,
-> corrected errors, reproduction commands, and simulation limits. Trained-model
-> development results are recorded separately below. Real-printer recovery remains
-> unvalidated.
+It is built for the **Bambu Lab P1S + Bambu Studio** and also runs fully in simulation, so you can
+try everything below **without a printer**.
 
-The repository-root [project report (PDF)](report.pdf) explains the system,
-current implementation, experimental results, limitations, and next steps.
-Its source is `docs/report.tex`; rebuild it with `python3 tools/build_report.py`.
+> **Honest status.** The software, simulators and tests run (see [Status](#status)). Recovery on a
+> *real* printer has **not** been validated: the stop-and-resume step is the thing to prove on a
+> scrap print first. Never leave an experimental print unattended.
 
-## MuJoCo across printer configurations
+**Contents:** [Quick start](#quick-start-no-printer-needed) ·
+[Use it on your P1S](#use-it-on-your-bambu-p1s-step-by-step) ·
+[Add your own part](#add-your-own-part) · [Stress test](#stress-test-the-part-before-printing) ·
+[How it works](#how-it-works) · [Commands](#command-cheat-sheet) · [Troubleshooting](#troubleshooting) ·
+[Status](#status) · [Project plan](#project-plan)
 
-The optional backend executes extrusion waypoints on Cartesian, ideal CoreXY,
-and moving-bed rigs. The same perception and policy consume calibrated MuJoCo RGB
-images on all three. These are illustrative configurations, not calibrated models
-of commercial machines. Deposition and failure evolution remain explicit geometric
-surrogates; this does not simulate molten plastic or adhesion.
+---
+
+## What you need
+
+| You need | Why | Required? |
+|---|---|---|
+| A computer with **Python 3.10 – 3.12** (macOS, Linux or Windows) | runs everything | yes |
+| `pip install -r requirements.txt` | installs every Python package (below) | yes |
+| **Bambu Studio** ([download](https://bambulab.com/en/download/studio)) | slices your part into the `.gcode.3mf` the loop reads | for a real print |
+| A **Bambu Lab P1S** on the same network as your computer | the printer | for a real print |
+| A printed **checkerboard** (10 x 7 squares of 10 mm) | calibrates the chamber camera | for a real print |
+| An **Anthropic API key** (`ANTHROPIC_API_KEY`) | lets Claude write the part's function spec | optional (a built-in fallback exists) |
+| **CalculiX** `ccx` | higher-quality stress solver | optional (a built-in solver exists) |
+
+`pip install -r requirements.txt` installs: numpy, scipy, shapely, opencv, pyyaml, matplotlib,
+trimesh (geometry and images); **paho-mqtt** (talks to the P1S); **mujoco** (simulated printers);
+torch, timm, transformers (optional trained models); gradio (web UI); anthropic (LLM spec author);
+pytest (tests). Bambu Studio and CalculiX are separate programs, installed like any other app.
+
+## Quick start (no printer needed)
+
+**1. Get the code and install**
 
 ```bash
+git clone https://github.com/3D-Printing-Failure-Detection/failure-detection.git
+cd failure-detection
 python3 -m venv .venv
-.venv/bin/pip install -r requirements-sim.txt
-MUJOCO_GL=egl OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 \
-  .venv/bin/python -m recovery.cli mujoco-eval --n 2 --seed 10 --workers 6 \
-  --out results/mujoco-persistent
+source .venv/bin/activate            # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+export PYTHONPATH=.                  # Windows PowerShell: $env:PYTHONPATH="."
 ```
 
-This images every monitored layer, includes clean controls and all four policies,
-and leaves injected failures active after adaptation. Use a fresh output directory
-for each run. The optimistic assumption in the older simulator can be measured
-separately with `--clear-failure-on-adapt --methods ours`. Results report observed
-in-place success separately from a hypothetical restart's filament cost. Raw runs,
-summary tables, environment metadata, and a source digest are saved together.
+**2. Check the install works** (about 20 seconds; expect `passed`, with 1 skipped if CalculiX is absent)
 
-On this machine, the environment and raw experiment outputs live under
-`/mnt/data/ishaan/hri-workspace/failure-detection`; `.venv` is a local symlink.
-On another machine, choose an appropriate disk for environments and results.
+```bash
+python -m pytest tests -q
+```
 
-The [follow-up policy trial](docs/functional-policy-trial.md) tests three cumulative
-changes: `measured` retains every measured layer and adds functional alarms;
-`predictive` also forecasts persistent deposition error and compensates commands;
-`functional` also ranks feasible plans by functional margin under geometric
-uncertainty. These are experimental options; `ours` remains the default. Compare
-them with `--methods ignore ours measured predictive functional`. The CLI demo
-also accepts `--policy functional`, but its older simulator clears failures after
-adaptation; use MuJoCo without `--clear-failure-on-adapt` to test persistence.
+**3. Watch the loop recover a failing print.** This injects a layer shift into a simulated mug,
+detects it, decides, and writes the adapted G-code:
 
-The [notebook-inspired constrained policy](docs/notebook-recovery-trial.md),
-available as `guarded`, separates function, executable recovery and intervention
-cost. It retains a passing continuation, checks the remaining replan budget and
-printer bounds, and builds corrections using an explicit per-layer assumption.
-Compare it with `--methods ignore ours predictive functional guarded`. The
-notebook's success probability remains an unknown input; a geometry margin is
-not used as a probability. This policy also remains opt-in.
+```bash
+python -m recovery.cli demo --part mug --kind shift --seed 3
+```
 
-The [contour prediction trial](docs/contour-prediction-trial.md) adds the opt-in
-`contour` policy. It matches inner and outer wall boundaries separately when
-forecasting deposition and computing compensation, while retaining the guarded
-policy's functional checks and action limits. Compare with
-`--methods ignore ours guarded contour`; the demo also accepts `--policy contour`.
-Use the persistent-failure MuJoCo evaluation for recovery evidence.
+Open `results/demo/event.png` (what the camera saw, what was expected, what was measured) and
+`results/demo/final.gcode` (the adapted G-code). Try `--kind collapse | warp | shift | under_extrusion | detach`
+and `--part mug | cup | spacer | bracket`.
 
-The [learned recovery experiment](docs/neural-recovery-plan.md) trains camera and
-temporal neural networks and runs a free local Qwen model in the decision loop,
-without an API key. Its optional `neural_risk` and `neural_risk_agent` policies can
-intervene before a tight fit becomes unusable. The combined model and Qwen
-completed 67/100 historical failure cases versus contour's 62/100, preserving its
-successes with zero defective finishes instead of one. All 20 clean controls
-passed. The complete first frozen comparison across 15 configurations (4,320 runs)
-rejects that candidate: 126/240 successes versus contour's 128/240 and analytical
-preventive recovery's 133/240, with five defective finishes versus three for the
-strongest baseline. The revised fit policy reaches 13/20 validation successes
-versus contour's 10/20 and the earlier neural policy's 12/20, preserving both
-methods' passing cases with no defective finishes. A broader completed fit study
-scores 78/120 for both neural variants versus 76/120 for analytical preventive
-recovery, with no defective finishes and all 24 clean controls passed. It still
-loses one analytical success, so it fails the preservation requirement. Qwen
-makes 158 actual requests but adds no successes over the neural policy alone.
-The new opt-in `--neural-hole-envelope` proposal restores that lost bracket and
-completes the full fit grid at **79/120** with and without Qwen, versus analytical
-preventive recovery's **76/120**. It preserves every analytical and previous-neural
-success, with zero defective finishes and all 24 clean controls passed. Qwen makes
-161 actual requests and ties neural-only outcomes. Historical and validation fit
-checks also preserve the previous best results (33/50 and 13/20).
-Camera regressions remain unresolved: a two-image network improves boundary error
-but still invents two wall gaps. A matched dense-connectivity trial also retains
-both gaps, despite removing false support and base alarms; its checkpoint is
-rejected. Rebalancing rare thin-material training tiles fixes one gap but adds
-eight false base alarms, so that model is also rejected. Adding the commanded
-layer mask removes both false gaps, but leaves two false base alarms and one
-false hard-thin layer; this model still fails. Longer training, verified through
-higher-precision inference, reintroduces one gap and retains those extra alarms.
-It is also rejected. Spatial-gradient training reintroduces two gaps, and an
-actual recovery trial using classical bases with learned walls scores 2/4 versus
-the previous camera policy's 3/4, so both changes are rejected. The completed
-full-grid trial combines the improved learned fit forecast with analytical
-containers: **136/240 functional completions**, with and without Qwen, versus
-the matched analytical policy's **133/240** using the same current measurement
-code. All of that baseline's successes are retained; both have one defective
-finish and pass all 48 clean controls. The complete comparison has 5,184 audited
-rows across 18 configurations. Qwen makes 499 actual
-requests and adds no completions. These are consumed development cases; some
-successes from other earlier policies are still lost. The older analytical
-version had three defective finishes: the reduction to one also occurs without
-learning, so it is not a demonstrated neural-model benefit. A separate 24-run
-historical check shows that analytical
-containers lose two earlier rescues; using the original learned camera as a
-joint-forecast alternative retains both, with no defective finishes and all
-clean controls passed. Qwen makes 11 calls and ties neural-only. That variant's
-full-grid follow-up is complete: **141/240 successes but five defective finishes**,
-versus the prior candidate's 136 successes and one defect. All active recovery
-baselines' successes are retained; five ignore successes remain lost. The
-5,760-row comparison covers 20 configurations. Qwen makes 527 actual calls and
-ties neural-only. The extra five successes restore usable prints rather than
-add genuine rescues; those remain 18. Four additional defects follow corrections
-supported only by the learned camera despite failed uncertainty checks. An
-opt-in guard now rejects such corrections. Its complete 42-row regression passes:
-both variants retain all ten required fault successes and six clean controls,
-stop the four extra defective prints, and retain the one pre-existing defect.
-Qwen makes 60 calls and ties neural-only. All 195 repository tests pass. The
-complete 576-row guarded rerun now records **141/240 successes and one defective
-finish with Qwen**, retaining all 48 clean controls. Its 6,336-row comparison
-preserves all 20 earlier configuration summaries. Qwen makes 523 actual calls.
-Neural-only records 140/240 with one defect: its extra loss has an anomalous
-camera/measurement trace before the fault and before any Qwen decision, so the
-one-case difference is not an established agent benefit. The separate repeatability
-diagnostic reproduces identical early frames and both variants succeed on full
-replay; the original failure is retained and its cause remains unresolved. The complete
-historical regression passes: both variants retain 67/100 successes with zero
-defects and all 20 clean controls, including every prior successful case.
-The fit-only comparison retains 33/50 successes with zero defects. Five ignore
-successes remain lost on the broader development grid, and
-untouched-test superiority is unproven.
-Future evaluations record compact fingerprints of every camera image through
-the first adaptation. Audits compare these prefixes across policies, including
-separate result directories; final comparisons can require this evidence from
-every configuration. Legacy results remain explicitly unverified for camera
-input consistency. All four instrumentation checks pass on the anomalous cup
-and a historical recovery: 268 paired frames match, with unchanged outcomes,
-action sequences, physics and policy options.
-The trend correction also passes its complete 46-row targeted regression:
-both variants preserve all ten earlier fault successes, add one usable mug
-completion, and pass all six clean controls with only the same existing defect.
-Qwen makes 62 calls and ties neural-only. The 864-row full follow-up is complete:
-**both variants finish 142/240 fault cases (59.2%), with one defective completion
-and all 48 clean controls passing**. This exceeds the previous best count of 141
-and retains every active recovery baseline success. Qwen makes 518 actual calls
-but adds no completions over neural-only. Four ignore successes remain lost;
-genuine rescues remain 18 versus matched analytical's 15. All 22 earlier summaries
-are unchanged in the 7,200-row comparison. A reporting-only label repair resolves
-an old/new source collision; the original failed report record and all simulation
-results are preserved. The new analytical trend control regresses to 127/240
-with three defects, so all stronger earlier analytical controls remain included.
-Copies of all earlier policy sources now support camera traces for the final
-comparison; all 25 configurations preserve their parsed policy options and
-model paths. This preparation executes no simulations or fresh test cases.
-Ten real checks across all four earlier runtime versions now preserve outcomes,
-actions, measurements and inference counts, with 561 matching paired camera
-frames. Completed results can also be stored losslessly: packing copied real
-evidence preserves every restored byte, audit and comparison result exactly.
-The historical follow-up is complete and **rejects the global trend correction**:
-both variants fall to 64/100 successes with one defective finish, versus the
-preceding guarded policy's 67/100 with zero defects. All 20 clean controls pass;
-three earlier mug recoveries are lost. Qwen makes 190 calls and ties neural-only.
-Fit-only remains 33/50 with zero defects. The next controller change must retain
-the original executable recovery plans instead of delaying their interventions.
-The opt-in `--boundary-trend-continuation-fallback` now preserves those original
-plans. Only when all original choices fail does it test unchanged continuation
-with damped trends, requiring both camera histories to pass the full spec.
-All 16 paired runs pass: both variants preserve the three historical mug
-recoveries with unchanged actions and add the usable mug completion. The next
-42 preservation runs also pass: both variants retain ten required fault successes
-and six clean controls, with no additional defects. All 3,345 common camera frames
-match across the 58 runs. Fit forecasts and the physical specification remain
-unchanged; no broader success-rate improvement is established yet.
-The final 7,200-row command matrix is prepared and passes all 300 argument checks,
-with identical frozen policy settings and model paths. It uses both existing Qwen
-workers and keeps fresh seeds untouched until development and historical gates
-pass, including resolution of every lost passing case. Exact export reconstruction
-and verified compression keep the planned run within the storage budget.
-Fixed averaging and asymmetric camera
-training both fail their geometry gates and are rejected. A learned spatial
-output layer on the frozen camera now passes the complete known 160-layer cup
-diagnostic, removing its false gap/base/thickness alarms. However, its complete
-2,040-frame validation misses ten real gaps versus the original camera's five,
-despite reducing false gap alarms from 63 to 35. It fails that gate, and its
-conditional recovery run is skipped; no new recovery gain is claimed.
-A follow-up doubles the training penalty for invented material. Its matched
-control reproduces exactly, but the candidate introduces two false wall gaps in
-the full cup diagnostic, so it is also rejected before recovery evaluation.
-A further 89-parameter nonlinear camera head slightly lowers tile boundary error
-while slightly reducing boundary sign accuracy. Its linear control reproduces
-exactly and both exports pass. It passes the complete known cup diagnostic,
-but the completed 2,040-frame check misses eleven real gaps versus the original
-camera's five. It is rejected before recovery evaluation.
-This experiment does not change the policy in the completed benchmark.
-A separate replay attributes a lost mug success to a false future connection
-prediction, while both complete camera histories pass. An opt-in
-`--contour-trend-shrinkage` discounts existing measurement uncertainty from
-analytical trend magnitudes. Both candidate variants finish the mug without
-adaptation, while both matched controls scrap it. Qwen makes three candidate
-calls and ties neural-only. Its complete preservation regression passes, followed
-by the 142/240 full comparison above. This added completion avoids an unnecessary
-scrap; it does not add a genuine rescue over the preceding guarded policy.
-New untouched seeds
-are reserved for another final test;
-these policies remain opt-in.
-An optional camera model now accepts the preceding commanded shape alongside
-the current command and two observed images. Its matched control reproduces
-exactly; the new model lowers tile-validation boundary error from 0.0788 to
-0.0758 mm. All four complete-print camera checks fail across 640 actual frames,
-so this model is rejected before any recovery trial.
-Existing camera checkpoints produce identical outputs on retained images.
-The updated source passes 201 tests with three optional modules skipped, plus
-20 Torch/export tests. Prediction improvements alone do not establish better
-print success.
-The experiment records real model calls, failed attempts and neural-only
-ablations. It does not count an agent response or lower prediction error as a
-successful print.
-Screening all 26 distinct retained cameras finds no model that resolves either
-known mug error. The nonlinear camera alone passes both local cup checks while
-retaining six selected real defect detections. A separate visibility diagnostic
-shows that the mug's thin wall loses closure in the rendered scene raster; the
-cup retains its raw raster cavity but loses visible closure after projection.
-Exact unions of predicted positive pixels resolve no additional model failures.
-A matched training experiment gives scarce true thin-material pixels half
-the training loss weight, with unchanged inputs and validation selection. Its
-control reproduces exactly, but recall of those pixels falls from 35.2% to 29.7%
-on validation tiles despite improving on training tiles. All four complete-print
-diagnostics fail across 640 frames: both mugs retain false leaks and both cups
-retain false hard-thin layers. The source passes 221 tests plus
-29 tests covering Torch export, refinement and labels. No recovery gain is established.
-A subsequent training augmentation varies fault locations and severities on
-retained clean training deposits while preserving the camera and fault model.
-Its 1,344 extra tiles contain 30,090 thin-material pixels across 64 groups; the
-two largest groups supply 18.3%, versus 93.3% in the original rare-pixel labels.
-The original validation set and number of training samples per epoch stay fixed.
-Both models finish training and the control reproduces exactly. The candidate's
-boundary error and rare-pixel validation recall worsen; all four full-print
-diagnostics also fail across 640 frames. The updated source passes 230 repository tests and 38 Torch
-and training checks; no recovery improvement is established.
-The next paired candidate combines those same augmented examples with the
-earlier thin-pixel loss weighting. All added targets and labels reproduce
-exactly, and its unweighted control reproduces the coverage checkpoint. Training
-finishes with rare-pixel validation recall at 59.1%, versus the original 35.2%,
-but more false-positive material and worse average error. The complete Cartesian
-mug check now passes; CoreXY closes its false gap but retains one false hard-thin
-layer. Both cups retain two false hard-thin layers. All 640 control feature
-records reproduce exactly; one of four complete checks passes, so the model
-is rejected before recovery evaluation.
-The latest experiment freezes this camera and trains small spatial refinement
-layers on the same augmented data. Both remove the remaining false hard-thin
-alarms on four sampled images, with unchanged thresholds and inputs. Both heads
-pass all four complete-print checks across 640 frames. However, the completed
-2,040-frame check rejects both: they lose two and three real-defect detections
-that the original camera got right, and raise false alarms from 33 to 76 and 85.
-The conditional recovery comparison is skipped. A separate replay of one known
-defective finish shows that the original neural camera already detects its thin
-wall, while the classical camera misses it. Two stronger material-overprediction
-penalties also fail a seven-frame screen: both restore false leaks on good mugs
-and still miss real defects. The old control reproduces exactly.
-An opt-in `--boundary-observed-wall-guard` now retains the existing neural
-camera's hard-thin warning on a printed wall, even when no plan passes both views.
-Its four paired known-defect runs pass: controls finish defective after one
-adaptation; both guarded variants stop at layer 101 without adapting. All 510
-common camera frames match. All 50 retained regression rows also pass. Each
-variant preserves 14/19 fault successes and all six clean controls, with unchanged
-successful action sequences and defective finishes reduced from one to zero.
-The complete comparison checks 8,217 common camera frames; Qwen makes 88 actual
-preservation requests and matches neural-only. Stopping a defective finish is
-not an additional recovered print, and this targeted check is not a fresh benchmark.
-Two further spatial heads receive the same observed images and commanded mask
-directly. Both improve average boundary error but fail the seven-frame functional
-screen, so neither enters recovery. Two missed defects have closed but excessively
-thin walls: the existing extra training weights target roughly 0.3 mm material,
-while the hard wall limit is 0.96 mm for mugs and 0.84 mm for cups. A training-only
-supervision audit targets both sides of that physical boundary. Two audit failures
-exposed original-target rounding and invalid derived geometry; both are retained.
-The corrected audit reproduces all 7,104 targets exactly and preserves all old
-critical labels. No gain is established by creating labels.
-The implementation passes 249 repository tests and 54 focused Torch/training checks.
+**4. Stress-test a part** (does it leak? does it hold its load?):
 
-## The idea in physical terms
+```bash
+python -m recovery.cli stress --part mug
+```
+
+**5. Optional: the web interface**
+
+```bash
+python -m recovery.cli app           # open the address it prints
+```
+
+## Use it on your Bambu P1S, step by step
+
+Do these in order. Steps 1–3 are one-time setup. **Always test on a cheap scrap part first.**
+
+### 1. Prepare the printer
+
+1. On the printer screen: *Settings → WLAN* — connect it to the same network as your computer.
+2. *Settings → General → LAN Only Mode* — **turn on** (and **Developer mode** if your firmware
+   offers it; recent firmware blocks third-party control without it).
+3. Write down three things: the printer's **IP address**, its **serial number**, and the
+   **8-character access code** shown on the same screen.
+4. Make sure nothing blocks ports **8883** (MQTT), **990** (file upload) and **6000** (camera).
+
+### 2. Slice the part in Bambu Studio
+
+1. Open your model, choose the **P1S** profile.
+2. In *Process* settings use: **skirt loops 0**, **brim off**, **no supports**, **arc fitting off**,
+   and *Timelapse* = **Traditional** (the head parks at every layer change so the camera sees the part).
+3. Slice the plate, then *File → Export → Export plate sliced file* and save `mypart.gcode.3mf` in
+   this project's `parts/` folder.
+
+### 3. Describe the part
+
+Create `parts/mypart.yaml`:
+
+```yaml
+name: mypart
+gcode: mypart.gcode.3mf      # the file you just exported: the loop reads the real layers from it
+description: "a bracket holding a 2 kg shelf on two M5 bolts"
+```
+
+Then let the software write the function spec (what "still works" means) for you:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...        # optional; without it a built-in fallback is used
+python -m recovery.cli specgen --part parts/mypart.yaml --describe "a bracket holding a 2 kg shelf on two M5 bolts"
+```
+
+Read the printed rationale and the file it wrote in `parts/specs/`. **Check the numbers
+(loads, tolerances) yourself**: the AI proposes, you approve. Add `spec_file: specs/mypart.yaml` to
+`parts/mypart.yaml`. More ways to write specs: [Add your own part](#add-your-own-part).
+
+### 4. Calibrate the chamber camera (once)
+
+The P1S camera looks at the bed from an angle; calibration lets the software turn that into a
+top-down view. Print or display a **10 x 7 square checkerboard, 10 mm squares**. Then:
+
+```bash
+python -m recovery.cli calibrate --ip 192.168.1.50 --code 12345678 --out calib.npz
+```
+
+It asks you to hold the board at 12 different positions/tilts, pressing Enter each time, and then
+to lay it **flat on the bed** with its first inner corner at the bed position you passed in
+`--board-origin` (default X=100 Y=100 mm). Replace the IP and access code with yours. This writes
+`calib.npz`; keep it, it only needs redoing if the camera moves.
+
+### 5. Stress-test before you print
+
+```bash
+python -m recovery.cli stress --part parts/mypart.yaml
+```
+
+If it says `FAIL`, fix the design (or the spec) before wasting filament. The live command below
+repeats this check and refuses to start on a failing part.
+
+### 6. Print with the safety net on
+
+1. Start the print from Bambu Studio or the printer screen as usual.
+2. In another terminal, start the loop (use your own IP, serial and code):
+
+```bash
+python -m recovery.cli live --part parts/mypart.yaml \
+    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz \
+    --rehome-gcode lift_xy
+```
+
+The loop now checks every finished layer. If a layer is off by more than 1 mm it decides:
+**continue**, **adapt**, or **scrap**. To adapt it stops the print, uploads a new G-code file for
+the remaining layers, and starts it, all automatically, then re-syncs its layer counter.
+
+**What to watch for.** After a stop, the printer must still know where its head is. If the first
+resumed layer lands in the wrong place, stop the print, and see [Troubleshooting](#troubleshooting).
+`--rehome-gcode lift_xy` lifts the head clear of the part and re-homes X/Y only (never Z, which
+would crash the nozzle into the part). Use `--skip-stress` only if you accept an unchecked part.
+
+## Add your own part
+
+A part is one small YAML file: geometry plus a function spec. Pick any one geometry source:
+
+```yaml
+name: mypart
+gcode: mypart.gcode.3mf          # (a) a Bambu Studio sliced file  -- best for real prints
+# stl: models/mypart.stl         # (b) a mesh, sliced internally   -- good for simulation
+# geometry:                      # (c) simple shapes written directly
+#   - add: {circle: {center: [0, 0], r: 30}}
+#   - cut: {circle: {center: [0, 0], r: 27}}
+```
+
+The **function spec** says what the part must still do after a failure: no thinner wall than X,
+holds liquid, bolt holes stay put, the handle stays attached, survives a load. Three ways to get one:
+
+| How | Command | When |
+|---|---|---|
+| **Claude writes it (default)** | `python -m recovery.cli specgen --part P --describe "what it is for"` | a new part; always review the result |
+| A ready-made template | `... specgen --part P --method template --template container` (also `compression`, `cantilever`; tweak with `--param force_N=80`) | a standard kind of part |
+| Offline rules | `... specgen --part P --method heuristic` | no API key, or a quick baseline |
+| By hand | write the keys in the YAML (see `parts/_template.yaml.txt`) and check with `--method manual --manual spec.yaml` | you know exactly what you need |
+
+Whatever the method, the result is **verified against the nominal part** (it must pass on the
+design as drawn) before it is accepted. Add `--strict` to make the Claude method fail loudly
+instead of silently using the offline fallback.
+
+## Stress-test the part before printing
+
+`stress` runs a finite-element simulation of the sliced part: liquid pressure with a leak test,
+forces on chosen faces, fixed supports, and the weaker bond between layers.
+
+```bash
+python -m recovery.cli stress --part mug                     # all load cases in the spec
+python -m recovery.cli stress --part bracket --failure shift # what if a shift happens? (what-if)
+python -m recovery.cli stress --part mug --converge          # is the answer mesh-independent?
+python -m recovery.cli fea-verify                            # check the solver against textbook results
+```
+
+It prints a safety factor per load case (**1.5 or more passes by default**) and saves stress maps
+to `results/stress/`. The solver is **CalculiX** if installed (recommended), otherwise a built-in one.
+
+Install CalculiX (optional): `sudo apt install calculix-ccx` · `conda install -c conda-forge calculix`
+· macOS: use conda or build from [calculix.de](https://www.calculix.de) (Homebrew formula names vary).
+Then `python -m recovery.cli stress --part mug --solver calculix`.
+
+> **Limits.** CalculiX is open source and widely used but **not certified**, and the voxel mesh is
+> coarse. Treat results as a screening tool, not a safety guarantee. The material numbers
+> (`recovery/fea/material.py`) are generic PLA/PETG/ABS values: print a few tensile bars on your
+> P1S and edit them for quantitative work, and physically test anything that carries a real load.
+
+## How it works
 
 A print is a stack of ~0.2 mm slabs. If slab *k* lands somewhere other than planned (wall sags,
 the part slips on the bed, a section is starved of plastic) every slab above it inherits the
@@ -297,9 +225,9 @@ bolt holes moved). The loop looks at the newest slab, measures how far it is fro
 "can this part still do its job?", and if so **re-plans the slabs not yet printed** to start from
 what is really there (a circular mug becomes a teardrop mug that still holds water).
 
-## Flowchart
+### Flowcharts
 
-### End to end
+#### End to end
 
 ```mermaid
 flowchart TD
@@ -322,7 +250,7 @@ flowchart TD
     J -- scrap --> S[Stop and restart]
 ```
 
-### Decision on a detected deviation
+#### Decision on a detected deviation
 
 ```mermaid
 flowchart TD
@@ -343,43 +271,11 @@ flowchart TD
     D5 -- none left --> SC
 ```
 
-## Software
+### The AI spec author
 
-| Need | Software |
-|---|---|
-| Language | Python 3.12 |
-| Geometry | `shapely` 2.x, `numpy`, `scipy` |
-| Images | `opencv-python-headless` (render, contours, camera homography) |
-| Detector | **ConvNeXt-V2** via `timm` (replaces the old TorchVision ResNet) |
-| Segmenter | **SegFormer / MiT** via `transformers` (replaces the old U-Net) |
-| Stress simulator | built-in voxel FEA (`recovery/fea/`), `numpy` + `scipy` |
-| Spec author | `anthropic` SDK (Claude, `claude-sonnet-5-5`), `ANTHROPIC_API_KEY`; heuristic fallback without it |
-| Slicer | **Bambu Studio** (`.gcode.3mf`); built-in 2.5D slicer + `trimesh` for STL experiments |
-| Printer | **Bambu Lab P1S**, LAN mode: MQTT (`paho-mqtt`), FTPS 990, camera port 6000 |
-| Interface / eval | `gradio`, `matplotlib`, `pytest` |
-
-```bash
-python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
-export PYTHONPATH=.
-```
-
-## Generic by construction
-
-Nothing in the pipeline knows about mugs. A part is data: geometry plus a spec.
-
-- **Geometry:** a YAML stack of `add`/`cut` shapes (circle, rect, polygon, tapers), an `stl:`
-  mesh, or a Bambu Studio `gcode:` file.
-- **Spec rules:** `container`, `min_wall_mm`, `material_volume_mm3`, `holes`, `connected`,
-  `present` (all optional) plus `material`, `loads` and `description`.
-- `parts/*.yaml` (mug, cup, spacer, bracket) are only examples. Start from
-  `parts/_template.yaml.txt`.
-
-### LLM spec author (pins form and function)
-
-```bash
-.venv/bin/python -m recovery.cli specgen --part parts/mypart.yaml \
-    --describe "bracket holding a 2 kg shelf on two M5 bolts"   # add --no-llm for heuristics only
-```
+Usage is in [Add your own part](#add-your-own-part). Methods: `--method llm` (default) | `heuristic` | `template` (`--template container|compression|cantilever
+--param force_N=80`) | `manual` (`--manual spec.yaml`, verified only). `--strict` makes the LLM
+method fail instead of silently falling back to the heuristic.
 
 The model sees a geometry summary (layer areas, wall thickness, holes, components per z-range)
 and the description, and returns the spec: form rules and the physical load cases. A verifier
@@ -388,7 +284,7 @@ violations back for up to 3 rounds, so an over-strict or inconsistent spec is re
 is accepted. Output goes to `parts/specs/<name>.yaml`; reference it with `spec_file:`. The LLM
 never decides pass/fail at run time; the same deterministic checks do.
 
-## Stress-testing simulator (`recovery/fea/`)
+### The stress simulator (`recovery/fea/`)
 
 A real (small) finite-element solver for the part about to be printed:
 
@@ -404,28 +300,43 @@ A real (small) finite-element solver for the part about to be printed:
   `--skip-stress`), **candidate filter** while adapting (`use_fea`), and **what-if** on injected
   failures.
 
+Usage is in [Stress-test the part before printing](#stress-test-the-part-before-printing).
+
+
+#### Solver choice and verification
+
+`stress --solver auto|calculix|builtin` (default `auto`: CalculiX if `ccx` is on PATH or
+`$CCX_PATH`, else built-in). The same voxel mesh, orthotropic FDM material, supports and loads go
+to either solver (`recovery/fea/calculix.py` writes a C3D8 input deck and reads back
+displacements and integration-point stresses). Install CalculiX with `apt install calculix-ccx`
+or `conda install -c conda-forge calculix`.
+
+CalculiX is open source and widely cross-checked, **not certified** by any standards body. What
+the code gives you instead is evidence you can reproduce:
+
 ```bash
-.venv/bin/python -m recovery.cli stress --part mug --h 1.0
-.venv/bin/python -m recovery.cli stress --part bracket --failure shift --severity 3 --seed 1
+python -m recovery.cli fea-verify --solver calculix    # closed-form tension + cantilever
+python -m recovery.cli stress --part mug --converge    # safety factor vs mesh size
 ```
 
-This is linear elasticity at coarse resolution, a screening tool, not certification.
+For quantitative claims you still need real material numbers (print tensile coupons flat and
+upright and edit `fea/material.py`) and a physical test of the finished part.
 
-## Perception models (video-style, no TorchVision)
+### Perception models (video-style, no TorchVision)
 
 Both nets see a short temporal stack: previous frame, current frame, expected render (7
 channels), so they see what changed between layers. Train on synthetic data, fine-tune on real:
 
 ```bash
-.venv/bin/python -m recovery.cli gen-data --n 4000 --out data/synth.npz
-.venv/bin/python -m recovery.cli train --data data/synth.npz --epochs 15 --pretrained
-.venv/bin/python -m recovery.cli train --data data/synth.npz --init runs --real data/real.npz --epochs 8 --lr-det 1e-4 --lr-seg 3e-5
+python -m recovery.cli gen-data --n 4000 --out data/synth.npz
+python -m recovery.cli train --data data/synth.npz --epochs 15 --pretrained
+python -m recovery.cli train --data data/synth.npz --init runs --real data/real.npz --epochs 8 --lr-det 1e-4 --lr-seg 3e-5
 ```
 
 Classical (threshold) versions are the default and need no training. SAM 2 video tracking is a
 possible next step, not wired in.
 
-## How the plan maps to code
+### How the plan maps to code
 
 | Plan stage | Code |
 |---|---|
@@ -439,66 +350,53 @@ possible next step, not wired in.
 | 6. Interface | `app.py`, `printer/bambu.py`, `sim.py` |
 | Evaluation | `eval/run_eval.py` (ignore, scrap, alert, ours) |
 
-## Run
+## Command cheat sheet
 
-```bash
-.venv/bin/python -m recovery.cli demo --part mug --kind collapse --seed 3
-.venv/bin/python -m recovery.cli eval --n 8
-.venv/bin/python -m recovery.cli app
-.venv/bin/python -m pytest tests
-```
+| Command | What it does |
+|---|---|
+| `demo --part P --kind K` | simulate one failure and the recovery |
+| `eval --n 8` / `mujoco-eval --n 2` | compare ignore / scrap / alert / recover over many simulated failures |
+| `specgen --part P` | write the function spec (Claude by default) |
+| `stress --part P` | FE stress test, optionally with an injected failure |
+| `fea-verify` | check the stress solver against closed-form answers |
+| `slice file.stl` | cross-section an STL |
+| `calibrate --ip ... --code ...` | calibrate the P1S camera |
+| `live --part P --ip ... --serial ... --code ... --calib calib.npz` | run the loop on a real print |
+| `app` | web interface |
+| `gen-data`, `train` | make synthetic images and train the optional neural models |
 
-## Bambu Studio + P1S setup (week 1, untested on hardware)
+Run any command with `-h` for all options. Simulation experiments and results are described in
+[docs/experiments-overview.md](docs/experiments-overview.md) and [docs/mujoco-report.md](docs/mujoco-report.md).
 
-**Slice in Bambu Studio** (P1S profile). Process settings that keep the parsed layers clean:
-skirt loops 0, brim off, no supports, "Arc fitting" off, timelapse **traditional** (the head
-parks at each layer change, giving the camera a clear view). Right-click the plate →
-*Export plate sliced file* → `part.gcode.3mf`. Headless alternative: `slicing.bambu_studio_slice`.
-Point the part YAML at it:
+## Troubleshooting
 
-```yaml
-name: mypart
-gcode: mypart.gcode.3mf        # nominal layers = exactly what the printer will print
-min_wall_mm: 1.6               # ...plus the function spec (see "Adding your own part")
-```
+| Symptom | Fix |
+|---|---|
+| `ModuleNotFoundError: recovery` | run from the project folder and `export PYTHONPATH=.` |
+| `No module named ...` | activate the venv (`source .venv/bin/activate`) and re-run `pip install -r requirements.txt` |
+| MuJoCo error about `MUJOCO_GL` (Linux server) | `export MUJOCO_GL=egl`; on a desktop leave it unset |
+| `calibrate`/`live` cannot connect | check LAN Only Mode, IP, access code, same network, ports 8883/990/6000 |
+| No camera frames | the P1S camera only streams in LAN mode; make sure only one program is using it |
+| Loop says "printer did not acknowledge stop/pause" | the printer is busy or the firmware blocks control: enable Developer mode, retry |
+| First resumed layer is shifted | the head lost its position after STOP. Re-run with `--rehome-gcode lift_xy`, or supply your own safe re-home G-code; test with a scrap print |
+| `stress` says `solver: builtin` | CalculiX not found; install it or set `CCX_PATH=/path/to/ccx` |
+| `specgen` says `source: heuristic` | no `ANTHROPIC_API_KEY` or the reply could not be used; the offline fallback was used |
+| A part is rejected as outside the camera view | the camera covers 128 mm x 128 mm; keep parts smaller or edit `recovery/config.py` |
 
-**Printer:** enable LAN mode (and Developer mode if your firmware offers it; recent firmware
-restricts third-party control without it). Note the IP, serial number and 8-digit access code.
-Ports needed: 8883 (MQTT), 990 (FTPS), 6000 (camera).
+## Status
 
-**Camera:** the P1S chamber camera looks at the bed at an angle, not top-down. Print a
-checkerboard at 100% scale, then run `calibrate` (12 shots at different tilts + one flat on the
-bed at a known position). The pose-based `BedCamera.top_down` re-projects each frame onto the
-plane at the current layer height, so it needs no overhead camera. For best accuracy fix a
-dedicated overhead webcam later; the models only see the re-projected view either way.
+What has actually been run:
 
-```bash
-.venv/bin/python -m recovery.cli calibrate --ip 192.168.1.50 --code 12345678 --out calib.npz
-# start the print from Bambu Studio / the printer screen, then:
-.venv/bin/python -m recovery.cli live --part parts/mypart.yaml --ip 192.168.1.50 \
-    --serial 01P00A000000000 --code 12345678 --calib calib.npz
-```
-
-**The risky part — changing the remaining layers.** A running Bambu job cannot be edited. The
-adapter (`BambuPrinter.replace_remaining`) pauses, stops, uploads a self-contained resume G-code
-(heat, no homing, adapted layers, `M73 L<n>` so `layer_num` keeps counting) over FTPS and starts it
-with `gcode_file`. That works only if the P1S still knows its position after STOP; if it does not,
-pass `--rehome-gcode` (re-home XY and re-reference Z at a bed corner away from the part; never
-`G28` over the part). Streaming mode is rejected because it has no execution acknowledgements.
-Pause, stop, and replacement-start timeouts now abort instead of silently proceeding.
-**Validate restart behavior on a scrap print first**: this is the hinge of the
-project (the plan's week-1 "pause, edit, resume" test).
-
-## Status: what has and hasn't been verified
-
-The [dated report](docs/mujoco-report.md) and [validation records](docs/validation/)
-supersede the original branch's unexecuted-test claims. Validation includes the
-classical loop, all four part specifications, G-code parsing, actual MuJoCo camera
-and motion tests, an analytical FEA patch test, nominal structural loads, offline
-spec generation, STL cross-section smoke testing, and saved SegFormer architecture
-reload/inference. Full learned-model training and accuracy, live LLM calls, the
-Gradio UI, Bambu Studio CLI, and physical MQTT/FTPS/camera/resume behavior remain
-outside those results.
+- **Tests:** `python -m pytest tests -q` passes (285 passed, 1 skipped when CalculiX is absent) on
+  macOS with a fresh virtual environment built from `requirements.txt`.
+- **Stress solver:** the built-in solver matches closed-form tension and cantilever results to about
+  1% (`fea-verify`). The CalculiX path is written and unit-tested to match the built-in one but
+  needs `ccx` installed to run.
+- **Simulation:** the full loop runs on three simulated printers (MuJoCo). In the team's paired
+  tests recovery did **not** yet beat simply ignoring the failure; see
+  [docs/mujoco-report.md](docs/mujoco-report.md).
+- **Not validated:** anything on a physical P1S (MQTT, upload, camera, stop-and-resume), live LLM
+  spec writing, and full neural-model training accuracy.
 
 ## Modelling assumptions to state in the report
 

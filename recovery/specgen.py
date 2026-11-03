@@ -240,6 +240,53 @@ def heuristic_spec(summary: dict, layers: List[Layer], layer_h: float) -> dict:
     return _py(spec)
 
 
+# ---- template library: reusable function presets (option for when you do not want the LLM)
+def _tpl_container(summary, p):
+    cav = summary.get("cavity")
+    if not cav:
+        raise ValueError("template 'container' needs a part with an enclosed cavity")
+    H = summary["bbox_mm"]["z"][1]
+    return dict(material=p.get("material", "PLA"), min_wall_mm=p.get("min_wall_mm", 1.2),
+                container=dict(base_h=cav["floor_thickness_mm"],
+                               capacity_mm3=[round(p.get("min_capacity_frac", 0.8) * cav["capacity_mm3"]),
+                                             round(1.25 * cav["capacity_mm3"])]),
+                loads=[dict(name="full of liquid", fluid=dict(density_kg_m3=p.get("density_kg_m3", 1000),
+                                                              fill_height_mm=round(p.get("fill_frac", 0.9) * H, 1)),
+                            supports=[dict(face="bottom")],
+                            require=dict(safety_factor=p.get("safety_factor", 1.5), leak_free=True))])
+
+
+def _tpl_compression(summary, p):
+    return dict(material=p.get("material", "PLA"),
+                loads=[dict(name=f"compression {p.get('force_N', 500)} N on top",
+                            supports=[dict(face="bottom")],
+                            loads=[dict(face="top", force_N=p.get("force_N", 500), direction=[0, 0, -1])],
+                            require=dict(safety_factor=p.get("safety_factor", 1.5)))])
+
+
+def _tpl_cantilever(summary, p):
+    H = summary["bbox_mm"]["z"][1]
+    return dict(material=p.get("material", "PLA"),
+                loads=[dict(name=f"side load {p.get('force_N', 20)} N at the free end",
+                            supports=[dict(face="bottom")],
+                            loads=[dict(face="top", force_N=p.get("force_N", 20),
+                                        direction=p.get("direction", [1, 0, 0]))],
+                            require=dict(safety_factor=p.get("safety_factor", 2.0),
+                                         max_deflection_mm=p.get("max_deflection_mm", 0.05 * H)))])
+
+
+TEMPLATES = {"container": _tpl_container, "compression": _tpl_compression, "cantilever": _tpl_cantilever}
+
+
+def template_spec(summary: dict, name: str, params: Optional[dict] = None) -> dict:
+    if name not in TEMPLATES:
+        raise ValueError(f"unknown template {name!r}; choose from {sorted(TEMPLATES)}")
+    spec = TEMPLATES[name](summary, params or {})
+    vol = summary["material_volume_mm3"]
+    spec.setdefault("material_volume_mm3", [round(0.85 * vol), round(1.15 * vol)])
+    return _py(spec)
+
+
 def _extract_json(text: str) -> dict:
     m = re.search(r"\{.*\}", text, re.S)
     if not m:
@@ -247,14 +294,45 @@ def _extract_json(text: str) -> dict:
     return json.loads(m.group(0))
 
 
+METHODS = ("llm", "heuristic", "template", "manual")
+
+
 def author_spec(layers: List[Layer], layer_h: float, description: str = "", use_llm: bool = True,
-                rounds: int = 3, client=None, model: Optional[str] = None, h=1.5, log=print) -> dict:
-    """-> {"spec": {...}, "rationale": str, "source": "llm"|"heuristic", "verified": bool,
-           "issues": [...], "summary": {...}}"""
+                rounds: int = 3, client=None, model: Optional[str] = None, h=1.5, log=print,
+                method: str = "llm", template: Optional[str] = None, template_params: Optional[dict] = None,
+                manual_spec: Optional[dict] = None, allow_fallback: bool = True) -> dict:
+    """How the function spec is produced (`method`):
+      llm        DEFAULT. Claude writes it from the description + geometry, verified and repaired.
+                 Falls back to the heuristic if unavailable, unless allow_fallback=False (then raises).
+      heuristic  deterministic: nominal topology, +-15-25% tolerances, one default load case.
+      template   a named preset (TEMPLATES) with optional parameters.
+      manual     a spec dict you wrote (manual_spec), only verified here.
+    -> {"spec": {...}, "rationale": str, "source": method, "verified": bool, "issues": [...], "summary": {...}}"""
+    if not use_llm and method == "llm":
+        method = "heuristic"
+    if method not in METHODS:
+        raise ValueError(f"method must be one of {METHODS}")
     summary = geometry_summary(layers, layer_h)
-    fallback = lambda why: _heuristic_result(summary, layers, layer_h, h, why)
-    if not use_llm:
-        return fallback("LLM disabled")
+    if method == "template":
+        spec = template_spec(summary, template or "", template_params)
+        ok, msgs, _ = verify_spec(spec, layers, layer_h, h)
+        return dict(spec=spec, rationale=f"Template '{template}' with parameters {template_params or {}}.",
+                    source="template", verified=ok, issues=msgs, summary=summary)
+    if method == "manual":
+        if manual_spec is None:
+            raise ValueError("method='manual' needs manual_spec")
+        spec = _py(manual_spec)
+        errs = validate_spec(spec, summary)
+        ok, msgs, _ = (False, errs, None) if errs else verify_spec(spec, layers, layer_h, h)
+        return dict(spec=spec, rationale="Written by hand.", source="manual", verified=ok, issues=msgs,
+                    summary=summary)
+
+    def fallback(why):
+        if not allow_fallback and method == "llm":
+            raise RuntimeError(f"LLM spec author failed and fallback is disabled: {why}")
+        return _heuristic_result(summary, layers, layer_h, h, why)
+    if method == "heuristic":
+        return fallback("heuristic method chosen")
     try:
         if client is None:
             import anthropic

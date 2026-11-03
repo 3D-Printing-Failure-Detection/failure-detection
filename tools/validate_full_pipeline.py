@@ -6,8 +6,10 @@ The main benchmark reports persistent causes separately.
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
-os.environ.setdefault("MUJOCO_GL", "egl")
+if sys.platform.startswith("linux"):          # headless servers; macOS/Windows use their native GL
+    os.environ.setdefault("MUJOCO_GL", "egl")
 
 import numpy as np
 

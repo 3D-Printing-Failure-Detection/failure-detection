@@ -8,8 +8,10 @@ The camera is a MuJoCo perspective render, rectified using its known calibration
 No segmentation IDs or true contour are passed to the controller.
 """
 import os
+import sys
 
-os.environ.setdefault("MUJOCO_GL", "egl")
+if sys.platform.startswith("linux"):          # headless servers; macOS/Windows use their native GL
+    os.environ.setdefault("MUJOCO_GL", "egl")
 
 import cv2
 import mujoco
