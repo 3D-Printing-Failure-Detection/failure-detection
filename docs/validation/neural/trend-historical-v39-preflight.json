@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "runner_pid": 3170263,
+  "runner_identity_verified": true,
+  "new_rows": 0,
+  "policy_arguments_match_audited_neural_and_analytical_controls": true,
+  "branches": {
+    "without-prior": {
+      "full": {
+        "configurations": 14,
+        "rows": 1680
+      },
+      "fits-": {
+        "configurations": 9,
+        "rows": 540
+      }
+    },
+    "with-prior": {
+      "full": {
+        "configurations": 16,
+        "rows": 1920
+      },
+      "fits-": {
+        "configurations": 11,
+        "rows": 660
+      }
+    }
+  },
+  "protocol_sha256": "bb2c88d7383f3a7b3f5c396d86aae7ecbb710ca8f5a2a271f4a6d2ef1c82b4a8"
+}

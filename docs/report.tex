@@ -1726,4 +1726,13 @@ the forecast correction's benefit from the learned policy's contribution.
 It is queued with zero new rows at this checkpoint; historical regression of
 the changed policy and untouched evaluation remain required.
 
+The historical follow-up is queued in \texttt{neural-recovery:trend-history-v39},
+conditional on both full trend variants passing their prerequisites. It adds
+240 neural/agent and 120 matched analytical rows, retaining every completed
+earlier historical configuration, including failed variants. Configuration
+preflight passes; no new simulation rows have run. Three commands with four
+workers each start only after the full comparison finishes and the 24 MB
+artifact allowance fits. Historical success still cannot establish an untouched
+test result.
+
 \end{document}

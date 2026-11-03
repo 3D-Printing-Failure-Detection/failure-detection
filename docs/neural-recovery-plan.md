@@ -443,6 +443,21 @@ benefit from the learned policy's contribution. No new rows have run at this
 checkpoint. A full result still requires historical regression of the changed
 policy and untouched evaluation before any overall superiority claim.
 
+The changed-policy historical check is now also queued as `trend-historical-v39`
+in `neural-recovery:trend-history-v39`. It runs only after both full trend variants
+meet the completion, defect, clean-control, actual-inference and active-recovery
+preservation prerequisites. It adds 240 neural/Qwen rows and 120 matched
+analytical rows, with three concurrent four-worker commands. Every completed
+guarded historical result is included even if its regression verdict is negative;
+an explicitly skipped zero-row predecessor contributes no fabricated outcomes.
+With that predecessor complete, the full comparison has 1,920 rows across
+16 configurations, and the fit-only comparison has 660 rows across eleven.
+Otherwise they contain 1,680 rows across fourteen and 540 across nine. An
+incomplete predecessor must be repaired before this follow-up runs. Configuration
+preflight matches the audited neural and analytical policy arguments; the live
+watcher has produced zero new simulation rows. Its 24 MB allowance is reserved
+only after the full trend comparison terminates and storage fits.
+
 ## Preserving historical container rescues
 
 `joint-historical-gate-v23` compares the complete improved fit policy with
@@ -710,6 +725,16 @@ retained aggregate, every archive member reproduces its original bytes, and
 both restore utilities pass an actual sample restoration. Raw result JSON,
 manifests and audits retain identical hashes. Receipts and quota-checked restore
 scripts remain under the corresponding data-volume archive directories.
+
+The [v5 archive](validation/neural/completed-report-archive-v5-summary.json)
+preserves another 488 completed historical journals and CSV exports: 18.99 MB
+compressed to 1.18 MB, with a recorded allocation reduction of 18.61 MB. All
+1,320 journal rows match their retained raw results, every archive member passes
+byte verification, and one sample from each of eight shards restores exactly.
+The original raw results, manifests, audits and successful exit records keep
+their hashes. The [receipt](validation/neural/completed-report-archive-v5-receipt.json)
+and [restore check](validation/neural/completed-report-archive-v5-restore-check.json)
+retain the details; no active experiment output is archived.
 
 ## Comparing actual earlier implementations
 
