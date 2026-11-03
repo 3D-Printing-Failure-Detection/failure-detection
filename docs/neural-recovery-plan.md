@@ -365,12 +365,19 @@ do not establish fewer missed gaps or better recovery.
 
 The full 160-frame cup diagnostic passes for both raw learned geometry and the
 classical-base hybrid: no false gaps, base failures, thinning or overhang. The
-linear control and actual truth reproduce exactly. This releases the same
-2,040-frame, 36-group geometry comparison, which is running. The original
-camera and linear control must reproduce all prior frame measurements. Gap
-false positives, gap misses and severe-thinning misses may not exceed the
-original camera's counts. Failed gates skip recovery; fresh seeds stay untouched.
-The experiment runs in `neural-recovery:nonlinear-v35`, using two CPU threads and
+linear control and actual truth reproduce exactly. The completed
+2,040-frame, 36-group geometry comparison reproduces every previous control
+frame exactly, but rejects the candidate: eleven real wall gaps are missed,
+versus five for the original camera and ten for the linear control. False wall
+gap alarms fall to 35 versus 63 originally; severe-thinning misses fall to eight
+versus forty. Those improvements do not offset the failed gap-recall requirement.
+The candidate also produces 36 false base alarms versus zero originally and
+five for the linear control; this collection has no true base faults, so base
+fault recall is not established. Recovery trials remain zero, and fresh seeds
+stay untouched. The retained [condition](validation/neural/nonlinear-refinement-v35-condition.json)
+and [geometry summary](validation/neural/nonlinear-refinement-v35-geometry-summary.json)
+record the negative result.
+The experiment completed in `neural-recovery:nonlinear-v35`, using two CPU threads and
 an 8 MB artifact allowance that reserves space for the live full policy test.
 All 159 repository tests pass with three optional modules skipped; all 22
 focused camera/export tests pass in the existing Torch environment. They cover
@@ -422,6 +429,19 @@ unchanged observation histories, propagation to both camera forecasts and
 unchanged learned fit states. The experiment runs in
 `neural-recovery:trend-shrinkage-v37`, with at most two simulation workers and
 an 8 MB artifact allowance. Older full and camera jobs retain their frozen sources.
+
+`trend-full-v38` is queued conditionally on all 46 targeted rows and their audits
+passing. It also waits for the current full, historical and camera jobs to
+terminate before reserving storage. The rejected nonlinear camera is not used.
+The new comparison adds 576 neural-only/Qwen rows and 288 same-source analytical
+rows with the same trend correction, across three profiles, four parts, five
+fault types plus clean controls, and development seeds 1001–1004. Eight neural
+workers and four analytical workers run in `neural-recovery:trend-full-v38`.
+All 22 previous configuration summaries must remain identical, yielding 7,200
+rows across 25 configurations. The analytical control isolates the correction's
+benefit from the learned policy's contribution. No new rows have run at this
+checkpoint. A full result still requires historical regression of the changed
+policy and untouched evaluation before any overall superiority claim.
 
 ## Preserving historical container rescues
 

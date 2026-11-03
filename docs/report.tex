@@ -1645,15 +1645,18 @@ the unchanged 0.000010 mm tolerance. Lower tile error does not establish fewer
 missed gaps or better recovery. The full 160-frame cup diagnostic passes for
 both the raw learned geometry and the classical-base hybrid, with no false gaps,
 base failures, thinning or overhang. Its linear control and actual truth reproduce
-exactly. The same 2,040-frame geometry comparison is running. Gap false positives,
-missed gaps and severe-thinning misses may not
-exceed the original camera's counts. All prior control frames must reproduce
-exactly. Failed gates skip recovery, and untouched seeds remain reserved.
+exactly. The completed 2,040-frame comparison reproduces every prior control
+frame but rejects the candidate: it misses eleven real wall gaps versus the
+original camera's five and the linear control's ten. False gap alarms fall from
+63 to 35 and severe-thinning misses from forty to eight, but the required gap
+recall is worse. There are also 36 false base alarms versus zero originally;
+this collection contains no true base faults. Recovery trials remain zero,
+and untouched seeds remain reserved.
 
 All 159 repository tests pass, with three optional modules skipped. In the
 existing Torch environment, all 22 focused camera/export tests pass, covering
 full images, native block seams, both inference precisions, exact identity
-behavior and invalid checkpoint rejection. Training and diagnostics run in
+behavior and invalid checkpoint rejection. Training and diagnostics completed in
 \texttt{neural-recovery:nonlinear-v35} with two CPU threads and an 8 MB artifact
 allowance. The separate guarded-policy benchmark retains its frozen source,
 original camera and unchanged model weights.
@@ -1713,7 +1716,14 @@ forecast/fallback tests check unchanged observations and learned fit states,
 retained deformation, suppression of small increments, preserved larger trends,
 the existing horizon and propagation to both camera forecasts. The experiment
 runs in \texttt{neural-recovery:trend-shrinkage-v37} with at most two simulation
-workers and an 8 MB artifact allowance. The ongoing full-policy and camera
-validations keep their own frozen sources.
+workers and an 8 MB artifact allowance. Older validations keep their frozen sources.
+
+The conditional \texttt{trend-full-v38} comparison waits for all 46 targeted
+rows to pass and existing jobs to finish. It adds 576 neural/agent rows and
+288 matched analytical rows using the same trend correction, retaining all
+22 previous configurations. Its 7,200-row, 25-configuration comparison separates
+the forecast correction's benefit from the learned policy's contribution.
+It is queued with zero new rows at this checkpoint; historical regression of
+the changed policy and untouched evaluation remain required.
 
 \end{document}

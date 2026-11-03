@@ -1,0 +1,130 @@
+{
+  "classical": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 27,
+      "true_negative": 1977,
+      "false_positive": 0,
+      "false_negative": 36
+    },
+    "hard_thin": {
+      "true_positive": 0,
+      "true_negative": 1992,
+      "false_positive": 0,
+      "false_negative": 48
+    },
+    "open_wall": {
+      "true_positive": 54,
+      "true_negative": 1053,
+      "false_positive": 66,
+      "false_negative": 3
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 192,
+      "false_positive": 0,
+      "false_negative": 0
+    }
+  },
+  "original": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 22,
+      "true_negative": 1977,
+      "false_positive": 0,
+      "false_negative": 41
+    },
+    "hard_thin": {
+      "true_positive": 8,
+      "true_negative": 1992,
+      "false_positive": 0,
+      "false_negative": 40
+    },
+    "open_wall": {
+      "true_positive": 52,
+      "true_negative": 1056,
+      "false_positive": 63,
+      "false_negative": 5
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 192,
+      "false_positive": 0,
+      "false_negative": 0
+    }
+  },
+  "control": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 859,
+      "false_positive": 5,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 56,
+      "true_negative": 1939,
+      "false_positive": 38,
+      "false_negative": 7
+    },
+    "hard_thin": {
+      "true_positive": 39,
+      "true_negative": 1976,
+      "false_positive": 16,
+      "false_negative": 9
+    },
+    "open_wall": {
+      "true_positive": 47,
+      "true_negative": 1084,
+      "false_positive": 35,
+      "false_negative": 10
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 188,
+      "false_positive": 4,
+      "false_negative": 0
+    }
+  },
+  "nonlinear": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 828,
+      "false_positive": 36,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 56,
+      "true_negative": 1939,
+      "false_positive": 38,
+      "false_negative": 7
+    },
+    "hard_thin": {
+      "true_positive": 40,
+      "true_negative": 1977,
+      "false_positive": 15,
+      "false_negative": 8
+    },
+    "open_wall": {
+      "true_positive": 46,
+      "true_negative": 1084,
+      "false_positive": 35,
+      "false_negative": 11
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 187,
+      "false_positive": 5,
+      "false_negative": 0
+    }
+  }
+}

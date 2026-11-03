@@ -140,8 +140,9 @@ control reproduces exactly, but the candidate introduces two false wall gaps in
 the full cup diagnostic, so it is also rejected before recovery evaluation.
 A further 89-parameter nonlinear camera head slightly lowers tile boundary error
 while slightly reducing boundary sign accuracy. Its linear control reproduces
-exactly and both exports pass. It passes the complete known cup diagnostic;
-the broader real-gap check is running.
+exactly and both exports pass. It passes the complete known cup diagnostic,
+but the completed 2,040-frame check misses eleven real gaps versus the original
+camera's five. It is rejected before recovery evaluation.
 This experiment does not change the guarded policy currently being benchmarked.
 A separate replay attributes a lost mug success to a false future connection
 prediction, while both complete camera histories pass. An opt-in
@@ -150,6 +151,9 @@ analytical trend magnitudes. Both candidate variants finish the mug without
 adaptation, while both matched controls scrap it. Qwen makes three candidate
 calls and ties neural-only. The 42-run preservation regression is now running;
 this retained usable print does not establish a new overall gain.
+A full comparison is queued only if that regression passes. It adds a matched
+analytical trend control, retains all 22 previous configurations, and waits for
+the current validation jobs before starting its 864 new simulations.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.

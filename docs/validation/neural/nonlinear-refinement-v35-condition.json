@@ -1,5 +1,5 @@
 {
-  "status": "running_geometry_validation",
+  "status": "rejected",
   "diagnostic_passes": true,
   "control_checkpoint_and_full_diagnostic_reproduced_exactly": true,
   "hybrid_candidate": {
@@ -20,7 +20,92 @@
       "thin_layers": 0
     }
   },
-  "geometry_status": "running",
+  "geometry_status": "complete",
   "recovery_trials": 0,
-  "limitation": "Nonlinear refinement is experimental, not calibrated confidence. Passing consumed diagnostics does not establish recovery or fresh-test superiority; failed gates skip recovery and broader follow-ups."
+  "limitation": "Nonlinear refinement is experimental, not calibrated confidence. Passing consumed diagnostics does not establish recovery or fresh-test superiority; failed gates skip recovery and broader follow-ups.",
+  "geometry_gate_passes": false,
+  "all_previous_geometry_control_frames_reproduced_exactly": true,
+  "geometry_counts": {
+    "classical": {
+      "open_wall": {
+        "true_positive": 54,
+        "true_negative": 1053,
+        "false_positive": 66,
+        "false_negative": 3
+      },
+      "hard_thin": {
+        "true_positive": 0,
+        "true_negative": 1992,
+        "false_positive": 0,
+        "false_negative": 48
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 864,
+        "false_positive": 0,
+        "false_negative": 0
+      }
+    },
+    "original": {
+      "open_wall": {
+        "true_positive": 52,
+        "true_negative": 1056,
+        "false_positive": 63,
+        "false_negative": 5
+      },
+      "hard_thin": {
+        "true_positive": 8,
+        "true_negative": 1992,
+        "false_positive": 0,
+        "false_negative": 40
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 864,
+        "false_positive": 0,
+        "false_negative": 0
+      }
+    },
+    "control": {
+      "open_wall": {
+        "true_positive": 47,
+        "true_negative": 1084,
+        "false_positive": 35,
+        "false_negative": 10
+      },
+      "hard_thin": {
+        "true_positive": 39,
+        "true_negative": 1976,
+        "false_positive": 16,
+        "false_negative": 9
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 859,
+        "false_positive": 5,
+        "false_negative": 0
+      }
+    },
+    "nonlinear": {
+      "open_wall": {
+        "true_positive": 46,
+        "true_negative": 1084,
+        "false_positive": 35,
+        "false_negative": 11
+      },
+      "hard_thin": {
+        "true_positive": 40,
+        "true_negative": 1977,
+        "false_positive": 15,
+        "false_negative": 8
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 828,
+        "false_positive": 36,
+        "false_negative": 0
+      }
+    }
+  },
+  "base_fault_recall_not_established": true
 }

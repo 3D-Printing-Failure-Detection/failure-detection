@@ -1,0 +1,34 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/matrix/results": {
+    "neural_risk": "previous_combined_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-a/results": {
+    "neural_risk_agent": "previous_combined_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-b/results": {
+    "neural_risk_agent": "previous_combined_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/camera/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/classical/results": {
+    "neural_risk": "previous_classical_camera_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/full/results": {
+    "neural_risk": "analytical_containers_neural",
+    "neural_risk_agent": "analytical_containers_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/full/results": {
+    "neural_risk": "joint_camera_neural",
+    "neural_risk_agent": "joint_camera_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-matched-analytical-v26/full/results": {
+    "contour_risk": "matched_analytical"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-full-v33/full/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural/results": {
+    "neural_risk": "neural_risk",
+    "neural_risk_agent": "neural_risk_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/analytical/results": {
+    "contour_risk": "trend_analytical"
+  }
+}
