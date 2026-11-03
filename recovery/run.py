@@ -52,6 +52,7 @@ def run_scenario(part_name, kind="collapse", seed=0, severity=None, policy="ours
                      log=log).run()
     ig = SimPrinter(nom, f, seed=seed, start_idx=f.k0)
     ig.fast_forward()
-    gcode, _ = write_gcode(pr.printed if not pr.cancelled else nom[:pr.n_done], part.layer_h,
-                           origin=part.origin)
+    # what the printer was told to print (nominal, then any adapted layers), not the simulated
+    # deformed result; a scrapped print stops where it was cancelled
+    gcode, _ = write_gcode(pr.plan[:pr.n_done], part.layer_h, origin=part.origin)
     return Scenario(part, nom, f, res, pr.printed, check(ig.printed, nom, part.spec, part.layer_h), gcode)

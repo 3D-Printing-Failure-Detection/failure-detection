@@ -16,6 +16,21 @@ def _draw(ax, region, **kw):
             ax.plot(x, y, **kw)
 
 
+def layer_preview(layers, title="", n=4):
+    """Outlines of a few layers (first, evenly spaced, last) as parsed from G-code, to check by
+    eye that holes are holes and infill did not punch fake ones."""
+    idx = sorted({int(round(i)) for i in np.linspace(0, len(layers) - 1, n)})
+    fig, axs = plt.subplots(1, len(idx), figsize=(3.4 * len(idx), 3.6), squeeze=False)
+    for ax, i in zip(axs[0], idx):
+        lay = layers[i]
+        _draw(ax, lay.region, color="#1f77b4", lw=1.0)
+        ax.set_aspect("equal")
+        ax.set_title(f"layer {i}  z={lay.z:.2f}  holes={F.base(lay)['n_main_holes']}", fontsize=9)
+    fig.suptitle(title)
+    fig.tight_layout()
+    return fig
+
+
 def event_figure(nominal, event, final_layers, title=""):
     """Left: expected vs measured contour at the alarm layer. Middle: nominal vs adapted
     cross-section at the top of the part. Right: interior area by height (nominal / final)."""

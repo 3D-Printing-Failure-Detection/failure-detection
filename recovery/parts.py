@@ -28,6 +28,7 @@ into parts/ (or pass any path with --part).
 from pathlib import Path
 from typing import List
 
+import numpy as np
 import yaml
 from shapely.affinity import translate
 from shapely.geometry import Point, Polygon, box
@@ -82,6 +83,7 @@ def _csg_fn(geometry: List[dict], height: float):
 
 class Part:
     """name, height, layer_h, spec, and layers() -> nominal layer stack."""
+    dropped_layers = 0                            # set by from_gcode
 
     def __init__(self, name, spec, layer_h=0.25, fn=None, height=None, layers=None,
                  origin=None, gcode_text=None):
@@ -112,6 +114,34 @@ class Part:
         return self._layers
 
     @classmethod
+    def from_gcode(cls, src, spec=None, name=None, plate=1) -> "Part":
+        """Nominal layers from a sliced file (Bambu Studio .gcode.3mf or plain .gcode), recentred
+        on the part. `dropped_layers` counts layers with no part extrusion, which are skipped: if
+        it is not 0, layer indices no longer match the printer's layer numbers."""
+        from .gcode import gcode_to_layers
+        from .slicing import read_gcode_3mf
+        src = Path(src)
+        text = read_gcode_3mf(src, plate)
+        parsed = gcode_to_layers(text)
+        raw = [l for l in parsed if not l.region.is_empty]
+        if not raw:
+            raise ValueError(f"no printable layers parsed from {src}; run `python -m recovery.cli "
+                             f"check-gcode {src}` to see which markers the file uses")
+        minx = min(l.region.bounds[0] for l in raw[:5])
+        miny = min(l.region.bounds[1] for l in raw[:5])
+        maxx = max(l.region.bounds[2] for l in raw[:5])
+        maxy = max(l.region.bounds[3] for l in raw[:5])
+        ox, oy = (minx + maxx) / 2, (miny + maxy) / 2         # footprint centre, bed-centred coords
+        layers = [Layer(l.z, translate(l.region, -ox, -oy)) for l in raw]
+        # the first layer is often thicker than the rest; use the typical step
+        lh = round(float(np.median(np.diff([0.0] + [l.z for l in layers]))), 4)
+        origin = (C.BED_CENTER[0] + ox, C.BED_CENTER[1] + oy)
+        part = cls(name or src.name.split(".")[0], dict(spec or {}), lh, layers=layers, origin=origin,
+                   gcode_text=text)
+        part.dropped_layers = len(parsed) - len(raw)
+        return part
+
+    @classmethod
     def from_yaml(cls, path) -> "Part":
         path = Path(path)
         d = yaml.safe_load(path.read_text())
@@ -123,22 +153,9 @@ class Part:
         name = d.get("name", path.stem)
         lh = float(d.get("layer_h", 0.25))
         if "gcode" in d:
-            from .gcode import gcode_to_layers
-            from .slicing import read_gcode_3mf
             src = Path(d["gcode"])
             src = src if src.is_absolute() else path.parent / src
-            text = read_gcode_3mf(src, d.get("plate", 1))
-            raw = gcode_to_layers(text)
-            raw = [l for l in raw if not l.region.is_empty]
-            minx = min(l.region.bounds[0] for l in raw[:5])
-            miny = min(l.region.bounds[1] for l in raw[:5])
-            maxx = max(l.region.bounds[2] for l in raw[:5])
-            maxy = max(l.region.bounds[3] for l in raw[:5])
-            ox, oy = (minx + maxx) / 2, (miny + maxy) / 2         # footprint centre, bed-centred coords
-            layers = [Layer(l.z, translate(l.region, -ox, -oy)) for l in raw]
-            lh = round(layers[-1].z / len(layers), 4)
-            origin = (C.BED_CENTER[0] + ox, C.BED_CENTER[1] + oy)
-            return cls(name, d, lh, layers=layers, origin=origin, gcode_text=text)
+            return cls.from_gcode(src, d, name, d.get("plate", 1))
         if "stl" in d:
             from .slicing import stl_to_layers
             stl = Path(d["stl"])

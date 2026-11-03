@@ -9,8 +9,11 @@
   fea-verify  check the FE solver against closed-form benchmarks
   stress    FE stress-test the part about to be printed (optionally with an injected failure)
   slice     cross-section an STL into layers and write G-code (no slicer needed)
+  check-gcode  offline: what the parser makes of a sliced file (markers, layers, outline rebuild)
+  probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
-  live      run the loop on a real Bambu P1S (print started from Bambu Studio)
+  watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
+  live      run the loop on a real Bambu P1S (print started from Bambu Studio); acts on alarms
 """
 import argparse
 import sys
@@ -84,6 +87,28 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    cg = sub.add_parser("check-gcode")
+    cg.add_argument("file", help="Bambu Studio .gcode.3mf or a plain .gcode")
+    cg.add_argument("--plate", type=int, default=1)
+    cg.add_argument("--out", default="results/check-gcode", help="where to save the layer preview")
+    pb = sub.add_parser("probe")
+    pb.add_argument("--ip", required=True)
+    pb.add_argument("--serial", required=True)
+    pb.add_argument("--code", required=True, help="printer LAN access code")
+    pb.add_argument("--calib", default=None, help="optional calib.npz: also save a top-down view")
+    pb.add_argument("--out", default="results/probe")
+    wt = sub.add_parser("watch")
+    src = wt.add_mutually_exclusive_group(required=True)
+    src.add_argument("--part", help="part YAML with `gcode:` (and a spec, so decisions are meaningful)")
+    src.add_argument("--gcode", help="sliced .gcode.3mf/.gcode directly (no function spec)")
+    wt.add_argument("--plate", type=int, default=1)
+    wt.add_argument("--ip", required=True)
+    wt.add_argument("--serial", required=True)
+    wt.add_argument("--code", required=True)
+    wt.add_argument("--calib", default="calib.npz")
+    wt.add_argument("--models", default="classical", choices=["classical", "torch"])
+    wt.add_argument("--no-decide", action="store_true", help="only detect; skip the (slower) policy")
+    wt.add_argument("--out", default="results/watch")
     lv = sub.add_parser("live")
     lv.add_argument("--part", required=True, help="part YAML with `gcode:` pointing at the sliced .gcode.3mf")
     lv.add_argument("--ip", required=True)
@@ -91,7 +116,7 @@ def main(argv=None):
     lv.add_argument("--code", required=True)
     lv.add_argument("--calib", default="calib.npz")
     lv.add_argument("--models", default="classical", choices=["classical", "torch"])
-    lv.add_argument("--mode", default="restart", choices=["restart", "stream"])
+    lv.add_argument("--mode", default="restart", choices=["restart"])
     lv.add_argument("--rehome-gcode", default="", help="G-code run before resuming, or preset: none, lift_xy")
     lv.add_argument("--skip-stress", action="store_true", help="do not gate the print on the FE stress test")
 
@@ -152,6 +177,37 @@ def main(argv=None):
     if a.cmd == "calibrate":
         from .live import calibrate
         calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        return
+    if a.cmd == "check-gcode":
+        from .gcode import inspect_gcode
+        from .parts import Part
+        from .slicing import read_gcode_3mf
+        rep = inspect_gcode(read_gcode_3mf(a.file, a.plate))
+        for k, v in rep.items():
+            print(f"{k:22s} {v}")
+        try:
+            part = Part.from_gcode(a.file, plate=a.plate)
+            part.layers()                     # also checks the part fits the camera field of view
+        except ValueError as e:
+            raise SystemExit(f"NOT USABLE: {e}")
+        from .viz import layer_preview
+        out = Path(a.out)
+        out.mkdir(parents=True, exist_ok=True)
+        path = out / f"{part.name}_layers.png"
+        layer_preview(part.layers(), f"{part.name}: {len(part.layers())} layers, {part.layer_h} mm").savefig(path, dpi=140)
+        ok = rep["layers_with_material"] > 0 and not part.dropped_layers and \
+            rep["slicer_total_layers"] in (None, len(part.layers()))
+        print(f"preview -> {path}")
+        print("verdict:", "looks usable" if ok else "CHECK: layer count/empty layers differ from the slicer's")
+        return
+    if a.cmd == "probe":
+        from .live import probe
+        probe(a.ip, a.serial, a.code, a.out, a.calib)
+        return
+    if a.cmd == "watch":
+        from .live import run_watch
+        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.models, a.out,
+                  decide=not a.no_decide, plate=a.plate)
         return
     if a.cmd == "live":
         from .live import run_live

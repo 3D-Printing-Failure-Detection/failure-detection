@@ -145,7 +145,33 @@ python -m recovery.cli stress --part parts/mypart.yaml
 If it says `FAIL`, fix the design (or the spec) before wasting filament. The live command below
 repeats this check and refuses to start on a failing part.
 
+### 5b. First runs: check, probe, then watch only (do this before step 6)
+
+None of these send a print command, so they are safe on any print. Steps 3 and 5 are not needed.
+
+```bash
+# offline: does our parser understand your Bambu Studio export? (markers, layer count, outlines)
+python -m recovery.cli check-gcode parts/mypart.gcode.3mf
+# read-only: printer status over MQTT + one camera frame saved to results/probe/
+python -m recovery.cli probe --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678
+# start the print as usual, then watch it: measures every layer, logs what it WOULD do
+python -m recovery.cli watch --gcode parts/mypart.gcode.3mf \
+    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz
+```
+
+- `check-gcode` should end with `looks usable` and its preview PNG should show real holes only.
+  If it reports 0 layers or a layer count that differs from the slicer's, stop and send the
+  output to the team: `live` would match frames to the wrong layers.
+- `watch` writes `results/watch/<time>/`: `layers.jsonl` (one line per layer: label, deviation,
+  and on an alarm `would_action`/`would_reason`), `meta.json`, and `frames/` (raw camera frame,
+  top-down view and expected mask per layer). These are our first real images; keep them.
+  Ctrl-C stops watching without affecting the print. A long print can run inside `tmux`.
+- On a clean print every layer should be `ok`. Alarms on a clean print are false alarms:
+  tune thresholds and calibration before letting `live` act.
+
 ### 6. Print with the safety net on
+
+Only after `watch` runs on clean prints show no false alarms.
 
 1. Start the print from Bambu Studio or the printer screen as usual.
 2. In another terminal, start the loop (use your own IP, serial and code):
