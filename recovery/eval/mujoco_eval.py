@@ -113,6 +113,7 @@ def run_case(job):
                 if method == 'neural_camera_agent':
                     from ..loop.local_agent import AgentContourPolicy, LocalSupervisor
                     policy = AgentContourPolicy(part.spec, nominal, part.layer_h,
+                        shrink_trend=options.get('contour_trend_shrinkage', False),
                         supervisor=LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
                                                    options.get('supervisor_timeout', 120)),
                         review_interval_layers=options.get('supervisor_review_interval', 8))
@@ -121,6 +122,7 @@ def run_case(job):
                     from ..loop.risk_neural import RiskAwareNeuralPolicy
                     from ..loop.local_agent import AgentNeuralPolicy, AgentRiskAwareNeuralPolicy, LocalSupervisor
                     policy_options = dict(checkpoint=options['neural_checkpoint'],
+                                          shrink_trend=options.get('contour_trend_shrinkage', False),
                                           calibrate_measurements=options.get('neural_calibrate_measurements', False),
                                           forecast_scope=options.get('neural_forecast_scope', 'all'))
                     if method in ('neural_risk', 'neural_risk_agent'):
@@ -146,6 +148,8 @@ def run_case(job):
                     from ..loop.risk_neural import RiskAwareContourPolicy
                     policy_options = ({'reserve_fit': options.get('neural_reserve_fit', False)}
                                       if method == 'contour_risk' else {})
+                    if method != 'guarded':
+                        policy_options['shrink_trend'] = options.get('contour_trend_shrinkage', False)
                     policy = {"guarded": GuardedPolicy, "contour": ContourPolicy,
                               'contour_risk': RiskAwareContourPolicy,
                               'neural_camera': ContourPolicy}[method](part.spec, nominal, part.layer_h, **policy_options)
@@ -190,6 +194,8 @@ def run_case(job):
                 neural_queries=getattr(getattr(policy, 'state', None), 'neural_queries', 0),
                 analytical_candidate_checks=getattr(policy, 'analytical_candidate_checks', 0),
                 joint_camera_checks=getattr(policy, 'joint_camera_checks', 0),
+                trend_shrinkage_queries=sum(getattr(getattr(owner, 'state', None), 'trend_shrinkage_queries', 0)
+                    for owner in (policy, getattr(policy, 'alternative', None))),
                 has_fit_constraints=bool(part.spec.get('holes')),
                 forecast_source=getattr(policy, 'forecast_source',
                     'analytical' if getattr(policy, 'state', None) is not None else None),
@@ -309,6 +315,8 @@ def main(argv=None):
                         help='prefer recovery candidates verified by both learned and analytical fit forecasts')
     parser.add_argument('--neural-hole-envelope', action='store_true',
                         help='try shared future hole clearances if existing early joint recovery choices fail the robustness guard')
+    parser.add_argument('--contour-trend-shrinkage', action='store_true',
+                        help='discount existing observation uncertainty from analytical contour trend magnitudes; trained forecasts remain unchanged')
     parser.add_argument('--boundary-checkpoint', type=Path,
                         help='learned camera boundary model for neural methods; historical baselines stay classical')
     parser.add_argument('--boundary-scope', choices=('all', 'nonfits'), default='all',
@@ -375,6 +383,7 @@ def main(argv=None):
                    neural_reserve_fit=args.neural_reserve_fit,
                    neural_joint_forecast=args.neural_joint_forecast,
                    neural_hole_envelope=args.neural_hole_envelope,
+                   contour_trend_shrinkage=args.contour_trend_shrinkage,
                    supervisor_endpoint=args.supervisor_endpoint, supervisor_model=args.supervisor_model,
                    supervisor_timeout=args.supervisor_timeout,
                    supervisor_review_interval=args.supervisor_review_interval)

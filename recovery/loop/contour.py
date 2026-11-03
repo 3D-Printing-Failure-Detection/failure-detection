@@ -82,6 +82,11 @@ class ContourResidual(Residual):
 
 
 class ContourObservationState(ObservationState):
+    def __init__(self, *args, shrink_trend=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.shrink_trend = shrink_trend
+        self.trend_shrinkage_queries = 0
+
     def observe(self, command, measured):
         estimate = Layer(measured.z, clean(measured.region.simplify(self.resolution_mm / 4)))
         self.observations.append(estimate)
@@ -106,7 +111,16 @@ class ContourObservationState(ObservationState):
             return np.zeros_like(points)
         values = np.stack([f(points, interior) for f in self.residuals])
         trend = np.median(np.diff(values, axis=0), axis=0) if len(values) > 1 else 0.
-        return values[-1] + min(ahead, 3) * np.clip(trend, -.5, .5)
+        trend = np.clip(trend, -.5, .5)
+        if self.shrink_trend and len(values) > 1:
+            # A tiny measured increment can create a false topological break
+            # when extrapolated. Discount the existing observation uncertainty
+            # from the increment's magnitude; retain its direction and the full
+            # latest measured deformation. This is not calibrated confidence.
+            magnitude = np.linalg.norm(trend, axis=1)
+            trend *= np.maximum(0., 1.-self.uncertainty_mm/np.maximum(magnitude, 1e-9))[:, None]
+            self.trend_shrinkage_queries += 1
+        return values[-1] + min(ahead, 3) * trend
 
     def predict(self, commands):
         return [Layer(l.z, _warp_rings(l.region, lambda p, interior, n=n:
@@ -126,6 +140,7 @@ class ContourObservationState(ObservationState):
 
 
 class ContourPolicy(GuardedPolicy):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, shrink_trend=False, **kwargs):
         super().__init__(*args, **kwargs)
-        self.state = ContourObservationState()
+        self.shrink_trend = shrink_trend
+        self.state = ContourObservationState(shrink_trend=shrink_trend)

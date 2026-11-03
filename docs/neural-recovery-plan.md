@@ -363,8 +363,10 @@ linear head; near-boundary sign accuracy is 80.39% versus 80.50%. Export error
 is 0.000008285 mm, within the unchanged 0.000010 mm tolerance. These tile scores
 do not establish fewer missed gaps or better recovery.
 
-The full 160-frame cup diagnostic runs first. Only a passing complete-print
-check permits the same 2,040-frame, 36-group geometry comparison. The original
+The full 160-frame cup diagnostic passes for both raw learned geometry and the
+classical-base hybrid: no false gaps, base failures, thinning or overhang. The
+linear control and actual truth reproduce exactly. This releases the same
+2,040-frame, 36-group geometry comparison, which is running. The original
 camera and linear control must reproduce all prior frame measurements. Gap
 false positives, gap misses and severe-thinning misses may not exceed the
 original camera's counts. Failed gates skip recovery; fresh seeds stay untouched.
@@ -375,6 +377,45 @@ focused camera/export tests pass in the existing Torch environment. They cover
 full images, native block seams, float32/float64 export, exact identity behavior,
 invalid weights and conflicting heads. The running guarded policy keeps its
 separate frozen source and original camera checkpoint.
+
+## Diagnosing a false future connection failure
+
+`forecast-attribution-v36` replays the consumed bedslinger mug-collapse case at
+seed 1001, with no changed commands or recovery. Both camera models see every
+one of the 160 actual frames. At layer 137, both current contour forecasts
+reproduce the recorded false connection failure near z=35.2 mm. Substituting
+actual prefix geometry leaves that forecast failure intact, while combining
+the measured prefix with the actual future passes. The actual complete print
+and both full measured histories pass. Holding the latest measured deformation
+without extrapolating its recent trend passes from either camera history.
+This attributes the selected false alarm to the future forecast; it does not
+establish a successful recovery or a generally better predictor.
+
+The optional `--contour-trend-shrinkage` subtracts the existing observation
+uncertainty from the magnitude of each clipped median increment, floored at
+zero. It retains the increment's direction, the latest measured deformation,
+all prior measurements and the existing three-layer extrapolation limit.
+The trained fit forecasts are unchanged. No fault identity, outcome or new
+fitted threshold enters the policy; the uncertainty remains an engineering
+estimate rather than a calibrated probability.
+
+`trend-shrinkage-v37` first runs a same-source default mug control and candidate,
+each with and without actual Qwen. The control must reproduce the earlier
+scrap and action sequence. Both candidates must finish the print successfully,
+with no defective finish and recorded shrinkage calls, before all 42 prior
+targeted rows run. The complete gate then requires all ten earlier fault
+successes and six clean controls, the new mug success, at most the same single
+existing defective case, and actual neural/camera/agent inference. Fit rows
+must record zero shrinkage calls. There are 46 new rows if the first phase
+passes: two controls and 44 candidate rows. Broader comparisons remain required.
+
+All 164 repository tests pass with three optional modules skipped; 21 focused
+forecast/fallback tests pass. They check retained current deformation, suppression
+of increments below existing uncertainty, preserved larger trends and horizon,
+unchanged observation histories, propagation to both camera forecasts and
+unchanged learned fit states. The experiment runs in
+`neural-recovery:trend-shrinkage-v37`, with at most two simulation workers and
+an 8 MB artifact allowance. Older full and camera jobs retain their frozen sources.
 
 ## Preserving historical container rescues
 

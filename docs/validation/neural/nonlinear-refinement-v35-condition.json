@@ -1,0 +1,26 @@
+{
+  "status": "running_geometry_validation",
+  "diagnostic_passes": true,
+  "control_checkpoint_and_full_diagnostic_reproduced_exactly": true,
+  "hybrid_candidate": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64782.00018243576,
+      "thin_layers": 0
+    }
+  },
+  "raw_candidate": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64782.00018243576,
+      "thin_layers": 0
+    }
+  },
+  "geometry_status": "running",
+  "recovery_trials": 0,
+  "limitation": "Nonlinear refinement is experimental, not calibrated confidence. Passing consumed diagnostics does not establish recovery or fresh-test superiority; failed gates skip recovery and broader follow-ups."
+}

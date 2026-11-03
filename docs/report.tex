@@ -1642,9 +1642,11 @@ Nonlinear residual & 89 & 0.071095 & 80.39\% \\
 
 The candidate's maximum Torch/NumPy export difference is 0.000008285 mm, within
 the unchanged 0.000010 mm tolerance. Lower tile error does not establish fewer
-missed gaps or better recovery. The full 160-frame cup diagnostic runs first;
-only a passing complete-print check permits the same 2,040-frame geometry
-comparison. Gap false positives, missed gaps and severe-thinning misses may not
+missed gaps or better recovery. The full 160-frame cup diagnostic passes for
+both the raw learned geometry and the classical-base hybrid, with no false gaps,
+base failures, thinning or overhang. Its linear control and actual truth reproduce
+exactly. The same 2,040-frame geometry comparison is running. Gap false positives,
+missed gaps and severe-thinning misses may not
 exceed the original camera's counts. All prior control frames must reproduce
 exactly. Failed gates skip recovery, and untouched seeds remain reserved.
 
@@ -1655,5 +1657,57 @@ behavior and invalid checkpoint rejection. Training and diagnostics run in
 \texttt{neural-recovery:nonlinear-v35} with two CPU threads and an 8 MB artifact
 allowance. The separate guarded-policy benchmark retains its frozen source,
 original camera and unchanged model weights.
+
+\clearpage
+\section{Separating camera errors from forecast errors}
+
+The \texttt{forecast-attribution-v36} replay diagnoses the consumed bedslinger
+mug-collapse case at seed 1001. It prints all 160 layers without changing any
+commands. At layer 137, both current forecasts reproduce the recorded false
+handle-connection failure near z=35.2 mm. The actual print and both complete
+camera histories pass the unchanged functional specification.
+
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Offline diagnostic & Classical camera & Learned camera \\
+\midrule
+Observed prefix + actual future & Pass & Pass \\
+Actual prefix + current forecast & Fail & Fail \\
+Observed prefix + current forecast & Fail & Fail \\
+Observed prefix + latest deformation held & Pass & Pass \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The selected false alarm comes from future extrapolation. Holding the latest
+measured deformation removes it in this diagnostic, but that does not establish
+a successful recovery or a generally better forecast. Actual future geometry is
+used only for offline attribution; it is never an estimator input.
+
+The opt-in \texttt{--contour-trend-shrinkage} discounts the existing observation
+uncertainty from each clipped median increment's magnitude, floored at zero.
+It retains the increment's direction, the complete latest deformation, measured
+history and the three-layer horizon. The trained fit forecasts are unchanged.
+There is no new fitted threshold or runtime fault/outcome input, and the
+uncertainty is not a calibrated confidence bound.
+
+The \texttt{trend-shrinkage-v37} test first runs the same-source default and
+candidate on the mug, both with and without actual Qwen. The default must
+reproduce the prior scrap and action sequence. Both candidates must finish
+successfully before all 42 earlier targeted rows run. The complete gate requires
+all ten prior fault successes, the new mug success, all six clean controls and
+at most the same single existing defective case. Actual neural, camera and
+agent calls are required; fit rows must record zero shrinkage calls. A passing
+first phase produces 46 new rows overall: two controls and 44 candidate rows.
+Full comparisons and untouched evaluation remain required.
+
+All 164 repository tests pass, with three optional modules skipped. The 21 focused
+forecast/fallback tests check unchanged observations and learned fit states,
+retained deformation, suppression of small increments, preserved larger trends,
+the existing horizon and propagation to both camera forecasts. The experiment
+runs in \texttt{neural-recovery:trend-shrinkage-v37} with at most two simulation
+workers and an 8 MB artifact allowance. The ongoing full-policy and camera
+validations keep their own frozen sources.
 
 \end{document}

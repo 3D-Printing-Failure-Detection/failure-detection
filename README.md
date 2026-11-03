@@ -125,7 +125,7 @@ supported only by the learned camera despite failed uncertainty checks. An
 opt-in guard now rejects such corrections. Its complete 42-row regression passes:
 both variants retain all ten required fault successes and six clean controls,
 stop the four extra defective prints, and retain the one pre-existing defect.
-Qwen makes 60 calls and ties neural-only. All 159 repository tests pass. The
+Qwen makes 60 calls and ties neural-only. All 164 repository tests pass. The
 576-row full rerun is now running with twelve workers, with complete historical
 regression queued afterward. The targeted result does not establish a full-grid win.
 Fixed averaging and asymmetric camera
@@ -140,8 +140,14 @@ control reproduces exactly, but the candidate introduces two false wall gaps in
 the full cup diagnostic, so it is also rejected before recovery evaluation.
 A further 89-parameter nonlinear camera head slightly lowers tile boundary error
 while slightly reducing boundary sign accuracy. Its linear control reproduces
-exactly and both exports pass; complete-print and real-gap checks are pending.
+exactly and both exports pass. It passes the complete known cup diagnostic;
+the broader real-gap check is running.
 This experiment does not change the guarded policy currently being benchmarked.
+A separate replay attributes a lost mug success to a false future connection
+prediction, while both complete camera histories pass. An opt-in
+`--contour-trend-shrinkage` discounts existing measurement uncertainty from
+analytical trend magnitudes. A matched mug test is running; only a successful
+gain permits the 42-run preservation regression. No new overall gain is claimed.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.

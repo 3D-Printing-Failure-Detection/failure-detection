@@ -25,6 +25,7 @@ class CameraFallbackMixin:
         self.joint_camera_checks = 0
         self.alternative = (ContourPolicy(self.spec, self.nominal, self.h,
             allow_adapt=self.allow_adapt, use_fea=self.use_fea,
+            shrink_trend=self.shrink_trend,
             max_correction_per_layer_mm=self.max_correction_per_layer_mm)
             if dual_segmenter is not None else None)
 
