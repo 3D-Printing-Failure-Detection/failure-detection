@@ -1729,8 +1729,8 @@ the forecast correction's benefit from the learned policy's contribution.
 The full run is underway; historical regression of
 the changed policy and untouched evaluation remain required.
 
-The historical follow-up is queued in \texttt{neural-recovery:trend-history-v39},
-conditional on both full trend variants passing their prerequisites. It adds
+The historical follow-up is queued in \texttt{neural-recovery:trend-history-v43},
+conditional on the full neural-plus-agent system passing its prerequisites. It adds
 240 neural/agent and 120 matched analytical rows, retaining every completed
 earlier historical configuration, including failed variants. Configuration
 preflight passes; no new simulation rows have run. Three commands with four
@@ -1822,11 +1822,31 @@ old inputs. Final audits and the cross-configuration comparison must require
 camera traces. The final protocol and supervisor runtime provenance will be
 frozen only after complete development and historical validation.
 
-All 186 repository tests pass, with three optional modules skipped. The 45
+All 195 repository tests pass, with three optional modules skipped. The 54
 focused camera/provenance tests include rejection of altered policy behavior,
 altered trace collection, duplicate or missing insertion sites and attempts to
 overwrite original snapshots. The earlier four real instrumentation checks
 remain separate evidence of matching images and unchanged outcomes.
+
+The \texttt{legacy-camera-trace-v44} integration additionally passes ten real
+rows across all four earlier runtime versions, including the ignore policy's
+empty trace. Consumed clean-cup and spacer-recovery cases preserve their original
+outcomes, actions, measurement IoU and inference counts. Strict audits compare
+748 recorded frames and 561 matching paired frames. These checks establish
+instrumentation compatibility, not new policy gains.
+
+The \texttt{packed-evidence-v45} check validates lossless storage on copies of
+those completed rows. Audited raw results shrink from 161,377 to 31,512 bytes,
+before receipt overhead. Restored bytes, re-audit reports and the entire
+comparison remain identical. Readers reject corrupt or ambiguous evidence;
+unfinished results cannot be packed. Original evidence remains unchanged.
+
+The original zero-row historical watcher \texttt{v39} was superseded before
+full results existed. Requiring the neural-only ablation to tie the best score
+could block a better full system. The amended \texttt{v43} protocol retains
+every full-system numerical requirement and all ablation results; its reason
+and the old terminal record are retained. This changes experimental eligibility,
+not any policy or simulation outcome.
 
 To preserve the shared storage allowance, 124 duplicate journals and CSV exports
 from the completed historical run are compressed from 6,384,738 to 424,298 bytes.

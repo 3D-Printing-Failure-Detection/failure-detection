@@ -10,6 +10,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from recovery.eval.camera_trace import validate_camera_manifest
+from tools.result_storage import load_run_bytes, verifier_digest
 
 
 def validate_outcomes(rows, clear_failure_on_adapt=False):
@@ -112,7 +113,8 @@ def main():
                         help='reject legacy runs without camera-input consistency evidence')
     args = parser.parse_args()
     manifest = json.loads((args.directory / 'manifest.json').read_text())
-    rows = [json.loads(line) for line in (args.directory / 'runs.jsonl').read_text().splitlines()]
+    raw = load_run_bytes(args.directory)
+    rows = [json.loads(line) for line in raw.splitlines()]
     assert manifest['status'] == 'complete' and not manifest.get('errors')
     assert manifest['source_sha256'] == manifest['final_source_sha256']
     checkpoints = validate_model_provenance(manifest, rows, args.analytical_only)
@@ -226,10 +228,12 @@ def main():
                     neural_queries=sum(r['neural_queries'] for r in selected),
                     seconds=sum(r['seconds'] for r in selected)))
     args.out.mkdir(parents=True, exist_ok=True)
-    raw_sha = hashlib.sha256((args.directory / 'runs.jsonl').read_bytes()).hexdigest()
+    assert load_run_bytes(args.directory) == raw, 'result bytes changed during audit'
+    raw_sha = hashlib.sha256(raw).hexdigest()
     report = dict(status='passed', source_sha256=manifest['source_sha256'],
         analytical_only=args.analytical_only,
         camera_input_consistency=camera_consistency,
+        result_storage_verifier_sha256=verifier_digest(),
         checkpoints=checkpoints, runs_sha256=raw_sha,
         rows=len(rows), actual_agent_calls=total_calls, reused_reviews=reused, summary=summary,
         agent_decision_opportunities=opportunities,

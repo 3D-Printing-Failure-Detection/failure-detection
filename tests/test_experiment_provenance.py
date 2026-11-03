@@ -90,6 +90,61 @@ def test_distinct_frozen_versions_compare_without_claiming_a_gain(comparison, mo
     assert set(report['configurations']['configurations']) == {'previous', 'candidate'}
 
 
+def test_lossless_packing_preserves_the_entire_comparison(comparison, monkeypatch):
+    from tools.result_storage import load_run_bytes, pack_runs
+    before = run_comparison(monkeypatch, comparison)
+    originals = [(directory/'runs.jsonl').read_bytes() for directory in comparison[2]]
+    for directory, original in zip(comparison[2], originals):
+        receipt = pack_runs(directory)
+        assert receipt['exact_bytes_verified_before_unlink']
+        assert not (directory/'runs.jsonl').exists()
+        assert load_run_bytes(directory) == original
+    assert run_comparison(monkeypatch, comparison) == before
+
+
+@pytest.mark.parametrize('change', ['payload', 'receipt', 'manifest', 'ambiguous', 'missing_receipt'])
+def test_packed_comparison_rejects_damaged_or_ambiguous_evidence(comparison, monkeypatch, change):
+    from tools.result_storage import pack_runs
+    directory = comparison[2][0]
+    original = (directory/'runs.jsonl').read_bytes()
+    pack_runs(directory)
+    if change == 'payload':
+        (directory/'runs.jsonl.gz').write_bytes(b'changed')
+    elif change == 'receipt':
+        path = directory/'runs-storage.json'
+        receipt = json.loads(path.read_text())
+        receipt['original_sha256'] = 'different'
+        write_json(path, receipt)
+    elif change == 'manifest':
+        path = directory/'manifest.json'
+        path.write_text(path.read_text()+'\n')
+    elif change == 'ambiguous':
+        (directory/'runs.jsonl').write_bytes(original)
+    else:
+        (directory/'runs-storage.json').unlink()
+    with pytest.raises((AssertionError, FileNotFoundError)):
+        run_comparison(monkeypatch, comparison)
+
+
+@pytest.mark.parametrize('change', ['running', 'failed_audit', 'changed_raw'])
+def test_packing_rejects_unfinished_or_unaudited_results(comparison, change):
+    from tools.result_storage import pack_runs
+    directory = comparison[2][0]
+    if change == 'changed_raw':
+        path = directory/'runs.jsonl'
+        path.write_bytes(path.read_bytes()+b'\n')
+    else:
+        path = directory/'manifest.json' if change == 'running' else directory.parent/'audit/audit.json'
+        value = json.loads(path.read_text())
+        value['status'] = 'running' if change == 'running' else 'failed'
+        write_json(path, value)
+    original = (directory/'runs.jsonl').read_bytes()
+    with pytest.raises(AssertionError):
+        pack_runs(directory)
+    assert (directory/'runs.jsonl').read_bytes() == original
+    assert not (directory/'runs.jsonl.gz').exists()
+
+
 @pytest.mark.parametrize('different_pixels', [False, True])
 def test_camera_consistency_spans_separately_audited_inputs(comparison, monkeypatch, different_pixels):
     import numpy as np

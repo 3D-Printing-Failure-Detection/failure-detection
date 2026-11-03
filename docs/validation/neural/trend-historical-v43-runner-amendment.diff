@@ -1,0 +1,42 @@
+--- v39/run.py
++++ v43/run.py
+@@ -59,7 +59,7 @@
+ assert completion['status'] == 'complete' and completion['rows'] == 7200
+ assert completion['all_22_previous_summaries_identical']
+ assert completion['comparison_sha256'] == digest(full/'comparison.json')
+-full_pins = {}
++full_pins, full_gate_results = {}, {}
+ for name in ['comparison.json', 'neural-only-comparison.json']:
+     report = read(full/name)
+     verify_inputs(report)
+@@ -68,7 +68,8 @@
+             and (not report['candidate'].endswith('_agent') or report['actual_agent'])
+             and all(not row['lost'] for row in report['comparisons'] if row['baseline'] != 'ignore'))
+     full_pins[name] = digest(full/name)
+-    if not safe:
++    full_gate_results[name] = dict(passes=bool(safe), required=name == 'comparison.json')
++    if name == 'comparison.json' and not safe:
+         condition(status='skipped', new_rows=0, reason='full trend comparison fails historical prerequisite',
+                   comparison=name, comparison_sha256=digest(full/name))
+         sys.exit(0)
+@@ -92,7 +93,7 @@
+ config = p['branches'][branch]
+ for comparison in config.values():
+     load_configurations(root/comparison['configurations_file'])
+-verification = dict(branch=branch, full_comparison_pins=full_pins, prior_terminal=prior_terminal,
++verification = dict(branch=branch, full_comparison_pins=full_pins, full_gate_results=full_gate_results, prior_terminal=prior_terminal,
+                     prior_report_pins={name: digest(prior/name) for name in prior_reports})
+ (root/'prerequisite-verification.json').write_text(json.dumps(verification, indent=2)+'\n')
+ verify()
+@@ -171,7 +172,10 @@
+     subprocess.run([sys.executable, p['attribution_script'], str(root/'comparison.json'), str(root/'attribution.json')],
+                    cwd=source, env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+ verify()
+-result = dict(status='passed' if all(report['passes'] for report in summaries.values()) else 'rejected',
++required_reports = ['comparison.json', 'fits-comparison.json']
++assert set(required_reports) <= set(summaries)
++result = dict(status='passed' if all(summaries[name]['passes'] for name in required_reports) else 'rejected',
++    required_reports=required_reports, ablation_reports_retained=True,
+     new_rows=360, branch=branch, all_previous_summaries_preserved=True,
+     full_comparison_rows=config['full']['expected_rows'], fits_comparison_rows=config['fits-']['expected_rows'],
+     reports=summaries, limitation=p['limitation'])

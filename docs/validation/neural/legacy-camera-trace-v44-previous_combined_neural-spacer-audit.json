@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+  "analytical_only": false,
+  "camera_input_consistency": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "checked_rows": 2,
+    "unchecked_legacy_rows": 0,
+    "recorded_frames": 27,
+    "paired_cases": 0,
+    "compared_frames": 0
+  },
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "d9de79901697d8af39c1c50df265a92543d59bcf0aca8ffef933b5c0109f531f",
+  "rows": 2,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 1,
+      "in_place": 1,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 16728,
+      "seconds": 48.865662996075116
+    },
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 1,
+      "in_place": 0,
+      "scrapped": 0,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 3.8133708480745554
+    }
+  ],
+  "agent_decision_opportunities": 0,
+  "agent_review_status": "not_requested",
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "905453e42efb95f9671c84ebd7dd7ea49de176833523527cb18f6cada272b9e4",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

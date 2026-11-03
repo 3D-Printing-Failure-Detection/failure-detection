@@ -7,6 +7,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.experiment_provenance import load_configurations, verify_configuration
+from tools.result_storage import load_run_bytes, verifier_digest
 from recovery.eval.camera_trace import validate_camera_manifest, validate_camera_prefixes
 
 
@@ -52,7 +53,8 @@ def main():
         audit = json.loads(audit_path.read_text())
         assert manifest['status'] == 'complete' and audit['status'] == 'passed'
         assert manifest['source_sha256'] == manifest['final_source_sha256'] == audit['source_sha256']
-        assert digest(directory/'runs.jsonl') == audit['runs_sha256']
+        raw = load_run_bytes(directory)
+        assert hashlib.sha256(raw).hexdigest() == audit['runs_sha256']
         assert manifest['completed_runs'] == manifest['expected_runs'] == audit['rows']
         assert not manifest['arguments']['clear_failure_on_adapt']
         stages.add(manifest['arguments'].get('experiment_stage', 'development'))
@@ -61,7 +63,7 @@ def main():
             checkpoints.add(manifest['neural_checkpoint_sha256'])
         if 'boundary_checkpoint_sha256' in manifest:
             boundaries.add(manifest['boundary_checkpoint_sha256'])
-        batch = [json.loads(line) for line in (directory/'runs.jsonl').read_text().splitlines()]
+        batch = [json.loads(line) for line in raw.splitlines()]
         assert len(batch) == audit['rows']
         validate_camera_manifest(manifest, batch, args.require_camera_traces)
         names = labels.get(str(directory.resolve()), {})
@@ -158,6 +160,7 @@ def main():
     report = dict(inputs=inputs, source_sha256=next(iter(sources)) if len(sources) == 1 else None,
         camera_input_consistency=camera_consistency,
         comparator_sha256=digest(Path(__file__)),
+        result_storage_verifier_sha256=verifier_digest(),
         provenance_verifier_sha256=digest(Path(__file__).with_name('experiment_provenance.py')),
         checkpoint_sha256=next(iter(checkpoints)) if len(checkpoints) == 1 else None,
         training_manifest_sha256=digest(args.training_manifest) if args.training_manifest else None, candidate=args.candidate,

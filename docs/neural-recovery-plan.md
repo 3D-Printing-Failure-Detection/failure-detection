@@ -447,10 +447,17 @@ benefit from the learned policy's contribution. The full run is underway. Its
 result still requires historical regression of the changed
 policy and untouched evaluation before any overall superiority claim.
 
-The changed-policy historical check is now also queued as `trend-historical-v39`
-in `neural-recovery:trend-history-v39`. It runs only after both full trend variants
-meet the completion, defect, clean-control, actual-inference and active-recovery
-preservation prerequisites. It adds 240 neural/Qwen rows and 120 matched
+The changed-policy historical check is queued as `trend-historical-v43`
+in `neural-recovery:trend-history-v43`. It runs only after the requested neural-plus-
+agent system meets the completion, defect, clean-control, actual-inference and
+active-recovery preservation prerequisites. The original `v39` watcher also
+required the neural-only ablation to tie the best score, which could block a
+better full system. Before any complete full-grid result existed, that zero-row
+watcher was verified idle, terminated and superseded. Its protocol, exit status
+and reason remain retained. The new protocol keeps every numerical requirement
+on the full system, all simulations and all ablation results. Neural-only
+failures remain visible but do not decide the full system's eligibility.
+It adds 240 neural/Qwen rows and 120 matched
 analytical rows, with three concurrent four-worker commands. Every completed
 guarded historical result is included even if its regression verdict is negative;
 an explicitly skipped zero-row predecessor contributes no fabricated outcomes.
@@ -622,6 +629,37 @@ adds no new policy behavior. All 186 repository tests pass with three optional
 modules skipped; 45 focused camera/provenance checks pass. Launch-time supervisor
 provenance and the final protocol remain to be frozen after full development and
 historical validation. Every final audit and comparison must require camera traces.
+
+The `legacy-camera-trace-v44` integration now passes ten real rows across all four
+distinct instrumented runtime versions, including the ignore policy's empty
+trace. A consumed clean cup and spacer recovery preserve their original outcomes,
+action sequences, measurement IoU, neural queries and boundary queries exactly.
+Strict audits and the cross-version comparator check 748 recorded frames and
+561 matching paired frames across both cases. These are compatibility checks,
+not new learning gains or fresh-test outcomes.
+
+Both existing Qwen workers on ports 8089 and 8090 pass a process, model and
+inference-command comparison. Their model and server executable hashes match,
+and both are healthy. A separate richer manifest attests the original worker
+without modifying old manifests, restarting either service or making extra
+inference requests. The live workers must be rechecked before final launch.
+
+`tools/result_storage.py` permits lossless gzip storage of completed, audited
+result rows. A receipt records the original and compressed hashes, byte counts,
+manifest and audit hashes. Exact restored bytes are verified before removing the
+raw copy. Readers reject changed payloads, receipts, manifests and ambiguous
+duplicate representations. Audits and comparisons use the original uncompressed
+hash and pin the storage verifier. Running or unaudited results cannot be packed.
+All 195 repository tests pass with three optional modules skipped; 54 focused
+camera/provenance/storage tests pass.
+
+`packed-evidence-v45` verifies this on copies of all ten completed integration
+rows across eight shards, reducing raw storage from 161,377 to 31,512 bytes
+before receipt overhead. Every restored byte, re-audit report and complete
+comparison is identical before and after packing. Original evidence remains
+unchanged. No new simulations or fresh cases are run. An initial isolated-tool
+snapshot missed the package's `recovery.types` dependency; that harness failure
+is retained and the corrected snapshot passes the full proof.
 
 The completed historical run's 124 duplicate journals/CSV exports are archived
 from 6,384,738 bytes to 424,298 bytes in `completed-report-archive-v7`. Every member

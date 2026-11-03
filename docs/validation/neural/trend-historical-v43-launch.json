@@ -1,0 +1,7 @@
+{
+  "tmux_window": "@123",
+  "session": "neural-recovery",
+  "protocol_sha256": "a6bfb0e6a15496a8f42ee72af709f9a669fe4f41dd13ae969f2b08fd72d70289",
+  "runner_sha256": "784d5113fcce01099a292027cb06bbef89d21154c7a2e0d0691f5643e5911bf5",
+  "superseded_watcher_record_sha256": "ebf787400c60bf094a6b6f5a43445991a158c285e3ffdc02cd21e5a752080d20"
+}

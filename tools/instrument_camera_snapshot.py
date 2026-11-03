@@ -18,7 +18,7 @@ from tools.experiment_provenance import file_digest, runtime_digest, simulation_
 EVALUATOR = 'recovery/eval/mujoco_eval.py'
 HELPER = 'recovery/eval/camera_trace.py'
 AUDIT_TOOLS = ('experiment_provenance.py', 'audit_neural_experiment.py',
-               'compare_neural_experiments.py')
+               'compare_neural_experiments.py', 'result_storage.py')
 PATCHES = (
     ('from .run_eval import METHODS, ScrapPolicy\n',
      'from .camera_trace import TRACE_VERSION, camera_frame_digest, encode_camera_prefix\n'),

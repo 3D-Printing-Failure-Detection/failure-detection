@@ -125,7 +125,7 @@ supported only by the learned camera despite failed uncertainty checks. An
 opt-in guard now rejects such corrections. Its complete 42-row regression passes:
 both variants retain all ten required fault successes and six clean controls,
 stop the four extra defective prints, and retain the one pre-existing defect.
-Qwen makes 60 calls and ties neural-only. All 186 repository tests pass. The
+Qwen makes 60 calls and ties neural-only. All 195 repository tests pass. The
 complete 576-row guarded rerun now records **141/240 successes and one defective
 finish with Qwen**, retaining all 48 clean controls. Its 6,336-row comparison
 preserves all 20 earlier configuration summaries. Qwen makes 523 actual calls.
@@ -154,6 +154,13 @@ in `neural-recovery:trend-full-v38`, including a matched analytical control.
 Copies of all earlier policy sources now support camera traces for the final
 comparison; all 25 configurations preserve their parsed policy options and
 model paths. This preparation executes no simulations or fresh test cases.
+Ten real checks across all four earlier runtime versions now preserve outcomes,
+actions, measurements and inference counts, with 561 matching paired camera
+frames. Completed results can also be stored losslessly: packing copied real
+evidence preserves every restored byte, audit and comparison result exactly.
+The historical follow-up is queued in `neural-recovery:trend-history-v43`;
+eligibility follows the full neural-plus-agent system, with the neural-only
+ablation still evaluated and reported.
 Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup
