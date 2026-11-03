@@ -1,0 +1,48 @@
+{
+  "status": "complete",
+  "data_sha256": "d20160664506235301c834368ccf739d589f2838d90c47334b1fa2e68cdedb52",
+  "checkpoint_sha256": {
+    "control": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+    "balanced": "b66867737cd9ca4175858e43cf592c7d095fc0f32951dc8fb258c9584ef947ab"
+  },
+  "script_sha256": "0fbea59ca55bd196599fd9a8472461627a6e0b2803ee7a9e45ccb48ecc62f718",
+  "verified_target_rows": 5760,
+  "total_rows": 5760,
+  "thin_radius_mm": 0.15,
+  "definition": "True material on the exact native grid not reconstructed by a discrete Euclidean 0.15 mm-radius opening, excluding nominal thin pixels on the same grid. Six native halo pixels prevent crop-edge effects. Diagnostic only; original target labels and runtime geometry unchanged",
+  "summary": {
+    "training": {
+      "under_extrusion_tiles": 1560,
+      "tiles_with_thin_positive_points": 39,
+      "critical_positive_points": 1648,
+      "other_positive_points_in_same_tiles": 37486,
+      "models": {
+        "control": {
+          "thin_material_recall": 0.2154126213592233,
+          "other_material_recall": 0.8495171530704796
+        },
+        "balanced": {
+          "thin_material_recall": 0.5697815533980582,
+          "other_material_recall": 0.9130875526863362
+        }
+      }
+    },
+    "validation": {
+      "under_extrusion_tiles": 960,
+      "tiles_with_thin_positive_points": 26,
+      "critical_positive_points": 1147,
+      "other_positive_points_in_same_tiles": 27985,
+      "models": {
+        "control": {
+          "thin_material_recall": 0.06015693112467306,
+          "other_material_recall": 0.8858316955511881
+        },
+        "balanced": {
+          "thin_material_recall": 0.21621621621621623,
+          "other_material_recall": 0.9259960693228515
+        }
+      }
+    }
+  },
+  "full_audit_sha256": "ef2aa86a85cc63948a7cb07b29e3d78ff551bf3e77062852a20da231c7e12ade"
+}

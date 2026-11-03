@@ -1,0 +1,475 @@
+{
+  "status": "complete",
+  "architecture": "2 observed images plus commanded mask -> 9x9 conv64 -> 1x1 conv32 -> 16 tanh heads -> pixel shuffle4",
+  "input_frames": 2,
+  "include_expected_mask": true,
+  "input_scales": [
+    1
+  ],
+  "output_upsample": 4,
+  "args": {
+    "data": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/dataset/data.npz",
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command",
+    "epochs": 40,
+    "batch_size": 32,
+    "seed": 2026,
+    "topology_weight": 0.0,
+    "skeleton_iterations": 20,
+    "temperature_mm": 0.1,
+    "sampling_audit": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/dataset/sampling-audit.json",
+    "critical_tile_fraction": 0.5,
+    "include_expected_mask": true
+  },
+  "training_groups": [
+    "cartesian-cup-clean-60",
+    "cartesian-cup-clean-61",
+    "cartesian-cup-clean-62",
+    "cartesian-cup-clean-63",
+    "cartesian-cup-clean-64",
+    "cartesian-cup-clean-65",
+    "cartesian-cup-clean-66",
+    "cartesian-cup-clean-67",
+    "cartesian-cup-collapse-60",
+    "cartesian-cup-collapse-61",
+    "cartesian-cup-collapse-62",
+    "cartesian-cup-collapse-63",
+    "cartesian-cup-shift-60",
+    "cartesian-cup-shift-61",
+    "cartesian-cup-shift-62",
+    "cartesian-cup-shift-63",
+    "cartesian-cup-under_extrusion-313",
+    "cartesian-cup-under_extrusion-335",
+    "cartesian-cup-under_extrusion-344",
+    "cartesian-cup-under_extrusion-355",
+    "cartesian-cup-under_extrusion-379",
+    "cartesian-cup-under_extrusion-60",
+    "cartesian-cup-under_extrusion-61",
+    "cartesian-cup-under_extrusion-62",
+    "cartesian-cup-under_extrusion-63",
+    "cartesian-cup-under_extrusion-64",
+    "cartesian-cup-under_extrusion-65",
+    "cartesian-cup-under_extrusion-66",
+    "cartesian-cup-under_extrusion-67",
+    "cartesian-cup-warp-60",
+    "cartesian-cup-warp-61",
+    "cartesian-cup-warp-62",
+    "cartesian-cup-warp-63",
+    "cartesian-mug-clean-60",
+    "cartesian-mug-clean-61",
+    "cartesian-mug-clean-62",
+    "cartesian-mug-clean-63",
+    "cartesian-mug-clean-64",
+    "cartesian-mug-clean-65",
+    "cartesian-mug-clean-66",
+    "cartesian-mug-clean-67",
+    "cartesian-mug-collapse-60",
+    "cartesian-mug-collapse-61",
+    "cartesian-mug-collapse-62",
+    "cartesian-mug-collapse-63",
+    "cartesian-mug-shift-60",
+    "cartesian-mug-shift-61",
+    "cartesian-mug-shift-62",
+    "cartesian-mug-shift-63",
+    "cartesian-mug-under_extrusion-313",
+    "cartesian-mug-under_extrusion-335",
+    "cartesian-mug-under_extrusion-344",
+    "cartesian-mug-under_extrusion-355",
+    "cartesian-mug-under_extrusion-379",
+    "cartesian-mug-under_extrusion-60",
+    "cartesian-mug-under_extrusion-61",
+    "cartesian-mug-under_extrusion-62",
+    "cartesian-mug-under_extrusion-63",
+    "cartesian-mug-under_extrusion-64",
+    "cartesian-mug-under_extrusion-65",
+    "cartesian-mug-under_extrusion-66",
+    "cartesian-mug-under_extrusion-67",
+    "cartesian-mug-warp-60",
+    "cartesian-mug-warp-61",
+    "cartesian-mug-warp-62",
+    "cartesian-mug-warp-63"
+  ],
+  "validation_groups": [
+    "cartesian-cup-clean-70",
+    "cartesian-cup-clean-71",
+    "cartesian-cup-clean-72",
+    "cartesian-cup-clean-73",
+    "cartesian-cup-collapse-70",
+    "cartesian-cup-collapse-71",
+    "cartesian-cup-shift-70",
+    "cartesian-cup-shift-71",
+    "cartesian-cup-under_extrusion-400",
+    "cartesian-cup-under_extrusion-410",
+    "cartesian-cup-under_extrusion-417",
+    "cartesian-cup-under_extrusion-420",
+    "cartesian-cup-under_extrusion-70",
+    "cartesian-cup-under_extrusion-71",
+    "cartesian-cup-under_extrusion-72",
+    "cartesian-cup-under_extrusion-73",
+    "cartesian-cup-warp-70",
+    "cartesian-cup-warp-71",
+    "cartesian-mug-clean-70",
+    "cartesian-mug-clean-71",
+    "cartesian-mug-clean-72",
+    "cartesian-mug-clean-73",
+    "cartesian-mug-collapse-70",
+    "cartesian-mug-collapse-71",
+    "cartesian-mug-shift-70",
+    "cartesian-mug-shift-71",
+    "cartesian-mug-under_extrusion-400",
+    "cartesian-mug-under_extrusion-410",
+    "cartesian-mug-under_extrusion-417",
+    "cartesian-mug-under_extrusion-420",
+    "cartesian-mug-under_extrusion-70",
+    "cartesian-mug-under_extrusion-71",
+    "cartesian-mug-under_extrusion-72",
+    "cartesian-mug-under_extrusion-73",
+    "cartesian-mug-warp-70",
+    "cartesian-mug-warp-71"
+  ],
+  "train_rows": 3720,
+  "validation_rows": 2040,
+  "device": "cpu",
+  "torch": "2.7.1+cu126",
+  "seconds": 39.549041509628296,
+  "data_sha256": "2f04a6fb66c1465d8a1c6e9115b3ddbfb88365cb5c7014316709617fe41fe4da",
+  "sampling": {
+    "audit_sha256": "38836132e91008ef4cf0b900468476642cc483b635605c55ac6b80ea49905836",
+    "critical_training_tiles": 39,
+    "critical_probability_mass": 0.5,
+    "method": "training-only weighted sampling with replacement; same samples per epoch",
+    "validation": "unchanged full validation set and selection objective",
+    "inputs": "unchanged observed images; thin labels affect training frequency only"
+  },
+  "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+  "trainer_sha256": "380908d85f74ee8d75ebb81f32a16261497c1b75fb599f55f3226f77ab893da6",
+  "initialization_sha256": "3ea2c6958eca0a9aa06253e8f783571e31b7b0abd6014eebdf77c33b14fc8e7b",
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.11581080036778604,
+      "validation_selection_score": 0.0661933200324283,
+      "validation_boundary_mae_mm": 0.1420134295617561,
+      "near_boundary_sign_accuracy": 0.7122794202260458,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.06606274860840972,
+      "validation_selection_score": 0.05129628987873302,
+      "validation_boundary_mae_mm": 0.12303346543484155,
+      "near_boundary_sign_accuracy": 0.6952822070235302,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.05735111231765439,
+      "validation_selection_score": 0.044712602814622956,
+      "validation_boundary_mae_mm": 0.10649872158259224,
+      "near_boundary_sign_accuracy": 0.718136948331674,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.05111848217665508,
+      "validation_selection_score": 0.05078596935844889,
+      "validation_boundary_mae_mm": 0.1294273853400967,
+      "near_boundary_sign_accuracy": 0.6842238243667166,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.050238725494953895,
+      "validation_selection_score": 0.04355051844727759,
+      "validation_boundary_mae_mm": 0.11524332874900392,
+      "near_boundary_sign_accuracy": 0.7056426395024791,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.04510739037907252,
+      "validation_selection_score": 0.03756353406637323,
+      "validation_boundary_mae_mm": 0.09829773077405048,
+      "near_boundary_sign_accuracy": 0.7405276403280115,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.0424373955816351,
+      "validation_selection_score": 0.03702584345843278,
+      "validation_boundary_mae_mm": 0.0962364941707668,
+      "near_boundary_sign_accuracy": 0.7568844404640993,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.04194891786863727,
+      "validation_selection_score": 0.03773839565760949,
+      "validation_boundary_mae_mm": 0.10449263358366877,
+      "near_boundary_sign_accuracy": 0.7152638451801412,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.03937247067048986,
+      "validation_selection_score": 0.03757673361722161,
+      "validation_boundary_mae_mm": 0.09840471368710098,
+      "near_boundary_sign_accuracy": 0.7413819413521722,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0395912868441433,
+      "validation_selection_score": 0.03592336185130419,
+      "validation_boundary_mae_mm": 0.09542536325900346,
+      "near_boundary_sign_accuracy": 0.7449029624107549,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.03801950142588667,
+      "validation_selection_score": 0.03184520131086602,
+      "validation_boundary_mae_mm": 0.08807114621903424,
+      "near_boundary_sign_accuracy": 0.7583478843854286,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.036763138668511504,
+      "validation_selection_score": 0.03211237029263786,
+      "validation_boundary_mae_mm": 0.09406443348169914,
+      "near_boundary_sign_accuracy": 0.7450405511554953,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.03462796391899227,
+      "validation_selection_score": 0.031721216549768165,
+      "validation_boundary_mae_mm": 0.08709472954692804,
+      "near_boundary_sign_accuracy": 0.7659552911628,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.035105560479625576,
+      "validation_selection_score": 0.034149205859969646,
+      "validation_boundary_mae_mm": 0.08937370165293505,
+      "near_boundary_sign_accuracy": 0.7400660926297462,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.034260537162903816,
+      "validation_selection_score": 0.03203103571545844,
+      "validation_boundary_mae_mm": 0.09412367791139156,
+      "near_boundary_sign_accuracy": 0.7288813784891255,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.03299518604111928,
+      "validation_selection_score": 0.030694490057580612,
+      "validation_boundary_mae_mm": 0.09088066284158071,
+      "near_boundary_sign_accuracy": 0.7360409964427056,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.03218052151703065,
+      "validation_selection_score": 0.029832641700027036,
+      "validation_boundary_mae_mm": 0.08396913684509637,
+      "near_boundary_sign_accuracy": 0.7679490771547648,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.031256750858919595,
+      "validation_selection_score": 0.029667636343077116,
+      "validation_boundary_mae_mm": 0.08739622520764033,
+      "near_boundary_sign_accuracy": 0.7458298102275968,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0308624781387788,
+      "validation_selection_score": 0.035239268138128166,
+      "validation_boundary_mae_mm": 0.10109202128167562,
+      "near_boundary_sign_accuracy": 0.7361047875879942,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.030446707128837545,
+      "validation_selection_score": 0.02837744306261633,
+      "validation_boundary_mae_mm": 0.08279386564035762,
+      "near_boundary_sign_accuracy": 0.7722518524448269,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.030008258983012168,
+      "validation_selection_score": 0.02762012698632829,
+      "validation_boundary_mae_mm": 0.08077370452914272,
+      "near_boundary_sign_accuracy": 0.7685807345738,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.030643187046691934,
+      "validation_selection_score": 0.02831903795401255,
+      "validation_boundary_mae_mm": 0.08224869347504436,
+      "near_boundary_sign_accuracy": 0.7715989313106953,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0287807940595573,
+      "validation_selection_score": 0.02823204029278428,
+      "validation_boundary_mae_mm": 0.08183608160789634,
+      "near_boundary_sign_accuracy": 0.7657564128863117,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.02914489167191649,
+      "validation_selection_score": 0.033205247538931226,
+      "validation_boundary_mae_mm": 0.10283639269872565,
+      "near_boundary_sign_accuracy": 0.7130324059018067,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.02871998833312142,
+      "validation_selection_score": 0.027162288808647322,
+      "validation_boundary_mae_mm": 0.07934890548137497,
+      "near_boundary_sign_accuracy": 0.7689284588559621,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.027736272190206794,
+      "validation_selection_score": 0.030697175042302002,
+      "validation_boundary_mae_mm": 0.09548789809034687,
+      "near_boundary_sign_accuracy": 0.7251214533374026,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.027962036723250983,
+      "validation_selection_score": 0.028845263148347535,
+      "validation_boundary_mae_mm": 0.0879133856800649,
+      "near_boundary_sign_accuracy": 0.7506641783950648,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.02823195560805259,
+      "validation_selection_score": 0.025939883299025836,
+      "validation_boundary_mae_mm": 0.07712394473599404,
+      "near_boundary_sign_accuracy": 0.7863709592687284,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.027471758749696516,
+      "validation_selection_score": 0.026626416741340767,
+      "validation_boundary_mae_mm": 0.08111004352675809,
+      "near_boundary_sign_accuracy": 0.7739166762561852,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.026107054432072948,
+      "validation_selection_score": 0.02748068267954331,
+      "validation_boundary_mae_mm": 0.0829331553124173,
+      "near_boundary_sign_accuracy": 0.7789911993235636,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 31,
+      "train_loss": 0.026057750723695244,
+      "validation_selection_score": 0.029264911454097896,
+      "validation_boundary_mae_mm": 0.08710461413996944,
+      "near_boundary_sign_accuracy": 0.7625193249646022,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 32,
+      "train_loss": 0.02637212705067409,
+      "validation_selection_score": 0.02758335337481078,
+      "validation_boundary_mae_mm": 0.08529305181193199,
+      "near_boundary_sign_accuracy": 0.7563703588814785,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 33,
+      "train_loss": 0.025908034751492164,
+      "validation_selection_score": 0.03161414270015324,
+      "validation_boundary_mae_mm": 0.09701346844299626,
+      "near_boundary_sign_accuracy": 0.726428546412436,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 34,
+      "train_loss": 0.025945555570945945,
+      "validation_selection_score": 0.027358495465972844,
+      "validation_boundary_mae_mm": 0.08394309385201723,
+      "near_boundary_sign_accuracy": 0.7575160978831347,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 35,
+      "train_loss": 0.02563091232090868,
+      "validation_selection_score": 0.03331766503990865,
+      "validation_boundary_mae_mm": 0.10028374974949399,
+      "near_boundary_sign_accuracy": 0.7258068954475637,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 36,
+      "train_loss": 0.025425036267567706,
+      "validation_selection_score": 0.02723107886518918,
+      "validation_boundary_mae_mm": 0.07908452304287865,
+      "near_boundary_sign_accuracy": 0.7804859134141521,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 37,
+      "train_loss": 0.026641860528178112,
+      "validation_selection_score": 0.02645347168778672,
+      "validation_boundary_mae_mm": 0.08215332221844314,
+      "near_boundary_sign_accuracy": 0.7738391262364225,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 38,
+      "train_loss": 0.025747178366748235,
+      "validation_selection_score": 0.026374386214450294,
+      "validation_boundary_mae_mm": 0.080346198227667,
+      "near_boundary_sign_accuracy": 0.7775027392668271,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 39,
+      "train_loss": 0.02428995690118241,
+      "validation_selection_score": 0.028601541625810606,
+      "validation_boundary_mae_mm": 0.08519112290226505,
+      "near_boundary_sign_accuracy": 0.7579326165376667,
+      "export_max_abs_error": 0.0
+    },
+    {
+      "epoch": 40,
+      "train_loss": 0.025525384440377195,
+      "validation_selection_score": 0.02560101423923876,
+      "validation_boundary_mae_mm": 0.07876487001966086,
+      "near_boundary_sign_accuracy": 0.7811275772873504,
+      "export_max_abs_error": 0.0
+    }
+  ],
+  "validation_selection_score": 0.025601016350236594,
+  "validation_boundary_mae_mm": 0.07876487318073729,
+  "near_boundary_sign_accuracy": 0.7811275772873504,
+  "export_max_abs_error": 6.794929504394531e-06,
+  "selection_metric": "weighted smooth-L1 plus optional equal-weight Dice and clDice loss",
+  "topology_reference": "https://arxiv.org/abs/2003.07311",
+  "limitation": "Dense tile validation is not whole-image topology or closed-loop recovery evidence; no runtime repair"
+}

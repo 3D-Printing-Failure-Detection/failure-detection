@@ -1,0 +1,20 @@
+{
+  "control_arrays_identical": true,
+  "matched_initialization_data_and_split": true,
+  "models": {
+    "control": {
+      "checkpoint_sha256": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+      "validation_boundary_mae_mm": 0.07838711636506973,
+      "near_boundary_sign_accuracy": 0.7873340804819108,
+      "validation_selection_score": 0.024675146599902827,
+      "export_max_abs_error": 2.8014183044433594e-06
+    },
+    "balanced": {
+      "checkpoint_sha256": "b66867737cd9ca4175858e43cf592c7d095fc0f32951dc8fb258c9584ef947ab",
+      "validation_boundary_mae_mm": 0.08212283121892773,
+      "near_boundary_sign_accuracy": 0.765965297616963,
+      "validation_selection_score": 0.02964339790244897,
+      "export_max_abs_error": 3.5762786865234375e-06
+    }
+  }
+}

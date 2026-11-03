@@ -1,0 +1,83 @@
+{
+  "status": "complete",
+  "receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/completed-report-archive-v2/receipt.json",
+  "receipt_sha256": "988632a7c547b99448844a4f4f40a6a5803fffcb5cd081b4564ae82c7c24d95e",
+  "restore_script": "/mnt/data/ishaan/hri-workspace/failure-detection/completed-report-archive-v2/restore.py",
+  "restore_script_sha256": "f040e77f398c1954ec05c64b1096bea76b41247a96574826ecbf7fd4009f660e",
+  "restore_usage": "python3 /mnt/data/ishaan/hri-workspace/failure-detection/completed-report-archive-v2/restore.py matrix/results/runs.csv",
+  "files": 1157,
+  "original_bytes": 52673990,
+  "archive_bytes": 4010811,
+  "logical_bytes_reclaimed": 48663179,
+  "storage_before_bytes": 99904086016,
+  "storage_after_bytes": 99855970304,
+  "shards": {
+    "matrix": {
+      "rows": 3456,
+      "journal_files": 288,
+      "all_journal_rows_equal_authoritative_rows": true,
+      "retained_sha256": {
+        "matrix/results/runs.jsonl": "ffb70af63655f68ada7f21fb1df758d07d33f0e54d1745e81da03797f0984340",
+        "matrix/results/manifest.json": "b5b94b16e0907d4f2d6fee0db251bb3884f4315d8b23a9a323ba07fb20321d6e",
+        "matrix/audit/audit.json": "7a49b64b9517339a397abb5336273d6b2d60638aaea0b3b64728d73e8e10137b"
+      }
+    },
+    "agent-a": {
+      "rows": 144,
+      "journal_files": 144,
+      "all_journal_rows_equal_authoritative_rows": true,
+      "retained_sha256": {
+        "agent-a/results/runs.jsonl": "1636d8c00f00095d0c52b0e9bcfc1149ddbe18ca9ec394dd4af8496ce7237e0d",
+        "agent-a/results/manifest.json": "867a6698511584e234ca1517a48f2bd7bf1ed4179118076d670a97630d157403",
+        "agent-a/audit/audit.json": "98c21b2a6fcda540f34bdb05a5a37b06c6380b2f4e87e28839c4a31e62b6dcbd"
+      }
+    },
+    "agent-b": {
+      "rows": 144,
+      "journal_files": 144,
+      "all_journal_rows_equal_authoritative_rows": true,
+      "retained_sha256": {
+        "agent-b/results/runs.jsonl": "45a9749f206c3f61c7b528deb1a893741d59b44392fbb98d921b90a5a3a5722e",
+        "agent-b/results/manifest.json": "9431a17513a513d64ec30ce627670c1019775c25c08beb8119e9a0fab87c5e84",
+        "agent-b/audit/audit.json": "0adf43695d167dd2883e66eab2a24d216c8b2bea9115369adb1b9f32a2685c7c"
+      }
+    },
+    "camera": {
+      "rows": 288,
+      "journal_files": 288,
+      "all_journal_rows_equal_authoritative_rows": true,
+      "retained_sha256": {
+        "camera/results/runs.jsonl": "9147e71fa0567fdf308d6a452b60b9105299665255e7abe852ef93f0825332bb",
+        "camera/results/manifest.json": "6487eadc6b649a105f6180e9d3d11e54bc3fda4c17cd574d0ce4d3ebb6e71957",
+        "camera/audit/audit.json": "35378346bc502d4e21549940b2e7bb57aa0dda324b6a81fedc7583cdb6e75476"
+      }
+    },
+    "classical": {
+      "rows": 288,
+      "journal_files": 288,
+      "all_journal_rows_equal_authoritative_rows": true,
+      "retained_sha256": {
+        "classical/results/runs.jsonl": "a9140acf28a34c43cfacd3ad6c82a026bbd14aa1b103d3250954bb965ef80c3d",
+        "classical/results/manifest.json": "443abc187a613ea1be8d870142238b0783cb86e48d86477a69817db0bd64c3ac",
+        "classical/audit/audit.json": "3135f5f1ab514d99bf0febf37c82fab797f0e53cbe84387af0d71049ba3a676a"
+      }
+    }
+  },
+  "retained": "All authoritative runs.jsonl, audit records, manifests, source and checkpoints are unchanged; gzip archives reproduce each removed duplicate byte-for-byte.",
+  "restore_check": {
+    "restored": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/classical/results/cases/2485b69277638591.jsonl",
+    "sha256": "b50657941b2327bd1d378796627ccf42420c1ba07965e3f060986b6016652a9e",
+    "bytes": 1113,
+    "archive_retained": true,
+    "restored_sample_retained": true
+  },
+  "prior_aborted_attempt": "/mnt/data/ishaan/hri-workspace/failure-detection/completed-report-archive-v1/receipt.json",
+  "prior_attempt_effect": "No archival or deletion; wrapper-verification format corrected before v2.",
+  "post_archive_comparison": {
+    "path": "/mnt/data/ishaan/hri-workspace/failure-detection/completed-report-archive-v2/retained-comparison.json",
+    "sha256": "97bd2ba675bf4d5138ffde041cfacaa3359594eaa440011b45f08b7aeafe401a",
+    "methods": 15,
+    "total_rows": 4320,
+    "outcome_counts_and_paired_cases_identical": true
+  }
+}

@@ -52,10 +52,11 @@ def connectivity_losses(probability, truth, truth_skeleton, iterations):
 
 
 class TileNetwork(nn.Module):
-    def __init__(self, frames=2, hidden=(64, 32), scale=4):
+    def __init__(self, frames=2, hidden=(64, 32), scale=4, include_expected_mask=False):
         super().__init__()
         self.frames, self.scale = frames, scale
-        self.layers = nn.ModuleList([nn.Conv2d(frames, hidden[0], PATCH_SIZE),
+        self.include_expected_mask = include_expected_mask
+        self.layers = nn.ModuleList([nn.Conv2d(frames+int(include_expected_mask), hidden[0], PATCH_SIZE),
                                     nn.Conv2d(hidden[0], hidden[1], 1),
                                     nn.Conv2d(hidden[1], scale**2, 1)])
 
@@ -64,9 +65,13 @@ class TileNetwork(nn.Module):
             value = torch.relu(layer(value))
         return F.pixel_shuffle(torch.tanh(self.layers[-1](value)), self.scale)
 
-    def export(self, path):
+    def export(self, path, inference_dtype='float32'):
         arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(self.scale),
                       input_frames=np.array(self.frames), input_scales=np.array([1]))
+        if self.include_expected_mask:
+            arrays['include_expected_mask'] = np.array(True)
+        if inference_dtype != 'float32':
+            arrays['inference_dtype'] = np.array(inference_dtype)
         for i, layer in enumerate(self.layers):
             arrays[f'w{i}'] = layer.weight.detach().numpy().reshape(layer.out_channels, -1)
             arrays[f'b{i}'] = layer.bias.detach().numpy()
@@ -83,6 +88,30 @@ def exported_tiles(model, tiles):
         0, 1, 3, 2, 4).reshape(batch, 1, height*scale, width*scale)
 
 
+def training_sampling_probabilities(audit, groups, validation, data_sha256, critical_fraction):
+    """Balance audited thin-material tiles using training labels alone."""
+    if not 0 < critical_fraction < 1:
+        raise ValueError('critical fraction must be strictly between zero and one')
+    if (audit['status'] != 'complete' or audit['data_sha256'] != data_sha256
+            or audit['verified_target_rows'] != len(groups) or audit['total_rows'] != len(groups)):
+        raise ValueError('sampling audit does not verify this dataset')
+    critical = np.zeros(len(groups), dtype=bool)
+    seen = set()
+    for row in audit['rows']:
+        index = row['dataset_row']
+        if (index in seen or not 0 <= index < len(groups) or groups[index] != row['group']
+                or bool(validation[index]) != row['validation'] or row['critical_positive_points'] < 0):
+            raise ValueError('sampling audit row differs from the dataset')
+        seen.add(index)
+        critical[index] = row['critical_positive_points'] > 0
+    selected = critical[~validation]
+    if not selected.any() or selected.all():
+        raise ValueError('training needs both critical and ordinary tiles')
+    probability = np.where(selected, critical_fraction/selected.sum(),
+                           (1-critical_fraction)/(~selected).sum())
+    return probability, int(selected.sum())
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', type=Path, required=True)
@@ -93,6 +122,14 @@ def main():
     parser.add_argument('--topology-weight', type=float, default=0.)
     parser.add_argument('--skeleton-iterations', type=int, default=20)
     parser.add_argument('--temperature-mm', type=float, default=.1)
+    parser.add_argument('--sampling-audit', type=Path,
+                        help='exact-target replay audit identifying thin-material training tiles')
+    parser.add_argument('--critical-tile-fraction', type=float,
+                        help='probability mass assigned to audited thin-material training tiles')
+    parser.add_argument('--include-expected-mask', action='store_true',
+                        help='use the saved commanded layer mask as an additional known input')
+    parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32',
+                        help='exported accumulation precision; training and stored weights remain float32')
     args = parser.parse_args()
     if not np.isfinite(args.topology_weight) or args.topology_weight < 0:
         parser.error('topology weight must be finite and nonnegative')
@@ -100,6 +137,8 @@ def main():
         parser.error('temperature must be finite and positive')
     if min(args.epochs, args.batch_size, args.skeleton_iterations) < 1:
         parser.error('epochs, batch size and skeleton iterations must be positive')
+    if (args.sampling_audit is None) != (args.critical_tile_fraction is None):
+        parser.error('sampling audit and critical tile fraction must be supplied together')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('model artifacts must stay on the data volume')
     if args.out.exists():
@@ -110,10 +149,11 @@ def main():
     with np.load(args.data, allow_pickle=False) as data:
         x, y, split, groups = [data[k] for k in ('x', 'y', 'validation', 'group')]
         size, scale, frames = [int(data[k]) for k in ('dense_tile_size', 'output_upsample', 'input_frames')]
+        has_expected_mask = bool(data['include_expected_mask']) if 'include_expected_mask' in data else False
         if not np.array_equal(data['input_scales'], [1]):
             raise ValueError('dense convolution requires fine camera inputs')
     if (size != 16 or scale != 4 or frames not in (1, 2)
-            or x.shape != (len(x), frames, size+8, size+8)
+            or x.shape != (len(x), frames+int(has_expected_mask), size+8, size+8)
             or y.shape != (len(x), 1, size*scale, size*scale)):
         raise ValueError('invalid dense camera dataset shapes')
     if (split.dtype != bool or split.shape != (len(x),) or groups.shape != (len(x),)
@@ -121,6 +161,23 @@ def main():
         raise ValueError('invalid trajectory-separated split')
     if not np.isfinite(x).all() or not np.isfinite(y).all() or np.max(np.abs(y)) > 1:
         raise ValueError('invalid camera inputs or distance targets')
+    if args.include_expected_mask and not has_expected_mask:
+        parser.error('dataset has no commanded layer mask')
+    if has_expected_mask and not np.isin(x[:, frames], [0, 1]).all():
+        raise ValueError('commanded layer masks must be binary')
+    if not args.include_expected_mask:
+        x = x[:, :frames]
+    data_sha256 = hashlib.sha256(args.data.read_bytes()).hexdigest()
+    sampling, sampling_metadata = None, None
+    if args.sampling_audit:
+        audit = json.loads(args.sampling_audit.read_text())
+        sampling, critical_count = training_sampling_probabilities(
+            audit, groups, split, data_sha256, args.critical_tile_fraction)
+        sampling_metadata = dict(audit_sha256=hashlib.sha256(args.sampling_audit.read_bytes()).hexdigest(),
+            critical_training_tiles=critical_count, critical_probability_mass=args.critical_tile_fraction,
+            method='training-only weighted sampling with replacement; same samples per epoch',
+            validation='unchanged full validation set and selection objective',
+            inputs='unchanged observed images; thin labels affect training frequency only')
     args.out.mkdir(parents=True)
     checkpoint = args.out/'boundary.npz'
     started = time.time()
@@ -132,7 +189,7 @@ def main():
         for offset in range(0, len(x), args.batch_size):
             skeleton[offset:offset+args.batch_size] = soft_skeleton(truth[offset:offset+args.batch_size], args.skeleton_iterations)
     train_indices, val_indices = np.flatnonzero(~split), np.flatnonzero(split)
-    model = TileNetwork(frames, scale=scale)
+    model = TileNetwork(frames, scale=scale, include_expected_mask=args.include_expected_mask)
     initial_arrays = b''.join(t.detach().numpy().tobytes() for t in model.parameters())
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
 
@@ -173,7 +230,8 @@ def main():
     history, best, best_state = [], float('inf'), None
     for epoch in range(args.epochs):
         model.train()
-        order = rng.permutation(train_indices)
+        order = (rng.permutation(train_indices) if sampling is None else
+                 rng.choice(train_indices, size=len(train_indices), replace=True, p=sampling))
         total = 0.
         for offset in range(0, len(order), args.batch_size):
             indices = order[offset:offset+args.batch_size]
@@ -190,19 +248,28 @@ def main():
         if row['validation_selection_score'] < best:
             best = row['validation_selection_score']
             best_state = {name: value.clone() for name, value in model.state_dict().items()}
-            model.export(checkpoint)
+            model.export(checkpoint, args.inference_dtype)
         print(json.dumps(row), flush=True)
     model.load_state_dict(best_state)
     exported = BoundarySegmenter(checkpoint)
     verification = evaluate(exported)
     if verification['export_max_abs_error'] > 1e-5 or abs(verification['validation_selection_score']-best) > 1e-5:
+        failure = dict(status='export_verification_failed', checkpoint_sha256=exported.sha256,
+            trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            data_sha256=data_sha256, selected_torch_score=best, tolerance=1e-5,
+            history=history, **verification)
+        (args.out/'export-failure.json').write_text(json.dumps(failure, indent=2)+'\n')
         raise ValueError('exported NumPy model differs from trained convolution')
-    manifest = dict(status='complete', architecture='2 observed fine images -> 9x9 conv64 -> 1x1 conv32 -> 16 tanh heads -> pixel shuffle4',
-        input_frames=frames, input_scales=[1], output_upsample=scale,
+    manifest = dict(status='complete', architecture=f'{frames} observed images' +
+        (' plus commanded mask' if args.include_expected_mask else '') +
+        ' -> 9x9 conv64 -> 1x1 conv32 -> 16 tanh heads -> pixel shuffle4',
+        input_frames=frames, include_expected_mask=args.include_expected_mask,
+        inference_dtype=args.inference_dtype,
+        input_scales=[1], output_upsample=scale,
         args={key:str(value) if isinstance(value,Path) else value for key,value in vars(args).items()},
         training_groups=sorted(set(groups[~split].tolist())), validation_groups=sorted(set(groups[split].tolist())),
         train_rows=len(train_indices), validation_rows=len(val_indices), device='cpu', torch=torch.__version__,
-        seconds=time.time()-started, data_sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(),
+        seconds=time.time()-started, data_sha256=data_sha256, sampling=sampling_metadata,
         checkpoint_sha256=exported.sha256, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         initialization_sha256=hashlib.sha256(initial_arrays).hexdigest(), history=history, **verification,
         selection_metric='weighted smooth-L1 plus optional equal-weight Dice and clDice loss',

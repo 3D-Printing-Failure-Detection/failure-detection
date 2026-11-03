@@ -1,0 +1,23 @@
+{
+  "all_160_epoch_records_and_learned_weight_arrays_identical_to_failed_export": true,
+  "first_40_epoch_records_identical": true,
+  "matched_initialization_data_sampling_and_split": true,
+  "models": {
+    "control": {
+      "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "include_expected_mask": true,
+      "validation_boundary_mae_mm": 0.07876487318073729,
+      "near_boundary_sign_accuracy": 0.7811275772873504,
+      "validation_selection_score": 0.025601016350236594,
+      "export_max_abs_error": 6.794929504394531e-06
+    },
+    "command": {
+      "checkpoint_sha256": "9ff615cde22c36db6cd8f2aaec0964aa874372a50e524200bb2c4ee5747f454e",
+      "include_expected_mask": true,
+      "validation_boundary_mae_mm": 0.06861939456838444,
+      "near_boundary_sign_accuracy": 0.8106666299763348,
+      "validation_selection_score": 0.021655623301332916,
+      "export_max_abs_error": 6.8098127425919586e-06
+    }
+  }
+}

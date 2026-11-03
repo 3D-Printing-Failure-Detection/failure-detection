@@ -1,0 +1,39 @@
+{
+  "status": "diagnostic_only_export_gate_failed",
+  "checkpoint_sha256": "d8e6c5b2e7d638f832876593a6e28a6a6f044382440eefb67cd3b2b6f2bfc2b0",
+  "script_sha256": "e92180af5fe551a25387fac64b56074bef8fe40faa97a730119c1a27e4906425",
+  "validation_tiles": 2040,
+  "validation_native_points": 8355840,
+  "float32_torch_vs_numpy_max_abs_error": 1.0848045349121094e-05,
+  "sign_differences": 1,
+  "torch32_vs_float64_max_abs_error": 6.809812742425425e-06,
+  "numpy32_vs_float64_max_abs_error": 1.1292508956928238e-05,
+  "numpy_validation_loss": 0.02165562288692034,
+  "selected_epoch": 155,
+  "selected_torch_loss": 0.021655623183823098,
+  "first_40_epoch_records_identical": true,
+  "largest_error_locations": [
+    {
+      "row": 21,
+      "pixel": [
+        27,
+        31
+      ],
+      "torch": 0.7159938812255859,
+      "numpy": 0.7160006165504456,
+      "float64": 0.7159946116291227,
+      "error": 6.735324859619141e-06
+    },
+    {
+      "row": 68,
+      "pixel": [
+        32,
+        48
+      ],
+      "torch": 0.4945119619369507,
+      "numpy": 0.4945228099822998,
+      "float64": 0.49451229734332297,
+      "error": 1.0848045349121094e-05
+    }
+  ]
+}

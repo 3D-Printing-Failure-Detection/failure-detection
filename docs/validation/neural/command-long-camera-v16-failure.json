@@ -1,0 +1,14 @@
+{
+  "status": "failed_export_verification",
+  "run_exit": 1,
+  "source_sha256": "228acfee9d0dcae0169dc9c92f5f29b97654cb5c5524e8a2ad77c6ed57499366",
+  "checkpoint_sha256": "d8e6c5b2e7d638f832876593a6e28a6a6f044382440eefb67cd3b2b6f2bfc2b0",
+  "training_log_sha256": "8c6b8796ad1e77946230585e1d2fe219da6a02d08fe2a48141a9fd51586bcef9",
+  "protocol_sha256": "0816257bca03e7a0e5ad76abe4f0bf1c1a8d80f0f02a192d6a5aff898ed978fc",
+  "export_diagnostic_sha256": "f0845ffa3f3579bf55ad97db727daa579cc42ac6a44d399fea7d966ab27c1ce6",
+  "epochs_completed": 160,
+  "selected_epoch": 155,
+  "maximum_export_error_mm": 1.0848045349121094e-05,
+  "tolerance_mm": 1e-05,
+  "diagnostic_and_recovery": "not run; training export gate failed"
+}

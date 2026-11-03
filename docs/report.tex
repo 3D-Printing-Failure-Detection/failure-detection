@@ -86,7 +86,7 @@ earlier combined model's 67/100 historical result is detailed later.
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & Fit historical/validation results preserve the previous best at 33/50 and 13/20. Camera false gaps remain; dense connectivity training is running.\\
+Latest checks & Fit checks preserve the previous best at 33/50 and 13/20. Commanded-shape input removes false wall gaps but retains base/thinning alarms. Longer training also fails; no camera replacement is accepted.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1132,7 +1132,7 @@ not a fresh recovery benchmark. True geometry sampled on the identical native
 grid retains a closed wall under both connectivity definitions, enclosing
 1704.50 mm$^2$. The output grid can represent the missing connection.
 
-The \texttt{dense-topology-camera-v13} experiment now tests spatial supervision.
+The \texttt{dense-topology-camera-v13} experiment tests spatial supervision.
 It follows the soft-clDice formulation of Shit et al., CVPR 2021
 (\url{https://arxiv.org/abs/2003.07311}), which compares predicted material and
 reference centre lines. Here it is an experimental training objective, with no
@@ -1161,10 +1161,93 @@ with full-frame inference. The loss penalizes both a removed wall segment and an
 invented bridge. All three focused checks pass in the Torch environment; the
 project suite passes 139 tests with two optional modules skipped.
 
-The matched training runs in \texttt{neural-recovery}, with logs and frozen source
-on the data volume. Both models must undergo the unchanged full-stack cup
-diagnostic. Only if the topology model passes does its predeclared sequence run
-actual recovery with Qwen and all 2,040 validation images. This experiment has no
-success-rate result yet; reserved seeds 2001--2004 remain untouched.
+Both 40-epoch runs complete with verified exports. The control trains in 46
+seconds and the connectivity model in 746 seconds. Boundary error is 0.07839
+versus 0.07911 mm; near-boundary sign accuracy is 78.73\% versus 77.73\%.
+
+\note{\textbf{The full-print diagnostic still fails.} Both models invent open
+walls at layers 85 and 86 of the simulated 160-layer cup whose true geometry
+passes the specification. The distance
+control also introduces a false base alarm and false support violation. The
+connectivity model removes those extra alarms, but retains both false wall gaps.}
+
+The checkpoint is rejected. Its conditional recovery and wider geometry trials
+are skipped under the predeclared gate. No new recovery success is claimed;
+reserved seeds 2001--2004 remain untouched. Logs, source and failed results are
+retained on the data volume. The following sampling audit checks whether the
+training tiles adequately represent the very thin surviving material.
+
+\clearpage
+\section{Rare thin material and commanded geometry}
+
+An exact replay verifies every target in the 5,760-tile dense dataset. Only 39 of
+3,720 training tiles contain the selected very thin surviving material, totalling
+1,648 positive points. Validation has 26 such tiles and 1,147 positive points.
+The diagnostic identifies material lost by a discrete 0.15 mm-radius opening on
+the existing native grid, excludes nominal thin pixels, and uses a halo to avoid
+crop-edge effects. This is an analysis of training exposure; it does not change
+runtime geometry or functional checks.
+
+\subsection*{Rebalancing helps recall but fails the print diagnostic}
+The \texttt{balanced-camera-v14} trial places half the training sampling mass on
+the 39 identified tiles and half on the remaining training tiles. It samples with
+replacement, retaining the same number of samples per epoch, distance loss and
+40-epoch schedule. Validation never supplies training samples or sampling mass.
+The unweighted control reproduces every earlier dense-distance checkpoint array
+and its file hash. Both exports pass numerical checks.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Measurement & Distance control & Balanced training \\
+\midrule
+Thin-material recall, training & 21.54\% & 56.98\% \\
+Thin-material recall, validation & 6.02\% & 21.62\% \\
+Validation boundary error & 0.07839 mm & 0.08212 mm \\
+False wall gaps in the cup & 2 & 1 \\
+False base alarms in the cup & 1 & 8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The layer-86 false gap disappears, but layer 85 remains open in the estimate and
+one false hard-thin layer appears. The model fails its predeclared gate. Recovery
+and wider geometry trials are skipped; no successful recovery is credited.
+
+\subsection*{Commanded geometry removes gaps but does not yet pass}
+The \texttt{command-camera-v15} experiment appends a binary commanded-layer
+mask to the current and preceding observed image tiles. The mask comes from the
+captured command, not the actual deposit. The builder verifies every old target
+and retains all image inputs, targets, groups and splits bitwise. Training truth
+still serves only labels and sampling checks.
+
+The image-only balanced control reproduces v14 exactly. Both models use the same
+sample weights, loss and training schedule; different input dimensions mean
+identical parameter initialization is not claimed. Both exports pass, and boundary
+error falls from 0.08212 to 0.07876 mm. The full-stack cup diagnostic removes both
+false wall gaps, but retains two false base alarms and one false hard-thin layer.
+It still fails; recovery and wider geometry checks are skipped. This is a camera
+diagnostic improvement, not an accepted recovery result.
+
+The best validation score occurs at epoch 40. A predeclared 160-epoch extension
+uses identical data, sampling and loss. Training finishes, but the
+export check fails: the largest float32 Torch/NumPy difference is 0.000010848 mm,
+just above the 0.000010 mm tolerance. A float64 reference attributes this to
+accumulation precision; one of 8,355,840 output signs differs. The failed run is
+retained. A replay verifies all 160 training records and learned weight arrays
+are identical, with explicit float64 inference. Export error falls to
+0.000006810 mm, passing the unchanged tolerance. Boundary error improves to
+0.06862 mm, but the full cup diagnostic reintroduces one false wall gap and retains
+two false base alarms and one false hard-thin layer. It is also rejected.
+
+A separate audit of all 2,040 validation tiles finds missing-material point
+recall of 91.70\% for 40 epochs and 92.18\% for 160 epochs. These are points where
+material is truly absent inside the commanded shape, not recovery successes.
+The audit does not replace whole-print geometry validation. Conditional recovery
+and wider geometry trials are skipped after the failed gate.
+
+All long jobs run in tmux session \texttt{neural-recovery}, with retained logs and
+exit status. The latest 18 focused model checks pass, including both inference
+precisions, commanded-mask export parity and rejection of malformed masks.
 
 \end{document}

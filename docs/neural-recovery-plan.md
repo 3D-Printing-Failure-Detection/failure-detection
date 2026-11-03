@@ -19,9 +19,84 @@ historical successes versus contour's 62/100 but failed its complete first fresh
 test: 126/240 versus contour's 128/240 and analytical preventive recovery's
 133/240, with five defective finishes versus three. That result is retained as a
 rejection. The latest two-image camera also fails its geometric diagnostic;
-dense connectivity training is now running. Fresh seeds 2001–2004 are untouched.
+dense connectivity training also retains both false gaps and is rejected. Balanced
+sampling removes one gap but introduces eight false base alarms, so it is rejected
+as well. Commanded-mask conditioning removes both gaps but still has false base
+and thinning alarms. Longer training, verified with higher-precision inference,
+reintroduces one gap and is also rejected. Fresh seeds 2001–2004 are untouched.
 
 ## Current camera cross-check and context experiments
+
+The exact-target sampling audit replays all 5,760 dense tiles bitwise. Only 39 of
+3,720 training tiles contain the selected thin-material pixels (1,648 positives);
+26 validation tiles contain 1,147 such positives. The diagnostic uses a 0.15 mm
+discrete opening of true material on the existing native grid, excludes nominal
+thin pixels, and includes a halo to avoid crop-edge artifacts. This identifies
+training exposure, not a new functional criterion or a runtime repair.
+
+`balanced-camera-v14` assigns half the training sampling mass to those 39 tiles,
+with replacement and the same sample count per epoch. The other half goes to the
+remaining training tiles. Validation labels never determine training weights.
+The unchanged control exactly reproduces the dense distance checkpoint, and both
+exports pass. Thin-material recall rises from 21.54% to 56.98% in training and
+6.02% to 21.62% in validation. The complete cup diagnostic fixes the layer-86 gap,
+retains the layer-85 gap, and introduces eight false base alarms and one false
+hard-thin layer. The model fails the predeclared gate; recovery and wider geometry
+follow-ups are skipped. Better local recall is not a successful recovery result.
+
+`command-camera-v15` tests a known input already supplied by the controller: the
+binary mask of the commanded layer. It appends this mask to the current and prior
+observed image tiles. Actual deposited geometry supplies labels and verifies
+sampling only. The builder replays every original target and retains image
+channels, targets, groups and splits bitwise; masks come from captured commands.
+The image-only balanced control must exactly reproduce v14. Both variants retain
+the same sampling, loss and 40-epoch schedule. The extra input changes the
+parameter dimensions, so identical initialization is not claimed. The full cup
+diagnostic gates actual recovery and 2,040-frame geometry validation, including
+true wall gaps to check that the model does not merely copy the commanded shape.
+Both models finish training with verified exports. The control exactly reproduces
+v14, and command conditioning lowers boundary MAE from 0.08212 to 0.07876 mm.
+The full 160-layer cup diagnostic removes both false gaps and has zero false
+overhang, but retains two false base alarms and one false hard-thin layer. It
+fails the gate; recovery and wider geometry validation are skipped. This is a
+camera diagnostic improvement, not a new successful recovery or accepted model.
+
+The best validation loss occurs at the final epoch, 40. The predeclared
+`command-long-camera-v16` therefore extends training to 160 epochs on exactly the
+same data, sampling and objective. It requires the first 40 epoch records and
+initialization to match the prior run exactly, and its full-stack control must
+reproduce the prior diagnostic. Selection still uses full validation loss; the
+cup outcome does not choose an epoch. The same gate controls follow-ups. The
+longer run completes all 160 epochs, selecting epoch 155, but fails its numerical
+export gate: maximum float32 Torch/NumPy disagreement is 0.000010848 mm versus the
+0.000010 mm tolerance. Exactly one of 8,355,840 validation output signs differs.
+A float64 reference attributes the difference to accumulation precision; the
+first 40 training records exactly match v15. The failed job and checkpoint are
+retained, and no print diagnostic or recovery result is credited to this run.
+The first diagnostic used the wrong edge weighting in its separate loss field;
+the retained correction uses the exact trainer weighting. Numerical differences,
+sign counts and the original failure remain unchanged.
+
+`command-precise-camera-v17` repeats the same 160-epoch training with an explicit
+float64 inference marker. Training and stored weight arrays remain float32;
+NumPy and OpenCV accumulate in float64. It requires all 160 training records and
+every learned weight array to equal the failed export exactly. The strict export
+tolerance, functional checks and follow-up gate remain unchanged. Legacy models
+retain float32 inference. All 160 training records and every stored weight array
+match the failed run exactly. The export error is now 0.000006810 mm, below the
+unchanged tolerance. Boundary MAE improves from 0.07876 to 0.06862 mm and
+near-boundary sign accuracy from 78.11% to 81.07%. However, the complete cup
+diagnostic reintroduces one false wall gap and retains two false base alarms and
+one false hard-thin layer. Its reused 40-epoch control reproduces the earlier
+diagnostic exactly. The longer model fails the gate; follow-ups are skipped.
+
+A separate retrospective audit covers all 2,040 validation tiles from 36 groups.
+It scores actual missing material inside the captured command, using saved signed
+distances below -0.05 mm. Missing-material point recall is 91.70% for 40 epochs and
+92.18% for 160 epochs across 156,943 points; actual-material recall is 98.29% and
+98.27%. Thus the extra command input still permits detection of deviations, but
+these correlated tile scores neither establish complete-gap recall nor replace
+the failed whole-print check. No candidate from these camera trials is promoted.
 
 The optional `--boundary-joint-forecast` extends `--boundary-fallback`. When the
 classical-camera continuation fails but a correction is feasible, both camera
@@ -158,15 +233,35 @@ selected frame supplies a 64-by-64 distance target at the runtime's native pixel
 positions. The fixed auxiliary weight is 0.1, with equal Dice/clDice contributions,
 20 soft-skeleton iterations and a 0.1 mm distance-to-logit scale. Homogeneous tiles
 omit clDice. Truth supplies training labels and sampling locations only. No runtime
-gap filling or changed functional thresholds are introduced. The experiment is
-running in tmux; whole-image and recovery gains remain unproven.
+gap filling or changed functional thresholds are introduced.
 
-The current source passes 139 tests, with two optional modules skipped. Three
-focused checks also pass in the Torch environment, including dense-to-OpenCV
-export parity and penalties for missing walls and invented bridges. Long runs
+Both 40-epoch runs complete and pass full validation-tile export checks. The
+distance control trains in 46 seconds; connectivity training takes 746 seconds.
+Matched boundary MAE is 0.07839 versus 0.07911 mm, and near-boundary sign accuracy
+78.73% versus 77.73%. The full 160-layer diagnostic still finds the same two false
+openings (layers 85 and 86) for both models. The distance control also introduces
+one false base alarm and a false support violation. Connectivity training removes
+those extra alarms, but the wall gaps remain: it is rejected and its predeclared
+recovery and wider geometry follow-ups are skipped. These measurements supply no
+new successful-recovery result.
+
+The current complete source check passes 139 tests, with two optional modules
+skipped. The focused run passes 18 checks in the Torch environment,
+including commanded-mask export parity, image history, dense tile coordinates,
+training-only sampling, and penalties for missing walls and invented bridges. Long runs
 remain in tmux session `neural-recovery`; attach with
 `tmux attach -t neural-recovery`. Full evidence stays on the data volume, with
 compact manifests and completed audits under `docs/validation/neural`.
+
+To retain room for the final comparison under the shared 100 GB allocation,
+[verified archival](validation/neural/completed-report-archive-v2.json) compresses
+1,157 duplicate CSV exports and case journals from the completed first frozen
+benchmark, reclaiming 48.66 MB. Every journal result equals its retained aggregate
+record, and each gzip file reproduces its original bytes. Primary `runs.jsonl`,
+audits, manifests, source and checkpoints remain unchanged. The full 4,320-run
+comparison reproduces all outcome counts and gained/lost cases after archival.
+The linked receipt identifies a quota-checked restore tool and a verified sample
+restoration. An initial wrapper-format verification aborted before changing files.
 
 ## Comparing actual earlier implementations
 

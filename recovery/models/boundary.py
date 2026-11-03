@@ -61,13 +61,21 @@ class BoundarySegmenter:
             self.query_weights = data['query_weights'] if 'query_weights' in data else None
             self.input_scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
             self.input_frames = int(data['input_frames']) if 'input_frames' in data else 1
+            self.include_expected_mask = bool(data['include_expected_mask']) if 'include_expected_mask' in data else False
+            self.inference_dtype = str(data['inference_dtype']) if 'inference_dtype' in data else 'float32'
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
+        if self.inference_dtype not in ('float32', 'float64'):
+            raise ValueError('unsupported boundary inference dtype')
+        if self.inference_dtype == 'float64':
+            self.weights = [(w.astype('float64'), b.astype('float64')) for w, b in self.weights]
+            if self.query_weights is not None:
+                self.query_weights = self.query_weights.astype('float64')
         if self.input_frames not in (1, 2):
             raise ValueError('boundary input frames must be one or two')
         if self.distance_quantile is not None and not 0 < self.distance_quantile < 1:
             raise ValueError('invalid boundary distance quantile')
         subpixel_offsets(self.output_upsample)
-        width = PATCH_SIZE ** 2 * len(self.input_scales) * self.input_frames
+        width = PATCH_SIZE ** 2 * len(self.input_scales) * (self.input_frames + int(self.include_expected_mask))
         for w, b in self.weights:
             if w.ndim != 2 or w.shape[1] != width or b.shape != (len(w),):
                 raise ValueError('invalid boundary network shape')
@@ -113,26 +121,34 @@ class BoundarySegmenter:
         weights, bias = self.weights[0]
         return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0))
 
-    def signed_distance(self, image):
-        gray = normalized_gray(image)
+    def signed_distance(self, image, expected_mask=None):
+        gray = normalized_gray(image).astype(self.inference_dtype, copy=False)
         frames = [gray]
         if self.input_frames == 2:
             previous = gray if self._previous_gray is None else self._previous_gray
             if previous.shape != gray.shape:
                 raise ValueError('previous camera frame has a different shape; reset the history')
-            frames.append(previous)
+            frames.append(previous.astype(self.inference_dtype, copy=False))
+        if self.include_expected_mask:
+            if expected_mask is None:
+                raise ValueError('this camera model requires the commanded layer mask')
+            expected_mask = np.asarray(expected_mask)
+            if expected_mask.shape != gray.shape or not np.isfinite(expected_mask).all():
+                raise ValueError('invalid commanded layer mask')
+            frames.append((expected_mask != 0).astype(self.inference_dtype))
         weights, bias = self.weights[0]
         channels = []
-        for kernels, offset in zip(weights.reshape(len(weights), self.input_frames,
+        for kernels, offset in zip(weights.reshape(len(weights), len(frames),
                                                    len(self.input_scales), PATCH_SIZE, PATCH_SIZE), bias):
             channel = np.full_like(gray, offset)
             for frame, frame_kernels in zip(frames, kernels):
                 for kernel, scale in zip(frame_kernels, self.input_scales):
                     if scale > 1:
-                        sparse = np.zeros(((PATCH_SIZE-1)*scale+1,)*2, dtype='float32')
+                        sparse = np.zeros(((PATCH_SIZE-1)*scale+1,)*2, dtype=self.inference_dtype)
                         sparse[::scale, ::scale] = kernel
                         kernel = sparse
-                    channel += cv2.filter2D(frame, cv2.CV_32F, kernel, borderType=cv2.BORDER_REFLECT_101)
+                    depth = cv2.CV_64F if self.inference_dtype == 'float64' else cv2.CV_32F
+                    channel += cv2.filter2D(frame, depth, kernel, borderType=cv2.BORDER_REFLECT_101)
             channels.append(channel)
         hidden = np.stack(channels, axis=-1)
         hidden = np.maximum(hidden, 0)
@@ -147,7 +163,7 @@ class BoundarySegmenter:
 
     def measure(self, image, expected_mask=None):
         self.queries += 1
-        distance = self.signed_distance(image)
+        distance = self.signed_distance(image, expected_mask)
         if self.input_frames == 2:
             self._previous_gray = normalized_gray(image)
         if self.upsample > self.output_upsample:

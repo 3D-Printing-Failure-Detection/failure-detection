@@ -1,0 +1,15 @@
+{
+  "status": "skipped",
+  "verdict": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 2 layers (leaks)"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 3.4761517993052724,
+      "capacity_mm3": 64069.23239093349,
+      "thin_layers": 0
+    }
+  },
+  "reason": "known full-stack diagnostic still fails"
+}

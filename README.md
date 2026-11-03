@@ -91,9 +91,15 @@ success, with zero defective finishes and all 24 clean controls passed. Qwen mak
 161 actual requests and ties neural-only outcomes. Historical and validation fit
 checks also preserve the previous best results (33/50 and 13/20).
 Camera regressions remain unresolved: a two-image network improves boundary error
-but still invents two wall gaps. A matched dense-connectivity training experiment
-is running. New untouched seeds are reserved for another final test; these
-policies remain opt-in.
+but still invents two wall gaps. A matched dense-connectivity trial also retains
+both gaps, despite removing false support and base alarms; its checkpoint is
+rejected. Rebalancing rare thin-material training tiles fixes one gap but adds
+eight false base alarms, so that model is also rejected. Adding the commanded
+layer mask removes both false gaps, but leaves two false base alarms and one
+false hard-thin layer; this model still fails. Longer training, verified through
+higher-precision inference, reintroduces one gap and retains those extra alarms.
+It is also rejected. New untouched seeds are reserved for another final test;
+these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.

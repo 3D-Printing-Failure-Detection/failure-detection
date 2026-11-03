@@ -4,20 +4,32 @@ import pytest
 torch = pytest.importorskip('torch')
 from recovery.models.boundary import BoundarySegmenter, normalized_gray
 from tools.boundary_tiles import tile_inputs
-from tools.train_boundary_tiles import TileNetwork, exported_tiles, soft_skeleton, connectivity_losses
+from tools.train_boundary_tiles import (TileNetwork, exported_tiles, soft_skeleton,
+                                       connectivity_losses, training_sampling_probabilities)
 
 
-def test_dense_convolution_export_matches_actual_opencv_camera_inference(tmp_path):
+@pytest.mark.parametrize('include_expected_mask', [False, True])
+@pytest.mark.parametrize('inference_dtype', ['float32', 'float64'])
+def test_dense_convolution_export_matches_actual_opencv_camera_inference(tmp_path, include_expected_mask, inference_dtype):
     torch.manual_seed(7)
-    network = TileNetwork()
+    network = TileNetwork(include_expected_mask=include_expected_mask)
     path = tmp_path/'dense.npz'
-    network.export(path)
+    network.export(path, inference_dtype)
     model = BoundarySegmenter(path)
     rng = np.random.default_rng(2)
     images = [rng.integers(0, 255, (24, 32, 3), dtype='uint8') for _ in range(2)]
     frames = [normalized_gray(image) for image in images]
+    expected_mask = rng.integers(0, 2, (24, 32), dtype='uint8')
+    if include_expected_mask:
+        frames.append(expected_mask.astype('float32'))
     model.prime_history(images[1])
-    actual = model.signed_distance(images[0])
+    actual = model.signed_distance(images[0], expected_mask)
+    assert actual.dtype == np.dtype(inference_dtype)
+    if include_expected_mask:
+        with pytest.raises(ValueError, match='requires the commanded'):
+            model.signed_distance(images[0])
+        with pytest.raises(ValueError, match='invalid commanded'):
+            model.signed_distance(images[0], np.zeros((10, 10)))
     for x, y in [(0, 0), (16, 8), (3, 2)]:
         inputs = tile_inputs(frames, (x, y), 16)[None]
         with torch.no_grad():
@@ -44,3 +56,19 @@ def test_cldice_penalizes_a_broken_wall_and_a_hallucinated_bridge():
     assert torch.isfinite(logits.grad).all()
     assert logits.grad[0, 0, 15, 16] < 0
     assert cldice[1:].tolist() == [0., 0.]
+
+
+def test_critical_sampling_uses_only_training_rows_and_bound_data():
+    groups = np.array(['train-a', 'train-b', 'val-a', 'train-c', 'val-b'])
+    validation = np.array([False, False, True, False, True])
+    audit = dict(status='complete', data_sha256='bound-data', verified_target_rows=5, total_rows=5,
+        rows=[dict(dataset_row=i, group=groups[i], validation=bool(validation[i]),
+                   critical_positive_points=10) for i in (1, 2)])
+    probability, count = training_sampling_probabilities(audit, groups, validation, 'bound-data', .5)
+    np.testing.assert_allclose(probability, [.25, .5, .25])
+    assert count == 1  # The critical validation tile cannot affect training mass.
+    with pytest.raises(ValueError, match='dataset'):
+        training_sampling_probabilities(audit, groups, validation, 'different-data', .5)
+    audit['rows'][0]['validation'] = True
+    with pytest.raises(ValueError, match='row differs'):
+        training_sampling_probabilities(audit, groups, validation, 'bound-data', .5)
