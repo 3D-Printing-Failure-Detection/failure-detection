@@ -1,0 +1,24 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-main/results": {
+    "contour": "previous_contour",
+    "neural_risk": "previous_neural_risk",
+    "neural_risk_agent": "previous_neural_risk_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-heldout/results": {
+    "contour": "previous_contour",
+    "neural_risk": "previous_neural_risk",
+    "neural_risk_agent": "previous_neural_risk_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-history-v10/historical-main/results": {
+    "contour_risk": "contour_risk",
+    "neural_risk": "hole_envelope_neural",
+    "neural_risk_agent": "hole_envelope_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-history-v10/historical-heldout/results": {
+    "contour_risk": "contour_risk",
+    "neural_risk": "hole_envelope_neural",
+    "neural_risk_agent": "hole_envelope_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-fits/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-fits/results": {}
+}

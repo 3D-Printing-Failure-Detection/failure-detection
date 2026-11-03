@@ -10,8 +10,11 @@ defective finishes**, versus the preceding candidate's 136 successes and one
 defect. All active recovery baselines' successes are retained, but five ignore
 successes remain lost. Qwen makes 527 calls and ties neural-only. The complete
 matched comparison covers 5,760 rows across 20 configurations. A new guard on
-uncertain, unsupported camera corrections is undergoing a 42-row regression;
-its success is not yet established.
+uncertain, unsupported camera corrections passes its complete 42-row regression:
+all ten required fault successes and six clean controls are retained, four extra
+defective finishes become scraps, and the prior defective finish remains. Qwen
+makes 60 actual calls. The guarded full-grid comparison is now running; its
+overall result is not yet established.
 
 The complete analytical-container/learned-fit policy finishes **136/240
 fault cases**, versus the matched current analytical policy's **133/240**,
@@ -398,15 +401,43 @@ defects, the prior defect, two historical rescues, three learned fit gains and
 six clean controls, with and without Qwen. Both methods must preserve all ten
 reference fault successes and six clean controls, introduce no new defective
 case, and finish at most the one already defective case. Actual neural/camera
-queries and actual Qwen calls are required. The run is in tmux window
-`neural-recovery:robust-fallback-v32`; a pass would trigger full regression,
-not acceptance. Historical full regression and untouched evaluation remain required.
+queries and actual Qwen calls are required. All 42 rows finish and pass their
+audits: each variant completes ten of 15 faults and all six clean controls,
+scraps the four additional defective cases without adaptation, and retains the
+one existing defective finish. No reference success is lost. Each variant makes
+104,468 neural and 2,280 boundary queries; Qwen makes 60 actual calls and ties
+neural-only. This passes the targeted gate and releases the full rerun, not
+acceptance. Historical full regression and untouched evaluation remain required.
 
 All 159 repository tests pass, with three optional modules skipped. Tests cover
 default behavior, negative/nonfinite versus zero uncertainty margins, preserved
 continuations and joint plans, and audit rejection of missing or bypassed guards.
 Re-auditing the completed 576-row joint-camera grid preserves every earlier
 audit field except the auditor digest, including all 527 actual Qwen calls.
+
+`robust-full-v33` starts after verifying the complete 42-row gate passed. It runs 576
+new rows on all three profiles, four parts, five faults plus clean controls,
+and seeds 1001–1004. The same frozen source, model weights and policy options
+are retained; twelve workers replace the prior six after checking CPU and memory
+availability. Its 6,336-row comparison retains all 20 earlier configurations
+under their own labels and adds the two guarded variants. All earlier summary
+values must remain identical. It is running in tmux window
+`neural-recovery:robust-full-v33`, with a 35 MB artifact allowance checked again
+before execution. A failed targeted gate skips it with zero new rows.
+
+`robust-historical-v34` waits for that full comparison. Before starting, the
+candidate must have the best completion count, no higher defect count, all clean
+controls passing and no lost active-recovery baseline successes. Any remaining
+ignore losses stay visible and do not count as acceptance. A separate storage
+check reserves 16 MB. This follow-up runs 240 new rows on all 100 historical
+fault cases and 20 clean controls with and without Qwen. Eleven earlier full-domain
+configurations remain in the resulting 1,560-row comparison. A separate 480-row
+comparison retains all six prior fit-only configurations on 50 faults and ten
+clean cases. Splitting new jobs by declared part domain supplies both complete
+grids without filtering or fabricating old results. All historical source
+snapshots, model hashes and the shared simulation contract have been verified.
+Its tmux window is `neural-recovery:robust-history-v34`. The former held-out seeds
+22–23 are explicitly historical development data; seeds 2001–2004 remain untouched.
 
 ## Earlier joint-camera and measurement studies
 

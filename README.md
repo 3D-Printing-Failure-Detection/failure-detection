@@ -122,8 +122,12 @@ baselines' successes are retained; five ignore successes remain lost. The
 ties neural-only. The extra five successes restore usable prints rather than
 add genuine rescues; those remain 18. Four additional defects follow corrections
 supported only by the learned camera despite failed uncertainty checks. An
-opt-in guard now rejects such corrections, with 159 tests passed and a targeted
-42-row recovery regression running. This trade-off is not accepted as a win.
+opt-in guard now rejects such corrections. Its complete 42-row regression passes:
+both variants retain all ten required fault successes and six clean controls,
+stop the four extra defective prints, and retain the one pre-existing defect.
+Qwen makes 60 calls and ties neural-only. All 159 repository tests pass. The
+576-row full rerun is now running with twelve workers, with complete historical
+regression queued afterward. The targeted result does not establish a full-grid win.
 Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup

@@ -1,0 +1,44 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/main/results": {
+    "ignore": "ignore",
+    "guarded": "guarded",
+    "contour": "contour",
+    "neural_risk": "combined_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/heldout/results": {
+    "ignore": "ignore",
+    "guarded": "guarded",
+    "contour": "contour",
+    "neural_risk": "combined_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/main/results": {
+    "neural_risk_agent": "combined_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/heldout/results": {
+    "neural_risk_agent": "combined_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/main/results": {
+    "ignore": "unrestricted_ignore",
+    "contour": "unrestricted_contour",
+    "neural_risk": "unrestricted_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/heldout/results": {
+    "ignore": "unrestricted_ignore",
+    "contour": "unrestricted_contour",
+    "neural_risk": "unrestricted_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hybrid-historical-v1/main/results": {
+    "contour": "hybrid_contour",
+    "neural_risk": "hybrid_neural",
+    "neural_risk_agent": "hybrid_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hybrid-historical-v1/heldout/results": {
+    "contour": "hybrid_contour",
+    "neural_risk": "hybrid_neural",
+    "neural_risk_agent": "hybrid_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-fits/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-containers/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-fits/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-containers/results": {}
+}
