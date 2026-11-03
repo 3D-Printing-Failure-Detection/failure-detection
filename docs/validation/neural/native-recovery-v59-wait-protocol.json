@@ -1,0 +1,25 @@
+{
+  "created_at": "2026-11-03T10:24:36.757536+00:00",
+  "camera_root": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58",
+  "camera_pid": 3523335,
+  "camera_command": [
+    "/home/ishaan/failure-detection/.venv/bin/python",
+    "-u",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/run.py"
+  ],
+  "camera_starttime": "59638205",
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-recovery-v59-wait/run.py": "927157b8613c88c32afe3d5f8721c1de6274c14d2efa61480bd41aa723b933a6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/protocol.json": "d63c107ba43b146b6c2d6a2acb2006970a8f329609f167d731308590270f1d73",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/run.py": "55b1d0d6049d791749412a6dd6d791e403ce237860cf18ec6959885c9d18eb36",
+    "/tmp/prepare-native-recovery-v59.py": "4248dd7520db6762c1d4ea525fb2b5688b8308a385faf4555b576cf0500676e5",
+    "/tmp/native-recovery-v59-run.py": "a2942a9a6ac53b97c9ead051aa125a5f77767b5ec95ee6db81917cd386c9c0fe"
+  },
+  "command": [
+    "/home/ishaan/failure-detection/.venv/bin/python",
+    "/tmp/prepare-native-recovery-v59.py"
+  ],
+  "repository": "/home/ishaan/failure-detection",
+  "storage_bytes_at_queue": 99962552320,
+  "limitation": "Waits for the existing process identity; never restarts it. The next launcher verifies camera/model qualification and checks space before producing recovery artifacts. No fresh test or promotion is queued."
+}

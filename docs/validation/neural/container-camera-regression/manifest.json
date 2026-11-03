@@ -1,0 +1,132 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian",
+      "corexy",
+      "bedslinger"
+    ],
+    "parts": [
+      "mug"
+    ],
+    "kinds": [
+      "shift"
+    ],
+    "methods": [
+      "guarded",
+      "contour",
+      "neural_camera"
+    ],
+    "n": 1,
+    "seed": 10,
+    "workers": 3,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-container-regression-v1/results",
+    "neural_checkpoint": null,
+    "experiment_stage": "historical",
+    "neural_calibrate_measurements": false,
+    "neural_forecast_scope": "all",
+    "neural_reserve_fit": false,
+    "boundary_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-container-regression-v1/boundary.npz",
+    "supervisor_endpoint": "http://127.0.0.1:8089",
+    "supervisor_model": "local-qwen3",
+    "supervisor_timeout": 120.0,
+    "supervisor_review_interval": 8,
+    "supervisor_manifest": null
+  },
+  "instrumentation_version": 2,
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    },
+    "corexy": {
+      "name": "corexy",
+      "kinematics": "corexy",
+      "bed_mm": [
+        256,
+        256
+      ],
+      "height_mm": 256,
+      "line_width_mm": 0.45,
+      "moving_mass_kg": 0.16,
+      "camera_position_m": [
+        0.12,
+        -0.15,
+        0.4
+      ],
+      "filament_rgb": [
+        0.75,
+        0.83,
+        0.87
+      ],
+      "noise_std": 1.5
+    },
+    "bedslinger": {
+      "name": "bedslinger",
+      "kinematics": "bedslinger",
+      "bed_mm": [
+        180,
+        180
+      ],
+      "height_mm": 180,
+      "line_width_mm": 0.48,
+      "moving_mass_kg": 0.45,
+      "camera_position_m": [
+        -0.1,
+        -0.18,
+        0.34
+      ],
+      "filament_rgb": [
+        0.87,
+        0.72,
+        0.59
+      ],
+      "noise_std": 2.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "e8059fb27a84e592c4b473b04902d338cda07b86",
+  "source_sha256": "1b0c9b2cce03e588038b80e753234446725975fa72d2f5611b354ec0f9985b80",
+  "expected_runs": 9,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "boundary_checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+  "completed_runs": 9,
+  "errors": [],
+  "final_source_sha256": "1b0c9b2cce03e588038b80e753234446725975fa72d2f5611b354ec0f9985b80",
+  "final_boundary_checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+}

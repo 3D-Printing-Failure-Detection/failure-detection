@@ -1,0 +1,9 @@
+{
+  "status": "superseded",
+  "new_rows": 0,
+  "exit_code": 143,
+  "replacement": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43",
+  "reason": "Requiring the neural-only ablation to tie the best result could block a genuinely better neural-plus-agent system; only the requested full system determines eligibility. All ablation results and original full-system requirements remain intact.",
+  "superseded_at": "2026-11-03T07:04:36.665165+00:00",
+  "replacement_protocol_sha256": "a6bfb0e6a15496a8f42ee72af709f9a669fe4f41dd13ae969f2b08fd72d70289"
+}

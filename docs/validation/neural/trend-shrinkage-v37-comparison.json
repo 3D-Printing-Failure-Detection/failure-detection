@@ -1,0 +1,117 @@
+{
+  "status": "passed",
+  "new_rows": 46,
+  "candidate_rows": 44,
+  "source_sha256": "7e854d1a905fe2afbc55afe3ffe66efe57b78802a16b8f6aad6caff11ad51b66",
+  "summary": {
+    "neural_risk": {
+      "fault_cases": 16,
+      "fault_successes": 11,
+      "defective_finishes": 1,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "prohibited_defective_finishes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2440,
+      "trend_shrinkage_queries": 107877,
+      "agent_requests": 0,
+      "passes": true
+    },
+    "neural_risk_agent": {
+      "fault_cases": 16,
+      "fault_successes": 11,
+      "defective_finishes": 1,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "prohibited_defective_finishes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2440,
+      "trend_shrinkage_queries": 107877,
+      "agent_requests": 62,
+      "passes": true
+    }
+  },
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/mug-control/results",
+      "manifest_sha256": "37436199966659d0cef53f920782e58a41bb5dae7ac6775309fb8be9b309ab3d",
+      "runs_sha256": "d2e542c6ed3553c606d241cf7353ffde8c112828aa4b27de1e6503e798371192",
+      "audit_sha256": "8a205be768541d9f9674d155abb71e3d4c950bb96ef32b461bd9abf322fa75f1"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/mug-shrinkage/results",
+      "manifest_sha256": "0a3c966befa5bfd3c6ba8b3c110bdf88f7426b8bddfd47e75e4c60df0640fa07",
+      "runs_sha256": "20c2c0318a71ea455032e289a67a734131144d7213f2d6407a41d154cd61a7f4",
+      "audit_sha256": "564ac0d4327d3c2611772446dcd0816032a51997ac2783925d6dd5cddf541771"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/cup-collapse/results",
+      "manifest_sha256": "5e3c998a893581ce702d6a629487dcc276110a7faca0cbcc381016b7a2ef8900",
+      "runs_sha256": "61243239753b588559a44ba24d0c72118fc78766a17d713729d82d85c03b7947",
+      "audit_sha256": "97053cf27d612b09555334ed4be77bb691a332553b80e602b44a2d69676326b5"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/cup-shift/results",
+      "manifest_sha256": "68ced55098b5545e8a91b5a43b146d9579b709bc68741e42c1f94de2cda5a6fa",
+      "runs_sha256": "0f3335007542d02f899ca88ba8d08789ff39091a042c996ab884addd63d53bd6",
+      "audit_sha256": "d953f07b18ff8ad4ee8bc68685decf16b0adbd31f21500f1774c083112714991"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/corexy-mug-gains/results",
+      "manifest_sha256": "b10db68a83533a1154e15370287e9e0fae41c4116e6c0823600342e461a2593a",
+      "runs_sha256": "6a45edf64853bb850849e131515f0973912ac426deb1a801eea405c1b4a31bc9",
+      "audit_sha256": "6901aa329046396889f5877b501e859c1ae3d00c196902191638529f3e1cf1d4"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/bedslinger-mug-gain/results",
+      "manifest_sha256": "ab320976b9bcb15691c3cea8873243092fef6fc2de0214b983170868c0b18356",
+      "runs_sha256": "6220f21c0f8025569702c6ef470e7d5e06cf32cce4190b35becdff85994ef051",
+      "audit_sha256": "321e9aab173a0f28ea5c8b9fbee198ec7c2da02cd0c3f831297c1707a99bcd49"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/new-defects-1002/results",
+      "manifest_sha256": "1b6c5eed31cc85582d6f6248218c48ead18da045b0e16f6bb9d22a4db896b450",
+      "runs_sha256": "0b0b49a14f359e02d5dabc5ddd5b379dcce4c3afd387cf2262c738ea8d12c110",
+      "audit_sha256": "bbeb39bda2bee04a7ba99a352fbd47021c45ac32149c6ce8c6c1f76a83b49fef"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/defects-1004/results",
+      "manifest_sha256": "6f9d25a8c077963dbe18de5cb149d6785ec446835fa5af42f6b0815b08bb7976",
+      "runs_sha256": "880648b2f4a69b3b8d64a6b6e19e850f3c7b68b1ecddf99d2045a8f1a08d7df4",
+      "audit_sha256": "1b48bbd76dca450b0ef9bc0a22c38fdab743d3630361208b49fe1bb9198af023"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/historical-cup/results",
+      "manifest_sha256": "4194f511a140975725ae57b630e2807013d46fd19d584e41481197a8d35c164b",
+      "runs_sha256": "35c32eb0713f5694b657f8c064ae4e47306d87efeea2f5b7723eadbaaaade934",
+      "audit_sha256": "42165eb57a217c1ee24f46989735831c82b306224444b9125d85884c3afb0945"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/historical-mug/results",
+      "manifest_sha256": "59288d50654c9499c0914eefbe52446c3bfaa4edca1746b2d98f353feeeb8665",
+      "runs_sha256": "d6dddfd1842ae5f9a5bbbfa2b338c25b3defe0fdda18be1b50f162d9c8409501",
+      "audit_sha256": "6c3ef87c75538b9af4c5c5a8a088b615e2dc09a7cac7ffb7c9a9bc398d0aed20"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/learned-fit-gains/results",
+      "manifest_sha256": "f206f862bd482050a875f62e2ad50903282470b793b2a5ff6a500cb23a628a26",
+      "runs_sha256": "c791191f9c2346886d7cc294d95e56089b3696b836a639914a91fbce6c0c595d",
+      "audit_sha256": "3f4d19fe62ee16a4ec366207c5c1d169ccf7df84d4df1408abaf7b7f737f6076"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/clean/results",
+      "manifest_sha256": "3b6f1f0b8723d9ee581d13417590ea9d380a0b6be0e4ec279527300284e7dc0a",
+      "runs_sha256": "63ab06440b4e7850d556805762602114d02006875b10af3c6f275390c907d099",
+      "audit_sha256": "db25bd32085050c59d7e539445f637655e0aa0769a2dd370597586d00eb30dbb"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/historical-clean/results",
+      "manifest_sha256": "1ceac9a83763bcda37d830f1e30327ace9f0651db6744a6e7130964a4778b9da",
+      "runs_sha256": "2d584afc323dc77dec21c33792a5218c2a89abce337552415d47fae402115282",
+      "audit_sha256": "9184bc43f57d281322e124827bddd47e4ba003d5c5c5f49c9006a62e7fd8d7a1"
+    }
+  ],
+  "limitation": "Selected consumed regression gate only. The initial mug gain is not an overall improvement, and preserved selected successes do not replace a full-grid comparison, historical regression or untouched evaluation. The ongoing v33 and v35 jobs keep their own frozen sources."
+}

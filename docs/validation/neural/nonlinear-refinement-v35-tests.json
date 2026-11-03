@@ -1,0 +1,19 @@
+{
+  "repository_suite": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MUJOCO_GL=egl .venv/bin/python -m pytest -q",
+    "passed": 159,
+    "skipped": 3,
+    "seconds": 24.46
+  },
+  "focused_camera_suite": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONPATH=/mnt/data/ishaan/hri-workspace/failure-detection/model-test-py311 /mnt/data/ishaan/hri-workspace/envs/openpi/bin/python -m pytest tests/test_boundary_refinement.py tests/test_boundary_tiles.py tests/test_boundary_model.py -q",
+    "passed": 22,
+    "seconds": 1.49
+  },
+  "source_sha256": "42f93bf7018222e7020a9e507d190a786d7a1d49a12fb969e1dd75b4c1dc68de",
+  "test_sha256": {
+    "tests/test_boundary_refinement.py": "29a198757b99d6f0e4ed6ad867d6c7910999e2a6e112e96f49fed5291ad8ac35",
+    "tests/test_boundary_tiles.py": "66a2cc29ea2a7a4082ef9a4e96b69951211fe1c4839595016cd664dee73274c6",
+    "tests/test_boundary_model.py": "78f25baeea0a43cc08f9c560e1838e12da134e1ed84647fd4b73936986d2bc1a"
+  }
+}

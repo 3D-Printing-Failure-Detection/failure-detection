@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "rows": 52,
+  "original_features_reproduced": true,
+  "unchanged_input_images": true,
+  "protocol_sha256": "26d82123ca678d71ae76af83333031b7669d40b92d50ad20ce21986381f60cf7",
+  "rows_sha256": "f2454e02ee59ccfd6e4ea5651cc82c473207476f6f2319855a636cea187d91c1",
+  "cases": {
+    "cartesian-mug-1003": [],
+    "cartesian-cup-1002": [
+      "neural-gap-sensitive-refinement-v30--control",
+      "neural-nonlinear-refinement-v35--nonlinear"
+    ]
+  },
+  "limitation": "Exploratory consumed two-frame geometry diagnostic. Exact pixel-cell union changes only interpretation of existing observed foreground; it cannot invent missing pixels. No runtime change, training, complete-print claim, recovery or model promotion."
+}

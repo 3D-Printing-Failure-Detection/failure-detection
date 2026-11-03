@@ -1,0 +1,242 @@
+[
+  {
+    "worker": 2,
+    "repeat": 0,
+    "layer": 0,
+    "raw_image_sha256": "2688f2556fbbc694063d7a3b3c9c27b3fb23a4ed69dfed70d986902e1b7c28ea",
+    "rectified_image_sha256": "5c3e9b2dbe361265b1de99c9e9fe089c2402fed3b670999393a752845f6bf9fe",
+    "measured_geometry_sha256": "5145d719ec728b36117396ad4b0f5f0be47937bdd004649d51b77820672bae39",
+    "actual_geometry_sha256": "60d1ead3a506d67b9b99e7da347998cba805fbd51818913a45301a4af3e31ac8",
+    "measured_bounds": [
+      -21.975,
+      -21.975,
+      21.975,
+      21.975
+    ],
+    "measured_area_mm2": 1535.1734063367367,
+    "actual_area_mm2": 1522.4946455115958,
+    "measurement_iou": 0.9907345347270959,
+    "detection_label": "ok",
+    "deviation_mm": 0.2866878889606058,
+    "gray_quantiles": [
+      44.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 0,
+    "layer": 1,
+    "raw_image_sha256": "6bf1bf23a537ef20174e103a96cbdfd937191cae6f44c6580457932e7e079d84",
+    "rectified_image_sha256": "c2e30d903590f6b5dbd5d3678cd84fc2464c03cd011ffae2186769990c476f29",
+    "measured_geometry_sha256": "a31aa5546dac9b9c68d01b696d1cf10b8def96a44446b2e08f0a092cdd133a35",
+    "actual_geometry_sha256": "ef860135c56c64aa7fecf45a97192e8d0f9bf8f0fb53fea3ecf1169b1b660f5f",
+    "measured_bounds": [
+      -21.975,
+      -21.975,
+      21.975,
+      21.975
+    ],
+    "measured_area_mm2": 1541.1829080637679,
+    "actual_area_mm2": 1527.6850096493317,
+    "measurement_iou": 0.9898787671202565,
+    "detection_label": "ok",
+    "deviation_mm": 0.31292440544177874,
+    "gray_quantiles": [
+      44.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 0,
+    "layer": 2,
+    "raw_image_sha256": "232a0c558e07c6fbaa344f3e2dc91f2925442df36f7378f8055d3a13288879af",
+    "rectified_image_sha256": "2b8ed94b54184227a02a66a53c5a7c51d1b00ccf1f6fae09b22b4c698a0ca32c",
+    "measured_geometry_sha256": "bb77540038160943b6b7e85aee9c3d3dbdb68b14ca256ae90138fd48f361438f",
+    "actual_geometry_sha256": "472a68d47756712eda803a42451b21b258c9ef4eaee25bf0ac5c7776a48c7b7e",
+    "measured_bounds": [
+      -22.225,
+      -22.225,
+      22.225,
+      21.975
+    ],
+    "measured_area_mm2": 1548.581095927306,
+    "actual_area_mm2": 1532.8841905121458,
+    "measurement_iou": 0.9886127586977529,
+    "detection_label": "ok",
+    "deviation_mm": 0.33687707491013763,
+    "gray_quantiles": [
+      44.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 0,
+    "layer": 3,
+    "raw_image_sha256": "0c159afe10fe8de18a399b715d8f655c73d15b6ce16ff1469731a9aae962d97b",
+    "rectified_image_sha256": "a43ca0d8250cdc16941f2034fd5553040b6e566f0a63f2ca60dc6809af77fb69",
+    "measured_geometry_sha256": "1604f8cf7275fe22ce0c149e2287f04b8dbbb0f3f82041b3fd4d85bd8762abe1",
+    "actual_geometry_sha256": "9a96066ff88d7f226223e92ef4f46d47deddcd39efef14f91bc7f2e690e87787",
+    "measured_bounds": [
+      -22.225,
+      -22.225,
+      22.225,
+      21.96738795325113
+    ],
+    "measured_area_mm2": 1555.612352592927,
+    "actual_area_mm2": 1538.0921880158442,
+    "measurement_iou": 0.9877630606357162,
+    "detection_label": "ok",
+    "deviation_mm": 0.32915978097088405,
+    "gray_quantiles": [
+      43.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 1,
+    "layer": 0,
+    "raw_image_sha256": "2688f2556fbbc694063d7a3b3c9c27b3fb23a4ed69dfed70d986902e1b7c28ea",
+    "rectified_image_sha256": "5c3e9b2dbe361265b1de99c9e9fe089c2402fed3b670999393a752845f6bf9fe",
+    "measured_geometry_sha256": "5145d719ec728b36117396ad4b0f5f0be47937bdd004649d51b77820672bae39",
+    "actual_geometry_sha256": "60d1ead3a506d67b9b99e7da347998cba805fbd51818913a45301a4af3e31ac8",
+    "measured_bounds": [
+      -21.975,
+      -21.975,
+      21.975,
+      21.975
+    ],
+    "measured_area_mm2": 1535.1734063367367,
+    "actual_area_mm2": 1522.4946455115958,
+    "measurement_iou": 0.9907345347270959,
+    "detection_label": "ok",
+    "deviation_mm": 0.2866878889606058,
+    "gray_quantiles": [
+      44.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 1,
+    "layer": 1,
+    "raw_image_sha256": "6bf1bf23a537ef20174e103a96cbdfd937191cae6f44c6580457932e7e079d84",
+    "rectified_image_sha256": "c2e30d903590f6b5dbd5d3678cd84fc2464c03cd011ffae2186769990c476f29",
+    "measured_geometry_sha256": "a31aa5546dac9b9c68d01b696d1cf10b8def96a44446b2e08f0a092cdd133a35",
+    "actual_geometry_sha256": "ef860135c56c64aa7fecf45a97192e8d0f9bf8f0fb53fea3ecf1169b1b660f5f",
+    "measured_bounds": [
+      -21.975,
+      -21.975,
+      21.975,
+      21.975
+    ],
+    "measured_area_mm2": 1541.1829080637679,
+    "actual_area_mm2": 1527.6850096493317,
+    "measurement_iou": 0.9898787671202565,
+    "detection_label": "ok",
+    "deviation_mm": 0.31292440544177874,
+    "gray_quantiles": [
+      44.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 1,
+    "layer": 2,
+    "raw_image_sha256": "232a0c558e07c6fbaa344f3e2dc91f2925442df36f7378f8055d3a13288879af",
+    "rectified_image_sha256": "2b8ed94b54184227a02a66a53c5a7c51d1b00ccf1f6fae09b22b4c698a0ca32c",
+    "measured_geometry_sha256": "bb77540038160943b6b7e85aee9c3d3dbdb68b14ca256ae90138fd48f361438f",
+    "actual_geometry_sha256": "472a68d47756712eda803a42451b21b258c9ef4eaee25bf0ac5c7776a48c7b7e",
+    "measured_bounds": [
+      -22.225,
+      -22.225,
+      22.225,
+      21.975
+    ],
+    "measured_area_mm2": 1548.581095927306,
+    "actual_area_mm2": 1532.8841905121458,
+    "measurement_iou": 0.9886127586977529,
+    "detection_label": "ok",
+    "deviation_mm": 0.33687707491013763,
+    "gray_quantiles": [
+      44.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  },
+  {
+    "worker": 2,
+    "repeat": 1,
+    "layer": 3,
+    "raw_image_sha256": "0c159afe10fe8de18a399b715d8f655c73d15b6ce16ff1469731a9aae962d97b",
+    "rectified_image_sha256": "a43ca0d8250cdc16941f2034fd5553040b6e566f0a63f2ca60dc6809af77fb69",
+    "measured_geometry_sha256": "1604f8cf7275fe22ce0c149e2287f04b8dbbb0f3f82041b3fd4d85bd8762abe1",
+    "actual_geometry_sha256": "9a96066ff88d7f226223e92ef4f46d47deddcd39efef14f91bc7f2e690e87787",
+    "measured_bounds": [
+      -22.225,
+      -22.225,
+      22.225,
+      21.96738795325113
+    ],
+    "measured_area_mm2": 1555.612352592927,
+    "actual_area_mm2": 1538.0921880158442,
+    "measurement_iou": 0.9877630606357162,
+    "detection_label": "ok",
+    "deviation_mm": 0.32915978097088405,
+    "gray_quantiles": [
+      43.0,
+      45.0,
+      46.0,
+      46.0,
+      47.0,
+      203.0,
+      205.0
+    ],
+    "failure_onset": 45
+  }
+]

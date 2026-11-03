@@ -156,7 +156,7 @@ def test_forecast_evaluation_precedes_current_measurement_and_does_not_update_mo
     segmenter = ObservedSegmenter(printer)
     segmenter.policy = policy
     monkeypatch.setattr(ClassicalSegmenter, "measure", lambda *_: actual.region)
-    segmenter.measure(None)
+    segmenter.measure(np.zeros((8, 8, 3), dtype=np.uint8))
     assert segmenter.forecast_scores[0]["forecast_mm"] > 2.
     assert segmenter.forecast_scores[0]["command_mm"] > 3.
     assert len(policy.state.observations) == 4

@@ -1,0 +1,17 @@
+{
+  "status": "skipped",
+  "verdict": {
+    "ok": false,
+    "violations": [
+      "layer not supported by layer below (26 mm2 overhang)",
+      "walls not closed in 2 layers (leaks)",
+      "base not flat/solid in 1 layers"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 25.782794367599124,
+      "capacity_mm3": 63468.29071455113,
+      "thin_layers": 0
+    }
+  },
+  "reason": "known false-gap diagnostic still fails"
+}

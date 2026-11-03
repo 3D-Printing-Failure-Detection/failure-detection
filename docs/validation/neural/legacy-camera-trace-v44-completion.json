@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "new_rows": 10,
+  "reports": [
+    {
+      "name": "previous_combined_neural-spacer",
+      "rows": 2,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "c99edeb328c44b196af2c0ae90f063df2f091a602b649ae36176012d53a767fe",
+      "runs_sha256": "d9de79901697d8af39c1c50df265a92543d59bcf0aca8ffef933b5c0109f531f",
+      "audit_sha256": "4f8cbedf6d175ee04a92b007a286f72b8a64e3594a6fd94f8e5f41d81140cc65"
+    },
+    {
+      "name": "previous_combined_neural-cup",
+      "rows": 2,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "d981eaf88b7f4330dfe98761de8f227e40930fc9c68f1be440732d7a90efe6f6",
+      "runs_sha256": "4931c3a1a5977de5605daf4c9773b293160845123794687deec8889ef9b11a33",
+      "audit_sha256": "37ce5d50abb0efd0b27b48fff65c339a32daa81710d002d19fe1567919fc7610"
+    },
+    {
+      "name": "joint_camera_neural-spacer",
+      "rows": 1,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "d42ad982a97256ed2438f2a9824fc432f8c274d67944519745185f121914a367",
+      "runs_sha256": "de51ed01e90e38bc72078dd18f13e5aeee1deea04039a2251a07bb9b7ae0de83",
+      "audit_sha256": "28f50167895782e074c3fb8289305f865dc1a13b23452e84f3e51be05ca2dc72"
+    },
+    {
+      "name": "joint_camera_neural-cup",
+      "rows": 1,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "06e3c4fa698105ad976c6be721dcee8c89bb9509a7d092207f27740d3ce4c189",
+      "runs_sha256": "60d60f59a27e6743daab357427adb7289c744ba022c11eea4a583360a24e12e1",
+      "audit_sha256": "b31b00650e00bac1661b5830494f0ba573c65e2b71cf4f9cc39b7f7fe8a3753b"
+    },
+    {
+      "name": "robust_camera_neural-spacer",
+      "rows": 1,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "8e0f45942987bff92931f43aaffea15f10c6798076cc3de11e1de706643d8c88",
+      "runs_sha256": "9fc12ab79197fa73156a06c2bc4a44806cf4e357192dae6658552337b7cb9056",
+      "audit_sha256": "1ce307bc5fe1cc3656eaae2e73cad67ace66412bb6fc31729de51527a201972d"
+    },
+    {
+      "name": "robust_camera_neural-cup",
+      "rows": 1,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "5c96728492c92a3c6395f74301c45035b054a53ff0b6b985f4e55325f7ee7763",
+      "runs_sha256": "278eb95694ec8f9156b126d1f0d91f836c6219f2b658f4050ebb32bec4c9b76b",
+      "audit_sha256": "da81b1811602bb814e22ba10b56b44508e7369a19b903ccac9c0f21a8c8640b9"
+    },
+    {
+      "name": "neural_risk-spacer",
+      "rows": 1,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "5ba8c92039490ef11b38caea234cf2dc77f59e6d172a133c4a37d729bef346d3",
+      "runs_sha256": "d2bb08d186ebfccc9210c404b40b3bb88cba0d5f449e5ebf0314eed1a4241808",
+      "audit_sha256": "5373f53a4b2f95ee20ae3c956186769cd460c6f855b101de06a3a6172153683c"
+    },
+    {
+      "name": "neural_risk-cup",
+      "rows": 1,
+      "outcomes_actions_measurements_and_inference_counts_preserved": true,
+      "manifest_sha256": "8d2ee3cd1960bef3f6c61558372269f7e7b9dd660d30797122cf1d89728738c2",
+      "runs_sha256": "e8fadffc57610e0e9caf4af7bcb6148d2b141e5935793227e9e75bcc831b3810",
+      "audit_sha256": "c4a5568ab25a7e05dc408567bd0e5ccefb2df9c7ccdcdef3722ebcb711a6b8a0"
+    }
+  ],
+  "camera_input_consistency": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "checked_rows": 10,
+    "unchecked_legacy_rows": 0,
+    "recorded_frames": 748,
+    "paired_cases": 2,
+    "compared_frames": 561
+  },
+  "comparison_sha256": "2cda71b8886bafe4179b897fdcbc3781257513b3ef01f32157babb3710a88c31",
+  "limitation": "Instrumentation compatibility on consumed cases only. Neural-only checks do not claim new Qwen evidence or policy improvement. All original benchmark outcomes remain unchanged. Fresh seeds 2001\u20132004 are not used."
+}

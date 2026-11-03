@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "old_watcher_alive_without_children_or_results": true,
+  "full_result_absent": true,
+  "commands_unchanged_except_output_location": true,
+  "primary_gate_expressions_unchanged": true,
+  "branches_verified": [
+    "without-prior",
+    "with-prior"
+  ],
+  "protocol_sha256": "a6bfb0e6a15496a8f42ee72af709f9a669fe4f41dd13ae969f2b08fd72d70289",
+  "runner_sha256": "784d5113fcce01099a292027cb06bbef89d21154c7a2e0d0691f5643e5911bf5",
+  "amendment_sha256": "7ed274f28f46369d97790dfa339d6ec712813767be37658b423388f5f3d53f25",
+  "storage_bytes": 233472
+}

@@ -1,0 +1,1349 @@
+[
+  {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "warp",
+    "seed": 1003,
+    "method": "neural_risk",
+    "clear_failure_on_adapt": false,
+    "k0": 45,
+    "severity": 2.9145329839493934,
+    "outcome": "scrapped",
+    "in_place": false,
+    "scrapped": true,
+    "defective_finished": false,
+    "filament_ratio": 0.10474968490317638,
+    "filament_with_assumed_clean_restart": 1.1047496849031764,
+    "n_layers": 160,
+    "layers_printed": 4,
+    "frames": 4,
+    "n_events": 3,
+    "pre_failure_alarms": 3,
+    "alarm_delay": -1,
+    "first_label": "warp",
+    "adaptations": 0,
+    "measurement_iou": 0.317566402778085,
+    "forecast_samples_after_onset": 0,
+    "forecast_boundary_error_mm": null,
+    "command_boundary_error_mm": null,
+    "tracking_rms_mm": 1.1001756743194341e-07,
+    "max_tracking_mm": 7.573187189860218e-07,
+    "executed_waypoints": 1846,
+    "neural_queries": 0,
+    "analytical_candidate_checks": 0,
+    "joint_camera_checks": 0,
+    "has_fit_constraints": false,
+    "forecast_source": "analytical",
+    "boundary_queries": 4,
+    "measurement_source": "classical",
+    "alternative_measurement_source": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "alternative_observations": 4,
+    "alternative_classical_base_frames": 0,
+    "alternative_learned_frames": 4,
+    "agent_requests": 0,
+    "agent_accepted": 0,
+    "violations": [
+      "continuation fails and no executable recovery meets the spec"
+    ],
+    "actions": [
+      {
+        "layer": 0,
+        "label": "warp",
+        "action": "continue",
+        "reason": "continuation passes function checks; no intervention justified",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.7487573468384171,
+            "robust_margin": 0.7157711577414722,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          }
+        ]
+      },
+      {
+        "layer": 1,
+        "label": "warp",
+        "action": "continue",
+        "reason": "continuation passes function checks; no intervention justified",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.7487573468384171,
+            "robust_margin": 0.6692079105545043,
+            "uncertainty_mm": 0.30031603148633956,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          }
+        ]
+      },
+      {
+        "layer": 3,
+        "label": "warp",
+        "action": "scrap",
+        "reason": "continuation fails and no executable recovery meets the spec",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (14780 mm2 overhang)"
+            ],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:hold measured shape",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:nominal",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 15 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 30 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 60 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 120 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 45.95878814647842,
+            "observation_model": "classical camera",
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (14772 mm2 overhang)"
+            ],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:hold measured shape",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "fallback_uncertainty_required": true,
+            "fallback_uncertainty_passes": false,
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:nominal",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "fallback_uncertainty_required": true,
+            "fallback_uncertainty_passes": false,
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 15 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "fallback_uncertainty_required": true,
+            "fallback_uncertainty_passes": false,
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 1.0,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 30 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "fallback_uncertainty_required": true,
+            "fallback_uncertainty_passes": false,
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 60 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "fallback_uncertainty_required": true,
+            "fallback_uncertainty_passes": false,
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          },
+          {
+            "name": "compensate:blend over 120 layers",
+            "executable": false,
+            "correction_budget": {
+              "required_layers": 0,
+              "remaining_layers": 156,
+              "transition_height_mm": 0.0,
+              "spare_layers": 156,
+              "nominal_reachable": true,
+              "assumed_max_step_mm": 0.25
+            },
+            "margin": -1.0,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 46.11545486032714,
+            "observation_model": "learned camera",
+            "fallback_after_no_primary_plan": true,
+            "fallback_uncertainty_required": true,
+            "fallback_uncertainty_passes": false,
+            "ok": false,
+            "violations": [
+              "toolpath exceeds the calibrated inspection field of view"
+            ],
+            "fidelity": 0.9999999999999997,
+            "adapts_remaining": 3
+          }
+        ]
+      }
+    ],
+    "seconds": 120.78417683206499
+  },
+  {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "warp",
+    "seed": 1003,
+    "method": "neural_risk_agent",
+    "clear_failure_on_adapt": false,
+    "k0": 45,
+    "severity": 2.9145329839493934,
+    "outcome": "finished",
+    "in_place": true,
+    "scrapped": false,
+    "defective_finished": false,
+    "filament_ratio": 1.0008610367302448,
+    "filament_with_assumed_clean_restart": 1.0008610367302448,
+    "n_layers": 160,
+    "layers_printed": 160,
+    "frames": 160,
+    "n_events": 17,
+    "pre_failure_alarms": 0,
+    "alarm_delay": 1,
+    "first_label": "warp",
+    "adaptations": 0,
+    "measurement_iou": 0.8854660392035643,
+    "forecast_samples_after_onset": 115,
+    "forecast_boundary_error_mm": 0.3139962303486854,
+    "command_boundary_error_mm": 0.44726479734107893,
+    "tracking_rms_mm": 1.1073293987374898e-07,
+    "max_tracking_mm": 7.874758311335638e-07,
+    "executed_waypoints": 191116,
+    "neural_queries": 0,
+    "analytical_candidate_checks": 0,
+    "joint_camera_checks": 0,
+    "has_fit_constraints": false,
+    "forecast_source": "analytical",
+    "boundary_queries": 160,
+    "measurement_source": "classical",
+    "alternative_measurement_source": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "alternative_observations": 160,
+    "alternative_classical_base_frames": 0,
+    "alternative_learned_frames": 160,
+    "agent_requests": 3,
+    "agent_accepted": 3,
+    "violations": [],
+    "actions": [
+      {
+        "layer": 46,
+        "label": "warp",
+        "action": "continue",
+        "reason": "local Qwen selected continue; predicted function checks pass",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 0.274638938909774,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent": {
+              "request": {
+                "model": "local-qwen3",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. Only candidates marked ok, executable, and review_eligible are allowed. The assessment tool ranks them by functional risk: functional_rank 1 is its recommendation. In policy requests the candidate IDs match their displayed ranks; return that candidate ID. Aim for a functional completed print. Prefer continuing when it passes with adequate margin; unnecessary intervention consumes a limited budget. If fit_at_risk is true, prioritize the largest fit_robust_clearance_mm, then fit_clearance_mm: a verified recovery with greater clearance can preserve a through-hole before the next layers damage its fit. For recovery, consider functional margin, robustness under uncertainty, material change, and remaining correction distance. margin and robust_margin are dimensionless; fit_clearance_mm and uncertainty_mm are lengths in millimetres. Larger margins are better. Negative robust margin means the uncertainty envelope fails, even if the central prediction passes. Do not invent measurements or change the functional specification. Reply with JSON and a short reason."
+                  },
+                  {
+                    "role": "user",
+                    "content": "{\"observation\":{\"printed_layers\":47,\"total_layers\":160,\"detector_label\":\"warp\",\"deviation_mm\":1.2843,\"uncertainty_mm\":0.2746,\"adapts_remaining\":3},\"candidates\":[{\"id\":1,\"name\":\"continue\",\"ok\":true,\"executable\":true,\"margin\":0.5,\"robust_margin\":-1.0,\"command_change_fraction\":0.0,\"uncertainty_mm\":0.2746,\"adapts_remaining\":3,\"fidelity\":1.0,\"functional_rank\":1,\"review_eligible\":true,\"observation_model\":\"classical camera\"}]}"
+                  }
+                ],
+                "temperature": 0.0,
+                "seed": 2026,
+                "max_tokens": 160,
+                "chat_template_kwargs": {
+                  "enable_thinking": false
+                },
+                "response_format": {
+                  "type": "json_schema",
+                  "json_schema": {
+                    "name": "recovery_decision",
+                    "strict": true,
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "candidate": {
+                          "type": "integer",
+                          "enum": [
+                            1
+                          ]
+                        },
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "candidate",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "accepted": true,
+              "endpoint": "http://127.0.0.1:8090",
+              "timeout_s": 120.0,
+              "response": {
+                "choices": [
+                  {
+                    "finish_reason": "stop",
+                    "index": 0,
+                    "message": {
+                      "role": "assistant",
+                      "content": "{\n  \"candidate\": 1,\n  \"reason\": \"The candidate is marked as ok, executable, and review_eligible. It has a functional_rank of 1, which indicates it is a recommended candidate. The candidate is recommended to continue as it has a positive margin and a verified recovery with sufficient clearance.\"\n}"
+                    }
+                  }
+                ],
+                "created": 1793683802,
+                "model": "local-qwen3",
+                "system_fingerprint": "b12057-cd8427d01",
+                "object": "chat.completion",
+                "usage": {
+                  "completion_tokens": 67,
+                  "prompt_tokens": 368,
+                  "total_tokens": 435,
+                  "prompt_tokens_details": {
+                    "cached_tokens": 229
+                  }
+                },
+                "id": "chatcmpl-nux8qBDJ0ZHHyXg0UnQUHdj3xM6fG7zo",
+                "timings": {
+                  "cache_n": 229,
+                  "prompt_n": 139,
+                  "prompt_ms": 1269.281,
+                  "prompt_per_token_ms": 9.131517985611511,
+                  "prompt_per_second": 109.51081754158457,
+                  "predicted_n": 67,
+                  "predicted_ms": 3160.66,
+                  "predicted_per_token_ms": 47.88878787878787,
+                  "predicted_per_second": 20.881714578600675
+                }
+              },
+              "selected": {
+                "candidate": 1,
+                "reason": "The candidate is marked as ok, executable, and review_eligible. It has a functional_rank of 1, which indicates it is a recommended candidate. The candidate is recommended to continue as it has a positive margin and a verified recovery with sufficient clearance."
+              },
+              "seconds": 11.756347242044285,
+              "request_sha256": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc"
+            }
+          }
+        ]
+      },
+      {
+        "layer": 47,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 0.2148195530487714,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 48,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 0.26261236397960086,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 49,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": -1.0,
+            "uncertainty_mm": 0.19346822447866857,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 50,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 51,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 52,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 53,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.13873904416444,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "ff2f4ce5ab4bfc5bb9387c31f0c43d599e53569a6696f4a949f045921c10dfdc",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 47
+          }
+        ]
+      },
+      {
+        "layer": 54,
+        "label": "warp",
+        "action": "continue",
+        "reason": "local Qwen selected continue; predicted function checks pass",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent": {
+              "request": {
+                "model": "local-qwen3",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. Only candidates marked ok, executable, and review_eligible are allowed. The assessment tool ranks them by functional risk: functional_rank 1 is its recommendation. In policy requests the candidate IDs match their displayed ranks; return that candidate ID. Aim for a functional completed print. Prefer continuing when it passes with adequate margin; unnecessary intervention consumes a limited budget. If fit_at_risk is true, prioritize the largest fit_robust_clearance_mm, then fit_clearance_mm: a verified recovery with greater clearance can preserve a through-hole before the next layers damage its fit. For recovery, consider functional margin, robustness under uncertainty, material change, and remaining correction distance. margin and robust_margin are dimensionless; fit_clearance_mm and uncertainty_mm are lengths in millimetres. Larger margins are better. Negative robust margin means the uncertainty envelope fails, even if the central prediction passes. Do not invent measurements or change the functional specification. Reply with JSON and a short reason."
+                  },
+                  {
+                    "role": "user",
+                    "content": "{\"observation\":{\"printed_layers\":55,\"total_layers\":160,\"detector_label\":\"warp\",\"deviation_mm\":1.9011,\"uncertainty_mm\":0.125,\"adapts_remaining\":3},\"candidates\":[{\"id\":1,\"name\":\"continue\",\"ok\":true,\"executable\":true,\"margin\":0.5,\"robust_margin\":0.0,\"command_change_fraction\":0.0,\"uncertainty_mm\":0.125,\"adapts_remaining\":3,\"fidelity\":1.0,\"functional_rank\":1,\"review_eligible\":true,\"observation_model\":\"classical camera\"}]}"
+                  }
+                ],
+                "temperature": 0.0,
+                "seed": 2026,
+                "max_tokens": 160,
+                "chat_template_kwargs": {
+                  "enable_thinking": false
+                },
+                "response_format": {
+                  "type": "json_schema",
+                  "json_schema": {
+                    "name": "recovery_decision",
+                    "strict": true,
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "candidate": {
+                          "type": "integer",
+                          "enum": [
+                            1
+                          ]
+                        },
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "candidate",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "accepted": true,
+              "endpoint": "http://127.0.0.1:8090",
+              "timeout_s": 120.0,
+              "response": {
+                "choices": [
+                  {
+                    "finish_reason": "stop",
+                    "index": 0,
+                    "message": {
+                      "role": "assistant",
+                      "content": "{\n  \"candidate\": 1,\n  \"reason\": \"The candidate is marked as ok, executable, and review_eligible. It has a functional_rank of 1, which indicates it is a recommended candidate. The candidate meets all the criteria for a functional completed print and has a positive margin and robust margin, making it a suitable choice for recovery.\"\n}"
+                    }
+                  }
+                ],
+                "created": 1793683828,
+                "model": "local-qwen3",
+                "system_fingerprint": "b12057-cd8427d01",
+                "object": "chat.completion",
+                "usage": {
+                  "completion_tokens": 75,
+                  "prompt_tokens": 366,
+                  "total_tokens": 441,
+                  "prompt_tokens_details": {
+                    "cached_tokens": 229
+                  }
+                },
+                "id": "chatcmpl-FHSilF44fDmWF3dW2LKZD1Y6bxXKrOGr",
+                "timings": {
+                  "cache_n": 229,
+                  "prompt_n": 137,
+                  "prompt_ms": 1282.953,
+                  "prompt_per_token_ms": 9.364620437956205,
+                  "prompt_per_second": 106.78489391271543,
+                  "predicted_n": 75,
+                  "predicted_ms": 3627.142,
+                  "predicted_per_token_ms": 49.01543243243243,
+                  "predicted_per_second": 20.401737786940796
+                }
+              },
+              "selected": {
+                "candidate": 1,
+                "reason": "The candidate is marked as ok, executable, and review_eligible. It has a functional_rank of 1, which indicates it is a recommended candidate. The candidate meets all the criteria for a functional completed print and has a positive margin and robust margin, making it a suitable choice for recovery."
+              },
+              "seconds": 10.04021288198419,
+              "request_sha256": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035"
+            }
+          }
+        ]
+      },
+      {
+        "layer": 55,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.14546039803222569,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 56,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 57,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 58,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 59,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 60,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 61,
+        "label": "warp",
+        "action": "continue",
+        "reason": "fresh checks pass; recent local-agent continuation review retained",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent_review_reused": "f5e3936e3994db5173658944c849dc1b7b47bee6a948f4d7d86c98f3fb8f6035",
+            "fresh_function_checks_passed": true,
+            "reviewed_at_layer": 55
+          }
+        ]
+      },
+      {
+        "layer": 62,
+        "label": "warp",
+        "action": "continue",
+        "reason": "local Qwen selected continue; predicted function checks pass",
+        "considered": [
+          {
+            "name": "continue",
+            "executable": true,
+            "correction_budget": null,
+            "margin": 0.5,
+            "robust_margin": 0.0,
+            "uncertainty_mm": 0.125,
+            "command_change_fraction": 0.0,
+            "material_tradeoff": {
+              "required_success_gain": 0.0,
+              "expected_savings": null,
+              "recovery_economically_preferred": null
+            },
+            "observation_model": "classical camera",
+            "id": 1,
+            "ok": true,
+            "violations": [],
+            "fidelity": 1.0,
+            "adapts_remaining": 3,
+            "review_eligible": true,
+            "functional_rank": 1
+          },
+          {
+            "agent": {
+              "request": {
+                "model": "local-qwen3",
+                "messages": [
+                  {
+                    "role": "system",
+                    "content": "You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. Only candidates marked ok, executable, and review_eligible are allowed. The assessment tool ranks them by functional risk: functional_rank 1 is its recommendation. In policy requests the candidate IDs match their displayed ranks; return that candidate ID. Aim for a functional completed print. Prefer continuing when it passes with adequate margin; unnecessary intervention consumes a limited budget. If fit_at_risk is true, prioritize the largest fit_robust_clearance_mm, then fit_clearance_mm: a verified recovery with greater clearance can preserve a through-hole before the next layers damage its fit. For recovery, consider functional margin, robustness under uncertainty, material change, and remaining correction distance. margin and robust_margin are dimensionless; fit_clearance_mm and uncertainty_mm are lengths in millimetres. Larger margins are better. Negative robust margin means the uncertainty envelope fails, even if the central prediction passes. Do not invent measurements or change the functional specification. Reply with JSON and a short reason."
+                  },
+                  {
+                    "role": "user",
+                    "content": "{\"observation\":{\"printed_layers\":63,\"total_layers\":160,\"detector_label\":\"warp\",\"deviation_mm\":1.0017,\"uncertainty_mm\":0.125,\"adapts_remaining\":3},\"candidates\":[{\"id\":1,\"name\":\"continue\",\"ok\":true,\"executable\":true,\"margin\":0.5,\"robust_margin\":0.0,\"command_change_fraction\":0.0,\"uncertainty_mm\":0.125,\"adapts_remaining\":3,\"fidelity\":1.0,\"functional_rank\":1,\"review_eligible\":true,\"observation_model\":\"classical camera\"}]}"
+                  }
+                ],
+                "temperature": 0.0,
+                "seed": 2026,
+                "max_tokens": 160,
+                "chat_template_kwargs": {
+                  "enable_thinking": false
+                },
+                "response_format": {
+                  "type": "json_schema",
+                  "json_schema": {
+                    "name": "recovery_decision",
+                    "strict": true,
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "candidate": {
+                          "type": "integer",
+                          "enum": [
+                            1
+                          ]
+                        },
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "candidate",
+                        "reason"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              },
+              "accepted": true,
+              "endpoint": "http://127.0.0.1:8090",
+              "timeout_s": 120.0,
+              "response": {
+                "choices": [
+                  {
+                    "finish_reason": "stop",
+                    "index": 0,
+                    "message": {
+                      "role": "assistant",
+                      "content": "{\n  \"candidate\": 1,\n  \"reason\": \"The candidate is marked as ok, executable, and review_eligible, and it matches the functional_rank 1. The candidate has a positive margin and robust margin, which indicates a good fit for the recovery process.\"\n}"
+                    }
+                  }
+                ],
+                "created": 1793683851,
+                "model": "local-qwen3",
+                "system_fingerprint": "b12057-cd8427d01",
+                "object": "chat.completion",
+                "usage": {
+                  "completion_tokens": 59,
+                  "prompt_tokens": 366,
+                  "total_tokens": 425,
+                  "prompt_tokens_details": {
+                    "cached_tokens": 229
+                  }
+                },
+                "id": "chatcmpl-1HamIZL7awuqo4HBLpt15FU4rF1kgu4Y",
+                "timings": {
+                  "cache_n": 229,
+                  "prompt_n": 137,
+                  "prompt_ms": 1253.604,
+                  "prompt_per_token_ms": 9.150394160583941,
+                  "prompt_per_second": 109.28490974821395,
+                  "predicted_n": 59,
+                  "predicted_ms": 2856.452,
+                  "predicted_per_token_ms": 49.249172413793104,
+                  "predicted_per_second": 20.304909727172028
+                }
+              },
+              "selected": {
+                "candidate": 1,
+                "reason": "The candidate is marked as ok, executable, and review_eligible, and it matches the functional_rank 1. The candidate has a positive margin and robust margin, which indicates a good fit for the recovery process."
+              },
+              "seconds": 5.538946196087636,
+              "request_sha256": "582cea59f52db788f5f950cc1dfcdb313b75d2bd8621bd8cbea352dee9959b6d"
+            }
+          }
+        ]
+      }
+    ],
+    "seconds": 124.85287912201602
+  }
+]

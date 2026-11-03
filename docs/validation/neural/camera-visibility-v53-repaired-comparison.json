@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "frames": 8,
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "original_images_reproduced": true,
+  "physical_state_and_camera_rng_unchanged": true,
+  "frames_sha256": "bbc9c39e48a4aa8331e17da828ab986b4f79ff7569277dc2911f76caf846230c",
+  "protocol_sha256": "7b72cd550b329efec4e5c7e1547d064158df2f9beab0f99cfbfef50a98c4fff5",
+  "new_training_runs": 0,
+  "new_recovery_trials": 0,
+  "limitation": "Offline causal visualization only. Segmentation labels and current-only images are unavailable to runtime models and are not proposed as improved policy inputs. Results distinguish occlusion by older layers from other image/model limitations on these consumed frames only; no training, recovery trial, physics change or fresh seed."
+}

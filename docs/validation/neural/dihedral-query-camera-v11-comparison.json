@@ -1,0 +1,19 @@
+{
+  "legacy_arrays_identical": true,
+  "models": {
+    "plain": {
+      "checkpoint_sha256": "c96ac7e9fe82dd3cc15b5dc744ff7a7e46c152211fd52aa26e76ddde44c8ad58",
+      "boundary_mae_mm": 0.04462060704827309,
+      "boundary_material_recall": 0.953525138041267,
+      "boundary_background_recall": 0.9578404172677838,
+      "near_boundary_sign_accuracy": 0.8694040858470389
+    },
+    "dihedral": {
+      "checkpoint_sha256": "65541950510365ba41a66ba4d54ad5612f45f5b04070915040fdb567d9bed42f",
+      "boundary_mae_mm": 0.05504322797060013,
+      "boundary_material_recall": 0.9556524266201686,
+      "boundary_background_recall": 0.9313727666185773,
+      "near_boundary_sign_accuracy": 0.8308872335717973
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "reason": "Reserve growth of existing Qwen server logs outside the final experiment directory",
+  "result_allowance_bytes": 60000000,
+  "supervisor_log_allowance_bytes": 6000000,
+  "total_additional_allowance_bytes": 66000000,
+  "prior_protocol_sha256": "18d4e3890e848f0f0423fadb60dbe6aaeaec4c0b0dc62d64fbb99cbb207f0f84",
+  "protocol_sha256": "e5ece67d6fe45effe410dcd1e0dd2b69efdae2788acfdca2db5fb408ec091234",
+  "fresh_rows": 0
+}

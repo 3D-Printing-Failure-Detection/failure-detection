@@ -1,0 +1,28 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/previous_combined_neural-spacer/results": {
+    "neural_risk": "previous_combined_neural",
+    "ignore": "ignore"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/previous_combined_neural-cup/results": {
+    "neural_risk": "previous_combined_neural",
+    "ignore": "ignore"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/joint_camera_neural-spacer/results": {
+    "neural_risk": "joint_camera_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/joint_camera_neural-cup/results": {
+    "neural_risk": "joint_camera_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/robust_camera_neural-spacer/results": {
+    "neural_risk": "robust_camera_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/robust_camera_neural-cup/results": {
+    "neural_risk": "robust_camera_neural"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/neural_risk-spacer/results": {
+    "neural_risk": "neural_risk"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-legacy-camera-trace-v44/neural_risk-cup/results": {
+    "neural_risk": "neural_risk"
+  }
+}

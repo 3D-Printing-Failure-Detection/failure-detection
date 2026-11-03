@@ -29,6 +29,8 @@ def main():
     parser.add_argument('directory', type=Path)
     parser.add_argument('--stride', type=int, default=8)
     parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--neural-checkpoint', type=Path)
+    parser.add_argument('--neural-calibrate-measurements', action='store_true')
     args = parser.parse_args()
     results, inputs = [], {}
     initial_digest = source_digest()
@@ -40,7 +42,12 @@ def main():
         part = get_part(record['part'])
         layers = {key: [Layer(f['z'], shapely.from_wkb(f[key])) for f in record['frames']]
                   for key in ('command', 'measured', 'actual')}
-        for name, cls in [('original', ObservationState), ('contour', ContourObservationState)]:
+        models = [('original', ObservationState), ('contour', ContourObservationState)]
+        if args.neural_checkpoint:
+            from recovery.loop.neural import NeuralObservationState
+            models.append(('neural', lambda: NeuralObservationState(args.neural_checkpoint,
+                calibrate_measurements=args.neural_calibrate_measurements)))
+        for name, cls in models:
             model = cls()
             errors, snapshots, measured = [], [], []
             for k, (command, observation, actual) in enumerate(zip(*layers.values())):
@@ -66,6 +73,9 @@ def main():
     manifest = dict(source_sha256=initial_digest, final_source_sha256=final_digest,
                     scorer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                     stride=args.stride, dense_onset_frames=8, inputs=inputs)
+    if args.neural_checkpoint:
+        manifest['neural_checkpoint_sha256'] = hashlib.sha256(args.neural_checkpoint.read_bytes()).hexdigest()
+        manifest['neural_calibrate_measurements'] = args.neural_calibrate_measurements
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(dict(manifest=manifest, scores=results), indent=2))
 

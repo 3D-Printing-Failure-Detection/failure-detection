@@ -1,0 +1,30 @@
+{
+  "control_checkpoint_arrays_and_hash_identical": true,
+  "matched_initialization_data_sampling_and_split": true,
+  "models": {
+    "control": {
+      "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "validation_boundary_mae_mm": 0.07876487318073729,
+      "near_boundary_sign_accuracy": 0.7811275772873504,
+      "validation_selection_score": 0.025601016350236594,
+      "export_max_abs_error": 6.794929504394531e-06,
+      "inference_dtype": "float32"
+    },
+    "gradient01": {
+      "checkpoint_sha256": "24ad4401b5105c6ce964f5b1fffd0734fb19385efeebf0b87ee160ee030755e6",
+      "validation_boundary_mae_mm": 0.08677962164229576,
+      "near_boundary_sign_accuracy": 0.7600977630571719,
+      "validation_selection_score": 0.048400853491897496,
+      "export_max_abs_error": 2.449508733293193e-06,
+      "inference_dtype": "float64"
+    },
+    "gradient03": {
+      "checkpoint_sha256": "654e70fd506e3830e60a4060c49f54cece52601c19196ce770d77dd67d9462e1",
+      "validation_boundary_mae_mm": 0.08630664289370374,
+      "near_boundary_sign_accuracy": 0.7646682109960925,
+      "validation_selection_score": 0.06651801542763396,
+      "export_max_abs_error": 2.200033269346424e-06,
+      "inference_dtype": "float64"
+    }
+  }
+}

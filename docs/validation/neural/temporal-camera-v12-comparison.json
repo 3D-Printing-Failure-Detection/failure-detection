@@ -1,0 +1,21 @@
+{
+  "legacy_arrays_identical": true,
+  "models": {
+    "current": {
+      "checkpoint_sha256": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+      "input_frames": 1,
+      "boundary_mae_mm": 0.06493093818426132,
+      "boundary_material_recall": 0.9198953792502179,
+      "boundary_background_recall": 0.9466984796360004,
+      "near_boundary_sign_accuracy": 0.8209123091673427
+    },
+    "temporal": {
+      "checkpoint_sha256": "dfd5aa59770b0c32ace07e929a4404a81786ab1b8f1a2319455a574da6939e3b",
+      "input_frames": 2,
+      "boundary_mae_mm": 0.061737578362226486,
+      "boundary_material_recall": 0.9191979075850044,
+      "boundary_background_recall": 0.9528021307291089,
+      "near_boundary_sign_accuracy": 0.8263515008481451
+    }
+  }
+}

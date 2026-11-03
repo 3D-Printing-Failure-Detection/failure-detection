@@ -1,0 +1,281 @@
+{
+  "status": "passed",
+  "source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "ffb70af63655f68ada7f21fb1df758d07d33f0e54d1745e81da03797f0984340",
+  "rows": 3456,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "ignore",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 402.8284602378262
+    },
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 240,
+      "in_place": 128,
+      "scrapped": 0,
+      "defective_finished": 112,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 2036.1735946263652
+    },
+    {
+      "method": "scrap",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 725.4509148864308
+    },
+    {
+      "method": "scrap",
+      "split": "failure",
+      "n": 240,
+      "in_place": 12,
+      "scrapped": 223,
+      "defective_finished": 5,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 2166.3014565815683
+    },
+    {
+      "method": "alert",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 747.6149201535154
+    },
+    {
+      "method": "alert",
+      "split": "failure",
+      "n": 240,
+      "in_place": 58,
+      "scrapped": 177,
+      "defective_finished": 5,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 2330.4171022974188
+    },
+    {
+      "method": "ours",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 742.3744396604598
+    },
+    {
+      "method": "ours",
+      "split": "failure",
+      "n": 240,
+      "in_place": 66,
+      "scrapped": 168,
+      "defective_finished": 6,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 3975.9879548841855
+    },
+    {
+      "method": "measured",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 809.7970136695076
+    },
+    {
+      "method": "measured",
+      "split": "failure",
+      "n": 240,
+      "in_place": 71,
+      "scrapped": 167,
+      "defective_finished": 2,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 4213.6840201674495
+    },
+    {
+      "method": "predictive",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 819.0119702495867
+    },
+    {
+      "method": "predictive",
+      "split": "failure",
+      "n": 240,
+      "in_place": 79,
+      "scrapped": 155,
+      "defective_finished": 6,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 7088.585781397764
+    },
+    {
+      "method": "functional",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 841.8744855985278
+    },
+    {
+      "method": "functional",
+      "split": "failure",
+      "n": 240,
+      "in_place": 22,
+      "scrapped": 215,
+      "defective_finished": 3,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 6838.748922321829
+    },
+    {
+      "method": "guarded",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 835.9686396722682
+    },
+    {
+      "method": "guarded",
+      "split": "failure",
+      "n": 240,
+      "in_place": 86,
+      "scrapped": 149,
+      "defective_finished": 5,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 5223.0652778769145
+    },
+    {
+      "method": "contour",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 841.8433102618437
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 240,
+      "in_place": 128,
+      "scrapped": 106,
+      "defective_finished": 6,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 5628.9918643058045
+    },
+    {
+      "method": "contour_risk",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 844.6218567778124
+    },
+    {
+      "method": "contour_risk",
+      "split": "failure",
+      "n": 240,
+      "in_place": 133,
+      "scrapped": 104,
+      "defective_finished": 3,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 5840.063823183882
+    },
+    {
+      "method": "neural",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 2064,
+      "seconds": 1684.415840937756
+    },
+    {
+      "method": "neural",
+      "split": "failure",
+      "n": 240,
+      "in_place": 122,
+      "scrapped": 113,
+      "defective_finished": 5,
+      "agent_requests": 0,
+      "neural_queries": 76886,
+      "seconds": 8197.14348852099
+    },
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 2064,
+      "seconds": 1655.726969431038
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 240,
+      "in_place": 129,
+      "scrapped": 107,
+      "defective_finished": 4,
+      "agent_requests": 0,
+      "neural_queries": 151907,
+      "seconds": 8300.797377914307
+    }
+  ],
+  "stage": "frozen-test",
+  "limitation": "frozen simulation comparison; not physical-printer validation",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}

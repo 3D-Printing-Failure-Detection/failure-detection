@@ -1,0 +1,94 @@
+{
+  "created_at": "2026-11-02T22:01:03.018737+00:00",
+  "stage": "development",
+  "purpose": "Densify brief thinning examples across all camera views; expand train/validation coverage without consuming reserved tests.",
+  "train_seeds": [
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67
+  ],
+  "validation_seeds": [
+    70,
+    71,
+    72,
+    73
+  ],
+  "reserved_test_seeds": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "expected_groups": 144,
+  "estimated_additional_artifact_bytes": 115000000,
+  "commands": [
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/source/tools/build_temporal_data.py",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/additional-trajectories",
+      "--train-seeds",
+      "64",
+      "65",
+      "66",
+      "67",
+      "--validation-seeds",
+      "72",
+      "73",
+      "--parts",
+      "cup",
+      "mug",
+      "--kinds",
+      "clean",
+      "under_extrusion",
+      "--domain",
+      "mujoco",
+      "--profiles",
+      "cartesian",
+      "--include-current",
+      "--save-trajectories",
+      "--workers",
+      "2"
+    ],
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/combine.py"
+    ],
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/source/tools/build_boundary_data.py",
+      "--trajectories",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/combined-trajectories/trajectories",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/dataset",
+      "--frames",
+      "12",
+      "--pixels",
+      "320",
+      "--workers",
+      "2",
+      "--all-profiles",
+      "--dense-start"
+    ],
+    [
+      "/mnt/data/ishaan/hri-workspace/envs/openpi/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/source/tools/train_boundary.py",
+      "--data",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/dataset/data.npz",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/model",
+      "--epochs",
+      "80"
+    ]
+  ],
+  "tool_sha256": {
+    "build_temporal_data.py": "c0e750dac97583054ed05d0ca3a843f67c03df83fb71ffaf3d0711b816575ee1",
+    "train_boundary.py": "76e308ed312f9cce22d7ec7e7402d193af37db3a2950f6700e4503eadbdd0db2",
+    "build_boundary_data.py": "61fd3108e3c1a406021bfbada17d7d88939a2780bb4ae3e004e6da7bcbcdc229"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "stage": "retrospective_development_diagnostic",
+  "created_at": "2026-11-03T02:10:58.087560+00:00",
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/source",
+  "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/boundary.npz",
+  "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+  "profile": "cartesian",
+  "part": "cup",
+  "kind": "under_extrusion",
+  "seed": 1002,
+  "layers": [
+    0,
+    4
+  ],
+  "purpose": "Trace the two false base holes in the 40-epoch commanded-mask model back to raw native background connectivity. No runtime repair, threshold or scoring change."
+}

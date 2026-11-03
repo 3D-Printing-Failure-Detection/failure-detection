@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-11-03T01:19:46.618505+00:00",
+  "purpose": "Replay every dense-tile target exactly and measure training/validation coverage of locally thin surviving material",
+  "script_sha256": "991d49761650c7658ba98a96e6af1e243890ec90ffaedc2c5d83b152b5016481",
+  "data_sha256": "d20160664506235301c834368ccf739d589f2838d90c47334b1fa2e68cdedb52",
+  "reserved_seeds_untouched": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "status": "planned",
+  "previous_attempts": [
+    "/mnt/data/ishaan/hri-workspace/failure-detection/camera-thin-sampling-audit-v14",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/camera-thin-sampling-audit-v14-fixed-precision"
+  ],
+  "previous_outcomes": "GEOS exceptions while computing diagnostic polygon differences; neither completed. Native-grid diagnostic avoids polygon Boolean operations; every original distance target still must replay exactly.",
+  "thin_definition": "Discrete opening on exact native-grid true-material pixels with six-pixel halo, minus nominal thin pixels",
+  "storage_bytes_at_launch": 99857231872
+}

@@ -1,0 +1,75 @@
+{
+  "truth": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 60956.65895860772,
+      "thin_layers": 0
+    }
+  },
+  "measured": {
+    "classical": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (52 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 51.66394359733268,
+        "capacity_mm3": 61336.61974315813,
+        "thin_layers": 0
+      }
+    },
+    "original": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (51 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 50.558214921251505,
+        "capacity_mm3": 61097.48698152373,
+        "thin_layers": 0
+      }
+    },
+    "nonlinear": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (115 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)",
+        "expected 1 piece(s) near z=11.8, found 2"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 115.11843018792803,
+        "capacity_mm3": 61121.14021116526,
+        "thin_layers": 1
+      }
+    },
+    "original:classical-base": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (51 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 50.558214921251505,
+        "capacity_mm3": 61097.48698152373,
+        "thin_layers": 0
+      }
+    },
+    "nonlinear:classical-base": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (115 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)",
+        "expected 1 piece(s) near z=11.8, found 2"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 115.11843018792803,
+        "capacity_mm3": 61121.14021116526,
+        "thin_layers": 1
+      }
+    }
+  }
+}

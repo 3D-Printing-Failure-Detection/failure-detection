@@ -1,0 +1,186 @@
+{
+  "status": "complete",
+  "created_at": "2026-11-03T08:04:36.666986+00:00",
+  "completed_rows": 833,
+  "removed_duplicate_files": 279,
+  "original_bytes": 13171062,
+  "original_allocated_bytes": 13623296,
+  "all_files_actually_restored_byte_identically": true,
+  "primary_results_manifests_audits_unchanged": true,
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/diagnostics/results",
+      "rows": 128,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/diagnostics/results/runs.jsonl": "2dcbbd29cc618a0cc95c506aee0f31266aca3d7779d46966177c85b19a0769aa",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/diagnostics/results/manifest.json": "5833776796997e253cc28431996ad3e27c1353f1dc9866febf0a277b1d81bb3e",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/diagnostics/audit/audit.json": "26463d9122e81213402ff1582e85a9c45c03ef94b1164d8c15516fded0702b18",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "be1971aaa997211b8697c0f293f986e6c565a0b342298da7b64c833d4cba3130",
+      "files": 33,
+      "original_bytes": 2921544,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/validation/results",
+      "rows": 144,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/validation/results/runs.jsonl": "f1982b0845e44d5f83b4fd5a63724ea524b4651cdd93f63876c76c6da736fe3c",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/validation/results/manifest.json": "9105e2f637a605ecd4ab1bc7a2dfd94f39c3f957c8dadea22ab5c7b1513acfb9",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/validation/audit/audit.json": "c89ecb5166a116bdab1d5bbeea3a32d9ac87a3e40e0962ee87f86d8d4f45da7f",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-fallback-dev-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "5fd75444d86aef4c4c6fe6059442b839a55f8d557764150798f555a7c0136e09",
+      "files": 49,
+      "original_bytes": 1820630,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/diagnostics/results",
+      "rows": 18,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/diagnostics/results/runs.jsonl": "619539fd144cb24d0979193a12272340a3ee1907e6e94b44c9f4e74e4f5abef0",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/diagnostics/results/manifest.json": "6798ee8e6af2e76bdf1cfc154b9693fa07e47a248d51a21fb9cd9d22ca1b7578",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/diagnostics/audit/audit.json": "e52e7ee904d139cc3d76684971e86fbf014e23c07288f1be113729121f3ddafb",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "cccc269f69ef77304bf37af37a99b3acbf40d299781a32b75432bb4b488c57ed",
+      "files": 7,
+      "original_bytes": 651958,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-heldout/results",
+      "rows": 72,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-heldout/results/runs.jsonl": "a7ce2bd27f2b781da40732c99a1a9580a009cb93be01964cfebfe49626cfb61a",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-heldout/results/manifest.json": "c7d9a16a09fb66b7b3eca317d70975f35b31eb6c666173e7eaf60b10f098eeaa",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-heldout/audit/audit.json": "8cd73b3f9afebfcd43fef11dccd1bc8c57b32fc856970a3e5a9fe326060f5dbd",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "e615adb4cedfe3626c04e84c875885ae8ac6b02b66a1cdcec22557f6af62bb94",
+      "files": 25,
+      "original_bytes": 717058,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-main/results",
+      "rows": 108,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-main/results/runs.jsonl": "43360440c78247592af8354d971dda27f4109d810803defcfcec3b601d91d5f7",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-main/results/manifest.json": "de77059b56d9da28e6fe00139103e09e1798cb8f33ae3a0e9b3dd5f62bfb111d",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/historical-main/audit/audit.json": "eb1eae9e8fab2fcfb8fe25875a6650f861986ce92b983882b64727b002ac7846",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "9285996ce722caad73994e14a8b0e1f1d9c634d75eb2c8247c466f4ff53233f7",
+      "files": 37,
+      "original_bytes": 1109116,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/validation/results",
+      "rows": 72,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/validation/results/runs.jsonl": "ebaebb82dd46a544f2f2d280a9631209f7a9cc3cb66b176330a0250c5b3ca583",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/validation/results/manifest.json": "8d8f229f00979eb7f0b736ea3525e5c2900bc6fd02da0f1361701d66f67c2e36",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/validation/audit/audit.json": "91161f3d4840a77fe89b963e945e625db7f8d7b4f2c03e02e4f921a2bf6a06c8",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-fit-dev-v2/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "49b71e776dba3bfbe30628dbfc811c86ee403e4b9880429936c808ab86dee3b9",
+      "files": 25,
+      "original_bytes": 1476554,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/bracket-timing/results",
+      "rows": 12,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/bracket-timing/results/runs.jsonl": "5f7fcaf6c4b50c84d37b743e4ce36e751a0d2d8be2f5cfd1fed4356e61ebd87c",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/bracket-timing/results/manifest.json": "a5fe6b682edbcee7683782dd1288c76e2ad3ac17419352a33835384cf2c6d86c",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/bracket-timing/audit/audit.json": "d0cf6b5b29bf685cc3847e807c4064401bca66ccbd0618ad0301da466cc054ab",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "de9822d8263512e643d9d5165d3a2f8ed7cf5d6565a2393c4266d7960a77662a",
+      "files": 5,
+      "original_bytes": 179360,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-gains/results",
+      "rows": 9,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-gains/results/runs.jsonl": "69d7f8ecb030e8ba966eaf8de8e1318d51ead5e184f17c712e7f54beb676caa7",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-gains/results/manifest.json": "242c4d52acef9c78cae2d512bc8b736b13a83eca9ae0fd3fafa80945141d1a70",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-gains/audit/audit.json": "086d1c242eca6f2dcd56e20ccbce6a4e6f04242233e37c54d61bddf9d7414084",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "ad33b94303c8356a3fafc8560f53f928212a7524b1e1703dd902970df1105e55",
+      "files": 4,
+      "original_bytes": 437730,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-heldout/results",
+      "rows": 72,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-heldout/results/runs.jsonl": "ef256f6fc6c3541f3e2fcee146cb2f46f4afd120a5deeab10552b4f20a92905f",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-heldout/results/manifest.json": "27d49681669de499f474bd23c4cbbbf235b312004a878e3d47eb70631f9be6a2",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-heldout/audit/audit.json": "5471585ffe97ff6481e623ab4962ed520b1431cf08995bb5a884749e5bfdb25b",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "10c709bec77ba8f067752832598c87e827e445248fdfa972ca810a179b1d5f45",
+      "files": 25,
+      "original_bytes": 717420,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-main/results",
+      "rows": 108,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-main/results/runs.jsonl": "0b63182202196ca31a6b26e68bbb4dc879599b5f80e7ac79f07db4e7a2a6567b",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-main/results/manifest.json": "3718b3c145c9f36daaad2e429b6b9ac993c4aa6b7f4bb1c5526f08e790c89974",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/historical-main/audit/audit.json": "b900070d2111187ec54dbdfedf57f2101ffccea6227c04d532a690bbe7e0b22c",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "deaa20b9ece973644ee15f5b1d53f5740467665fb28cf20dade4352111a1a81b",
+      "files": 37,
+      "original_bytes": 1074132,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/spacer-regressions/results",
+      "rows": 18,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/spacer-regressions/results/runs.jsonl": "876080555cabd85f2b1fd768dc0e94dce5a2f3ec069f80690438e4fcf7b9d03b",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/spacer-regressions/results/manifest.json": "bf7c5d4bbda10a4e437bfc93a81f23497f50f981ee519c3addbe88552549d163",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/spacer-regressions/audit/audit.json": "272c3fad2e7186a4618d080dd34740fa00e7438154b0f1f1a5cd9ce8e0376bfe",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "85c79b53a93a15c82cdfb7b7ff99bf87e973f3993e3cae09fb11ca71c35f4a0d",
+      "files": 7,
+      "original_bytes": 659320,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/validation/results",
+      "rows": 72,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/validation/results/runs.jsonl": "be4ea0fea0009b311727fc5e19c10ff169d81ea8980f721222d60caf428fe450",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/validation/results/manifest.json": "acd29ea3f47713b49224065bc3a4fc7fa2909b8d1cbcad96d7a1acc57ba2bdeb",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/validation/audit/audit.json": "2cd52b42a3b03af431d1b87db1f936c2789cc8c92601e3f68f2b02a1427c9075",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "receipt_sha256": "134becb86de0e2af5b953c4def4ece9cd0cf63d29755e7a607b11982846acdd2",
+      "files": 25,
+      "original_bytes": 1406240,
+      "all_files_actually_restored_and_verified": true
+    }
+  ],
+  "tool_sha256": "9ecdd362cd0b73521cf30260970cd8678ba30d3763d63ffcf3b0f401b7c0e6a1",
+  "storage_helper_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+  "storage_before_bytes": 99973525504,
+  "storage_after_bytes": 99960016896,
+  "restore": "Run the frozen restore.py with one or more results directories listed in this receipt. It checks helper hashes, receipt identity, primary inputs and quota before writing.",
+  "limitation": "Only exactly reconstructible duplicate journals and CSVs of terminal audited runs are removed. Every file was actually restored and verified. Primary results, manifests, audits and exit records remain byte-identical. Concurrent jobs may change total storage."
+}

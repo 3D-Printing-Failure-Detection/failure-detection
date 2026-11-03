@@ -1,0 +1,2540 @@
+{
+  "created_at": "2026-11-03T06:17:07.391186+00:00",
+  "root": "/mnt/data/ishaan/hri-workspace/failure-detection",
+  "archive": "completed-report-archive-v5/duplicate-reports.tar.gz",
+  "archive_sha256": "2f8f2858fbd5011429527557aaae3561147e0fa7018aff754659a7d077589ba4",
+  "archive_bytes": 1184142,
+  "files": [
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/00d57b26fc2e3d35.jsonl",
+      "original_bytes": 3249,
+      "original_sha256": "d9a3d187da382ee23044c3ee7f2410253187688cb6931aeedcfcd138b7a50d30"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/019768483e2ce6b2.jsonl",
+      "original_bytes": 3238,
+      "original_sha256": "d9c37f15935542299c130f2c60cf9a5c7d8999591023e12114b5f90a157fe8df"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/0245bc05258c2dd9.jsonl",
+      "original_bytes": 3447,
+      "original_sha256": "395dbfe8b68a0fc6816c298a830216f464a91d6842d6b5db47815bcfd188dce6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/03ae192d4c243c55.jsonl",
+      "original_bytes": 3438,
+      "original_sha256": "66694cfd4f9d266ad4cfa016f6bddc913568e8ddb2e7977689a8f92c8a0d91dc"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/07bd819a0c4ed733.jsonl",
+      "original_bytes": 30994,
+      "original_sha256": "7640bcefcbb6309685f9ffc5fc03994c7cd3c68c6ec4f389a8c8e3cec9122ed7"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/07ddeccca8b7007b.jsonl",
+      "original_bytes": 3248,
+      "original_sha256": "a867fe89114984d18bc91ae563515551f62b6e012ea70fc45ab2726b15a63341"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/08e44185e57e3334.jsonl",
+      "original_bytes": 21362,
+      "original_sha256": "8990eba7f2e1ff70c6acd66de399fd9b63c21ceb87d68814b269194c40569078"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/0b1d03edaf6812a7.jsonl",
+      "original_bytes": 3232,
+      "original_sha256": "3155134aece4eb486f86526cebbfabb969c3da5ae459ae9873c2ace027b6b038"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/10d2aeca0b6d8193.jsonl",
+      "original_bytes": 17895,
+      "original_sha256": "e27cad12e602b1ffc48a3506600082bdcc74866b39d74019496b6296594504e5"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/14cb28cb858b21f2.jsonl",
+      "original_bytes": 106001,
+      "original_sha256": "c0055e43f002231f0fc4f5679e67e8955bd1313fc4e0b2a33e314276c35bb39b"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/20625b3835d33696.jsonl",
+      "original_bytes": 15270,
+      "original_sha256": "1dbf02b3251ca841d9b9f4ed3b949620d8e322dbe54e1ce79028b13a6e5fc115"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/224beb59ded4da54.jsonl",
+      "original_bytes": 15443,
+      "original_sha256": "c8d6e4b15f0806e5a69cc4387019e50c09870bcdcd67443e385072bea559e4b7"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/23a582981f0a5802.jsonl",
+      "original_bytes": 19236,
+      "original_sha256": "f53f97ad50aa0a117fffd8e4ac13c37b07e550042db048d4201960f88d58b5ad"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/24125eb16dd36fc1.jsonl",
+      "original_bytes": 34872,
+      "original_sha256": "5599633ce84890f5fb7c35079801a471fdf1ee211c9679f7af8fe2d88a6644a3"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/2960220a34bba65f.jsonl",
+      "original_bytes": 13099,
+      "original_sha256": "39d1fbf7e1f41d4b6559cb750ae75b29750b1878cbf877d07b755724b346babf"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/2986b778c2a323fe.jsonl",
+      "original_bytes": 104980,
+      "original_sha256": "ed4ca13288ca8cec45c4dcfdddf2271b1a8e0eba1d4b90a0de451aeaf0e22cee"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/2a71477e12e42079.jsonl",
+      "original_bytes": 3426,
+      "original_sha256": "003ffad8c398a8fb3bdfdb830ab80568c09eec42bb7033c1e3695b162811162f"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/2ffa802ec1b3d5eb.jsonl",
+      "original_bytes": 21562,
+      "original_sha256": "c52f874b60db9db3e0639222e6e474b93d42afe5e9e7fba8adb43283cb54739e"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/32caeda70259b736.jsonl",
+      "original_bytes": 105156,
+      "original_sha256": "ee206c588b8b8f49da8c9e56711c6c96a784345b7de44355c0553c326085157b"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/381b218627a89b62.jsonl",
+      "original_bytes": 3830,
+      "original_sha256": "48f473ad0139117073c8d4dd241ba0f388aa0da01b8fb4a1a9ae71075719e296"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/3e25c185b1fae711.jsonl",
+      "original_bytes": 3824,
+      "original_sha256": "a90d4ade25fd5515e5f4c8ead75b092f5c146d71acb5706e982887d41252ce42"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/3ebf6d70c31d9778.jsonl",
+      "original_bytes": 26986,
+      "original_sha256": "23398af73e2275f65e1c46f9e4a3e5b050fb4bec330310bce1e0d6dcb6866570"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/4c13ee5778a57f53.jsonl",
+      "original_bytes": 83750,
+      "original_sha256": "81a717952f898a7f8b908b7b4dbddd4f3a7a0404e5f6af0c9835623b4179bff4"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/4d114a7fa351cfb2.jsonl",
+      "original_bytes": 19945,
+      "original_sha256": "1b82d1c44bb66311baf5995ee54fa1a0f37c565d0478be354ac9f7d1c65cd53b"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/51ae0de86e40f189.jsonl",
+      "original_bytes": 107197,
+      "original_sha256": "562e792f3db6c518681db902b4563406c3ec514a8356e6e0c4901276d13f2ba8"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/59b916a218c710f3.jsonl",
+      "original_bytes": 3820,
+      "original_sha256": "ce465f12fc6185b2ee64cba29f6ba5fcd1aaa82c76bdc0ad636d348e55dbfb66"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/5c3d2a86efab2186.jsonl",
+      "original_bytes": 19950,
+      "original_sha256": "96cce74731839b7dd5103df528b3f3035e238b3a1a404caf2980eb3097d6c922"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/5d44114058fc2907.jsonl",
+      "original_bytes": 13898,
+      "original_sha256": "f2d7e462e74e0a72d6774ee7a088872814ceb4a78cb78907a391d8ed15e7470f"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/5ed14caba19e4a8d.jsonl",
+      "original_bytes": 15465,
+      "original_sha256": "4124106ea014d0bf2545c153293cae53c60ef06b2e449a6f9faf0507930657e1"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/5fb2db7fb1df076a.jsonl",
+      "original_bytes": 3446,
+      "original_sha256": "fafbfbdfbd2d43cf1862412eb9fe7cc3720db7f412d065e3045053e19dcb342a"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/670de0d32842c811.jsonl",
+      "original_bytes": 60671,
+      "original_sha256": "9410bbe56995aef658454be152a243ea1687f562b2dde5681d7986bf5e88d410"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/67247d0aa186ab99.jsonl",
+      "original_bytes": 14035,
+      "original_sha256": "7b9ff6730c0ba1c57476aa356538627122cff627b59c1439ab4ca9d7f24fdd88"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/6fc62fc3ea551921.jsonl",
+      "original_bytes": 3447,
+      "original_sha256": "49c6e4d4ef805c33a0b822b093e655d1d8e04052c9d522b87659bc7346f56300"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/7072f00d9bf738db.jsonl",
+      "original_bytes": 17809,
+      "original_sha256": "d3c070550e67a7f4e82823a5ade2a963f0043684cb23a8cc98b3e6de507a4a70"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/72617c1e1637755e.jsonl",
+      "original_bytes": 3812,
+      "original_sha256": "58ad6c503f8b459f3463a74e56c209b005a62901b1bf58beb708eb03625d7ec6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/73d6492b09da64c9.jsonl",
+      "original_bytes": 31282,
+      "original_sha256": "12e49e666d4c6c339b02cc4527276a88ec6e441f9a8cf70930b15fb841cde9fe"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/798db1ee65452b02.jsonl",
+      "original_bytes": 3444,
+      "original_sha256": "b817c87bc5170d65aad1b7887e6a793eb3bf0145eb3e9b0a406a01834f074f73"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/7bf6670c01de2943.jsonl",
+      "original_bytes": 31175,
+      "original_sha256": "a5c06dc081a0c27b5cb45efe5fcaab309b217c7529e35a9331d8931e9e5a8933"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/7d0603a53465a874.jsonl",
+      "original_bytes": 120856,
+      "original_sha256": "3d02cf937b72b92ecea9dc01a623a47cd4a691eab4dcc8fa1cd73b9f2e3fd0d1"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/7fa88f1a25cb31a9.jsonl",
+      "original_bytes": 3821,
+      "original_sha256": "3065b56f8e5f48a6d0bec055e6c5e56cb675f202294dd8bd0150a9b234721290"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "original_bytes": 3229,
+      "original_sha256": "7aaf94ada642e219bce10c0140dd427e6f1e5388130cea500477bbfa0321aaf4"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/88a19549ec840dcb.jsonl",
+      "original_bytes": 14196,
+      "original_sha256": "1f49285ffe877f22ea081dafd23fb6c1b5e627139f943361c7dc32952d4122e5"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/8c0acf69fafd9908.jsonl",
+      "original_bytes": 11119,
+      "original_sha256": "2aff1c932a6b47566200781ea8a95b0d4d227aa828d4653e07f5315ec18b10ff"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/9084f6b5c91e19fd.jsonl",
+      "original_bytes": 121101,
+      "original_sha256": "b7afb11a887782648c2db322490c83a8ebe852960de9a15c63397edbef79ec55"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/91eef76924b7b662.jsonl",
+      "original_bytes": 3249,
+      "original_sha256": "84e0d9282cb597ed4217959a4d50ee72ae0ad3ad9ae3508f2513b175932e657f"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/9283fafab39345a1.jsonl",
+      "original_bytes": 26956,
+      "original_sha256": "8158c661740392db3f42544aff690b2d9b28ca5ff531f38ffbcbcf21faceaf0f"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/9b051465b234cab1.jsonl",
+      "original_bytes": 141578,
+      "original_sha256": "0f78fdff0650be463283fe62ce10f02814826c0d317f9693dc72826eb67ce60e"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/9b315a3bf4d7568c.jsonl",
+      "original_bytes": 19260,
+      "original_sha256": "26bb861fd64a4ebdce05054d346e4b12895466a9e6d9b03585840f6f5af970ba"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/9cb1d8020409c578.jsonl",
+      "original_bytes": 178689,
+      "original_sha256": "526ef7c1b5723b6f0e41998bb6ec378c1945ef673ae8a5635267dd803af66bee"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/9e623422e4efbde7.jsonl",
+      "original_bytes": 3813,
+      "original_sha256": "8a4d1ca957c59e6d99b78fc4cee30d28a3ad0952cdfb2b75a2e5dd050f522ae8"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/a1732f03ad668918.jsonl",
+      "original_bytes": 109056,
+      "original_sha256": "59065c987944ff43b46032523e25a9631a26f7a2c50bfeb751502bf38037f2be"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/a7b1b154cfbaf900.jsonl",
+      "original_bytes": 3809,
+      "original_sha256": "42498dc0f92448125504e50cdb1610cc1226e31cc2b86fa7a7992c21e8e532b6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/b5071f8913222dac.jsonl",
+      "original_bytes": 3253,
+      "original_sha256": "27c41d9193a6481e33dcb8e1034b3425dae3cc808f62e3d8064dc378e375353b"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/b681263f22afa943.jsonl",
+      "original_bytes": 47806,
+      "original_sha256": "346375e44eab4a06d75aafcbfad59af3370b61cedaef8eef021245fb36e33e3a"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/bb61e2b62fec8563.jsonl",
+      "original_bytes": 67122,
+      "original_sha256": "62939bfd781de585e3912cade23447bcf4767930f5fef41f6d05175f3fc91c75"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/bceb091214ca12f1.jsonl",
+      "original_bytes": 3249,
+      "original_sha256": "3b6217b419a943c5c0c55132d90d38e49b0147c3e99d4f962b4104d7ca3536cb"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/bd51c475c278c991.jsonl",
+      "original_bytes": 3251,
+      "original_sha256": "9d55c2bb693113b8c741d21936206e706ec662fb410cfdb434f6802182404f9c"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/bf5b0c451cd666fd.jsonl",
+      "original_bytes": 20072,
+      "original_sha256": "09f5f543b6aca9efbb72c58964b8ae2a4f66916e339a0d8f232998dd9784719a"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/bf5bde0497680e9c.jsonl",
+      "original_bytes": 3244,
+      "original_sha256": "e9078b095b31dd8243d16be9b3f33ec2e5f7dd87cad19f10e77772fe9a21b7fe"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/c011f8f136edcfd2.jsonl",
+      "original_bytes": 3792,
+      "original_sha256": "d6bcecb6a2078c20a4c2d714f0d7339fbfcc20a5f4deab2b2ebc9c928f275e6f"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/c0295da0de74cbde.jsonl",
+      "original_bytes": 120683,
+      "original_sha256": "5ea5d4fc63770d7de1d76b07aa85eb662aa348929edd7e06bef0c8f3f1a10b86"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/c20b5b725222e1f6.jsonl",
+      "original_bytes": 3810,
+      "original_sha256": "ef53ceb3e8bc2c86c861aba5583bc3cfba2f633e67354da7f20be144c5fae6ea"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/cc251238257830a2.jsonl",
+      "original_bytes": 107260,
+      "original_sha256": "8445ef456e4ce34adae5c55c402c9127fffac7d26978fc55a400f403954d3998"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/d1ee4d0e6aff277c.jsonl",
+      "original_bytes": 3825,
+      "original_sha256": "1a03a242920547df740a99ca2e4a13379ce6d2aa5a3f2705b750725e5b7c6ad7"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/d44f78cb56a8d393.jsonl",
+      "original_bytes": 3811,
+      "original_sha256": "0cc5356df805cd56c754421cdb91e55a33394078385bf209d8a1e61cbd45b463"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/dbd32fa43df2cd72.jsonl",
+      "original_bytes": 19198,
+      "original_sha256": "d5534ea1d1e52ca4c845546ca73f9c3dd4ca3dec5d72979f4e8521b4d28af556"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/dde2d7af4e6edb2f.jsonl",
+      "original_bytes": 11302,
+      "original_sha256": "806bf5a5d90b7e6730082fe493d9cb194eacdc79484ac8fc579a4d6c8e17b8dc"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/de736ad7dcf02dfd.jsonl",
+      "original_bytes": 3805,
+      "original_sha256": "ee63336537b0ba07745738ec1eefde4c71ac675c8803902df427799a73424d5a"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/e07fbe50e3b370b2.jsonl",
+      "original_bytes": 27050,
+      "original_sha256": "df76ce0f57d8dc8267bf57b45a4382395010704460a3ff9f00da8156635df852"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/ee5c074d008f14ad.jsonl",
+      "original_bytes": 3231,
+      "original_sha256": "3b4b200f29a5021655d808f5f87bb4172c45c1730667e12885de67f2e14966f9"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/f2a277b26a4fda98.jsonl",
+      "original_bytes": 3250,
+      "original_sha256": "ac4e5d1c9c23ae0a8dae1113e1da0d493af3c14601f7acc67125d5136f0a1932"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/cases/fa56f77ff7237a36.jsonl",
+      "original_bytes": 13964,
+      "original_sha256": "d4c56d36dfe54393c0db63e7c8b5e0197b22543fe9aaa2d3cb7f51607db3d92e"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/main/results/runs.csv",
+      "original_bytes": 2054201,
+      "original_sha256": "9383ed2b2e5dc871c0485f1ae07e7381cd191bf1ceb7506eaa0d1ec2f0065437"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/01a7aff8541b73ba.jsonl",
+      "original_bytes": 18418,
+      "original_sha256": "3b52b37b207f55e691de654ba48d626645b197f01b8c20853a49c6a6cd48b21d"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/0381a785dbf9de2e.jsonl",
+      "original_bytes": 23831,
+      "original_sha256": "999e828a83e3043cbf82a537626add20a41047169ef3f4bc1c996ef662771d5e"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/04ea81ca05ba2550.jsonl",
+      "original_bytes": 39955,
+      "original_sha256": "5b2c21cb614f1191cb9f4388e66ae9c50aff1b6d807b01732f66367e5ab30651"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/12fc97bafebfeea1.jsonl",
+      "original_bytes": 3250,
+      "original_sha256": "8b44701d73fedf5f84c7533e1a689bb4163d9325893c2c1790a40106909bcfa8"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/13ae38132031d2d7.jsonl",
+      "original_bytes": 14224,
+      "original_sha256": "4c9ee0faacba622c71c67822a8cae920647e60f6dfd15043747ec27010344e1d"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/13e59fe882eceb55.jsonl",
+      "original_bytes": 29098,
+      "original_sha256": "85c0c9db424232e2cfaa92120c949795c692e9fdc66814af1c578366310f270e"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/1a1931b076dbda24.jsonl",
+      "original_bytes": 3249,
+      "original_sha256": "3d75f1afa28d99f604d3d693c221e83614de51054ce0a3c84ed5f5d99b734829"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/1ed0bb549cbc5152.jsonl",
+      "original_bytes": 19970,
+      "original_sha256": "638b608885bb3a056e495c802b962b7e4d7f0b8f6f977220f8360ddf05f6b33b"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/1ee087dfe36ab806.jsonl",
+      "original_bytes": 41095,
+      "original_sha256": "bd19732e0fdcd5cdc9472f8e56544d823c023a6551cfbba88d8a1a2aef6c98e4"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/20abb8d8a17fa9b0.jsonl",
+      "original_bytes": 33216,
+      "original_sha256": "215afc14fcb7c267773696a7d6c3987b6cdc2d838071ee438769230976d579f4"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/3100166f0d5abfa1.jsonl",
+      "original_bytes": 3802,
+      "original_sha256": "667b1266fe929f1e02c1b6015df005dbd6c0275cae180172f2fae3ce6170c01d"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/32e6eb4f509f9855.jsonl",
+      "original_bytes": 3813,
+      "original_sha256": "3e862981b175510cf8fab4fd9fc4119488123e3b924d72f961b1468dabe2d505"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/39b9eea8ea8c7c86.jsonl",
+      "original_bytes": 16883,
+      "original_sha256": "9e0edfad1debf88e767136268a0829a60946d3f8eacbd1192c1a09d0e824a1c7"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/49fa816d45aa0c4a.jsonl",
+      "original_bytes": 16877,
+      "original_sha256": "5466ab512e5031f0e4e54e606c064854d7df5f56617ffc1b3910c668207125bd"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/4a0548c8506b0f0a.jsonl",
+      "original_bytes": 3814,
+      "original_sha256": "8a09d63e22e0488d0172508cff57c7a730134e2a6bee031e91629fc5ea9834cb"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/54426e3622c09a96.jsonl",
+      "original_bytes": 16834,
+      "original_sha256": "325661406ab2b9e11ee8e8585a213bcf035d65cad3bf0718e9b514c701ccdbf1"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/5de4aa880c35db52.jsonl",
+      "original_bytes": 26933,
+      "original_sha256": "e2651d77d7cc15420e3eece827e02c1224c751f46dc5db5521ed3fe5b1f002c6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/5f97858d06dc4268.jsonl",
+      "original_bytes": 11461,
+      "original_sha256": "a907665ad4390639086a84fdcc47dc5adfb68efcd56bca6d725a1d68645b85e9"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/5fa99ab81d771ac7.jsonl",
+      "original_bytes": 20027,
+      "original_sha256": "3c6bf37506e62045a9a1f630938a9e7cd631d65609ba1c30dadc2664da42d097"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/62b67aefc69ca00c.jsonl",
+      "original_bytes": 3243,
+      "original_sha256": "dc5ad44b3fcea53e0f78d2d0cffeba84fcd243789cbd2e1353c6bdaae6994e0d"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/6fee83887ab79f13.jsonl",
+      "original_bytes": 20025,
+      "original_sha256": "111e084d17075825e9205e6788f7c70fc6077b7fd00fc43387f4b67ce0aab5ef"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/7533b3d2ea3c95b6.jsonl",
+      "original_bytes": 3798,
+      "original_sha256": "5f6bc15261e92bfb3152c3c462269e1d8ac5b68d5f2e08bf18c39c454d50ba6b"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/770079203caaad41.jsonl",
+      "original_bytes": 3811,
+      "original_sha256": "93987a000b382867aeaed045127765e721d7acc89cf179d52c64d338e10307af"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/7b8968794982b382.jsonl",
+      "original_bytes": 3400,
+      "original_sha256": "8cce23e32950aa36f8ed79594c3b7310f84602354be393afc54a02bafd1ce833"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/7e399724baf3694a.jsonl",
+      "original_bytes": 13966,
+      "original_sha256": "f3233efd25bc77065c64c3c8bd764772b07b26d443ea211220ed48ad4d216417"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/8785c5a75643fcc7.jsonl",
+      "original_bytes": 3249,
+      "original_sha256": "bb2f8de9cf8c606eb610d11310d59b13025ee9f6d99081b5ba34c3dd20d871e1"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/8a7e6b6c0e117b2c.jsonl",
+      "original_bytes": 3250,
+      "original_sha256": "633c0f6fe08c2c03936e9ee726b6ea66cdf9ec52843b0a963165a8d35aa450d6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/8ea721198fd1b9df.jsonl",
+      "original_bytes": 20094,
+      "original_sha256": "802d2f8001227b8831ddb3740c645bb36cb26bd5c47eff111161a905833209b4"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/913537692de1342f.jsonl",
+      "original_bytes": 11234,
+      "original_sha256": "0272190894bf83039629fe588ae70ad6aa1deb2bf908e5ec51a85532da9436c6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/95d71f3b7f6f026c.jsonl",
+      "original_bytes": 323052,
+      "original_sha256": "9100cc5c5d27b759c256f0706e73631987e0b435a1c51f51b8ed807bad1d5acd"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/97781f810017a9b2.jsonl",
+      "original_bytes": 9325,
+      "original_sha256": "3f01e94fd6c5839b1059586b76bfa5db6e3278e665c4ba9685a91948b9edd109"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/98f6e835ce24559b.jsonl",
+      "original_bytes": 125336,
+      "original_sha256": "160d8cac9f1925d11eb2f2bcdcd4765df0cef7dd0e2e13a0e05460d88e484166"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/a705e136c869905e.jsonl",
+      "original_bytes": 83206,
+      "original_sha256": "5510773327749ee7b5a52ae18a7876aac7c094743e52fbec35aaa01f2bdaa0ca"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/a8c34f0c32b21d17.jsonl",
+      "original_bytes": 3249,
+      "original_sha256": "48ef553ad6a0ea6f6e7b1f626c652cadaca35a3378247d53b9946042c1944dd9"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/a98f970235328dfa.jsonl",
+      "original_bytes": 44871,
+      "original_sha256": "e9ad1b213eec54a3c00af0186949f27df3a6a0b0cc82800d04bcf8645ae78473"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/b380e8784f9c566a.jsonl",
+      "original_bytes": 3826,
+      "original_sha256": "d8fdaed649e4df9427a27037bb9f04adbdc10bb342fefb82ea3867da98f60171"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/bb88f9b16d60a48e.jsonl",
+      "original_bytes": 3451,
+      "original_sha256": "94e7037186bbe684f5678b97673d08158f1ca012a8782632affd5a9eff2965b7"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/c9c72c316a0bfd3f.jsonl",
+      "original_bytes": 19168,
+      "original_sha256": "2379afa70111c89391a534b0de678f2b11544bf02b340646c744722c2c4eadae"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "original_bytes": 3243,
+      "original_sha256": "465344c93319184bf611e493878fb2365dce80b84812e3616f4df789ab42c9d6"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/cd47915dd7dff1c1.jsonl",
+      "original_bytes": 117245,
+      "original_sha256": "17e9f82f88bbeb0f48b165b3008425abaa6cbaf96fb2281a9f3443debd3ceaea"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/d36020e6db915aca.jsonl",
+      "original_bytes": 21585,
+      "original_sha256": "cce60e9eb3ae37896948af64ac67e5c9b2850d3b4f2ebfc8f4370e0f684808d8"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/d8a9499028b2eba3.jsonl",
+      "original_bytes": 120279,
+      "original_sha256": "2fc06e88c8d584ba4af00ad49e552dbc36f6af110316559762d20fdd4eb48c3a"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/def4b311296f4c94.jsonl",
+      "original_bytes": 21313,
+      "original_sha256": "74173c3d6185a203823f84fb4d4e49439d20b617ebcaa32f00021de0b0bc9740"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/e026f98929c4a36b.jsonl",
+      "original_bytes": 16858,
+      "original_sha256": "4d87fa853be851a4daf799349942afb7944a15fbb4762d4ae2f0caa3ce053f79"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/e607c1d370b1f278.jsonl",
+      "original_bytes": 3438,
+      "original_sha256": "1d656a7ca4ef1d0ba4bd56866acbad4a3ba668993189898f73825ff1e948b974"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/f1285a7eb615c1f9.jsonl",
+      "original_bytes": 3250,
+      "original_sha256": "62861f7b09552a4941aa62d1552d49d93f3d433a4a2d529990b28aa64e59bdb8"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/f8f56cfed3e1a112.jsonl",
+      "original_bytes": 3822,
+      "original_sha256": "6da4c263b6c2ccc18bd5e9f34153da8b247751857f1e7449551176e597e58343"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/cases/f9e40a7f7fe32454.jsonl",
+      "original_bytes": 3802,
+      "original_sha256": "4e03a354ed6fc708d4fbf03c112021c67b1dcd9e9a1ecbbd22392f65a017dbf5"
+    },
+    {
+      "original": "neural-hybrid-historical-v1/heldout/results/runs.csv",
+      "original_bytes": 1245548,
+      "original_sha256": "85d15b8261b7b093c4cbe6db3e0ac43db314a6d0e9e7157ed6a6261055af13da"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/00d57b26fc2e3d35.jsonl",
+      "original_bytes": 4474,
+      "original_sha256": "c38089e1c596d4037664a2605e3893a30c5d1989b780f85a5d0c1071250149cb"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/019768483e2ce6b2.jsonl",
+      "original_bytes": 4399,
+      "original_sha256": "b2627c3922d9cfcb6a55dd2336d7e7c8682756006b0a10151f64ed7a4daf571c"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/0245bc05258c2dd9.jsonl",
+      "original_bytes": 4656,
+      "original_sha256": "6ce00b1f6e0aa960326a19794aa2c0ab689a2b36202a35485f178c39aa48192f"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/03ae192d4c243c55.jsonl",
+      "original_bytes": 4642,
+      "original_sha256": "f7181a6048dcf1bacb2d3db337fa2defbaf3864c4cf1deb488daf9f1d015f2d1"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/07bd819a0c4ed733.jsonl",
+      "original_bytes": 21737,
+      "original_sha256": "c9f0d7ef97f5069818abb4217cd148ed20a697c67e44557475f18676938fa3f0"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/07ddeccca8b7007b.jsonl",
+      "original_bytes": 4474,
+      "original_sha256": "9d45722bc8f3ddb76f88a87c15c03c652860f18c18cb4077fa1ab23878db986f"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/08e44185e57e3334.jsonl",
+      "original_bytes": 16913,
+      "original_sha256": "9a550e678adde2836147f07d6df23f0e94098298fdfad35498750ed8bea806e6"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/0b1d03edaf6812a7.jsonl",
+      "original_bytes": 4451,
+      "original_sha256": "f56d0b8c451d31f61d0c58c1aca8d7ead2b5faebf71e8a5743d1ad879f16448b"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/10d2aeca0b6d8193.jsonl",
+      "original_bytes": 20153,
+      "original_sha256": "8e049582345d463168e901dc3cf5a4e9c238b80c277c07ba7133b3ffe6c932e7"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/14cb28cb858b21f2.jsonl",
+      "original_bytes": 60400,
+      "original_sha256": "a60d60b0f8054d010d3b1b7ae956f5d2405d6ca901f1292d78a5f3fa2ddf4e69"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/20625b3835d33696.jsonl",
+      "original_bytes": 11506,
+      "original_sha256": "54e2cb5c5729e3545115c365056b81b8af9aa21507e3b098a9ede2c45f0f2fcd"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/224beb59ded4da54.jsonl",
+      "original_bytes": 11526,
+      "original_sha256": "38d234cef520e155a5a5ae6531f4c5b8c7210a5e5bb018301b16302c086b253a"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/23a582981f0a5802.jsonl",
+      "original_bytes": 14761,
+      "original_sha256": "200f37c98638e328708b200d7901256da0b224f81e49ce8f1e08b2b6a4eaeabc"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/24125eb16dd36fc1.jsonl",
+      "original_bytes": 25801,
+      "original_sha256": "21a1c0625f3c062d1151cd932f9d13747804aa61bd458b3d26ade7e956b46602"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/2960220a34bba65f.jsonl",
+      "original_bytes": 9660,
+      "original_sha256": "532f83f28a26c1e5578603d3ab3ab3c2497aff0761cf7dcf76a0f56762afd595"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/2986b778c2a323fe.jsonl",
+      "original_bytes": 64507,
+      "original_sha256": "853c6ff26610d1ddcb9be42d8f66d4f135d19020adf3a5f2032199ff75b68b63"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/2a71477e12e42079.jsonl",
+      "original_bytes": 4629,
+      "original_sha256": "3039881d7f067bd73d36f7186f3d7ccc3b7aae2134dbc260bb63e656dfe8db21"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/2ffa802ec1b3d5eb.jsonl",
+      "original_bytes": 16993,
+      "original_sha256": "3090da415d78a785db7d6b86fb9c6f2deb0a168bdea9f5a6b7e5745da4931ffa"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/32caeda70259b736.jsonl",
+      "original_bytes": 64450,
+      "original_sha256": "65d511bde217549546da5c704c68a94c903f7f891b23c0ebe72d312d5eb8d962"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/381b218627a89b62.jsonl",
+      "original_bytes": 5138,
+      "original_sha256": "08b5c796fa76d6eb2d960bb7b13b965c55ad59788e7fd2a5407d484dec5b2372"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/3e25c185b1fae711.jsonl",
+      "original_bytes": 5162,
+      "original_sha256": "dcb1164841b433654c73d51192c0869271a75bfbe71b5eb1078dfefdb2ae67c6"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/3ebf6d70c31d9778.jsonl",
+      "original_bytes": 18249,
+      "original_sha256": "c11334fa4fff9196e05b30971a5ee9a33127f3caa0bbac189c40640b5ab9ce23"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/4c13ee5778a57f53.jsonl",
+      "original_bytes": 54133,
+      "original_sha256": "f2cbf2f330d91f13fdf783c976ff284a4c8fb47095f6c7956d9bd577503db101"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/4d114a7fa351cfb2.jsonl",
+      "original_bytes": 20130,
+      "original_sha256": "4421e59b4f8f7ff96e2e6afc47e39c9d51ff63948cec12ffc6078cece2f2ea92"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/51ae0de86e40f189.jsonl",
+      "original_bytes": 63165,
+      "original_sha256": "363106e2bba31fa29884615fdd58925a527cbc3a76973670be93f3cb992b3fe8"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/59b916a218c710f3.jsonl",
+      "original_bytes": 5069,
+      "original_sha256": "49eab36bab5ab6806340b27ce9c907ed622ae579959695845dcc998b15a0cb66"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/5c3d2a86efab2186.jsonl",
+      "original_bytes": 20131,
+      "original_sha256": "fe72a90841b85e40acc89d5d0aa298618b47cce1d15c2dc16873ddab326798c5"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/5d44114058fc2907.jsonl",
+      "original_bytes": 16648,
+      "original_sha256": "e75ac6ae36a2f35391a38b09efca78ef723c95b0b54a2b9ba6fe54a9d3a15728"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/5ed14caba19e4a8d.jsonl",
+      "original_bytes": 11529,
+      "original_sha256": "310ccb83a525ba9329fbe0d2b9c625c40303f351da4d8c9cb43fb5cacd82fdcd"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/5fb2db7fb1df076a.jsonl",
+      "original_bytes": 4657,
+      "original_sha256": "3556ae50452b28dbfcd9625662afd8799c5622377ee743de5143dac34b778bfb"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/670de0d32842c811.jsonl",
+      "original_bytes": 38117,
+      "original_sha256": "680e33fb4ed14b50ed838cd54131731c708459f6f6a95413003fd4cff698742b"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/67247d0aa186ab99.jsonl",
+      "original_bytes": 17128,
+      "original_sha256": "5587f0a736c576bd22b59149b454486ee3f4941429eccf0968d2080e88fcdc62"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/6fc62fc3ea551921.jsonl",
+      "original_bytes": 4662,
+      "original_sha256": "75290eb1709725917e3eb2952744f913be2945dc4cc4c184f7dd85907e47a4d6"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/7072f00d9bf738db.jsonl",
+      "original_bytes": 24616,
+      "original_sha256": "9534425936f9f51d37695fc3d68d96a120cc612cff8950360761567ac9dec4ea"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/72617c1e1637755e.jsonl",
+      "original_bytes": 5059,
+      "original_sha256": "fcf68895fe265216f9153e14b8b737aafd0ddea3af5d117de312a190ea198c48"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/73d6492b09da64c9.jsonl",
+      "original_bytes": 21715,
+      "original_sha256": "c55c2c68f0c993a61cb10e17f8f7217248e79c6ced90f77d4f801c21bf827990"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/798db1ee65452b02.jsonl",
+      "original_bytes": 4650,
+      "original_sha256": "5835f36b322b83c3b4015a2475639d514427b9d0b29c88d11cacb9dcedd20c01"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/7bf6670c01de2943.jsonl",
+      "original_bytes": 21725,
+      "original_sha256": "9de4f4539f70f0eee961245d87f298ab6fe48b7cf44889a127d018563ea56586"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/7d0603a53465a874.jsonl",
+      "original_bytes": 85241,
+      "original_sha256": "01759f7c29666b8674164e58b6f2792130c9a8f2c3d023d0b1e7d43e85700bf0"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/7fa88f1a25cb31a9.jsonl",
+      "original_bytes": 5199,
+      "original_sha256": "f9aeb6f98e77ccf3017e74198390dc70026bc41f0febbcbcf22deca6298d6c3a"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "original_bytes": 4394,
+      "original_sha256": "403f73d6244d2fd00a143021d84199516747577e69993b8ffebf32f61bb46f0e"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/88a19549ec840dcb.jsonl",
+      "original_bytes": 18404,
+      "original_sha256": "e10ddf9f0c1fc6eb595a988a82e3d5e5aa10e6c17671c521f5bb147fe745978b"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/8c0acf69fafd9908.jsonl",
+      "original_bytes": 7949,
+      "original_sha256": "806578d566a8784afdfdda57ddec5c684b4ef8bbde1effbe46627bf92a0499a1"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/9084f6b5c91e19fd.jsonl",
+      "original_bytes": 85646,
+      "original_sha256": "a8f75e551b55418f913f4f22668263c22242d7902be8acec78e323eb5128e9a8"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/91eef76924b7b662.jsonl",
+      "original_bytes": 4422,
+      "original_sha256": "09fbe455d294b4716e1792c36fedfdc44d56adfc0764cf0204c76956953f08d3"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/9283fafab39345a1.jsonl",
+      "original_bytes": 17708,
+      "original_sha256": "e2ed5efd15a18b3cfa4fc4bdbba74467f6012ea0193ffff5ef72e76329cb6e1a"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/9b051465b234cab1.jsonl",
+      "original_bytes": 108178,
+      "original_sha256": "662e1d36cfa3438f7e22920dd8a04d87241299eaa355bda9fa5c1b987ff69ad1"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/9b315a3bf4d7568c.jsonl",
+      "original_bytes": 14775,
+      "original_sha256": "79837d996c9613f6e8447b4aa7e963cf721efb375559c236ad81b0344927be56"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/9cb1d8020409c578.jsonl",
+      "original_bytes": 120167,
+      "original_sha256": "08224b5e471741592465170e9a125046376979b0e287bcb6ac72e31408305a75"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/9e623422e4efbde7.jsonl",
+      "original_bytes": 5118,
+      "original_sha256": "f80c8fab2da89d1b60492394b1106dad979b0adddc9a53ff993c1ff86c3b1ef5"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/a1732f03ad668918.jsonl",
+      "original_bytes": 64009,
+      "original_sha256": "1d49254ada9249a68399428336c1ddb20033d3ace3a96597de7b74de101d8942"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/a7b1b154cfbaf900.jsonl",
+      "original_bytes": 5144,
+      "original_sha256": "8c8dbb7a4a36c3d2e864ea651094969185f1c4e4e87ad8460ce36683e02300ec"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/b5071f8913222dac.jsonl",
+      "original_bytes": 4478,
+      "original_sha256": "0f20481cd16c339a66899ec0ad8e962fa780e657d0ad25184cd0de901ad61a5f"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/b681263f22afa943.jsonl",
+      "original_bytes": 88195,
+      "original_sha256": "92eea81be814e317db5ffdde550b5faa251348fc1ac95d3a133b0f25184f74d1"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/bb61e2b62fec8563.jsonl",
+      "original_bytes": 50141,
+      "original_sha256": "1e1114cc24b0c7c3afc693d1cf08ea985ec19e49bebab3cd88d61e79655a9acf"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/bceb091214ca12f1.jsonl",
+      "original_bytes": 4423,
+      "original_sha256": "210476c0d59c8337f3ffebd76cae6f3fac0b4160b28eeff0c8ddbfe56867d274"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/bd51c475c278c991.jsonl",
+      "original_bytes": 4426,
+      "original_sha256": "f4598e269b38478e5bbcb9e99454d202a13aff4dc876b25460a59c26f92829d5"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/bf5b0c451cd666fd.jsonl",
+      "original_bytes": 20197,
+      "original_sha256": "85c9f059c49f520b2230b2e8d274972b89aed80509388d3b24f05d0d5e6a31d9"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/bf5bde0497680e9c.jsonl",
+      "original_bytes": 4413,
+      "original_sha256": "822ab75e4765891d30e5422287811441e8dd291926fcaf0a118e2d6b1b387fe3"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/c011f8f136edcfd2.jsonl",
+      "original_bytes": 5035,
+      "original_sha256": "8b7f7ebb5f4931e2a0f6aecbf7702e53c083bd56a2ceb2f1d37852a1911c89bd"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/c0295da0de74cbde.jsonl",
+      "original_bytes": 85275,
+      "original_sha256": "6611be3289646e7f9befb92fb877e34960950b611fa007dc951fdee93ad7a800"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/c20b5b725222e1f6.jsonl",
+      "original_bytes": 5109,
+      "original_sha256": "743f11333b0c664f070212aa7b174dbd3f90248ada60754394d76e3bf89ef1af"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/cc251238257830a2.jsonl",
+      "original_bytes": 71497,
+      "original_sha256": "d5cf3c3f3785e61ae920d28025b1194e49f7757e059e874510c66d24e7f7745f"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/d1ee4d0e6aff277c.jsonl",
+      "original_bytes": 5198,
+      "original_sha256": "d638240f450abf3510d215a1d346b14f625ead8c47426f7c3d998468920b0d02"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/d44f78cb56a8d393.jsonl",
+      "original_bytes": 5139,
+      "original_sha256": "6bd061b19dcb7bbb046e3337a6e954d381b739b95bdaf32e211506f154d6afb5"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/dbd32fa43df2cd72.jsonl",
+      "original_bytes": 14751,
+      "original_sha256": "80023eaacfbf4fac683f826d893407102e4d1e6223b5eecce9faf4fcc0660a27"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/dde2d7af4e6edb2f.jsonl",
+      "original_bytes": 7944,
+      "original_sha256": "1e4ccb96583b419f87a460b6b467849e3432ce7d334ed8036867538c91340922"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/de736ad7dcf02dfd.jsonl",
+      "original_bytes": 5175,
+      "original_sha256": "b8295c42f9257b3e58bee8fe957314d47cca638509276129f7f9e1deda00c20e"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/e07fbe50e3b370b2.jsonl",
+      "original_bytes": 18386,
+      "original_sha256": "69e16be80a19da74c502776e6dacbb7e2af6e49365d91a206b32199803bbb932"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/ee5c074d008f14ad.jsonl",
+      "original_bytes": 4450,
+      "original_sha256": "569ca26f3725b0d3df86a255daa0190249ecb20a3d79a91173685e12c62fa336"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/f2a277b26a4fda98.jsonl",
+      "original_bytes": 4480,
+      "original_sha256": "69d60b3a0cb9479365a441850aedb0c3b16e0a8d8c16f8c5ff26a83ef79f8441"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/cases/fa56f77ff7237a36.jsonl",
+      "original_bytes": 16685,
+      "original_sha256": "2ac95e4a86fbfa5b061358f393babe53968094ca8470f711e52ea21c66be1bb2"
+    },
+    {
+      "original": "neural-combined-historical-v1/main/results/runs.csv",
+      "original_bytes": 1460976,
+      "original_sha256": "f85b61432d7f4a7946bb2013426803e16f4c6e9df63aad46625fa022efde4cbc"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/01a7aff8541b73ba.jsonl",
+      "original_bytes": 19612,
+      "original_sha256": "893906c10f1061446d3757fe85d8eefe183eb8a200276ed875248aac9ce5a87d"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/0381a785dbf9de2e.jsonl",
+      "original_bytes": 18415,
+      "original_sha256": "0af713cb0b94be2a29ea42a41b15a9d0f24b719d5e491402f48a36f6e3f13f3d"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/04ea81ca05ba2550.jsonl",
+      "original_bytes": 28868,
+      "original_sha256": "c730b28eb28aeb66eef37e1b6d0e05bc7197df9a1c0945b0540e6a266f6dc5d7"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/12fc97bafebfeea1.jsonl",
+      "original_bytes": 4475,
+      "original_sha256": "0ff59ab406e53f18d555cca7b3ea2b825a9052d1fe99dbd6d3703c36982993f9"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/13ae38132031d2d7.jsonl",
+      "original_bytes": 16248,
+      "original_sha256": "21d516e2fe7f1263b0d84630ad3c92d97f8708ecac4f4a4c1c79988987146b4a"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/13e59fe882eceb55.jsonl",
+      "original_bytes": 19788,
+      "original_sha256": "a5685261184511e4895f350de1ee4ac1b89f5a658f7708a13d2bf09911ca15de"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/1a1931b076dbda24.jsonl",
+      "original_bytes": 4421,
+      "original_sha256": "7cc422d322def975138df0bcb3cb5b0b26bdd1da4be4f2f09e485ad5e42e7807"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/1ed0bb549cbc5152.jsonl",
+      "original_bytes": 21232,
+      "original_sha256": "51bfc1a653c48944be21dbedde353498409ce936caea0fa545f6d312a9db9678"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/1ee087dfe36ab806.jsonl",
+      "original_bytes": 30048,
+      "original_sha256": "5796402b906dfa673e1fda5957ec4f0844bdcadd637b651a0022bb59445bdb22"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/20abb8d8a17fa9b0.jsonl",
+      "original_bytes": 26392,
+      "original_sha256": "222761028df43fca2009147373c47ebbd7c2458f2d7978c25a916b793c823aef"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/3100166f0d5abfa1.jsonl",
+      "original_bytes": 5149,
+      "original_sha256": "c54c427aee46656bf03b9694f8d0291129026bb3354636cd1ac2d163b98a7f29"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/32e6eb4f509f9855.jsonl",
+      "original_bytes": 5060,
+      "original_sha256": "90875e3f98991a82debc22db2d36be6182ac775399fa2cb307c81fdbd15ad951"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/39b9eea8ea8c7c86.jsonl",
+      "original_bytes": 18124,
+      "original_sha256": "4ea1173b941650acd3ecc36dfc9b86a9365a1df377082f020835ccd742235fa2"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/49fa816d45aa0c4a.jsonl",
+      "original_bytes": 18158,
+      "original_sha256": "91ec50716c2d5056238278c278a70bbca8a61d4b4627b60ef7ae8e7fff880a09"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/4a0548c8506b0f0a.jsonl",
+      "original_bytes": 5149,
+      "original_sha256": "8b7ce6bd95ae4e8feafb2be2b6494faa09ab5dac74be9e61d6c9d6a4694f2dbb"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/54426e3622c09a96.jsonl",
+      "original_bytes": 18120,
+      "original_sha256": "6c0480f41f571c3cf628069fb449910636dabb4b23493bafb4edda9203bdb49b"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/5de4aa880c35db52.jsonl",
+      "original_bytes": 17828,
+      "original_sha256": "0ce437926d7d32834c7a65be6aba7baeb039fd290108efbb8a85daf8c3c02ede"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/5f97858d06dc4268.jsonl",
+      "original_bytes": 8147,
+      "original_sha256": "9b7ee65108585c953bf7aad526f4c57fc4b790fbec370ab8f28c0e64cb362ee7"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/5fa99ab81d771ac7.jsonl",
+      "original_bytes": 20217,
+      "original_sha256": "bdf10cf7f5500a9fecb39407f15a944b1a61418fc84d71bb3cc8ea5cf2d940b4"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/62b67aefc69ca00c.jsonl",
+      "original_bytes": 4414,
+      "original_sha256": "8d91004d216ec90f313d6486654b56930940d9f3f2804c545e3fba116e4fdfed"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/6fee83887ab79f13.jsonl",
+      "original_bytes": 20145,
+      "original_sha256": "6a683ca6b484eb72e5164a11d205a7aa68b4cef44dce963a17afe833c1dc0358"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/7533b3d2ea3c95b6.jsonl",
+      "original_bytes": 5137,
+      "original_sha256": "e09cb58f73867a9eb6835825f61f7e3dba8b344f9e6145639f7eec235dfb1943"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/770079203caaad41.jsonl",
+      "original_bytes": 5192,
+      "original_sha256": "b556ed2d6a448be36ec626f8cb512ac6ddda974b0af1b396b4cc8d4adf87676b"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/7b8968794982b382.jsonl",
+      "original_bytes": 4595,
+      "original_sha256": "ddfcee194b6738305a7e16a2d1d7caf4f4546f954f46b9036b065603116c11ce"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/7e399724baf3694a.jsonl",
+      "original_bytes": 11281,
+      "original_sha256": "77c6c3ebe9dfee5821e5449d76bb60b135e372c0e397763ad68093ca2d8f3187"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/8785c5a75643fcc7.jsonl",
+      "original_bytes": 4473,
+      "original_sha256": "c2b3dcd28db0b607e2f0d3d8c7a873f90b7b20af78e69fca8d40acbcecc1b6f0"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/8a7e6b6c0e117b2c.jsonl",
+      "original_bytes": 4472,
+      "original_sha256": "058051382923aee6eae35ee2b460569714d3d6129af898672edca20c3836e66b"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/8ea721198fd1b9df.jsonl",
+      "original_bytes": 20223,
+      "original_sha256": "29db53805a99d4b86c1fdb9f0841bf17cc77c2a76c08697fbac0d191d02e3971"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/913537692de1342f.jsonl",
+      "original_bytes": 8110,
+      "original_sha256": "2aaf427a0e8f4da1db0e6892d4545871695e221f81cb1d3fa31a73296d22e30e"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/95d71f3b7f6f026c.jsonl",
+      "original_bytes": 167852,
+      "original_sha256": "64ef0792abdfe3b80175ca25f28d3f09cdc2316280f478cc401e6ef258ee6546"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/97781f810017a9b2.jsonl",
+      "original_bytes": 6250,
+      "original_sha256": "93ffe889c231b30237469aa4e36250b6da9d05dfc254def2aff04239059d3ed8"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/98f6e835ce24559b.jsonl",
+      "original_bytes": 93245,
+      "original_sha256": "b1440ec62260fceb274d7e3bed301a400baec3df5fa5b111508e1e9b9781103c"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/a705e136c869905e.jsonl",
+      "original_bytes": 59643,
+      "original_sha256": "58b5653bd64a66b2b7958fa473a4074cf9d4a55a11313d2866954b49e940f692"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/a8c34f0c32b21d17.jsonl",
+      "original_bytes": 4476,
+      "original_sha256": "de480780345e968f464ad1761852fbba5686b19c8a8c0679483fb5494ede2736"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/a98f970235328dfa.jsonl",
+      "original_bytes": 31457,
+      "original_sha256": "3c1c544f8b6346071e166d3bd77937d9a625ad4cefb1cf7915b531ba9287fac4"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/b380e8784f9c566a.jsonl",
+      "original_bytes": 5164,
+      "original_sha256": "c9967fde96ebfd0c0ac7d610e840bf9683ecccb7f2c1e7de15b9b5614a26a166"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/bb88f9b16d60a48e.jsonl",
+      "original_bytes": 4660,
+      "original_sha256": "9919c6455ee1ead3a396c10176856cef17d9059be0f1879515caa749aac482da"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/c9c72c316a0bfd3f.jsonl",
+      "original_bytes": 14672,
+      "original_sha256": "8cbde9b7198d4f4466a9ccbebab2c5078c27c078e26ce0ad3e7f64e0736d3224"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "original_bytes": 4413,
+      "original_sha256": "15793faaa3214975371bf6c266ad9d452a4b50b229ed3de8b685b37a3b2c90f6"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/cd47915dd7dff1c1.jsonl",
+      "original_bytes": 60646,
+      "original_sha256": "5f948367b492d952ebd3365277e8284b9cf177f5515b44217e8ca0d0b4d8ea46"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/d36020e6db915aca.jsonl",
+      "original_bytes": 17040,
+      "original_sha256": "1cac557ea7daaeb1ade53dc77794c8831a10fb85bcdc03b79919f16d465a0b33"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/d8a9499028b2eba3.jsonl",
+      "original_bytes": 67341,
+      "original_sha256": "2665eaa1923ebc2c1d1af12a8346d638de747baef4431b2a4ef42db47edc1761"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/def4b311296f4c94.jsonl",
+      "original_bytes": 21500,
+      "original_sha256": "a14372ef781e671a4c652a921396c09db2967ebc1ab39d5d0d53e588cfebf854"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/e026f98929c4a36b.jsonl",
+      "original_bytes": 18116,
+      "original_sha256": "bb25850a552b12ec1d95cdaa486841acfd73e04b772fe456bda120975a9c8f00"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/e607c1d370b1f278.jsonl",
+      "original_bytes": 4643,
+      "original_sha256": "7eda7d49a50683241817a6d8fe5619d439552a880a22de5e9cd647f4811b175e"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/f1285a7eb615c1f9.jsonl",
+      "original_bytes": 4423,
+      "original_sha256": "a1a302d8903e7f46f1d7110709a8ce695aea42d08328fc1efe674cc242f7cd0e"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/f8f56cfed3e1a112.jsonl",
+      "original_bytes": 5192,
+      "original_sha256": "7b0a30e7e2dd792f13f41a1adc93e35e8229549a56a97e00018e5c922e86c024"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/cases/f9e40a7f7fe32454.jsonl",
+      "original_bytes": 5098,
+      "original_sha256": "8d907e8afca1975a44a6cf71aa7c3f670571c33758777847d8ec3ff786b6bba6"
+    },
+    {
+      "original": "neural-combined-historical-v1/heldout/results/runs.csv",
+      "original_bytes": 827654,
+      "original_sha256": "d140e0ab1f27ddee91c2cc63b3e19beb2c9d0c33b0dcdc7ba68fe28e259a0b2e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/00d57b26fc2e3d35.jsonl",
+      "original_bytes": 1185,
+      "original_sha256": "e7ccbacd43e49b2198daab984bbf37af032aa3caf247d7e1371341e863ec392c"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/019768483e2ce6b2.jsonl",
+      "original_bytes": 1124,
+      "original_sha256": "d05754efda2ff5078d7b7e2fd4e14725e058bf777ea51094804014b696242150"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/0245bc05258c2dd9.jsonl",
+      "original_bytes": 1194,
+      "original_sha256": "6ce291fe3a058844e10ce40cb1399520ef9d0cdfac628e16619deef1e3bf260f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/03ae192d4c243c55.jsonl",
+      "original_bytes": 1191,
+      "original_sha256": "87bc53fd0b4c0fc89f60b61f40cf975104ca05fc4ee1ba8cb5196f3fd58f4169"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/07bd819a0c4ed733.jsonl",
+      "original_bytes": 17128,
+      "original_sha256": "ac00bc8f94f296664094b728b8c9576dc8f80ae00338a1fcecddf30050bc9f8d"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/07ddeccca8b7007b.jsonl",
+      "original_bytes": 1185,
+      "original_sha256": "8d0531158eb81cfad7c0d2040802ee6740361cfc66eca218f8847a7004d14e5e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/08e44185e57e3334.jsonl",
+      "original_bytes": 11108,
+      "original_sha256": "7df4e1937b54b1f16fe56446dbdf24a620f92a3e5fa0bf4f32dbe0eb5e5e37cd"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/0b1d03edaf6812a7.jsonl",
+      "original_bytes": 1180,
+      "original_sha256": "5b4e05fe7cfa76109e63c75a4d0180b6c71e37c0bc6eb61c4569384f16e67fdc"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/10d2aeca0b6d8193.jsonl",
+      "original_bytes": 8619,
+      "original_sha256": "c07576f8c9e0119605e67b8f3166a7cb030f64b893f47cebd0edd1ffd2fa9461"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/14cb28cb858b21f2.jsonl",
+      "original_bytes": 56576,
+      "original_sha256": "bbdd3b9e1f77ecd7b1efa8f6bf137622a08a69afad021c091be7105c81c65537"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/20625b3835d33696.jsonl",
+      "original_bytes": 8356,
+      "original_sha256": "875e422c3396002b7d4d3cb139aafb0479fbf8c3cba09ebe2340599a17b61267"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/224beb59ded4da54.jsonl",
+      "original_bytes": 8525,
+      "original_sha256": "b045f00ca841638a6a1bf4afc793382db1f93debe3f1a4d512b7b25bf2e8c994"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/23a582981f0a5802.jsonl",
+      "original_bytes": 10101,
+      "original_sha256": "8241b1eeb34c5629a5ebb076d9d570864d8f93c51a45eef4bbb504916a0fc270"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/24125eb16dd36fc1.jsonl",
+      "original_bytes": 11088,
+      "original_sha256": "ccd2213e89a8b48a2c7d5e5bd026de399bf5f496b0a988c9f08f7f0c3ae116c4"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/2960220a34bba65f.jsonl",
+      "original_bytes": 7429,
+      "original_sha256": "61748626b879fffc0c057ac2e8a5289631eff35fec1b61cffb666354607e1ad6"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/2986b778c2a323fe.jsonl",
+      "original_bytes": 56338,
+      "original_sha256": "e4e6c9d0787e28243242c8c9be4463aec491512c893802ed2b736c4ac4bb161d"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/2a71477e12e42079.jsonl",
+      "original_bytes": 1187,
+      "original_sha256": "290dfbe2dac817c20af9ae5c51eec7c9ac7e138a1c06e99d5b61184a25568710"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/2ffa802ec1b3d5eb.jsonl",
+      "original_bytes": 11082,
+      "original_sha256": "850d5fef509853486569ec1ab37f6687bf5e74d371fe3f5ca3adc79d427952d4"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/32caeda70259b736.jsonl",
+      "original_bytes": 56470,
+      "original_sha256": "35c8c5d5488c50d51b1fb7fe6f373b0d3910787696151ee1ef10c3fd6fb802df"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/381b218627a89b62.jsonl",
+      "original_bytes": 1380,
+      "original_sha256": "50146a4699a6a6aacb58368d482ff54bffe5f6c9d8491ad5bb247ee925bce1ee"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/3e25c185b1fae711.jsonl",
+      "original_bytes": 1320,
+      "original_sha256": "38d5888bf91416a5b50f8fbd8098dc24d924483bed5488882fd5f8963153e5e4"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/3ebf6d70c31d9778.jsonl",
+      "original_bytes": 15361,
+      "original_sha256": "59b8e33b6fe3e53a31a1d5fa8ea07cc6a04e7a95e73b2174a18a21e92b2f86e4"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/4c13ee5778a57f53.jsonl",
+      "original_bytes": 46909,
+      "original_sha256": "6d502b7f0c62ae14e362256a7b1415f036e86f5494e75e6ca144385807f3c1ea"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/4d114a7fa351cfb2.jsonl",
+      "original_bytes": 7077,
+      "original_sha256": "b50697be662c9da62ff2e8947d5ef188d854bbb5b76313602b2cd6ca532a0b54"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/51ae0de86e40f189.jsonl",
+      "original_bytes": 57830,
+      "original_sha256": "ecbc46f874900ccbc06d0470b8320a047644ba135ed8700e9d8efb3f7a97c6f1"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/59b916a218c710f3.jsonl",
+      "original_bytes": 1317,
+      "original_sha256": "808f2dd3dcb9aa0d8f659129b65aee92bcf89d6d7a688c08357ebdc37476b79f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/5c3d2a86efab2186.jsonl",
+      "original_bytes": 7078,
+      "original_sha256": "fb832488789ab77949992c12a9f926f20340b770f09482c955fc8f6f1350a638"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/5d44114058fc2907.jsonl",
+      "original_bytes": 7070,
+      "original_sha256": "9cb8739f9491747dcc345b2dea6dac14354c498342393be81da020f027844961"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/5ed14caba19e4a8d.jsonl",
+      "original_bytes": 8546,
+      "original_sha256": "49353e385dd8ad630596ba5ead274790f248c738cbcdf9eeefb36cdee424d8c1"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/5fb2db7fb1df076a.jsonl",
+      "original_bytes": 1194,
+      "original_sha256": "d5ef884f6c4bd614d78e5646d053527117f1eb1544bd45b691c690b675c8fef7"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/670de0d32842c811.jsonl",
+      "original_bytes": 34075,
+      "original_sha256": "507f1d5b6da977fb93bcdb9169cda3e5d2f626d792e1f206b320871d4e19931c"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/67247d0aa186ab99.jsonl",
+      "original_bytes": 7791,
+      "original_sha256": "fd45caf7efc479c091d8949c1deca302c33083b2c722d86ef24d55bdb8956f84"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/6fc62fc3ea551921.jsonl",
+      "original_bytes": 1195,
+      "original_sha256": "49f1c46ab00572478e22981d9dbfebd3bab9cbea74234f6404169309ab75a142"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/7072f00d9bf738db.jsonl",
+      "original_bytes": 8637,
+      "original_sha256": "aa16b263cad4bf6b0ea67b40197cc04daa2e933bd5e0f237fba8c80177507ff9"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/72617c1e1637755e.jsonl",
+      "original_bytes": 1317,
+      "original_sha256": "8a47f63bd8e0d33a0e1fafac2dc49e818b07df4c1f99ab697c7e87f8b0cee8fb"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/73d6492b09da64c9.jsonl",
+      "original_bytes": 17435,
+      "original_sha256": "55f7c9ba3665f35d4e02054b2c1616fbd2b40370d2d9b91637944bba12807f77"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/798db1ee65452b02.jsonl",
+      "original_bytes": 1193,
+      "original_sha256": "6bd86e2b11174384a8bff09c5c5e62865520f562cbbae4a4d3188a5498be5381"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/7bf6670c01de2943.jsonl",
+      "original_bytes": 17293,
+      "original_sha256": "6ae71402505b3da71fee403a43bef00010d07f24eb760978b9a607488116fd8b"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/7d0603a53465a874.jsonl",
+      "original_bytes": 65383,
+      "original_sha256": "d52fda8cb72ffcc4cc7ad336dc39052bd57e2b00fe998b2b0b23787f1b365c74"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/7fa88f1a25cb31a9.jsonl",
+      "original_bytes": 1378,
+      "original_sha256": "ad718c6e1ff46807c552d88bdb969c05720e1e8e0517036bbac1f8031aeae4cb"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "original_bytes": 1121,
+      "original_sha256": "50907fc63eb7fc33a1fee3fb77a9c14884abbbc294caa9d8d9c39ec2b5bc4da3"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/88a19549ec840dcb.jsonl",
+      "original_bytes": 8654,
+      "original_sha256": "87357d021525cdfb2eb9ea152361c7dc52f3d2522c1f6791d7131150ea36dc2e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/8c0acf69fafd9908.jsonl",
+      "original_bytes": 6615,
+      "original_sha256": "127946f4460eaa0a84986808c0980d9a0093a2086d75fdeb451fe33fc79551a2"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/9084f6b5c91e19fd.jsonl",
+      "original_bytes": 65171,
+      "original_sha256": "249da02920b2ae8f03540c40ec4d875342753d230351aaea8e788663e69e4ce2"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/91eef76924b7b662.jsonl",
+      "original_bytes": 1128,
+      "original_sha256": "689ea545ea0f4c6347e14c2b0e53a2fac6001394e7ef905876dd14c30c46e99a"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/9283fafab39345a1.jsonl",
+      "original_bytes": 11050,
+      "original_sha256": "5c7a6134d8ebc4ce2124acd212b3f69a7f19ccec0a034012fcd3c8462248b404"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/9b051465b234cab1.jsonl",
+      "original_bytes": 100088,
+      "original_sha256": "3f3def3feaae3e013670fa5991e44c121f487423f3aef2da547c02efe9be3ecd"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/9b315a3bf4d7568c.jsonl",
+      "original_bytes": 10085,
+      "original_sha256": "b437006bd5e725e0a6092ef431a014e7268aef03587490e34e2a73dd96138d18"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/9cb1d8020409c578.jsonl",
+      "original_bytes": 101859,
+      "original_sha256": "0ce9e6efec0c3ed0c1b6fb8fcc0ff8be8162584aa4111645f68024191059b163"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/9e623422e4efbde7.jsonl",
+      "original_bytes": 1372,
+      "original_sha256": "a1ac42891924bc6ee5c1ef781ddbb35adf7000555b1e17637726a12014789a06"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/a1732f03ad668918.jsonl",
+      "original_bytes": 57908,
+      "original_sha256": "5aefcf197a2ea7e982441be76fbf1b6d4366dce1c3e6cbc55c62c0496ad53d62"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/a7b1b154cfbaf900.jsonl",
+      "original_bytes": 1313,
+      "original_sha256": "b8e4488823cfe540d084af51d8861a21292475869b847406906bd4b102f04108"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/b5071f8913222dac.jsonl",
+      "original_bytes": 1187,
+      "original_sha256": "f80179b8f19a34fe21522b3a74cc436d52a1ef766a03da5043c35f49340b6f52"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/b681263f22afa943.jsonl",
+      "original_bytes": 101260,
+      "original_sha256": "a32dd6ea5bbff2727f615871a875bc61a2d3410fc34593028fb058417a771c93"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/bb61e2b62fec8563.jsonl",
+      "original_bytes": 34319,
+      "original_sha256": "db55dfd5a09d04b23aa3a48e7b0816c9a2f100ed63b1305ff9ff8a25b1aeae2f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/bceb091214ca12f1.jsonl",
+      "original_bytes": 1128,
+      "original_sha256": "a998c6665f2a60fa8b78c088e285aa4e4e93c31de711491d8bb5c9974b931279"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/bd51c475c278c991.jsonl",
+      "original_bytes": 1130,
+      "original_sha256": "03f9e68b4ba8f5306bd68ca588a9768a3ffd43047b9ced9fa7d01c9a79d8648b"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/bf5b0c451cd666fd.jsonl",
+      "original_bytes": 7141,
+      "original_sha256": "6bb6bd174124f99ad5674a54ce8a394430e628fd36e3c290711453665d83fe6e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/bf5bde0497680e9c.jsonl",
+      "original_bytes": 1126,
+      "original_sha256": "491c348979d2eb128b9c9c0b82696c4e34a8bf9860e26ec25c4e478b83b7cd8a"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/c011f8f136edcfd2.jsonl",
+      "original_bytes": 1307,
+      "original_sha256": "3ef05d753882aa12d3c3690d417373bc40eaf3b443f33af22bd28292bd95ca7f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/c0295da0de74cbde.jsonl",
+      "original_bytes": 65384,
+      "original_sha256": "bb745014387d274e879e980662511a53b762ea2d1bd23286aa6633685898764f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/c20b5b725222e1f6.jsonl",
+      "original_bytes": 1372,
+      "original_sha256": "e55dd677241e343431dedb816bb2d187efca9a01c838f6a17bbc88dcbd4fa474"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/cc251238257830a2.jsonl",
+      "original_bytes": 57883,
+      "original_sha256": "71a50a318731dab722cadaf1d8c34a24a4e7844134374969485bb93c04c62842"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/d1ee4d0e6aff277c.jsonl",
+      "original_bytes": 1377,
+      "original_sha256": "a2128c7110e48d02362adfe6233ffb9856daa0afaf074c3598d4799a1662155f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/d44f78cb56a8d393.jsonl",
+      "original_bytes": 1315,
+      "original_sha256": "7d951e80d55a48de3176a54fc5122588f3ed8f328bda58a9ac777ad4856fd9bd"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/dbd32fa43df2cd72.jsonl",
+      "original_bytes": 10068,
+      "original_sha256": "c4ba7b551a9b9f4c75c2ea32329232197e71c7a477f678a04b81089e0b10f9a6"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/dde2d7af4e6edb2f.jsonl",
+      "original_bytes": 6792,
+      "original_sha256": "ddbbacd8f7594882c4fea5b636c217c66e4747684fcdf5f5a3c32e51a893869a"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/de736ad7dcf02dfd.jsonl",
+      "original_bytes": 1372,
+      "original_sha256": "5eb0c45d8276336e3a1cd337881b377ae814c1d87e90bef2d0a93fe9e6dd01ef"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/e07fbe50e3b370b2.jsonl",
+      "original_bytes": 11338,
+      "original_sha256": "6313773ecebd431ff7098dffddf579effd16989bc89be272385f86c813a36c43"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/ee5c074d008f14ad.jsonl",
+      "original_bytes": 1180,
+      "original_sha256": "3927ff5286825ff059265b52177d818da2582e2ebf3d1a8eb2b0d16a7ae4ed68"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/f2a277b26a4fda98.jsonl",
+      "original_bytes": 1187,
+      "original_sha256": "89e9b2c7023ac175c3d5d7ecdc16498ac8f2c5f4a280910b445c65dac0d97655"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/cases/fa56f77ff7237a36.jsonl",
+      "original_bytes": 6951,
+      "original_sha256": "1e5e41d23984cc3e9dbdd68b3311b479edd77037b59066ef2721997a6cccc4b5"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/main/results/runs.csv",
+      "original_bytes": 1202483,
+      "original_sha256": "49593204c130ec34ab302ddc4480769d6e562bf0aa4a3b69d9a74ba953b00a8e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/01a7aff8541b73ba.jsonl",
+      "original_bytes": 6260,
+      "original_sha256": "d51e66869de25e8edf0f4baf2bf5f37932ce4514bf5681e5178e2b71fd2fd010"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/0381a785dbf9de2e.jsonl",
+      "original_bytes": 12237,
+      "original_sha256": "b3cb972632b14b67786668cf86fa2f42427e90f2664489374eb8895f6049b73b"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/04ea81ca05ba2550.jsonl",
+      "original_bytes": 21177,
+      "original_sha256": "2dec286b98769b0c0a951de66eaa162942bb05eff551dd51b96a5800a31ff292"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/12fc97bafebfeea1.jsonl",
+      "original_bytes": 1185,
+      "original_sha256": "fe0c9ca5801a0bd011fd6b5f3682ecd6b827d70aaaf50fd43ad285166b761b70"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/13ae38132031d2d7.jsonl",
+      "original_bytes": 1228,
+      "original_sha256": "461e23387b475a00854391aa4a26e44232a4a9fe3ecbd91a1cb5360e04b4be12"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/13e59fe882eceb55.jsonl",
+      "original_bytes": 16551,
+      "original_sha256": "6e50c8b4740355bd62377d86b189039a75d3dee18671a0a7e0cc1deb3c9722f4"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/1a1931b076dbda24.jsonl",
+      "original_bytes": 1127,
+      "original_sha256": "c1765f05930b1bf9b7aee60c0b0b30dc547ae3a6e6dc9faf7179da18834bbe4c"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/1ed0bb549cbc5152.jsonl",
+      "original_bytes": 6748,
+      "original_sha256": "c416fc46874ac24c4794e7ec1c854079495aa85657c8ef47866a74da49dcce21"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/1ee087dfe36ab806.jsonl",
+      "original_bytes": 21555,
+      "original_sha256": "83e2485f006ee30e3357bedb3de07b0ea5fc029b613547f3341fc3d6a2759bfe"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/20abb8d8a17fa9b0.jsonl",
+      "original_bytes": 17859,
+      "original_sha256": "3e1a54a1dccb8ae6c7dd3e8b94a495ba4bd16baae3c4e787eee14baf1ddcd737"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/3100166f0d5abfa1.jsonl",
+      "original_bytes": 1370,
+      "original_sha256": "c4dc2b8b0ac18870635b0305e29b2b3a476db49721cbf6a8ead94336ab4624fb"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/32e6eb4f509f9855.jsonl",
+      "original_bytes": 1317,
+      "original_sha256": "ae6c0a8eddabc499178dd7fe33c3960140f1862c5fcf5c6a47c11bb0b20995e3"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/39b9eea8ea8c7c86.jsonl",
+      "original_bytes": 5752,
+      "original_sha256": "b7f37333e26cbb7b697befd0471169efde13463993e632cf8235752a1363203e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/49fa816d45aa0c4a.jsonl",
+      "original_bytes": 5778,
+      "original_sha256": "9398683a95967deae67c8dcc5de3e299ab47e894250d70a23da11fc55c950f72"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/4a0548c8506b0f0a.jsonl",
+      "original_bytes": 1317,
+      "original_sha256": "1407e8a79f1a2eda6d08be9cf99822785a962896a5147c7ead177162895079db"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/54426e3622c09a96.jsonl",
+      "original_bytes": 5775,
+      "original_sha256": "582959f4be09b48a016a3aeeca542d33af96ba906ffde21471d6522c27c6924b"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/5de4aa880c35db52.jsonl",
+      "original_bytes": 11166,
+      "original_sha256": "54124af4a67e34b9bd6610c436951f34605ca3736c4b54543c6dec6b17368c7c"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/5f97858d06dc4268.jsonl",
+      "original_bytes": 6819,
+      "original_sha256": "056584d77e8a0d1833baa2e97f4ab280d4b8db0149004e5aa3fba9ecef3aee1a"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/5fa99ab81d771ac7.jsonl",
+      "original_bytes": 7104,
+      "original_sha256": "280838e62d9430826b3370d4ee66cf2eb3164c6f06018a55a7b136a5b9c86f13"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/62b67aefc69ca00c.jsonl",
+      "original_bytes": 1126,
+      "original_sha256": "7cc6d46a55dfc5c50e6977cfa7e150518e22b3b9c763b157bf39bbac82284b19"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/6fee83887ab79f13.jsonl",
+      "original_bytes": 7107,
+      "original_sha256": "f43baa6f81fc63ba0dd855175cbd087c362c8d87265bf15316f5c547b569ca3e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/7533b3d2ea3c95b6.jsonl",
+      "original_bytes": 1311,
+      "original_sha256": "7d5337d917f9fc8a595d4073911fed3a2d884b18ca128470d44a75e16727d7ce"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/770079203caaad41.jsonl",
+      "original_bytes": 1372,
+      "original_sha256": "4e465deae1d0b43653a8496841f56fbb69dd9e8e01224a78a68ca6c6f69202b3"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/7b8968794982b382.jsonl",
+      "original_bytes": 1176,
+      "original_sha256": "a566a0d3989d16866b350eb236e9e844b7797293977d190165908b14cb60c811"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/7e399724baf3694a.jsonl",
+      "original_bytes": 1231,
+      "original_sha256": "c0211b69dbb9a8414f1cd4089561fe132c496a0c651fbb0fb18c30d47223e028"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/8785c5a75643fcc7.jsonl",
+      "original_bytes": 1185,
+      "original_sha256": "5b40215c49d2bfdec65b5f4d57766542788cac6328afb0f9687e5134b9003760"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/8a7e6b6c0e117b2c.jsonl",
+      "original_bytes": 1185,
+      "original_sha256": "e1a48435eef564fe5ed66fe731e001c2789070309269dc28c37e905267d73082"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/8ea721198fd1b9df.jsonl",
+      "original_bytes": 7147,
+      "original_sha256": "b90db8090b202be44855be603572a72a9de14bfd1bbe7e606669477f91b8f5b1"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/913537692de1342f.jsonl",
+      "original_bytes": 6625,
+      "original_sha256": "0d95e52538ec006490817bf3e8b27896698ad42bcd7a5c9b68b8ad8d8d082829"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/95d71f3b7f6f026c.jsonl",
+      "original_bytes": 171234,
+      "original_sha256": "4287c9ae832f90525ef8405a46c0ac63b823498c5ea64c13c9c50dae196f7c82"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/97781f810017a9b2.jsonl",
+      "original_bytes": 5967,
+      "original_sha256": "5caed2122609d0e196781471f8539690fe515af410075fbc964e8f723aafbcf8"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/98f6e835ce24559b.jsonl",
+      "original_bytes": 150140,
+      "original_sha256": "4a8eda2556f1729b22b335f64b28ab1945acf89d46ef59bec7965a209c821468"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/a705e136c869905e.jsonl",
+      "original_bytes": 43631,
+      "original_sha256": "b8396a86405a0caa074328d544bd6e0336f17b2209e058144d20358e31d4581a"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/a8c34f0c32b21d17.jsonl",
+      "original_bytes": 1185,
+      "original_sha256": "fc06a5e1288c9db1850faaabc843bb719c9f9707e47548a29434113e6287390f"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/a98f970235328dfa.jsonl",
+      "original_bytes": 20375,
+      "original_sha256": "d98235fb14c2b6b3a55fe78c4490eaf39114c954225846341e1e57fad79b11c5"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/b380e8784f9c566a.jsonl",
+      "original_bytes": 1378,
+      "original_sha256": "dff359ea56eab033ed00cb1bc3a58939a0976315e4292250085123b3df1f836d"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/bb88f9b16d60a48e.jsonl",
+      "original_bytes": 1195,
+      "original_sha256": "76508d67c40a58aa32d48cd720e261242b3d30c2dab607277f291356de47ac53"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/c9c72c316a0bfd3f.jsonl",
+      "original_bytes": 10104,
+      "original_sha256": "b920538324dd06e9cf047bcf433b3f6d25f9220c1db93b0bab654a08a880417c"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "original_bytes": 1125,
+      "original_sha256": "acef9d1f05bc52d1395887fbb022743dc1142260cd71ffb431adbac39d1a2540"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/cd47915dd7dff1c1.jsonl",
+      "original_bytes": 64168,
+      "original_sha256": "3d5eccf462222c433809a62292cf5d09ce5235bb903dc48b265250280bcebefc"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/d36020e6db915aca.jsonl",
+      "original_bytes": 11122,
+      "original_sha256": "b2844d455b10d8f1828dbfd766620eca85578d172179d8563b1f78ab1e18fa99"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/d8a9499028b2eba3.jsonl",
+      "original_bytes": 63950,
+      "original_sha256": "1a1bc7b6f3546f131df06d96b43887ea2aef52bfd098537593db81fe4cc7080a"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/def4b311296f4c94.jsonl",
+      "original_bytes": 7550,
+      "original_sha256": "a994a8c8742049f53c6de92ad2c76f695ad64be796c88d97bd774badeaafed7e"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/e026f98929c4a36b.jsonl",
+      "original_bytes": 5746,
+      "original_sha256": "5f6169ab124a1aea9b0e1f84b7e71fa0b1e391f5b024c7c9f4aded90bf7dc8fb"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/e607c1d370b1f278.jsonl",
+      "original_bytes": 1190,
+      "original_sha256": "7e8b95147d9911c7a9aeb550143f5a668ed7215712c12ab5eee4cb5a227d2ff9"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/f1285a7eb615c1f9.jsonl",
+      "original_bytes": 1128,
+      "original_sha256": "13cac41a9bc85fa85e24b99066826c53c6734cf3262fbe29a00d9b903116a3c8"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/f8f56cfed3e1a112.jsonl",
+      "original_bytes": 1376,
+      "original_sha256": "1e4060292a686457adc0f5bba6f5cb1d3df94b591ab20bdb21bf0ca0de5c0abb"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/cases/f9e40a7f7fe32454.jsonl",
+      "original_bytes": 1312,
+      "original_sha256": "5caf9c5d4913184f73d4b9fd09280097ad40cb2e39b45092702a5b4816139745"
+    },
+    {
+      "original": "neural-combined-agent-historical-v1/heldout/results/runs.csv",
+      "original_bytes": 705390,
+      "original_sha256": "756ab4ad65c15c9548ca904bba793692eb067f58aa0138cbe7e54068243f796c"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/00d57b26fc2e3d35.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "3b23b23952fca523081cee476506d63ccaf6aa2ad87a52473a3c68545242b7b5"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/019768483e2ce6b2.jsonl",
+      "original_bytes": 3017,
+      "original_sha256": "32dfc314d42195745e715149852869b0bd69561c1a83349c48bee946f10e4cc4"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/0245bc05258c2dd9.jsonl",
+      "original_bytes": 3201,
+      "original_sha256": "056b3e1d931f32d2b226aeb4ed5719772825907da17021eacd776ac1856c4920"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/03ae192d4c243c55.jsonl",
+      "original_bytes": 3190,
+      "original_sha256": "265196520ab35cbb8c062d126042e115b363019fb070df2f197b0480ac8ad77d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/07bd819a0c4ed733.jsonl",
+      "original_bytes": 14794,
+      "original_sha256": "b9225383353e6aa4cfb9f0c4e0dd8d1bedda7e57bebccda3f402a0f6e6df271e"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/07ddeccca8b7007b.jsonl",
+      "original_bytes": 3024,
+      "original_sha256": "e6562d02392fd06e9a83458e3426f8fd608e1186f8d73fedd9dfcfcf07b613e5"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/08e44185e57e3334.jsonl",
+      "original_bytes": 12728,
+      "original_sha256": "4f1c90d01724f64e3cf68d10947672ca63ef36b0b76ffa77e2f87de437a46804"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/0b1d03edaf6812a7.jsonl",
+      "original_bytes": 3006,
+      "original_sha256": "f9d0281511f094200dbd0a07e72998fa3fe5b0dc4f10aa78ef54044c7a261dad"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/10d2aeca0b6d8193.jsonl",
+      "original_bytes": 9435,
+      "original_sha256": "c552d8a5357853fb589fa7f18b6b08e89439d6e804de14075a91f2d0dcda2f27"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/14cb28cb858b21f2.jsonl",
+      "original_bytes": 50651,
+      "original_sha256": "fa89c35dbfc2f0bb136a56a53405859da37d348e5020b65993d2bd508f64ce61"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/20625b3835d33696.jsonl",
+      "original_bytes": 7841,
+      "original_sha256": "fc880a793219d6b71ef55fcd17941a80d752d2b9c3a45cc6d8fd7b3eb7b7a7c9"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/224beb59ded4da54.jsonl",
+      "original_bytes": 7855,
+      "original_sha256": "9454193af8995eb018dcc9c9e9abca0df65e89b2da197ee8c5ad573bd547ff42"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/23a582981f0a5802.jsonl",
+      "original_bytes": 10067,
+      "original_sha256": "02edc0713d21ab60fec490e4cacdddc235e27053559ce9fd4c901cbae3bd63e0"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/24125eb16dd36fc1.jsonl",
+      "original_bytes": 17191,
+      "original_sha256": "a43715ab1a68841b179cd0529eb46ec1b1d0841cb0857e081b15a464cd3db489"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/2960220a34bba65f.jsonl",
+      "original_bytes": 6595,
+      "original_sha256": "f6a43a65b3341d9a723387c04a47eecc70cde7cdfc0e7c1d19e3e10ba1fcf74b"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/2986b778c2a323fe.jsonl",
+      "original_bytes": 49521,
+      "original_sha256": "dd1aee747ae03734d251ec00bd26c62a257297ffe37ccb89b4befb0a2c080c41"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/2a71477e12e42079.jsonl",
+      "original_bytes": 3179,
+      "original_sha256": "13d67d8f6e892fc3657090b03e3be5ed92965addffc3780be5aa8a69dbef2262"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/2ffa802ec1b3d5eb.jsonl",
+      "original_bytes": 12744,
+      "original_sha256": "0696ade1658b0a9697eeeefb2c585dc603eb32d34e4aae0b8645755fc5562521"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/32caeda70259b736.jsonl",
+      "original_bytes": 49561,
+      "original_sha256": "5e3ac51613c0e19558df1ea136555c1a65d6c89aa43b7058ac73335c10cc859e"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/381b218627a89b62.jsonl",
+      "original_bytes": 3496,
+      "original_sha256": "44412d876234c659e52b4fa208163dd030adf3170f1c032c6ae5188692697007"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/3e25c185b1fae711.jsonl",
+      "original_bytes": 3581,
+      "original_sha256": "8ada35e4131cbf284d9ee128772416a064fddc6f58108a8f0c27e8d98f3656c9"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/3ebf6d70c31d9778.jsonl",
+      "original_bytes": 10560,
+      "original_sha256": "15f1215127a01a9db2ffb931bf9a9755ade777b225d0cdb9e297b45ea47dfa7d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/4c13ee5778a57f53.jsonl",
+      "original_bytes": 37825,
+      "original_sha256": "a788fc583ff66f5e7d0d1082e9e038b78140d63ea18ea47f0f360ae863d72a59"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/4d114a7fa351cfb2.jsonl",
+      "original_bytes": 13898,
+      "original_sha256": "38f6a06fbe260bc676d5790cc602dac6e25fe657c117167017826f887a395434"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/51ae0de86e40f189.jsonl",
+      "original_bytes": 51274,
+      "original_sha256": "531ffe5edd9ed4f8a1ed961b8afa9b268a2fc4606ff8171f8fd7cc447a5f05b4"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/59b916a218c710f3.jsonl",
+      "original_bytes": 3487,
+      "original_sha256": "fe47f15bb481f76a0a78d3c0b869485446873bdc50c101feadb51b653ceac68d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/5c3d2a86efab2186.jsonl",
+      "original_bytes": 13893,
+      "original_sha256": "6497a2f95f4747f93823a3ea860107a4401945fbcd7a6929f65e233373980bee"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/5d44114058fc2907.jsonl",
+      "original_bytes": 7189,
+      "original_sha256": "fbdcaee23299674adde00a1c06387f68c29571fe228090872cfa000be2f57a52"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/5ed14caba19e4a8d.jsonl",
+      "original_bytes": 7857,
+      "original_sha256": "8e8b840efc4c42a4bcf00b61b79e87f745b0cde6b73cf167ed5579cf41b4743d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/5fb2db7fb1df076a.jsonl",
+      "original_bytes": 3201,
+      "original_sha256": "f568a94f85dc615881c474853598cfec6f64b7ec1a5b4e2c93f3b417e2e8a065"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/670de0d32842c811.jsonl",
+      "original_bytes": 27379,
+      "original_sha256": "18b0848228aedd53edeffeec7e56e2c2c1130b38fd0af60fee0de3d9eaf25a5b"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/67247d0aa186ab99.jsonl",
+      "original_bytes": 7177,
+      "original_sha256": "d67dcc890f26c0c034e8ede6db8cdc35afececfb64bc74827e18c0f7f8571c39"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/6fc62fc3ea551921.jsonl",
+      "original_bytes": 3204,
+      "original_sha256": "ce8e6fe6ad774d5c58051bb5447f701b515f9143dfa7baa5a45deaa48cd70f4b"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/7072f00d9bf738db.jsonl",
+      "original_bytes": 9455,
+      "original_sha256": "6a0de7b922666ea2322d632fb80fcd0e43f0c5936a99b67b903c4d5f855fc660"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/72617c1e1637755e.jsonl",
+      "original_bytes": 3481,
+      "original_sha256": "ceab39e7ec56a499699424acbeb47a3eb54ae9c2175c19891bb27571758a0d65"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/73d6492b09da64c9.jsonl",
+      "original_bytes": 14786,
+      "original_sha256": "1824c42c8b3572bd09cc6015fd8720e5a4cb7d24f4a02fea52fcdf96a4b2b4bc"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/798db1ee65452b02.jsonl",
+      "original_bytes": 3196,
+      "original_sha256": "53a82aecfb82dd3fed070f6f84ede93f2d1020dd8e714aca1e3f63388920b3c9"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/7bf6670c01de2943.jsonl",
+      "original_bytes": 14809,
+      "original_sha256": "5c98071b7f6d9fce533e71f4003022e56d6c02fe97a84407f4fb979ec327bad9"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/7d0603a53465a874.jsonl",
+      "original_bytes": 34363,
+      "original_sha256": "9312251b98907046a2a6ee8b52a40e7b1625d0176faba11423ef373d14814c3a"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/7fa88f1a25cb31a9.jsonl",
+      "original_bytes": 3559,
+      "original_sha256": "d65543e64a7f1f7af73efa008b3cbf453a490fd454872af5a10866245e438aa9"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "original_bytes": 3010,
+      "original_sha256": "8fa1caac9a83820ea640179df7eef2ef10b892521aa3661f3e37f733edf04025"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/88a19549ec840dcb.jsonl",
+      "original_bytes": 7359,
+      "original_sha256": "35141853c3058ce8f36b356401234479c86a1809dd8755068f2b04987113faee"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/8c0acf69fafd9908.jsonl",
+      "original_bytes": 5430,
+      "original_sha256": "595ce35acbfcfff455c5a5a3805ce62d56d8776fce4ad93e38c016e33e9ee869"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/9084f6b5c91e19fd.jsonl",
+      "original_bytes": 57480,
+      "original_sha256": "b50b8e37245165b21f47d2efe598acdcc32461c6446e93bcd4ac8380a7f3c99f"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/91eef76924b7b662.jsonl",
+      "original_bytes": 3034,
+      "original_sha256": "40daa3c6e80e07e18c0ffd7ea146db2d71bfe0becb9a22432bb56717d46112e9"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/9283fafab39345a1.jsonl",
+      "original_bytes": 13023,
+      "original_sha256": "5aa0630faefe8259538527ae5a8b5381054ad2abd78e8cd69d2ffbe5e1da0b7f"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/9b051465b234cab1.jsonl",
+      "original_bytes": 42471,
+      "original_sha256": "35385cba48d874541550a4f277f8b096429c4851d8564ae04959dbe63038e0ff"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/9b315a3bf4d7568c.jsonl",
+      "original_bytes": 10091,
+      "original_sha256": "433e402552e96aa4bd92e1e45e9ee6c0b455b13e91eae8c2eb3619b470d19d0d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/9cb1d8020409c578.jsonl",
+      "original_bytes": 50278,
+      "original_sha256": "df12708f53079f71b3151625518011d5615f8ab73ceafbdf815efca8dd0c2d26"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/9e623422e4efbde7.jsonl",
+      "original_bytes": 3483,
+      "original_sha256": "3da3ba142b7d608649821dceaa461195027e8e157bb5ec533464ba8e4fffb0af"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/a1732f03ad668918.jsonl",
+      "original_bytes": 52590,
+      "original_sha256": "2d7259ecf7dac07e1349f8f2954cef0a54a939e5ba68a07d2effa1196af6569f"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/a7b1b154cfbaf900.jsonl",
+      "original_bytes": 3565,
+      "original_sha256": "53cdb05d46d64018be88f00360c6e1dc9486d20ca20d7fe0ebc4283ef1357c34"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/b5071f8913222dac.jsonl",
+      "original_bytes": 3028,
+      "original_sha256": "de04482885970801cd7085d75626f35163706af370719ed951306cbe35a9324d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/b681263f22afa943.jsonl",
+      "original_bytes": 22973,
+      "original_sha256": "84cf0a47033a762c7d50e7222063d97175f387920463f3f091b166702fb1e2c0"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/bb61e2b62fec8563.jsonl",
+      "original_bytes": 33867,
+      "original_sha256": "72db404ae2ffa35757c7176f124f403f7f516ec38930c4c9d44299814956763d"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/bceb091214ca12f1.jsonl",
+      "original_bytes": 3033,
+      "original_sha256": "6fe2cdd926aa3b6eee69712e363bc6d22c69fccc5949d7d377a352bc5c8a4f87"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/bd51c475c278c991.jsonl",
+      "original_bytes": 3037,
+      "original_sha256": "3869e8085ca8183c486099d3b2923769ac735f71301b7f1a23da87e3263e7f04"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/bf5b0c451cd666fd.jsonl",
+      "original_bytes": 13964,
+      "original_sha256": "af5222aacbfb3ae5562b6dc6dca3ca9ab06cfeb43ec867336ce3ad5c8c442bd7"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/bf5bde0497680e9c.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "5db23459c1ddaa9a2a509debdea1a676dffe4a3d4b771aa53cd9cf4f4afa15f1"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/c011f8f136edcfd2.jsonl",
+      "original_bytes": 3459,
+      "original_sha256": "95792de6c955435310860a6dd89d51f56446cbde039689e72b453fed63bdfc5b"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/c0295da0de74cbde.jsonl",
+      "original_bytes": 34381,
+      "original_sha256": "1cebecd73e4c4173ed45495c444133f8b7bb1c0082d55d96a7aec066cc690a85"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/c20b5b725222e1f6.jsonl",
+      "original_bytes": 3473,
+      "original_sha256": "1a790b4f9b75e9bb33914a6124c109b2775be9b08117124bed2c12e4db650600"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/cc251238257830a2.jsonl",
+      "original_bytes": 51180,
+      "original_sha256": "f8fbb8f5923e5c64c44de89cf3f10c5ed1b3e835386690da884fc5aa0e930717"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/d1ee4d0e6aff277c.jsonl",
+      "original_bytes": 3560,
+      "original_sha256": "3e1373ecd5f90409dfc9390b133f8e05d00580f82e6c54fcf20928a25118de31"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/d44f78cb56a8d393.jsonl",
+      "original_bytes": 3563,
+      "original_sha256": "f2e25827e1451033511dfeac4cf98be01a2c4722e950f5b9738dcc27bf284ecb"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/dbd32fa43df2cd72.jsonl",
+      "original_bytes": 10054,
+      "original_sha256": "71e79bb79230cefeafa13249bcbbf62b483f9c10cee52b39ab5066aced590ad4"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/dde2d7af4e6edb2f.jsonl",
+      "original_bytes": 5433,
+      "original_sha256": "2c40d71779efe510059e90ec153fc558e5d8336e950ce56f4c8413adaa3a4f40"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/de736ad7dcf02dfd.jsonl",
+      "original_bytes": 3541,
+      "original_sha256": "143d81a3e5c6d92fdee388ecec7247d3a877474b2609d34cfac8cc898733d471"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/e07fbe50e3b370b2.jsonl",
+      "original_bytes": 10587,
+      "original_sha256": "53c1b15fae9b9f393d72197cf5623776560b1a5aa9400e1632cfdc6c1f613165"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/ee5c074d008f14ad.jsonl",
+      "original_bytes": 3006,
+      "original_sha256": "ad968bed84676f772b210e729835f54ecd99155c8670ce8facef60bb0c334698"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/f2a277b26a4fda98.jsonl",
+      "original_bytes": 3027,
+      "original_sha256": "6b57a29618d7bd041d619d9fb3e1a933e16a98e495ae058a5494353a61443565"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/cases/fa56f77ff7237a36.jsonl",
+      "original_bytes": 7170,
+      "original_sha256": "37ba9ac9e0b8ebf33389c2f81841e986fbb61fa09b2df8c294b6d479d2717a29"
+    },
+    {
+      "original": "neural-risk-historical-v1/main/results/runs.csv",
+      "original_bytes": 858791,
+      "original_sha256": "65e1c0399d13620f256659212ed80b1c96a7344bbce6f43ef8600c631e349a5d"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/01a7aff8541b73ba.jsonl",
+      "original_bytes": 13261,
+      "original_sha256": "ea4210c6ae817bd0181f4809321b1b3c3b74a6516d4dc86e0813fe8006ca3287"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/0381a785dbf9de2e.jsonl",
+      "original_bytes": 12525,
+      "original_sha256": "f781c04b5296b8b1990c0cd32b3d29c9670591312c7041466f26e2ab05369861"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/04ea81ca05ba2550.jsonl",
+      "original_bytes": 19708,
+      "original_sha256": "c0da12ca58eaf5517dd93173ffce125ada378142d742d392e8ecd619f9fe9e5b"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/12fc97bafebfeea1.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "4689ef166287bc21f8a28059f02593bf7417631c86479774721988455a79a5db"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/13ae38132031d2d7.jsonl",
+      "original_bytes": 7357,
+      "original_sha256": "0805543e38c3226b9eb35eb97852977d19df33036d3bd94b02fa1b8acbbabcf4"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/13e59fe882eceb55.jsonl",
+      "original_bytes": 13474,
+      "original_sha256": "ed671f30046cb7a98366884d2e5cc54521c566de224228f9ed068253782c6933"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/1a1931b076dbda24.jsonl",
+      "original_bytes": 3032,
+      "original_sha256": "de6321d0e514558a16094dc7eeb436c38b46f9626e18cc220b2a3e47dca57771"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/1ed0bb549cbc5152.jsonl",
+      "original_bytes": 14208,
+      "original_sha256": "a3d23a8371bbad63161e98bd2bfb51c98eb959f33669e74b9d2a726b5bf3b0b9"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/1ee087dfe36ab806.jsonl",
+      "original_bytes": 20457,
+      "original_sha256": "c12d4c364e105a757b3e8d5051a47a42bc294c8a26de5406b0f98a86c6db015b"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/20abb8d8a17fa9b0.jsonl",
+      "original_bytes": 16217,
+      "original_sha256": "757f28ad41016730fae3dc81b202a8215c80be2a6929d6f5319c092084982704"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/3100166f0d5abfa1.jsonl",
+      "original_bytes": 3513,
+      "original_sha256": "277ff6767ee74ab1b32cd82cfe05e2e5cbe69d6d53ccefdbaa8df6cfc90ab111"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/32e6eb4f509f9855.jsonl",
+      "original_bytes": 3480,
+      "original_sha256": "cea523cd36edced0c32022f58b356eb6c2e5a7db42decb6e8c6d96f67ff61b12"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/39b9eea8ea8c7c86.jsonl",
+      "original_bytes": 12151,
+      "original_sha256": "45e0ee8d3dcfce7b6b0ecf0c9c0f92ea4d505f29b7100b694bcedcb8411de4c2"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/49fa816d45aa0c4a.jsonl",
+      "original_bytes": 12152,
+      "original_sha256": "cb0b1b15eb348e2f0a5a766d73eead68b8bf32983f37c8aa47850c888110441e"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/4a0548c8506b0f0a.jsonl",
+      "original_bytes": 3571,
+      "original_sha256": "680787ee643641bff0d9df5731a3ff62501d2c500652967df2377d430be55ef5"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/54426e3622c09a96.jsonl",
+      "original_bytes": 12122,
+      "original_sha256": "ba7a26f40885fcc2aa74372f175e217023db80e61b55429ecebff01913c60bf7"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/5de4aa880c35db52.jsonl",
+      "original_bytes": 9476,
+      "original_sha256": "65bda3d23f57307e6ffef97b3f66cf86929d30eb40a39314c27f665d4b46deba"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/5f97858d06dc4268.jsonl",
+      "original_bytes": 5582,
+      "original_sha256": "308090666c3fa05ee3ffc82300664e0033ae712cadca003c8bf7ebb7f3d63941"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/5fa99ab81d771ac7.jsonl",
+      "original_bytes": 13953,
+      "original_sha256": "0b9251c4a835428af4bd4919e48650c58e73fcfb2b799b4b74c7afe3441c6402"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/62b67aefc69ca00c.jsonl",
+      "original_bytes": 3026,
+      "original_sha256": "0037939b8c1290890eca80727bbe3e41425a0d0d9b8aa94cf9b76761c6fb5c1d"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/6fee83887ab79f13.jsonl",
+      "original_bytes": 13890,
+      "original_sha256": "62fd0be3b3bddb23b6b0c84e7b9e3155ae1918b7b620b40bb77f15b4acad3d26"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/7533b3d2ea3c95b6.jsonl",
+      "original_bytes": 3564,
+      "original_sha256": "aafb95efc68c0ec5395affd968b5d9cd7d78f8dd6c3c614922f4137a28ad312d"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/770079203caaad41.jsonl",
+      "original_bytes": 3553,
+      "original_sha256": "86c7090e73490951c7989ab36703aca661bbb4c545ef5179ce490e1f28332ef8"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/7b8968794982b382.jsonl",
+      "original_bytes": 3155,
+      "original_sha256": "d493d2460b42628f3f253ec7f5a13e78a587d0456f758aaaf8b41ea26d3461b6"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/7e399724baf3694a.jsonl",
+      "original_bytes": 7194,
+      "original_sha256": "4576a96489ac29acf472baaa7f471956969f5501a0f0d606bbc421eb28aef115"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/8785c5a75643fcc7.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "62062d0ec1516deb90415d871e113a3784c1a67ac3d88fd6d3bd454c828a14ae"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/8a7e6b6c0e117b2c.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "f8503a370ffc398dfe295f055fdffeae83143820939c156bee810bff90a01dae"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/8ea721198fd1b9df.jsonl",
+      "original_bytes": 13973,
+      "original_sha256": "3f9ba0d1a2a007fe10d130444ce9b1f1690492dae33e4a0391a5f93321a7d72d"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/913537692de1342f.jsonl",
+      "original_bytes": 5552,
+      "original_sha256": "d3cf4a12085f2db3a934a7466e58c4075d8284a441c66cbe84641773aee15595"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/95d71f3b7f6f026c.jsonl",
+      "original_bytes": 152614,
+      "original_sha256": "ba242deff1847ad8ea239d1fd515f3fa0f3ddf5bdd3ea68ed16aff0b030bc422"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/97781f810017a9b2.jsonl",
+      "original_bytes": 4276,
+      "original_sha256": "d8548714729c6b01aef86350f1a342a53c15dce87b3f4f9581c951f87b170ac7"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/98f6e835ce24559b.jsonl",
+      "original_bytes": 50676,
+      "original_sha256": "696c86131f622ffa5329bcf74de29f06a06a91de1bc15da36dc580b52f7c8818"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/a705e136c869905e.jsonl",
+      "original_bytes": 40492,
+      "original_sha256": "0d180020d54c4b1729769d26c54c794d02d5cd6fc3cd2ac9ae3a018340149e58"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/a8c34f0c32b21d17.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "655ca6acc37a136ed119e497262b68f64eba804e4f1f390469f61d079080d592"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/a98f970235328dfa.jsonl",
+      "original_bytes": 20944,
+      "original_sha256": "5a3449947bbf81d009d26555bea8009f073d3a46b5e5f3de12a2096e06016016"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/b380e8784f9c566a.jsonl",
+      "original_bytes": 3523,
+      "original_sha256": "d3a28f3628e67cd881c4ed286b3f4c55ea89928ba7e5778c03c07a292c28628c"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/bb88f9b16d60a48e.jsonl",
+      "original_bytes": 3205,
+      "original_sha256": "9525f99ccdf729082cad56c48a755e4effa0cf294e5acc616bd789c228857bc0"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/c9c72c316a0bfd3f.jsonl",
+      "original_bytes": 9984,
+      "original_sha256": "20cd524b9569d40229d4c68e0da75b37664089c2b65cd16745a84ec70f2d6314"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "original_bytes": 3025,
+      "original_sha256": "fbfe28241f04f571dd094f64e6d88efc2f26e333a218504159bb992ba50af601"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/cd47915dd7dff1c1.jsonl",
+      "original_bytes": 54762,
+      "original_sha256": "190df177b8eb2c009bf3cd69c5dc8f36f81472c6bbdde2b2d340de0b2f86ac9e"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/d36020e6db915aca.jsonl",
+      "original_bytes": 11548,
+      "original_sha256": "674570f5682db7178cf0b754211b7b9302d377015af5e7bb8ba402cf2b2aa6ed"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/d8a9499028b2eba3.jsonl",
+      "original_bytes": 56273,
+      "original_sha256": "fede07b4466862a64ed4c9253827904a1f8bc9e8831f60d6e22e7fd1ac1bd979"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/def4b311296f4c94.jsonl",
+      "original_bytes": 14849,
+      "original_sha256": "274cbd1837c65c15a455d4e3645795feef72a20de155dea098c54bdefca7aba7"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/e026f98929c4a36b.jsonl",
+      "original_bytes": 12135,
+      "original_sha256": "fab9b4bd63330dae0bc7e7eb2fb70e1e3255655453babc83ee595779fd888b00"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/e607c1d370b1f278.jsonl",
+      "original_bytes": 3189,
+      "original_sha256": "b235f1f64f3caccb83feb610ef93cb1e6f5b6eaec8bc5019de021b69faa88cda"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/f1285a7eb615c1f9.jsonl",
+      "original_bytes": 3032,
+      "original_sha256": "04c8cece2996a2e83fb35a298419a3869921a03946b5b769af280a6cb0239e8c"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/f8f56cfed3e1a112.jsonl",
+      "original_bytes": 3550,
+      "original_sha256": "86e82c15790618ff6ad094f0b0a855e1924b2edd48c865e0d2779a2c3845162a"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/cases/f9e40a7f7fe32454.jsonl",
+      "original_bytes": 3523,
+      "original_sha256": "5d5bc940eaf0f519fc7f1a8e1d4b0b66bee7057f51e6dec2d88359bbad844b0c"
+    },
+    {
+      "original": "neural-risk-historical-v1/heldout/results/runs.csv",
+      "original_bytes": 602799,
+      "original_sha256": "fcca850adca5d8da3030bee22624344aed9293ed12ac4052ba25f0d0eaca0f0a"
+    }
+  ],
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hybrid-historical-v1/main/results",
+      "rows": 216,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-hybrid-historical-v1/main/results/runs.jsonl": "724c2dc23c87c0fcccad47f7ab4d7478956ba9d57daa1cba92eaadb449e92be6",
+        "neural-hybrid-historical-v1/main/results/manifest.json": "655921aa58c2e6e26de7a2a3559b9fde01c51954b93c70a5302cf1ab1a1f1040",
+        "neural-hybrid-historical-v1/main/audit/audit.json": "34941ffffcb9e6f57a07c839524272fdd4590a784347b1c60fea9a27bcd4bad8",
+        "neural-hybrid-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hybrid-historical-v1/heldout/results",
+      "rows": 144,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-hybrid-historical-v1/heldout/results/runs.jsonl": "3769edf9e914c2b1352a3d3548e37645438a19aa96b25b3443032c8b00e18dbd",
+        "neural-hybrid-historical-v1/heldout/results/manifest.json": "db5e601958a4d3a3a749bdecf374a8b59ecf235f8143205e515bc3b5602545d6",
+        "neural-hybrid-historical-v1/heldout/audit/audit.json": "4466d2a207ee3e22a77fad1dc3adc61b5d1802b531e09998b9de9962f176476b",
+        "neural-hybrid-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/main/results",
+      "rows": 288,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-combined-historical-v1/main/results/runs.jsonl": "b11eb66b38c81c383b31b1dc33060def8a383f95dfacb3d42399908f78b853a5",
+        "neural-combined-historical-v1/main/results/manifest.json": "a508aa5abb57bb42bff3626a018988d0c30d62371547be3c712908d57a51a9ae",
+        "neural-combined-historical-v1/main/audit/audit.json": "06406b39ad8114a35ab302a38d239c21e014ebcac238501f7ddc5cf4a247f043",
+        "neural-combined-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-historical-v1/heldout/results",
+      "rows": 192,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-combined-historical-v1/heldout/results/runs.jsonl": "760679db5bcbc7cb5f6b341db2f1d9b7bee380535bded2b2dcf8947ac1001bd2",
+        "neural-combined-historical-v1/heldout/results/manifest.json": "1f143b3f3f38da42f338de4a8e5853be665143f8250541843b1db849532189ed",
+        "neural-combined-historical-v1/heldout/audit/audit.json": "31186a30d906c596887e960fc2ce9f7756c25dffd502607fefd0669aa02971c5",
+        "neural-combined-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/main/results",
+      "rows": 72,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-combined-agent-historical-v1/main/results/runs.jsonl": "ce5f600125cba6a696cecd25e12897230a258d4b043f2a8f688d6f530aaba88e",
+        "neural-combined-agent-historical-v1/main/results/manifest.json": "ddf1ae726efb16b273f8d9489fb11c74711f8df31d3563408e818332349af643",
+        "neural-combined-agent-historical-v1/main/audit/audit.json": "e588a973b495868af3c8e7feef469f397b044bc6726ad00e57aa26e7b9dbef64",
+        "neural-combined-agent-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-combined-agent-historical-v1/heldout/results",
+      "rows": 48,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-combined-agent-historical-v1/heldout/results/runs.jsonl": "73109b7176622849e040ce39ecfcdda4882a36d9d05448ff56a64420b1c84c14",
+        "neural-combined-agent-historical-v1/heldout/results/manifest.json": "e63e284cf637df7ec800b5de15d077690e00c2d59a7677e53f298fb64b9f081b",
+        "neural-combined-agent-historical-v1/heldout/audit/audit.json": "6eee55edaa222d1ac49e9d45c042a3dc7532d2a87c319931adcef7882e46d203",
+        "neural-combined-agent-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/main/results",
+      "rows": 216,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-risk-historical-v1/main/results/runs.jsonl": "63567cc5bfaf7ebffba0d25eb6477b5d321cec85497b73f452a880ca59ee218c",
+        "neural-risk-historical-v1/main/results/manifest.json": "c1b793dedb5f3340cb09050d5a034e5789bdeb32b36ca8804170dcb078dd8a46",
+        "neural-risk-historical-v1/main/audit/audit.json": "d103fa64e66305c026f29b4065b7506a28c0e0a7b848d8d6ac8854c814172711",
+        "neural-risk-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/heldout/results",
+      "rows": 144,
+      "journal_rows_identical_to_retained_aggregate": true,
+      "pins": {
+        "neural-risk-historical-v1/heldout/results/runs.jsonl": "db8b35fd1f1650205a0c4c43dc969fd29d43c2904fcf2d9cd50caad7df5bfaaf",
+        "neural-risk-historical-v1/heldout/results/manifest.json": "1d80150a7863f9a0285821ad44c0e92c7d78dd9999cfa7e0160b0e70577a3636",
+        "neural-risk-historical-v1/heldout/audit/audit.json": "d90e4310136fb1d138de05278f73fa02785c615a06b1862fa071363ffbcea7fc",
+        "neural-risk-historical-v1/run.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    }
+  ],
+  "all_members_restored_and_verified_before_unlink": true
+}

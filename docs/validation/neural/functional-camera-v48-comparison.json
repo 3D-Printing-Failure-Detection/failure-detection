@@ -1,0 +1,407 @@
+{
+  "status": "rejected",
+  "new_diagnostic_frames": 480,
+  "new_recovery_trials": 0,
+  "geometry_gate": {
+    "status": "complete",
+    "frames": 2040,
+    "flags": [
+      "open_wall",
+      "hard_thin",
+      "base_problem",
+      "connection_problem"
+    ],
+    "counts": {
+      "classical": {
+        "true_negative": 1914,
+        "false_positive": 27,
+        "true_positive": 93,
+        "false_negative": 6
+      },
+      "original": {
+        "true_negative": 1908,
+        "false_positive": 33,
+        "true_positive": 90,
+        "false_negative": 9
+      },
+      "control": {
+        "true_negative": 1906,
+        "false_positive": 35,
+        "true_positive": 94,
+        "false_negative": 5
+      },
+      "nonlinear": {
+        "true_negative": 1906,
+        "false_positive": 35,
+        "true_positive": 95,
+        "false_negative": 4
+      }
+    },
+    "original_fatal_detections_lost": [],
+    "extra_gap_label_misses": [
+      {
+        "group": "cartesian-cup-under_extrusion-420",
+        "profile": "bedslinger",
+        "layer": 87,
+        "refined_hard_thin": true
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-420",
+        "profile": "bedslinger",
+        "layer": 88,
+        "refined_hard_thin": true
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-420",
+        "profile": "cartesian",
+        "layer": 90,
+        "refined_hard_thin": true
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-420",
+        "profile": "corexy",
+        "layer": 88,
+        "refined_hard_thin": true
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-420",
+        "profile": "corexy",
+        "layer": 90,
+        "refined_hard_thin": true
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-420",
+        "profile": "bedslinger",
+        "layer": 90,
+        "refined_hard_thin": true
+      }
+    ],
+    "passes": true,
+    "limitation": "Retrospective paired frame analysis. These are sufficient per-layer causes of functional rejection; soft-thin budgets and inter-layer support require complete-print checks. True base and connection faults are absent from these selected frames. This does not reverse the failed per-feature v35 gate or prove recovery safety."
+  },
+  "known_cup_verdict": {
+    "truth": {
+      "ok": true,
+      "violations": [],
+      "metrics": {
+        "max_overhang_mm2": 0.0,
+        "capacity_mm3": 64282.4507016453,
+        "thin_layers": 0
+      }
+    },
+    "measured": {
+      "classical": {
+        "ok": false,
+        "violations": [
+          "layer not supported by layer below (28 mm2 overhang)",
+          "walls not closed in 2 layers (leaks)"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 28.13580786356186,
+          "capacity_mm3": 64127.544721269136,
+          "thin_layers": 0
+        }
+      },
+      "control": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 64798.96928263503,
+          "thin_layers": 0
+        }
+      },
+      "nonlinear": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 64782.00018243576,
+          "thin_layers": 0
+        }
+      },
+      "control:classical-base": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 64798.96928263503,
+          "thin_layers": 0
+        }
+      },
+      "nonlinear:classical-base": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 64782.00018243576,
+          "thin_layers": 0
+        }
+      }
+    }
+  },
+  "new_cases": [
+    {
+      "case": [
+        "bedslinger",
+        "cup",
+        "under_extrusion",
+        1002
+      ],
+      "verdict": {
+        "truth": {
+          "ok": true,
+          "violations": [],
+          "metrics": {
+            "max_overhang_mm2": 0.0,
+            "capacity_mm3": 64282.40026238043,
+            "thin_layers": 0
+          }
+        },
+        "measured": {
+          "classical": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (29 mm2 overhang)",
+              "walls not closed in 2 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 28.74433843478401,
+              "capacity_mm3": 63997.271609159514,
+              "thin_layers": 0
+            }
+          },
+          "original": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (27 mm2 overhang)",
+              "walls not closed in 2 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 27.42308130112184,
+              "capacity_mm3": 63898.01351510774,
+              "thin_layers": 0
+            }
+          },
+          "nonlinear": {
+            "ok": true,
+            "violations": [],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 64761.839209944264,
+              "thin_layers": 0
+            }
+          },
+          "original:classical-base": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (27 mm2 overhang)",
+              "walls not closed in 2 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 27.42308130112184,
+              "capacity_mm3": 63898.01351510774,
+              "thin_layers": 0
+            }
+          },
+          "nonlinear:classical-base": {
+            "ok": true,
+            "violations": [],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 64761.839209944264,
+              "thin_layers": 0
+            }
+          }
+        }
+      },
+      "passes": true,
+      "files": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/manifest.json": "fc6145684b83ba855f8abe19514d64907e31c04556c8bd099934b36537f5eca0",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/final.json": "02e17fa4ba838710c0f5d7cf5088cd148935a1fee00746cb957ca187a8aba654",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/layers.json": "fc7f8bf906b1b5e16af005d754ccd52f145f701f07820eafd904d8d20e9c98fe"
+      }
+    },
+    {
+      "case": [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "verdict": {
+        "truth": {
+          "ok": true,
+          "violations": [],
+          "metrics": {
+            "max_overhang_mm2": 0.0,
+            "capacity_mm3": 60956.65895860772,
+            "thin_layers": 0
+          }
+        },
+        "measured": {
+          "classical": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (52 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 51.66394359733268,
+              "capacity_mm3": 61336.61974315813,
+              "thin_layers": 0
+            }
+          },
+          "original": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (51 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 50.558214921251505,
+              "capacity_mm3": 61097.48698152373,
+              "thin_layers": 0
+            }
+          },
+          "nonlinear": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (115 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)",
+              "expected 1 piece(s) near z=11.8, found 2"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 115.11843018792803,
+              "capacity_mm3": 61121.14021116526,
+              "thin_layers": 1
+            }
+          },
+          "original:classical-base": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (51 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 50.558214921251505,
+              "capacity_mm3": 61097.48698152373,
+              "thin_layers": 0
+            }
+          },
+          "nonlinear:classical-base": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (115 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)",
+              "expected 1 piece(s) near z=11.8, found 2"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 115.11843018792803,
+              "capacity_mm3": 61121.14021116526,
+              "thin_layers": 1
+            }
+          }
+        }
+      },
+      "passes": false,
+      "files": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/manifest.json": "c3550026e10883ba11af1edab8ce6b8958fd92f5c883b9c658fff7741d6d7bfc",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/final.json": "9f4a65beb2f2f9c99389399e98499ff49530b966d657c187766ef32f9b6753a0",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/layers.json": "4714cce7510665eedbe9180ad320ec5003d9b99977e7261a967ef96e8cb19583"
+      }
+    },
+    {
+      "case": [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "verdict": {
+        "truth": {
+          "ok": true,
+          "violations": [],
+          "metrics": {
+            "max_overhang_mm2": 0.0,
+            "capacity_mm3": 60956.63448686635,
+            "thin_layers": 0
+          }
+        },
+        "measured": {
+          "classical": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (52 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 51.74795820626258,
+              "capacity_mm3": 61252.912504363514,
+              "thin_layers": 0
+            }
+          },
+          "original": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (50 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 50.481167005236294,
+              "capacity_mm3": 61115.01025434319,
+              "thin_layers": 0
+            }
+          },
+          "nonlinear": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (106 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)",
+              "base not flat/solid in 1 layers"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 105.90051767589718,
+              "capacity_mm3": 61064.2307043071,
+              "thin_layers": 0
+            }
+          },
+          "original:classical-base": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (50 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 50.481167005236294,
+              "capacity_mm3": 61115.01025434319,
+              "thin_layers": 0
+            }
+          },
+          "nonlinear:classical-base": {
+            "ok": false,
+            "violations": [
+              "layer not supported by layer below (106 mm2 overhang)",
+              "walls not closed in 1 layers (leaks)"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 105.90051767589718,
+              "capacity_mm3": 61064.2307043071,
+              "thin_layers": 0
+            }
+          }
+        }
+      },
+      "passes": false,
+      "files": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/manifest.json": "049e5ca6239866a7d4242fa9bc32629e5bb45f28c71913bd7d73880f906bcf68",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/final.json": "6633ff9a80b06d42d59f6ae0ffd910a6ebc588f3be264319ba0e7af7fb06fe11",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/layers.json": "55a0fa1cc6fcf0ec8f993266730019011df16f0ff645fff82710e7fa1c69e686"
+      }
+    }
+  ],
+  "all_four_consumed_ignore_successes_pass": false,
+  "protocol_sha256": "7babd16850c29da4644eb7fbf73d105ad0051a786df0834af7f45c4c9a633507",
+  "source_sha256": "42f93bf7018222e7020a9e507d190a786d7a1d49a12fb969e1dd75b4c1dc68de",
+  "limitation": "Selected retrospective development diagnostics; no recovery or AI-agent result is fabricated. The v35 per-feature gate remains failed. A different defect label can still reject an unsafe print under the unchanged functional specification; this hypothesis needs complete closed-loop testing. No reserved fresh seeds are used."
+}

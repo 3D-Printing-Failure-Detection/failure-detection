@@ -1,0 +1,460 @@
+{
+  "status": "complete",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "script_sha256": "3ca9e15263c077bdbf66dc55649715b9232de2b721749bbd1106063a2f92000f",
+  "protocol_sha256": "d63c107ba43b146b6c2d6a2acb2006970a8f329609f167d731308590270f1d73",
+  "rows": [
+    {
+      "case": "cartesian-mug-1003",
+      "layer": 45,
+      "model": "base",
+      "checkpoint_sha256": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+      "current_image_sha256": "2c5c94f57e85e8ff42e8ac8aaab78aa68d41c5891770e810fe78a1c5c5a4e032",
+      "previous_image_sha256": "d503fc663c152ba2eda8ee87c6b50ebcb1d1ca970fbf13d4924b037a159f8b5b",
+      "features": {
+        "area_mm2": 439.93088732242853,
+        "components": 1,
+        "hole_area_mm2": 1639.0662169475795,
+        "main_holes": 13,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.03299593625285924,
+        "soft_thin": true,
+        "hard_thin_excess": 0.02984043536601466,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1639.0524300833158,
+        0.004004399475965124,
+        0.004004399475965124,
+        0.0015486195679950132,
+        0.0015486195679950132,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844
+      ],
+      "truth": {
+        "area_mm2": 433.146906736157,
+        "components": 1,
+        "hole_area_mm2": 1630.704851904233,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.006041326539778069,
+        "soft_thin": false,
+        "hard_thin_excess": 0.004958729947336149,
+        "hard_thin": false
+      },
+      "region_sha256": "c7cba8e114966d180757dcd7a20d165fa117cc9270215095ca4e1e1021b978aa"
+    },
+    {
+      "case": "cartesian-mug-1003",
+      "layer": 45,
+      "model": "linear",
+      "checkpoint_sha256": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+      "current_image_sha256": "2c5c94f57e85e8ff42e8ac8aaab78aa68d41c5891770e810fe78a1c5c5a4e032",
+      "previous_image_sha256": "d503fc663c152ba2eda8ee87c6b50ebcb1d1ca970fbf13d4924b037a159f8b5b",
+      "features": {
+        "area_mm2": 438.7096684382227,
+        "components": 1,
+        "hole_area_mm2": 1639.9438934398795,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.02397999680739049,
+        "soft_thin": false,
+        "hard_thin_excess": 0.022670617505762936,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1639.9438934398795
+      ],
+      "truth": {
+        "area_mm2": 433.146906736157,
+        "components": 1,
+        "hole_area_mm2": 1630.704851904233,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.006041326539778069,
+        "soft_thin": false,
+        "hard_thin_excess": 0.004958729947336149,
+        "hard_thin": false
+      },
+      "region_sha256": "029dc6b85b2536d2926606ef04e480ab02d282e949eabd0e8aa9d53cc74e830a"
+    },
+    {
+      "case": "cartesian-mug-1003",
+      "layer": 45,
+      "model": "nonlinear",
+      "checkpoint_sha256": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351",
+      "current_image_sha256": "2c5c94f57e85e8ff42e8ac8aaab78aa68d41c5891770e810fe78a1c5c5a4e032",
+      "previous_image_sha256": "d503fc663c152ba2eda8ee87c6b50ebcb1d1ca970fbf13d4924b037a159f8b5b",
+      "features": {
+        "area_mm2": 436.8657315806713,
+        "components": 1,
+        "hole_area_mm2": 1640.5897489854906,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.02355481225266065,
+        "soft_thin": false,
+        "hard_thin_excess": 0.022229860612019703,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1640.5897489854906
+      ],
+      "truth": {
+        "area_mm2": 433.146906736157,
+        "components": 1,
+        "hole_area_mm2": 1630.704851904233,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.006041326539778069,
+        "soft_thin": false,
+        "hard_thin_excess": 0.004958729947336149,
+        "hard_thin": false
+      },
+      "region_sha256": "8fb342a550a0ba1adf504b2fce891a94ae8662ebb55a1e16d052464bb39d9df3"
+    },
+    {
+      "case": "corexy-mug-1003",
+      "layer": 45,
+      "model": "base",
+      "checkpoint_sha256": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+      "current_image_sha256": "ac140aee81ebafae26b661e7119093755d74677f501eab29bd4ee0049944e9e2",
+      "previous_image_sha256": "1b6e25b951fa4116c629584305a43221d3e9f971e6eacf233e030d26c3fe4ce4",
+      "features": {
+        "area_mm2": 439.34818790889284,
+        "components": 1,
+        "hole_area_mm2": 1641.3212571480024,
+        "main_holes": 8,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.03298157638714683,
+        "soft_thin": true,
+        "hard_thin_excess": 0.030286851419270122,
+        "hard_thin": true
+      },
+      "hole_areas_mm2": [
+        1641.3001197838025,
+        0.010100728271980084,
+        0.005957524475965124,
+        0.002525182067995013,
+        0.0015486195679950132,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844
+      ],
+      "truth": {
+        "area_mm2": 433.14235540272125,
+        "components": 1,
+        "hole_area_mm2": 1630.704207605869,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.006032759754630135,
+        "soft_thin": false,
+        "hard_thin_excess": 0.004950245246841289,
+        "hard_thin": false
+      },
+      "region_sha256": "efaa136211537cf9102401f2c0284e7fe6b941d86069da621e7d2f5a468e49bc"
+    },
+    {
+      "case": "corexy-mug-1003",
+      "layer": 45,
+      "model": "linear",
+      "checkpoint_sha256": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+      "current_image_sha256": "ac140aee81ebafae26b661e7119093755d74677f501eab29bd4ee0049944e9e2",
+      "previous_image_sha256": "1b6e25b951fa4116c629584305a43221d3e9f971e6eacf233e030d26c3fe4ce4",
+      "features": {
+        "area_mm2": 436.76390121261943,
+        "components": 1,
+        "hole_area_mm2": 1642.6185092268163,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.022944204314386707,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02169486368548479,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1642.6185092268163
+      ],
+      "truth": {
+        "area_mm2": 433.14235540272125,
+        "components": 1,
+        "hole_area_mm2": 1630.704207605869,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.006032759754630135,
+        "soft_thin": false,
+        "hard_thin_excess": 0.004950245246841289,
+        "hard_thin": false
+      },
+      "region_sha256": "9cfe5e9e44dea66b3314dcb099c4619153cca84b9009f008ce8d917444fe934f"
+    },
+    {
+      "case": "corexy-mug-1003",
+      "layer": 45,
+      "model": "nonlinear",
+      "checkpoint_sha256": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351",
+      "current_image_sha256": "ac140aee81ebafae26b661e7119093755d74677f501eab29bd4ee0049944e9e2",
+      "previous_image_sha256": "1b6e25b951fa4116c629584305a43221d3e9f971e6eacf233e030d26c3fe4ce4",
+      "features": {
+        "area_mm2": 437.00067624171265,
+        "components": 1,
+        "hole_area_mm2": 1642.4872022254106,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.023066853249417707,
+        "soft_thin": false,
+        "hard_thin_excess": 0.021841007652897426,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1642.4872022254106
+      ],
+      "truth": {
+        "area_mm2": 433.14235540272125,
+        "components": 1,
+        "hole_area_mm2": 1630.704207605869,
+        "main_holes": 1,
+        "open_wall": false,
+        "connection_problem": false,
+        "soft_thin_excess": 0.006032759754630135,
+        "soft_thin": false,
+        "hard_thin_excess": 0.004950245246841289,
+        "hard_thin": false
+      },
+      "region_sha256": "df2caf130fbe169c674c9e661136ddbe626d9cdd4dee7ae75675965e5c3fd14e"
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "layer": 85,
+      "model": "base",
+      "checkpoint_sha256": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+      "current_image_sha256": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+      "previous_image_sha256": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2",
+      "features": {
+        "area_mm2": 268.41488150812796,
+        "components": 1,
+        "hole_area_mm2": 1722.1461710650337,
+        "main_holes": 4,
+        "open_wall": false,
+        "soft_thin_excess": 0.03808071960505488,
+        "soft_thin": true,
+        "hard_thin_excess": 0.03320307048839721,
+        "hard_thin": true
+      },
+      "hole_areas_mm2": [
+        1722.1362091410817,
+        0.007506144043960137,
+        0.0021206766359900264,
+        0.0003351032719800844
+      ],
+      "truth": {
+        "area_mm2": 276.6995738175874,
+        "components": 1,
+        "hole_area_mm2": 1704.5513718276563,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.025608950491756932,
+        "soft_thin": false,
+        "hard_thin_excess": 0.024402247275943756,
+        "hard_thin": false
+      },
+      "region_sha256": "ea0c87df247b125558e58d61483f7e4b6ea4f513c472707f9baf137dacda44da"
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "layer": 85,
+      "model": "linear",
+      "checkpoint_sha256": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+      "current_image_sha256": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+      "previous_image_sha256": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2",
+      "features": {
+        "area_mm2": 266.8864181300223,
+        "components": 1,
+        "hole_area_mm2": 1723.0161934667663,
+        "main_holes": 2,
+        "open_wall": false,
+        "soft_thin_excess": 0.0280856255330163,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02517391533381097,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1723.0146448471983,
+        0.0015486195679950132
+      ],
+      "truth": {
+        "area_mm2": 276.6995738175874,
+        "components": 1,
+        "hole_area_mm2": 1704.5513718276563,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.025608950491756932,
+        "soft_thin": false,
+        "hard_thin_excess": 0.024402247275943756,
+        "hard_thin": false
+      },
+      "region_sha256": "e50d41aaf054b48ffe34093b459ce7c1a1a3a1ea3b80b7f6b34897185227ee1a"
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "layer": 85,
+      "model": "nonlinear",
+      "checkpoint_sha256": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351",
+      "current_image_sha256": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+      "previous_image_sha256": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2",
+      "features": {
+        "area_mm2": 267.19943269245886,
+        "components": 1,
+        "hole_area_mm2": 1722.9911362012213,
+        "main_holes": 2,
+        "open_wall": false,
+        "soft_thin_excess": 0.028010904707031825,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02506837206400736,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1722.9908010979493,
+        0.0003351032719800844
+      ],
+      "truth": {
+        "area_mm2": 276.6995738175874,
+        "components": 1,
+        "hole_area_mm2": 1704.5513718276563,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.025608950491756932,
+        "soft_thin": false,
+        "hard_thin_excess": 0.024402247275943756,
+        "hard_thin": false
+      },
+      "region_sha256": "d9561f97c65c387960f92664fd10309df22a9079fcabf6c265db82f60b15a204"
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "layer": 85,
+      "model": "base",
+      "checkpoint_sha256": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+      "current_image_sha256": "3072054da2ef656eabbf4dbecc75b7d7200ae710c3d2a78e9f3dfbe1db44c3ae",
+      "previous_image_sha256": "f97522b4ff2e12b987942fd47f62c5e490c71d8cd67649a1f67b07242652c322",
+      "features": {
+        "area_mm2": 272.5731583691583,
+        "components": 1,
+        "hole_area_mm2": 1722.1887078829843,
+        "main_holes": 7,
+        "open_wall": false,
+        "soft_thin_excess": 0.04000258734515061,
+        "soft_thin": true,
+        "hard_thin_excess": 0.03501337977481167,
+        "hard_thin": true
+      },
+      "hole_areas_mm2": [
+        1722.1854837470564,
+        0.0015486195679950132,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844,
+        0.0003351032719800844
+      ],
+      "truth": {
+        "area_mm2": 276.698099667095,
+        "components": 1,
+        "hole_area_mm2": 1704.5500269256863,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.025618799243709134,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02441437162479143,
+        "hard_thin": false
+      },
+      "region_sha256": "17a0d1a96a12ba4d06cea3ce6f03cb5eac7e0e5d740a910e587ad88f28a1399f"
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "layer": 85,
+      "model": "linear",
+      "checkpoint_sha256": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+      "current_image_sha256": "3072054da2ef656eabbf4dbecc75b7d7200ae710c3d2a78e9f3dfbe1db44c3ae",
+      "previous_image_sha256": "f97522b4ff2e12b987942fd47f62c5e490c71d8cd67649a1f67b07242652c322",
+      "features": {
+        "area_mm2": 272.00201040184606,
+        "components": 1,
+        "hole_area_mm2": 1722.50312937142,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.02909160365296881,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02619167025720226,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1722.50312937142
+      ],
+      "truth": {
+        "area_mm2": 276.698099667095,
+        "components": 1,
+        "hole_area_mm2": 1704.5500269256863,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.025618799243709134,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02441437162479143,
+        "hard_thin": false
+      },
+      "region_sha256": "51c6efb2b7a7e3b818df734c4b828ddffdcf5f96f0ce0adb9cec3ffef2d7af34"
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "layer": 85,
+      "model": "nonlinear",
+      "checkpoint_sha256": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351",
+      "current_image_sha256": "3072054da2ef656eabbf4dbecc75b7d7200ae710c3d2a78e9f3dfbe1db44c3ae",
+      "previous_image_sha256": "f97522b4ff2e12b987942fd47f62c5e490c71d8cd67649a1f67b07242652c322",
+      "features": {
+        "area_mm2": 271.7118146737321,
+        "components": 1,
+        "hole_area_mm2": 1722.7772836865718,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.02904089559803047,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02612506636016143,
+        "hard_thin": false
+      },
+      "hole_areas_mm2": [
+        1722.7772836865718
+      ],
+      "truth": {
+        "area_mm2": 276.698099667095,
+        "components": 1,
+        "hole_area_mm2": 1704.5500269256863,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.025618799243709134,
+        "soft_thin": false,
+        "hard_thin_excess": 0.02441437162479143,
+        "hard_thin": false
+      },
+      "region_sha256": "96572b09c8038d0fa6fcfd8806bec891bed24094206993afcf3a29d3f679d5ea"
+    }
+  ],
+  "all_base_onset_features_reproduced": true,
+  "limitation": "Fixed checkpoint screen on four consumed onset images; no checkpoint selection, functional-stack qualification or recovery result."
+}

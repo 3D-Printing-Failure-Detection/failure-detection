@@ -1,0 +1,34 @@
+{
+  "status": "complete",
+  "source_sha256": "f1d62fdf989e52d039636f0011730ac98127836ca0be8e0b93b93e415b7483c3",
+  "script_sha256": "cd169ab51ff1aeb8a3e096450cbf5863d0bb64ad8c8062803fcb345096be052b",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "control=/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/control/boundary.npz",
+      "gradient01=/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient01/boundary.npz",
+      "gradient03=/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient03/boundary.npz"
+    ],
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/cup-under-extrusion-1002"
+  },
+  "checkpoint_paths": {
+    "control": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/control/boundary.npz",
+    "gradient01": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient01/boundary.npz",
+    "gradient03": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient03/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "control": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "gradient01": "24ad4401b5105c6ce964f5b1fffd0734fb19385efeebf0b87ee160ee030755e6",
+    "gradient03": "654e70fd506e3830e60a4060c49f54cece52601c19196ce770d77dd67d9462e1"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "f1d62fdf989e52d039636f0011730ac98127836ca0be8e0b93b93e415b7483c3"
+}

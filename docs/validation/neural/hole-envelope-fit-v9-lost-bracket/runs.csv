@@ -1,0 +1,4 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+corexy,bracket,shift,1001,contour_risk,True,False,False,32,32,1,0,0,12.364093048963696
+corexy,bracket,shift,1001,neural_risk,True,False,False,32,32,1,0,0,23.995308098034002
+corexy,bracket,shift,1001,neural_risk_agent,True,False,False,32,32,1,2,2,31.32620936492458

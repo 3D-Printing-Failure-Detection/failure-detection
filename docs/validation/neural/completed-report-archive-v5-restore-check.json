@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "created_at": "2026-11-03T06:17:36.177364+00:00",
+  "restored_files": [
+    {
+      "path": "neural-hybrid-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "sha256": "7aaf94ada642e219bce10c0140dd427e6f1e5388130cea500477bbfa0321aaf4"
+    },
+    {
+      "path": "neural-hybrid-historical-v1/heldout/results/cases/62b67aefc69ca00c.jsonl",
+      "sha256": "dc5ad44b3fcea53e0f78d2d0cffeba84fcd243789cbd2e1353c6bdaae6994e0d"
+    },
+    {
+      "path": "neural-combined-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "sha256": "403f73d6244d2fd00a143021d84199516747577e69993b8ffebf32f61bb46f0e"
+    },
+    {
+      "path": "neural-combined-historical-v1/heldout/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "sha256": "15793faaa3214975371bf6c266ad9d452a4b50b229ed3de8b685b37a3b2c90f6"
+    },
+    {
+      "path": "neural-combined-agent-historical-v1/main/results/cases/87a0959efe13cb77.jsonl",
+      "sha256": "50907fc63eb7fc33a1fee3fb77a9c14884abbbc294caa9d8d9c39ec2b5bc4da3"
+    },
+    {
+      "path": "neural-combined-agent-historical-v1/heldout/results/cases/c9ee3fdc2a477c4f.jsonl",
+      "sha256": "acef9d1f05bc52d1395887fbb022743dc1142260cd71ffb431adbac39d1a2540"
+    },
+    {
+      "path": "neural-risk-historical-v1/main/results/cases/0b1d03edaf6812a7.jsonl",
+      "sha256": "f9d0281511f094200dbd0a07e72998fa3fe5b0dc4f10aa78ef54044c7a261dad"
+    },
+    {
+      "path": "neural-risk-historical-v1/heldout/results/cases/12fc97bafebfeea1.jsonl",
+      "sha256": "4689ef166287bc21f8a28059f02593bf7417631c86479774721988455a79a5db"
+    }
+  ],
+  "restored_bytes": 23556,
+  "sample_restores_removed_after_verification": true,
+  "all_retained_raw_result_manifest_audit_and_exit_pins_unchanged": true
+}

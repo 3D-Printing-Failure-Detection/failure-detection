@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-band-v64/run.py", line 126, in <module>
+    main()
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-band-v64/run.py", line 89, in main
+    assert np.array_equal(reproduced, target[i, 0]), ('target replay mismatch', i)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('target replay mismatch', 1)

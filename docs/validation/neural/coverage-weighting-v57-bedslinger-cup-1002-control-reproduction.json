@@ -1,0 +1,6 @@
+{
+  "status": "verified",
+  "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/bedslinger-cup-1002/final.json",
+  "reference_sha256": "cb20e1191f8044ba157b0e8815d4f785c4a4d2e366e09f87bd8785ed0fe8fa92",
+  "current_final_sha256": "fe313b87341623675e31dda195972ccd9dc030e818a1a418eba15a543cefa539"
+}

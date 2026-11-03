@@ -1,0 +1,102 @@
+{
+  "status": "passed",
+  "rows": 42,
+  "source_sha256": "3a194dd002fe610af0e9e106d1f018a6f812efce75cb588f0b8df33f88fa1b7e",
+  "summary": {
+    "neural_risk": {
+      "fault_cases": 15,
+      "fault_successes": 10,
+      "defective_finishes": 1,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "prohibited_defective_finishes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2280,
+      "agent_requests": 0,
+      "passes": true
+    },
+    "neural_risk_agent": {
+      "fault_cases": 15,
+      "fault_successes": 10,
+      "defective_finishes": 1,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "prohibited_defective_finishes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2280,
+      "agent_requests": 60,
+      "passes": true
+    }
+  },
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/cup-collapse/results",
+      "manifest_sha256": "c4c085451687382c428300b5959e674154a4712a594c38457e1ea297bc036726",
+      "runs_sha256": "3f5f375769de1b4c0314e10889dcb8c647ce56dd732e11fd8f02631539c974ea",
+      "audit_sha256": "af2f4e6daf38883cec14145aec904ce7204e03851e576b45e837125191db44b5"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/cup-shift/results",
+      "manifest_sha256": "61536d760d1579030a25e4a56b73c63664d157a3c822503bbfe7d1bfd1504433",
+      "runs_sha256": "7e68855ab44eec394288efd6b609105bb10efe648a29753f269a6b256e08cca4",
+      "audit_sha256": "22fc03a6c9e1b825f90c6a7d31f84c76c4a8aef092f3d5159d00fad39442ce9c"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/corexy-mug-gains/results",
+      "manifest_sha256": "578bc5b69118919c25f2a68440ad643815c387cd949446b943338096e365c8e6",
+      "runs_sha256": "44300b9dba932ddfa8b0968f3492301114094939ef9b0f4a48658776ee465d47",
+      "audit_sha256": "16cdaceafceeba99746dc93b6c2699e4a22e7383d8139818a6a5c4124ffa84e1"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/bedslinger-mug-gain/results",
+      "manifest_sha256": "c75dcab3df35a87aa1ed35ad6649e526c1f0a33efb6a8768621e10a461c10fda",
+      "runs_sha256": "dafebc3a92e3d35a6ee457e36d28b7d2731c93597f55f3d222804a59b182a73f",
+      "audit_sha256": "aab4012830e7d2a2723ead0e3e0f9dfe1489257cc21f01ee52735ba888b17dac"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/new-defects-1002/results",
+      "manifest_sha256": "ac7a02585554960fbd90ca7ce5c37fe62a051c061ea9fbc9f9a964c962494dd4",
+      "runs_sha256": "aa389b7c31bae69bc3a79ab5065f4fd352d608dbea88358b0f552fcc551292a7",
+      "audit_sha256": "ee8250e10e351791b57382fdb554e1f477f7d7104a83ac0f103dbd5f134383ef"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/defects-1004/results",
+      "manifest_sha256": "ed68ec32ee4af3ecaf733bee43fd321bbab419d95e5cba330ebc4167019d30ef",
+      "runs_sha256": "e0f9fc5b548ce0b3f4fed894b66562e7a60824b1e434d596d26428cd5d07c51f",
+      "audit_sha256": "152eab3f5fd86bc3dc646485812618763498b5455be811a0088787a321188c79"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/historical-cup/results",
+      "manifest_sha256": "5ce671e66cced1e384a6cad9793acb8a7ff32b7c9921bcec20833aeaafda996a",
+      "runs_sha256": "8c11437e672ec630b279ce7cc7c0ee050dd2ba3065f413331ce3f44c63b922a2",
+      "audit_sha256": "2946b78f5249daa4841351d0c96f7ed43aea94b87916e13ee116f3326b0f40e2"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/historical-mug/results",
+      "manifest_sha256": "f40d6a7067c000e82f96b38b5d3887994d583f317e689ec76ac598125d301b07",
+      "runs_sha256": "7fbee6c59a687fe896229a3151911fdb27062be502fa18e1a2b598e62066b9f9",
+      "audit_sha256": "ca07b9eaf5930fb9e1314342b49c20304dbc705fbdfdabba2f2b8094e1cbd4f8"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/learned-fit-gains/results",
+      "manifest_sha256": "6bacb6b23fd91d7e1c1a3571a0c864936ed80df5d3472902354fb562feaafe20",
+      "runs_sha256": "45338e357e4985185b42a3aae6a83633a09e12dbb575adf6283817e8ed2bb756",
+      "audit_sha256": "908f2e02c7e675a173bb37164d2db3a7924875d86b535f73c44735c6f652ec94"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/clean/results",
+      "manifest_sha256": "083d1e4fcf18fe4e6dda3b392e4fe7ed66f2ff615b88b9c02c974015eadabb0f",
+      "runs_sha256": "48aff137809c08699819121c22131c73610100a4616be934085505a80b6ca4be",
+      "audit_sha256": "165c07acd1f719b9d870fc7c4484337993683c2410a45460e5d145e441d4a68f"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/historical-clean/results",
+      "manifest_sha256": "2afa32debba4837d5ed8a31ca416f4bb543abc1b8f2d746049ca1d387082501d",
+      "runs_sha256": "ad963590e2258ffededa9b745016db07e9883842a0f2dad322a712f1597fea84",
+      "audit_sha256": "f718da0f9eef9a87ea75d5f775b317a792a1899466e5aa156abdcce9675ccffc"
+    }
+  ],
+  "limitation": "Selected consumed regression cases only. Passing requires a complete full-grid rerun and historical regression before fresh-test acceptance; stopped defective prints are not successful recoveries."
+}

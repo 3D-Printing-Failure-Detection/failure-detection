@@ -1,0 +1,110 @@
+{
+  "status": "rejected",
+  "diagnostic_passes": true,
+  "base_weights_and_full_identity_control_verified": true,
+  "hybrid_candidate": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64798.96928263503,
+      "thin_layers": 0
+    }
+  },
+  "raw_candidate": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64798.96928263503,
+      "thin_layers": 0
+    }
+  },
+  "geometry_status": "complete",
+  "recovery_trials": 0,
+  "limitation": "This is a learned output layer, not calibrated confidence or preset contour repair. Consumed diagnostic and geometry validation cannot establish completed recovery or fresh-test superiority; closed-loop paired comparisons remain required.",
+  "geometry_gate_passes": false,
+  "geometry_counts": {
+    "classical": {
+      "open_wall": {
+        "true_positive": 54,
+        "true_negative": 1053,
+        "false_positive": 66,
+        "false_negative": 3
+      },
+      "hard_thin": {
+        "true_positive": 0,
+        "true_negative": 1992,
+        "false_positive": 0,
+        "false_negative": 48
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 864,
+        "false_positive": 0,
+        "false_negative": 0
+      }
+    },
+    "original": {
+      "open_wall": {
+        "true_positive": 52,
+        "true_negative": 1056,
+        "false_positive": 63,
+        "false_negative": 5
+      },
+      "hard_thin": {
+        "true_positive": 8,
+        "true_negative": 1992,
+        "false_positive": 0,
+        "false_negative": 40
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 864,
+        "false_positive": 0,
+        "false_negative": 0
+      }
+    },
+    "control": {
+      "open_wall": {
+        "true_positive": 44,
+        "true_negative": 1085,
+        "false_positive": 34,
+        "false_negative": 13
+      },
+      "hard_thin": {
+        "true_positive": 39,
+        "true_negative": 1939,
+        "false_positive": 53,
+        "false_negative": 9
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 412,
+        "false_positive": 452,
+        "false_negative": 0
+      }
+    },
+    "refined": {
+      "open_wall": {
+        "true_positive": 47,
+        "true_negative": 1084,
+        "false_positive": 35,
+        "false_negative": 10
+      },
+      "hard_thin": {
+        "true_positive": 39,
+        "true_negative": 1976,
+        "false_positive": 16,
+        "false_negative": 9
+      },
+      "base_problem": {
+        "true_positive": 0,
+        "true_negative": 859,
+        "false_positive": 5,
+        "false_negative": 0
+      }
+    }
+  },
+  "base_fault_recall_not_established": true
+}

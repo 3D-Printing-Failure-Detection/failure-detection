@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "restored_files": 4,
+  "samples": [
+    {
+      "path": "neural-robust-historical-v34/main-fits/results/cases/019768483e2ce6b2.jsonl",
+      "bytes": 2644,
+      "sha256": "c8d0f1894f27b5a402c564d8e0e9da9f654ba966ad34bf507668e7c0af73dbe6"
+    },
+    {
+      "path": "neural-robust-historical-v34/main-containers/results/cases/00d57b26fc2e3d35.jsonl",
+      "bytes": 2789,
+      "sha256": "168ce90db34b2e5af6418626fa0edd318db644611f56f3d2084ebaa5d862a7c0"
+    },
+    {
+      "path": "neural-robust-historical-v34/heldout-fits/results/cases/0381a785dbf9de2e.jsonl",
+      "bytes": 18988,
+      "sha256": "8880d88a19afb97096dc1e762715e64ce4db864d323bcb98d10838280c94b0f5"
+    },
+    {
+      "path": "neural-robust-historical-v34/heldout-containers/results/cases/01a7aff8541b73ba.jsonl",
+      "bytes": 25111,
+      "sha256": "7ed6935c2180efd3ce581fa9e04cd603e64770a42c3ac7675066bbe5b460b204"
+    }
+  ],
+  "restored_samples_removed_after_verification": true
+}

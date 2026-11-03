@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "created_at": "2026-11-02T23:55:41.171630+00:00",
+  "reason": "Free regenerable project-owned compiled Python caches for remaining simulation artifacts; source, data, model weights, logs and audit records are preserved",
+  "allocated_bytes": 129040384,
+  "storage_before_bytes": 99953754112,
+  "open_cache_files": [],
+  "restore": "Python recreates each cache on the next import with the matching interpreter. To precompile, use the original Python version and python -m compileall on the retained source paths. No source or package files were deleted.",
+  "storage_after_bytes": 99827654656,
+  "file_count": 8851,
+  "full_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/storage-pyc-cache-cleanup-v1.json",
+  "full_receipt_sha256": "97fa64eab8601754f24f588684fcdd3a5142ac2f05bcdeabe3199a2392e74f17"
+}

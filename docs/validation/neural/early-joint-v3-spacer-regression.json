@@ -1,0 +1,280 @@
+{
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-early-joint-fit-dev-v3/spacer-regressions/results/runs.jsonl",
+  "rows": [
+    {
+      "profile": "cartesian",
+      "part": "spacer",
+      "kind": "shift",
+      "seed": 1002,
+      "method": "contour",
+      "in_place": false,
+      "defective_finished": false,
+      "adaptations": 0,
+      "violations": [
+        "continuation fails and no executable recovery meets the spec"
+      ],
+      "actions": [
+        {
+          "layer": 26,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 27,
+          "action": "scrap",
+          "reason": "continuation fails and no executable recovery meets the spec"
+        }
+      ]
+    },
+    {
+      "profile": "cartesian",
+      "part": "spacer",
+      "kind": "shift",
+      "seed": 1002,
+      "method": "neural_risk",
+      "in_place": false,
+      "defective_finished": true,
+      "adaptations": 2,
+      "violations": [
+        "hole at [0, 0] diameter 8.5 outside [8.5, 11.5]"
+      ],
+      "actions": [
+        {
+          "layer": 26,
+          "action": "adapt",
+          "reason": "forecast threatens the fit; a verified recovery adds measurable clearance"
+        },
+        {
+          "layer": 27,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 28,
+          "action": "adapt",
+          "reason": "forecast threatens the fit; a verified recovery adds measurable clearance"
+        },
+        {
+          "layer": 29,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 30,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 31,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 32,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 33,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 34,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 35,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 36,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 37,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 38,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 39,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 40,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 41,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 42,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 43,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 44,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 45,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 46,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        },
+        {
+          "layer": 47,
+          "action": "continue",
+          "reason": "continuation passes function checks; no intervention justified"
+        }
+      ]
+    },
+    {
+      "profile": "cartesian",
+      "part": "spacer",
+      "kind": "shift",
+      "seed": 1002,
+      "method": "neural_risk_agent",
+      "in_place": false,
+      "defective_finished": true,
+      "adaptations": 2,
+      "violations": [
+        "hole at [0, 0] diameter 8.5 outside [8.5, 11.5]"
+      ],
+      "actions": [
+        {
+          "layer": 26,
+          "action": "adapt",
+          "reason": "local Qwen selected compensate:bounded hole clearance; predicted function checks pass"
+        },
+        {
+          "layer": 27,
+          "action": "continue",
+          "reason": "local Qwen selected continue; predicted function checks pass"
+        },
+        {
+          "layer": 28,
+          "action": "adapt",
+          "reason": "local Qwen selected compensate:bounded hole clearance; predicted function checks pass"
+        },
+        {
+          "layer": 29,
+          "action": "continue",
+          "reason": "local Qwen selected continue; predicted function checks pass"
+        },
+        {
+          "layer": 30,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 31,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 32,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 33,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 34,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 35,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 36,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 37,
+          "action": "continue",
+          "reason": "local Qwen selected continue; predicted function checks pass"
+        },
+        {
+          "layer": 38,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 39,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 40,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 41,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 42,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 43,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 44,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 45,
+          "action": "continue",
+          "reason": "local Qwen selected continue; predicted function checks pass"
+        },
+        {
+          "layer": 46,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        },
+        {
+          "layer": 47,
+          "action": "continue",
+          "reason": "fresh checks pass; recent local-agent continuation review retained"
+        }
+      ]
+    }
+  ]
+}

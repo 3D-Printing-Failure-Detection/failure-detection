@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "configurations": {
+    "contour": {
+      "raw_method": "contour",
+      "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/source",
+      "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "models": {
+        "neural": {
+          "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/temporal.npz",
+          "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+          "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/training.json",
+          "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3"
+        }
+      },
+      "supervisor": null
+    },
+    "contour_risk": {
+      "raw_method": "contour_risk",
+      "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/source",
+      "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "models": {
+        "neural": {
+          "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/temporal.npz",
+          "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+          "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/training.json",
+          "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3"
+        }
+      },
+      "supervisor": null
+    },
+    "previous_neural_risk": {
+      "raw_method": "neural_risk",
+      "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/source",
+      "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "models": {
+        "neural": {
+          "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/temporal.npz",
+          "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+          "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/training.json",
+          "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3"
+        }
+      },
+      "supervisor": null
+    },
+    "neural_risk": {
+      "raw_method": "neural_risk",
+      "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/source",
+      "source_sha256": "13f9e7ad01a01bff3d79dd849801e4abfd017f676ae933d617af212b504dea1a",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8,
+        "neural_hole_envelope": true
+      },
+      "models": {
+        "neural": {
+          "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/temporal.npz",
+          "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+          "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/training.json",
+          "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3"
+        }
+      },
+      "supervisor": null
+    },
+    "neural_risk_agent": {
+      "raw_method": "neural_risk_agent",
+      "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/source",
+      "source_sha256": "13f9e7ad01a01bff3d79dd849801e4abfd017f676ae933d617af212b504dea1a",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8,
+        "neural_hole_envelope": true
+      },
+      "models": {
+        "neural": {
+          "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/temporal.npz",
+          "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+          "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/training.json",
+          "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3"
+        }
+      },
+      "supervisor": {
+        "model": "Qwen/Qwen3-0.6B-GGUF",
+        "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+        "runtime": "llama.cpp b12057",
+        "assets": [
+          {
+            "name": "llama-b12057-bin-ubuntu-x64.tar.gz",
+            "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12057/llama-b12057-bin-ubuntu-x64.tar.gz",
+            "bytes": 22892921,
+            "sha256": "1bdfdac035014ff7b935aaf4a91d7bd5ea5018db9957e1a21b6567f189b8dbe7"
+          },
+          {
+            "name": "Qwen3-0.6B-Q8_0.gguf",
+            "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf",
+            "bytes": 639446688,
+            "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"
+          }
+        ]
+      }
+    }
+  }
+}

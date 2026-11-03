@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "source_sha256": "11c7762975bd91dd45635c4a011a70eda9842ec528658c4f81bbf270da7f42bb",
+  "analytical_only": false,
+  "camera_input_consistency": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "checked_rows": 8,
+    "unchecked_legacy_rows": 0,
+    "recorded_frames": 800,
+    "paired_cases": 4,
+    "compared_frames": 400
+  },
+  "result_storage_verifier_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "e9574fd9ffafa8fdea96c984f89c2b23b3f55ca52bd486062376dfaeaa0e12a2",
+  "rows": 8,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 172,
+      "seconds": 114.36112510610837
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 172,
+      "seconds": 111.32800974696875
+    }
+  ],
+  "agent_decision_opportunities": 0,
+  "agent_review_status": "not_reached",
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "53b6afa44ded2dc47a33b2a9e56a47437f82cab975b2328770203f5e8b8948d0",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

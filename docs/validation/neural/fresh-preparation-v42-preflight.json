@@ -1,0 +1,474 @@
+{
+  "status": "prepared_without_simulation",
+  "fresh_cases_executed": 0,
+  "configurations_checked": 25,
+  "source_copies": 4,
+  "original_snapshot_directories": 5,
+  "records": [
+    {
+      "label": "ignore",
+      "raw_method": "ignore",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "scrap",
+      "raw_method": "scrap",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "alert",
+      "raw_method": "alert",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "ours",
+      "raw_method": "ours",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "measured",
+      "raw_method": "measured",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "predictive",
+      "raw_method": "predictive",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "functional",
+      "raw_method": "functional",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "guarded",
+      "raw_method": "guarded",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "contour",
+      "raw_method": "contour",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "contour_risk",
+      "raw_method": "contour_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "neural",
+      "raw_method": "neural",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "previous_combined_neural",
+      "raw_method": "neural_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "previous_combined_agent",
+      "raw_method": "neural_risk_agent",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "nonfits",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "neural_camera",
+      "raw_method": "neural_camera",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "all",
+        "neural_reserve_fit": false,
+        "boundary_scope": "all",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "previous_classical_camera_neural",
+      "raw_method": "neural_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "boundary_scope": "all",
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4"
+    },
+    {
+      "label": "analytical_containers_neural",
+      "raw_method": "neural_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "boundary_classical_base": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe"
+    },
+    {
+      "label": "analytical_containers_agent",
+      "raw_method": "neural_risk_agent",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "boundary_classical_base": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe"
+    },
+    {
+      "label": "joint_camera_neural",
+      "raw_method": "neural_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "boundary_scope": "nonfits",
+        "boundary_fallback": true,
+        "boundary_joint_forecast": true,
+        "boundary_classical_base": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe"
+    },
+    {
+      "label": "joint_camera_agent",
+      "raw_method": "neural_risk_agent",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "boundary_scope": "nonfits",
+        "boundary_fallback": true,
+        "boundary_joint_forecast": true,
+        "boundary_classical_base": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe"
+    },
+    {
+      "label": "matched_analytical",
+      "raw_method": "contour_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "all",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": false,
+        "neural_hole_envelope": false,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "boundary_classical_base": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe"
+    },
+    {
+      "label": "robust_camera_neural",
+      "raw_method": "neural_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "boundary_scope": "nonfits",
+        "boundary_fallback": true,
+        "boundary_joint_forecast": true,
+        "boundary_classical_base": false,
+        "boundary_robust_fallback": true,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "57987569d1f0cceae365365d18129cb24cb5bb9872c5452ae3e56ba9cdd2da9d"
+    },
+    {
+      "label": "robust_camera_agent",
+      "raw_method": "neural_risk_agent",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "boundary_scope": "nonfits",
+        "boundary_fallback": true,
+        "boundary_joint_forecast": true,
+        "boundary_classical_base": false,
+        "boundary_robust_fallback": true,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "57987569d1f0cceae365365d18129cb24cb5bb9872c5452ae3e56ba9cdd2da9d"
+    },
+    {
+      "label": "neural_risk",
+      "raw_method": "neural_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "contour_trend_shrinkage": true,
+        "boundary_scope": "nonfits",
+        "boundary_fallback": true,
+        "boundary_joint_forecast": true,
+        "boundary_classical_base": false,
+        "boundary_robust_fallback": true,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "afb760f317f10c94dc926249636df7648e93cc7ce3d5cca63f3f6b70db9e5e5d"
+    },
+    {
+      "label": "neural_risk_agent",
+      "raw_method": "neural_risk_agent",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "fits",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": true,
+        "neural_hole_envelope": true,
+        "contour_trend_shrinkage": true,
+        "boundary_scope": "nonfits",
+        "boundary_fallback": true,
+        "boundary_joint_forecast": true,
+        "boundary_classical_base": false,
+        "boundary_robust_fallback": true,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "afb760f317f10c94dc926249636df7648e93cc7ce3d5cca63f3f6b70db9e5e5d"
+    },
+    {
+      "label": "trend_analytical",
+      "raw_method": "contour_risk",
+      "policy_arguments": {
+        "clear_failure_on_adapt": false,
+        "neural_calibrate_measurements": false,
+        "neural_forecast_scope": "all",
+        "neural_reserve_fit": true,
+        "neural_joint_forecast": false,
+        "neural_hole_envelope": false,
+        "contour_trend_shrinkage": true,
+        "boundary_scope": "all",
+        "boundary_fallback": false,
+        "boundary_joint_forecast": false,
+        "boundary_classical_base": false,
+        "boundary_robust_fallback": false,
+        "supervisor_model": "local-qwen3",
+        "supervisor_timeout": 120.0,
+        "supervisor_review_interval": 8
+      },
+      "stopped_at_argument_parsing": true,
+      "source_sha256": "afb760f317f10c94dc926249636df7648e93cc7ce3d5cca63f3f6b70db9e5e5d"
+    }
+  ],
+  "reference_configurations_sha256": "f8f9cfd6248ec3572fc4d35a0b8e2142360c792a4cc86ab90a5365fe4801a3dc",
+  "source_mapping_sha256": "c0b736c0761badc27c402b581b003b032e57e51eab235956384a508ea2647859",
+  "preflight_sha256": "1d7bf9449ba173455c5949622c78e83b84fec7d57429dc101e091d2dce030d7e",
+  "storage_bytes_before": 99942117376,
+  "reserved_concurrent_bytes": 39827968,
+  "maximum_preparation_bytes": 4000000,
+  "limitation": "Preparation only. No final test is launched or queued here. Wait for complete trend development and historical results before freezing the final protocol; every final audit and comparison must require camera traces. Historical model and policy settings are preserved; supervisor runtime provenance still needs final launch-time verification."
+}

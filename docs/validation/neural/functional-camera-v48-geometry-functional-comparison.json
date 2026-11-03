@@ -1,0 +1,77 @@
+{
+  "status": "complete",
+  "frames": 2040,
+  "flags": [
+    "open_wall",
+    "hard_thin",
+    "base_problem",
+    "connection_problem"
+  ],
+  "counts": {
+    "classical": {
+      "true_negative": 1914,
+      "false_positive": 27,
+      "true_positive": 93,
+      "false_negative": 6
+    },
+    "original": {
+      "true_negative": 1908,
+      "false_positive": 33,
+      "true_positive": 90,
+      "false_negative": 9
+    },
+    "control": {
+      "true_negative": 1906,
+      "false_positive": 35,
+      "true_positive": 94,
+      "false_negative": 5
+    },
+    "nonlinear": {
+      "true_negative": 1906,
+      "false_positive": 35,
+      "true_positive": 95,
+      "false_negative": 4
+    }
+  },
+  "original_fatal_detections_lost": [],
+  "extra_gap_label_misses": [
+    {
+      "group": "cartesian-cup-under_extrusion-420",
+      "profile": "bedslinger",
+      "layer": 87,
+      "refined_hard_thin": true
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-420",
+      "profile": "bedslinger",
+      "layer": 88,
+      "refined_hard_thin": true
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-420",
+      "profile": "cartesian",
+      "layer": 90,
+      "refined_hard_thin": true
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-420",
+      "profile": "corexy",
+      "layer": 88,
+      "refined_hard_thin": true
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-420",
+      "profile": "corexy",
+      "layer": 90,
+      "refined_hard_thin": true
+    },
+    {
+      "group": "cartesian-mug-under_extrusion-420",
+      "profile": "bedslinger",
+      "layer": 90,
+      "refined_hard_thin": true
+    }
+  ],
+  "passes": true,
+  "limitation": "Retrospective paired frame analysis. These are sufficient per-layer causes of functional rejection; soft-thin budgets and inter-layer support require complete-print checks. True base and connection faults are absent from these selected frames. This does not reverse the failed per-feature v35 gate or prove recovery safety."
+}

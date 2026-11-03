@@ -1,0 +1,40 @@
+{
+  "passes": true,
+  "default_control_reproduced": true,
+  "control": [
+    {
+      "method": "neural_risk",
+      "in_place": false,
+      "defective_finished": false,
+      "adaptations": 0,
+      "trend_shrinkage_queries": 0,
+      "agent_requests": 0
+    },
+    {
+      "method": "neural_risk_agent",
+      "in_place": false,
+      "defective_finished": false,
+      "adaptations": 0,
+      "trend_shrinkage_queries": 0,
+      "agent_requests": 2
+    }
+  ],
+  "candidate": [
+    {
+      "method": "neural_risk",
+      "in_place": true,
+      "defective_finished": false,
+      "adaptations": 0,
+      "trend_shrinkage_queries": 1190,
+      "agent_requests": 0
+    },
+    {
+      "method": "neural_risk_agent",
+      "in_place": true,
+      "defective_finished": false,
+      "adaptations": 0,
+      "trend_shrinkage_queries": 1190,
+      "agent_requests": 3
+    }
+  ]
+}

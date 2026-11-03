@@ -1,0 +1,251 @@
+{
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/matrix/results",
+      "manifest_sha256": "18f0d0b2b8a3be4a325af801cfbea1569fdaed402e5d84612157ff478be5254d",
+      "audit_sha256": "2bd362694b4fdaf16cfe20abfeca2658c07ad7a18bdd2bb30e836569dbd60c3e",
+      "runs_sha256": "81d192c01846c37ea70f41a7722234cdd90d6aad8a0c12bd2ac1c52aae052371",
+      "labels": {}
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-a/results",
+      "manifest_sha256": "ed0c7a4e030f24999a5982143710c813ae495261517fa31eba0e85322d646eb8",
+      "audit_sha256": "af705d81677b9144e027e7141892d0a80f44e6b951b8bd2f6b3a2e91781c4c6e",
+      "runs_sha256": "00ad57c58e98093407bf46674936db353045256077cddb160f673d99249ef08c",
+      "labels": {}
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-b/results",
+      "manifest_sha256": "5543cf4d819f794d6e2256c7d4a0b983e13a48f161688fbd621b2b0dce441103",
+      "audit_sha256": "267b7e095c35c93502cdca9c1815d400bec5ec5594016f70949be31a462904a7",
+      "runs_sha256": "297c7798bc894a016df9511dae7c5768b60dd437ff17b9d9c1195b64fc16e166",
+      "labels": {}
+    }
+  ],
+  "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+  "comparator_sha256": "1ddc899ca9fcdfc6675737896fe33de4110b5163785eab9a45bc48d25edf51c8",
+  "provenance_verifier_sha256": "36922289f10cce18d172465fe4509f45d5ff7d15f03fbf3a9626b8a753def64d",
+  "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+  "candidate": "neural_risk_agent",
+  "boundary_checkpoint_sha256": null,
+  "boundary_training_manifest_sha256": null,
+  "stages": [
+    "development"
+  ],
+  "failure_cases": 120,
+  "clean_cases": 24,
+  "summary": {
+    "contour": {
+      "failure": {
+        "n": 120,
+        "in_place": 71,
+        "scrapped": 46,
+        "defective_finished": 3,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 812.3347317321459,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8432404159801344,
+        "mean_filament_with_assumed_clean_restart": 1.2265737493134679
+      },
+      "clean": {
+        "n": 24,
+        "in_place": 24,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 159.12640210206155,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.999985521678236,
+        "mean_filament_with_assumed_clean_restart": 0.999985521678236
+      }
+    },
+    "contour_risk": {
+      "failure": {
+        "n": 120,
+        "in_place": 76,
+        "scrapped": 44,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 927.0764969174052,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.842388051129228,
+        "mean_filament_with_assumed_clean_restart": 1.2090547177958946
+      },
+      "clean": {
+        "n": 24,
+        "in_place": 24,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 155.90226600936148,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.999985521678236,
+        "mean_filament_with_assumed_clean_restart": 0.999985521678236
+      }
+    },
+    "neural_risk": {
+      "failure": {
+        "n": 120,
+        "in_place": 78,
+        "scrapped": 42,
+        "defective_finished": 0,
+        "neural_queries": 234351,
+        "agent_requests": 0,
+        "seconds": 1726.8062924825354,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8514055534695758,
+        "mean_filament_with_assumed_clean_restart": 1.2014055534695758
+      },
+      "clean": {
+        "n": 24,
+        "in_place": 24,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 154.9287688829936,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.999985521678236,
+        "mean_filament_with_assumed_clean_restart": 0.999985521678236
+      }
+    },
+    "neural_risk_agent": {
+      "failure": {
+        "n": 120,
+        "in_place": 78,
+        "scrapped": 42,
+        "defective_finished": 0,
+        "neural_queries": 234351,
+        "agent_requests": 158,
+        "seconds": 2570.896095998003,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8514055534695758,
+        "mean_filament_with_assumed_clean_restart": 1.2014055534695758
+      },
+      "clean": {
+        "n": 24,
+        "in_place": 24,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 157.6572574158199,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.999985521678236,
+        "mean_filament_with_assumed_clean_restart": 0.999985521678236
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "contour",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 7,
+      "extra_defective_finishes": -3
+    },
+    {
+      "baseline": "contour_risk",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ]
+      ],
+      "net_gain": 2,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "neural_risk",
+      "required_baseline": false,
+      "gained": [],
+      "lost": [],
+      "net_gain": 0,
+      "extra_defective_finishes": 0
+    }
+  ],
+  "actual_learning": true,
+  "actual_agent": true,
+  "candidate_has_best_completion_count": true,
+  "best_methods": [
+    "neural_risk",
+    "neural_risk_agent"
+  ],
+  "strictly_more_completions_than_every_baseline": true,
+  "no_lost_baseline_successes": false,
+  "no_higher_defective_finish_count": true,
+  "all_candidate_clean_controls_pass": true,
+  "limitation": "Paired simulation outcomes; no physical reliability claim. Restart filament is hypothetical."
+}

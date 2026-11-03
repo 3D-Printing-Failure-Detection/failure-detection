@@ -1,0 +1,18 @@
+{
+  "snapshot_utc": "2026-11-03T11:38:13.788232+00:00",
+  "repository": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MUJOCO_GL=egl .venv/bin/python -m pytest -q",
+    "passed": 248,
+    "skipped": 3,
+    "seconds": 28.92
+  },
+  "focused_torch_receipt": "guided-refinement-v63-tests.json",
+  "source_sha256": {
+    "recovery/models/boundary.py": "33dc7e21fd0c129673929cb2b49a61d88d152b6447efec322d201245ba855673",
+    "tools/train_boundary_refinement.py": "c9b7d5097c616b6892b697456b27085532e772e6a2c52b03333e197682272fa9",
+    "tools/boundary_functional_band.py": "d7daa303dd41396f39c0987d55f1ce937ef614f7cc0f4d6e59028e178bd914d7",
+    "tests/test_boundary_refinement.py": "7cd6ff336250076f9c6839ed22b893e3bd51b9eff0f764ae3a8b60d5b10cc373",
+    "tests/test_boundary_functional_band.py": "e8d3eff77bfec4effc07dda8df20c3f269817054dc2ed6d7bb2885e52aba19d8"
+  },
+  "limitation": "Implementation checks only; both guided heads fail the functional screen. The physical-band helper has not been used for training."
+}

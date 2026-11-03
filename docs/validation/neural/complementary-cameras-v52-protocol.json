@@ -1,0 +1,563 @@
+{
+  "created_at": "2026-11-03T08:57:55.422009+00:00",
+  "stage": "development",
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/source",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "purpose": "Determine whether already-trained camera models provide complementary full-spec-compatible measurements on known false alarms, while retaining selected real defect detections",
+  "models": [
+    {
+      "name": "neural-asymmetric-camera-v25--asymmetric",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/boundary.npz",
+      "sha256": "0ce771903ee2b69a6eec41f794bba0e3780f27cf50852ad003d08f0a1da6d80c",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-asymmetric-camera-v25--control",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/control/boundary.npz",
+      "sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/control/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/control/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/control/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-balanced-camera-v14--balanced",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/balanced/boundary.npz",
+      "sha256": "b66867737cd9ca4175858e43cf592c7d095fc0f32951dc8fb258c9584ef947ab",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/balanced/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/control/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-balanced-camera-v14--control",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/control/boundary.npz",
+      "sha256": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/control/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/distance/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-boundary-v1--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+      "sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-boundary-v2--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v2/model/boundary.npz",
+      "sha256": "a8fe8b38c2fd0fb5af0e5048f2bc65771338fb3c614633e07c4ac4cc9eaac5f8",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v2/model/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-command-history-v50--candidate",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/candidate/boundary.npz",
+      "sha256": "fd847d59b6371e32caf65a83457541b55c562190825b51ac559c582a0676eb79",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/candidate/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": true
+    },
+    {
+      "name": "neural-command-precise-camera-v17--command",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/boundary.npz",
+      "sha256": "9ff615cde22c36db6cd8f2aaec0964aa874372a50e524200bb2c4ee5747f454e",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-context-camera-v8--context",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz",
+      "sha256": "ea1683a04e34ef655e11e0cf0723afc723d010b240a8ad6f7323f4e03b1c4bdb",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1,
+        4
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-context-camera-v8--fine",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz",
+      "sha256": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/distance/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/current/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-context-query-camera-v9--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-query-camera-v9/model/boundary.npz",
+      "sha256": "c96ac7e9fe82dd3cc15b5dc744ff7a7e46c152211fd52aa26e76ddde44c8ad58",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-query-camera-v9/model/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/plain/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1,
+        4
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-critical-camera-v6--central",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/central/boundary.npz",
+      "sha256": "380a05ea73703be05ee1084384c29ea62c70eccfd16af1df67f3919af85c7ff9",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/central/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-critical-camera-v6--upper",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/upper/boundary.npz",
+      "sha256": "9e3fb72f785dd3fbc6dd96122dbe06dabae75154a7eb2f9ab20348628884d6fa",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/upper/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-dense-camera-v3--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/model/boundary.npz",
+      "sha256": "bad695bacd433dca46603696e184493ecd23480e968bb3c1c57bcc46e217af9f",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/model/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-dense-topology-camera-v13--topology",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/topology/boundary.npz",
+      "sha256": "ddeb9c91ce8ee1dd2659df15ff6854124c633addd942359418b494c426f1f3d1",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/topology/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-dihedral-query-camera-v11--dihedral",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/dihedral/boundary.npz",
+      "sha256": "65541950510365ba41a66ba4d54ad5612f45f5b04070915040fdb567d9bed42f",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/dihedral/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1,
+        4
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-gap-sensitive-refinement-v30--control",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/control/boundary.npz",
+      "sha256": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/control/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-refinement-v28/model/boundary.npz",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/control/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-gap-sensitive-refinement-v30--gap_sensitive",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/gap_sensitive/boundary.npz",
+      "sha256": "94ba677d788f1d4a515e69e817ae857da082607383913279d45698dd7d8efa08",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/gap_sensitive/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-gradient-camera-v18--gradient01",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient01/boundary.npz",
+      "sha256": "24ad4401b5105c6ce964f5b1fffd0734fb19385efeebf0b87ee160ee030755e6",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient01/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-gradient-camera-v18--gradient03",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient03/boundary.npz",
+      "sha256": "654e70fd506e3830e60a4060c49f54cece52601c19196ce770d77dd67d9462e1",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient03/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-native-camera-v4--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/boundary.npz",
+      "sha256": "03bc310d93e29c2f912419f8aef559fcc36e1a5147988f4049ef7e30dfed205e",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-nonlinear-refinement-v35--nonlinear",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz",
+      "sha256": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": true,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-occupancy-camera-v10--occupancy",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/occupancy/boundary.npz",
+      "sha256": "655939d5de1bb5a9a8cc220f873f80f6bfc80e166edfbd30bddde9772ec5313a",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/occupancy/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-quantile-camera-v5--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-quantile-camera-v5/model/boundary.npz",
+      "sha256": "c89075e6e33ce6ddbaaaf5f6b28c4397c0e2cfbafc5d545301bfd8ab5f9d1c5e",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-quantile-camera-v5/model/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-query-camera-v7--model",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-query-camera-v7/model/boundary.npz",
+      "sha256": "8a4aaacad958b7473821cfe86505de527a87f1572dfb7559d5e95ad644825222",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-query-camera-v7/model/boundary.npz"
+      ],
+      "input_frames": 1,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    },
+    {
+      "name": "neural-temporal-camera-v12--temporal",
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/temporal/boundary.npz",
+      "sha256": "dfd5aa59770b0c32ace07e929a4404a81786ab1b8f1a2319455a574da6939e3b",
+      "aliases": [
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/temporal/boundary.npz"
+      ],
+      "input_frames": 2,
+      "input_scales": [
+        1
+      ],
+      "include_command": false,
+      "include_previous_command": false
+    }
+  ],
+  "consumed_cases": [
+    {
+      "name": "cartesian-mug-1003",
+      "profile": "cartesian",
+      "part": "mug",
+      "seed": 1003,
+      "layers": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/layers.json"
+    },
+    {
+      "name": "corexy-mug-1003",
+      "profile": "corexy",
+      "part": "mug",
+      "seed": 1003,
+      "layers": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/layers.json"
+    },
+    {
+      "name": "cartesian-cup-1002",
+      "profile": "cartesian",
+      "part": "cup",
+      "seed": 1002,
+      "layers": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/layers.json"
+    },
+    {
+      "name": "bedslinger-cup-1002",
+      "profile": "bedslinger",
+      "part": "cup",
+      "seed": 1002,
+      "layers": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/layers.json"
+    }
+  ],
+  "real_defect_groups": [
+    {
+      "part": "cup",
+      "trajectory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-420.json.gz",
+      "profile_layers": {
+        "bedslinger": [
+          87,
+          88
+        ]
+      }
+    },
+    {
+      "part": "mug",
+      "trajectory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-420.json.gz",
+      "profile_layers": {
+        "cartesian": [
+          90
+        ],
+        "corexy": [
+          88,
+          90
+        ],
+        "bedslinger": [
+          90
+        ]
+      }
+    }
+  ],
+  "validation_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/frames.jsonl",
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/boundary.npz": "0ce771903ee2b69a6eec41f794bba0e3780f27cf50852ad003d08f0a1da6d80c",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/training.json": "82a001cda25d7770077799dae43d035349706de72e32e0c30dd2c0243c9438ec",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/control/boundary.npz": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/control/training.json": "7cfe0313143f06fa12fb32b5bf9e3e5a4c5c8655a170847a63513f064ce7edbd",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/boundary.npz": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/training.json": "eeb578552c355b4c4f6b96f848da44754cf95d717d1b5925a9471816de698dab",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/control/boundary.npz": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/control/training.json": "7fa661baec634c9af3bed4b2e8c129e59f79f65714a4ba4afc35587912af9c0a",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/control/boundary.npz": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/control/training.json": "384cc5e45c96f4cce63c351d51b847273e53179598b9107139811d842efdcf6f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/balanced/boundary.npz": "b66867737cd9ca4175858e43cf592c7d095fc0f32951dc8fb258c9584ef947ab",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/balanced/training.json": "b8c4c41ba8bf6eebe981d4c3218fbb61204dea1d13a3a4cea90bed5a9d6b380b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/control/boundary.npz": "b66867737cd9ca4175858e43cf592c7d095fc0f32951dc8fb258c9584ef947ab",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/control/training.json": "7eb26d7a007a5618e2f7c4d974fe4be37de75f1c6b94815daf371a0bb6e4ea54",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/control/boundary.npz": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-balanced-camera-v14/control/training.json": "0170592d66d1f8f2282e9e9e98579dd98d36cb856054a685962e72bcd99b3cac",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/distance/boundary.npz": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/distance/training.json": "717f6fd79fe942f8e86c6a91c0d9d3853e6495d2ad1fa53ab5282dee965001f1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/training.json": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v2/model/boundary.npz": "a8fe8b38c2fd0fb5af0e5048f2bc65771338fb3c614633e07c4ac4cc9eaac5f8",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v2/model/training.json": "60fd1da54cdc6d258b5f6629f3cb657e12932aeb624359bfc8e1f01ba4ab1ba3",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/candidate/boundary.npz": "fd847d59b6371e32caf65a83457541b55c562190825b51ac559c582a0676eb79",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/candidate/training.json": "ee854d44864dba3e5e34679b490ffd3396a329386fb667762879f33cf9756219",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/boundary.npz": "9ff615cde22c36db6cd8f2aaec0964aa874372a50e524200bb2c4ee5747f454e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/training.json": "8e61ababb352b1986ba01974f3eb3f2c6c04c395b26c4d5c89c1ff57422e0d5e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz": "ea1683a04e34ef655e11e0cf0723afc723d010b240a8ad6f7323f4e03b1c4bdb",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/training.json": "55b35688abe7dd8257a09da35ebf6bdb6ef3f7435ff6dbf941a90873318dc46d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/training.json": "d658a104ee69be4722c686bd477b001434f4467a9d5e118601074589749c9ea5",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/distance/boundary.npz": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/distance/training.json": "b2696b6820a179ffb7e5ca446c5f58d51cb005800184739383e5d68393f51a36",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/current/boundary.npz": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/current/training.json": "eca7be518611401fbc42d0501d99083614693924e2218307cc63ab5b381398be",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-query-camera-v9/model/boundary.npz": "c96ac7e9fe82dd3cc15b5dc744ff7a7e46c152211fd52aa26e76ddde44c8ad58",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-query-camera-v9/model/training.json": "08f84f794de56ed7dedfd0806b554a16a71b4e080fc437e2a46fcd430166a5af",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/plain/boundary.npz": "c96ac7e9fe82dd3cc15b5dc744ff7a7e46c152211fd52aa26e76ddde44c8ad58",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/plain/training.json": "01487785bfd0d5ca44bb512b8587ad174714a54791563590c460bd681149d41a",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/central/boundary.npz": "380a05ea73703be05ee1084384c29ea62c70eccfd16af1df67f3919af85c7ff9",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/central/training.json": "1569d1b06a525014fef194b6ef58c70ddf0ada522a5f44be1b1c83f540628ef6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/upper/boundary.npz": "9e3fb72f785dd3fbc6dd96122dbe06dabae75154a7eb2f9ab20348628884d6fa",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/upper/training.json": "3594516df3d8632a2f012dbeaa1c654139ce6d8cf77d643bae5d76dc2bb31b70",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/model/boundary.npz": "bad695bacd433dca46603696e184493ecd23480e968bb3c1c57bcc46e217af9f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/model/training.json": "26e7e31979d4916c0b38a66f48bea420cb1c1638125e2c4a57cae442b4551e32",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/topology/boundary.npz": "ddeb9c91ce8ee1dd2659df15ff6854124c633addd942359418b494c426f1f3d1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/topology/training.json": "ba3e2601f5a5c11675daaf0620b6c85956a334c9aea726fdd0b5db252d95bf4d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/dihedral/boundary.npz": "65541950510365ba41a66ba4d54ad5612f45f5b04070915040fdb567d9bed42f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dihedral-query-camera-v11/dihedral/training.json": "67f0dc03baf10b698cd130f54cadf52a2cc045cb5c05ce194f9c648455199925",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/control/boundary.npz": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/control/training.json": "d2226d9de189d39c7af93d5bd3faeed83a037ef06da20abbc28f5bff35c0ebcb",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-refinement-v28/model/boundary.npz": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-refinement-v28/model/training.json": "a3aead833d977f803e23e7e7f583598f7f71e3211fa6c3ec682faabdb1aa8d6d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/control/boundary.npz": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/control/training.json": "72c1cd4903afca77ef06991c82ac52af31b3fa3805ef8288b7e194dd45fde70b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/gap_sensitive/boundary.npz": "94ba677d788f1d4a515e69e817ae857da082607383913279d45698dd7d8efa08",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gap-sensitive-refinement-v30/gap_sensitive/training.json": "91c483d116ad602f24657f4bdbfbe42f6a36fa3f82768183da298a23435e1c85",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient01/boundary.npz": "24ad4401b5105c6ce964f5b1fffd0734fb19385efeebf0b87ee160ee030755e6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient01/training.json": "5c98758a5c159e11f2e48cda170dff62da32932b1be180522be310cf11287ec0",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient03/boundary.npz": "654e70fd506e3830e60a4060c49f54cece52601c19196ce770d77dd67d9462e1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/gradient03/training.json": "5891bc0d11391163e51cc34dd726ccdca0a098c559d7d3374bda9e5638f169d4",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/boundary.npz": "03bc310d93e29c2f912419f8aef559fcc36e1a5147988f4049ef7e30dfed205e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/training.json": "7a6b1acdde69cfe6bf9eb42d2eafdad09f1a3bfe10638a644f474bcdb53f5235",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/training.json": "1cc4f4618d41a0be76170efb927e8b703cd9edf04abffa9011e132643711a8b4",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/occupancy/boundary.npz": "655939d5de1bb5a9a8cc220f873f80f6bfc80e166edfbd30bddde9772ec5313a",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-occupancy-camera-v10/occupancy/training.json": "3c6fec572f685d47c5c2feebec1eeacf4529daa8f5ad5be20940d12af988cc82",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-quantile-camera-v5/model/boundary.npz": "c89075e6e33ce6ddbaaaf5f6b28c4397c0e2cfbafc5d545301bfd8ab5f9d1c5e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-quantile-camera-v5/model/training.json": "17bcb863d88a426834e6c43ede290a22b6178983adff0ea2d5ef05d9394a13af",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-query-camera-v7/model/boundary.npz": "8a4aaacad958b7473821cfe86505de527a87f1572dfb7559d5e95ad644825222",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-query-camera-v7/model/training.json": "61b784c79c7f53c3af21d1e90c8c55312d17a9b30f9fd7a2ec0cd75b7d5613d1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/temporal/boundary.npz": "dfd5aa59770b0c32ace07e929a4404a81786ab1b8f1a2319455a574da6939e3b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/temporal/training.json": "610d59d3e207d15021e080ea90127b82d16aad6145598ef287f47dd13486af6b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/layers.json": "4714cce7510665eedbe9180ad320ec5003d9b99977e7261a967ef96e8cb19583",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/layers.json": "55a0fa1cc6fcf0ec8f993266730019011df16f0ff645fff82710e7fa1c69e686",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/layers.json": "ab3d42c563cb0b4679e2b98ede46c08135b21ec580536813fab7ea4c0eec16d0",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/layers.json": "fc7f8bf906b1b5e16af005d754ccd52f145f701f07820eafd904d8d20e9c98fe",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-420.json.gz": "5f386dafb3753b8b0c2c91cb458e60d6482d62172cbf487ae45db4774498550e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-420.json.gz": "fc1af501f1b64e9b0559d402c1612b02f57ed3305fba41cf257bf0cdbedb6d83",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/frames.jsonl": "b4b64b44872faa52405076c94ef1cfe35612232d43299245859349a34df9e780",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/source/tools/inspect_camera_case.py": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/source/tools/validate_camera_geometry.py": "a472280ccadd48066e101a867caec4aff242ebbf7f274b37b13695610375a647",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-complementary-cameras-v52/run.py": "d168cb760282a40ab7c6469303c3a580fc74dbea0dac690ee636b4dd34872e70"
+  },
+  "expected_models": 26,
+  "expected_frames": 22,
+  "expected_predictions": 572,
+  "maximum_new_artifact_allowance_bytes": 4000000,
+  "storage_bytes_at_launch": 99957719040,
+  "other_live_reserved_bytes": 11480384,
+  "procedure": "Evaluate every unique retained checkpoint with training provenance on identical actual current/previous images and issued command masks. Reproduce prior nonlinear features and truth. Score all four consumed local windows, all twelve support edges and six selected true defects. No averaging, per-pixel switching, threshold fitting or geometry modification.",
+  "screening": "A model covers a local case only if all four frames have no immediate fatal violation, all three support edges stay at or below the unchanged 6 mm2 limit, and all six selected real defects remain detected. Report every model and case; any useful coverage only qualifies separate complete-print and broad validation.",
+  "limitation": "Exploratory consumed-development screening of retained trained models. Local coverage is not complete-print validity, full validation or recovery success. The six true defects are selected correlated frames. Existing failed experiments remain failed; no model is promoted, training repeated or fresh seeds used."
+}

@@ -1,0 +1,51 @@
+{
+  "status": "complete",
+  "data_sha256": "d20160664506235301c834368ccf739d589f2838d90c47334b1fa2e68cdedb52",
+  "checkpoint_sha256": {
+    "distance": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+    "topology": "ddeb9c91ce8ee1dd2659df15ff6854124c633addd942359418b494c426f1f3d1"
+  },
+  "script_sha256": "991d49761650c7658ba98a96e6af1e243890ec90ffaedc2c5d83b152b5016481",
+  "verified_target_rows": 5760,
+  "total_rows": 5760,
+  "thin_radius_mm": 0.15,
+  "definition": "True material on the exact native grid not reconstructed by a discrete Euclidean 0.15 mm-radius opening, excluding nominal thin pixels on the same grid. Six native halo pixels prevent crop-edge effects. Diagnostic only; original target labels and runtime geometry unchanged",
+  "summary": {
+    "training": {
+      "under_extrusion_tiles": 1560,
+      "tiles_with_thin_positive_points": 39,
+      "critical_positive_points": 1648,
+      "other_positive_points_in_same_tiles": 37486,
+      "models": {
+        "distance": {
+          "thin_material_recall": 0.2154126213592233,
+          "other_material_recall": 0.8495171530704796
+        },
+        "topology": {
+          "thin_material_recall": 0.3058252427184466,
+          "other_material_recall": 0.8790481779864483
+        }
+      }
+    },
+    "validation": {
+      "under_extrusion_tiles": 960,
+      "tiles_with_thin_positive_points": 26,
+      "critical_positive_points": 1147,
+      "other_positive_points_in_same_tiles": 27985,
+      "models": {
+        "distance": {
+          "thin_material_recall": 0.06015693112467306,
+          "other_material_recall": 0.8858316955511881
+        },
+        "topology": {
+          "thin_material_recall": 0.011333914559721011,
+          "other_material_recall": 0.9013042701447204
+        }
+      }
+    }
+  },
+  "artifact": "/mnt/data/ishaan/hri-workspace/failure-detection/camera-thin-sampling-audit-v14-raster/results.json",
+  "artifact_sha256": "073c9f6873b073bee09229fa976f868b99dcfe0f84b0323e97e5f9867310296b",
+  "protocol": "/mnt/data/ishaan/hri-workspace/failure-detection/camera-thin-sampling-audit-v14-raster/protocol.json",
+  "protocol_sha256": "18ebb0454fc7780108ee61f70997e31c5da02ab276a50118a16ba8aa576173f8"
+}

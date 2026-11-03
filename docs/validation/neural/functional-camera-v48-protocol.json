@@ -1,0 +1,123 @@
+{
+  "created_at": "2026-11-03T08:03:28.788351+00:00",
+  "stage": "development",
+  "purpose": "Test a new supplemental-camera hypothesis against unchanged functional defect criteria; retain the earlier per-feature rejection",
+  "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source",
+  "source_sha256": "42f93bf7018222e7020a9e507d190a786d7a1d49a12fb969e1dd75b4c1dc68de",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "geometry_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/frames.jsonl",
+  "known_cup_verdict": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/final.json",
+  "jobs": [
+    {
+      "name": "bedslinger-cup-1002",
+      "case": [
+        "bedslinger",
+        "cup",
+        "under_extrusion",
+        1002
+      ],
+      "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002",
+      "command": [
+        "/home/ishaan/failure-detection/.venv/bin/python",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source/tools/inspect_camera_case.py",
+        "--profile",
+        "bedslinger",
+        "--part",
+        "cup",
+        "--kind",
+        "under_extrusion",
+        "--seed",
+        "1002",
+        "--checkpoint",
+        "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+        "--checkpoint",
+        "nonlinear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz",
+        "--include-classical-base-hybrids",
+        "--out",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002"
+      ]
+    },
+    {
+      "name": "cartesian-mug-1003",
+      "case": [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003",
+      "command": [
+        "/home/ishaan/failure-detection/.venv/bin/python",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source/tools/inspect_camera_case.py",
+        "--profile",
+        "cartesian",
+        "--part",
+        "mug",
+        "--kind",
+        "under_extrusion",
+        "--seed",
+        "1003",
+        "--checkpoint",
+        "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+        "--checkpoint",
+        "nonlinear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz",
+        "--include-classical-base-hybrids",
+        "--out",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003"
+      ]
+    },
+    {
+      "name": "corexy-mug-1003",
+      "case": [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003",
+      "command": [
+        "/home/ishaan/failure-detection/.venv/bin/python",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source/tools/inspect_camera_case.py",
+        "--profile",
+        "corexy",
+        "--part",
+        "mug",
+        "--kind",
+        "under_extrusion",
+        "--seed",
+        "1003",
+        "--checkpoint",
+        "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+        "--checkpoint",
+        "nonlinear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz",
+        "--include-classical-base-hybrids",
+        "--out",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003"
+      ]
+    }
+  ],
+  "maximum_new_artifact_allowance_bytes": 4000000,
+  "storage_bytes_at_launch": 99964780544,
+  "other_live_job_reserved_bytes": 13801984,
+  "reserved_fresh_seeds_untouched": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "geometry_gate": "Every original true per-layer fatal defect detection must remain detected by the unchanged specification, and aggregate fatal misses may not increase. Extra missed leak labels must still be hard-thin defects. False positives and all category counts remain reported. Specified bases use unchanged classical observations.",
+  "diagnostic_gate": "All three new consumed nominal-command prints plus the retained cup must actually pass the unchanged full functional check under the supplemental measurement; actual ignore successes must reproduce.",
+  "prospective_integration": "Only if these gates pass, consider an additional observed camera history when every existing executable candidate fails. Existing passing decisions must remain unchanged. Closed-loop Qwen, defect, preservation, historical and untouched comparisons remain mandatory.",
+  "limitation": "Selected retrospective development diagnostics; no recovery or AI-agent result is fabricated. The v35 per-feature gate remains failed. A different defect label can still reject an unsafe print under the unchanged functional specification; this hypothesis needs complete closed-loop testing. No reserved fresh seeds are used.",
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/run.py": "dec29a8bbba29203fd58b28a93403ada7ed511d2e3300d3fb21cf1d26b91df39",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/final.json": "092c6d1ff11797063dcca0afa479ab2e0d9089b0a5ab5dc506ffa995a4b7892e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/frames.jsonl": "b4b64b44872faa52405076c94ef1cfe35612232d43299245859349a34df9e780",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/training.json": "1cc4f4618d41a0be76170efb927e8b703cd9edf04abffa9011e132643711a8b4",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/protocol.json": "0e31370e48c75484755cbbd2ee2d521b547bd23ac7cfe3e66f871c9158f0c8fa",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/summary.json": "a82b29f3e80e681a6cda8508b094750816e32da9e2497c61128403537c3d7440",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source/tools/inspect_camera_case.py": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc"
+  }
+}

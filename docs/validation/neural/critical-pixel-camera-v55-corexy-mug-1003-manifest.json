@@ -1,0 +1,57 @@
+{
+  "status": "complete",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "script_sha256": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+  "arguments": {
+    "profile": "corexy",
+    "part": "mug",
+    "kind": "under_extrusion",
+    "seed": 1003,
+    "checkpoint": [
+      "control=/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-pixel-camera-v55/control/boundary.npz",
+      "critical_material=/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-pixel-camera-v55/candidate/boundary.npz"
+    ],
+    "include_classical_base_hybrids": true,
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-pixel-camera-v55/corexy-mug-1003"
+  },
+  "checkpoint_paths": {
+    "control": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-pixel-camera-v55/control/boundary.npz",
+    "critical_material": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-pixel-camera-v55/candidate/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "control": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "critical_material": "c94c6d611fc74659187efea1391140a71c78de1aa630b2fd8d14aa938d060b55"
+  },
+  "hybrid_classical_base_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hybrid_labels": {
+    "control": "control:classical-base",
+    "critical_material": "critical_material:classical-base"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "checkpoint_queries": {
+    "control": 160,
+    "critical_material": 160
+  },
+  "observation_counts": {
+    "classical": 160,
+    "control": 160,
+    "critical_material": 160,
+    "control:classical-base": 160,
+    "critical_material:classical-base": 160
+  }
+}

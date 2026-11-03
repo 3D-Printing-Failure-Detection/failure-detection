@@ -1,0 +1,119 @@
+{
+  "created_at": "2026-11-03T08:18:22.787646+00:00",
+  "stage": "development",
+  "purpose": "Test whether orientation inconsistency causes the remaining camera false alarms, using equal-weight aligned predictions without changing the print specification",
+  "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source",
+  "source_sha256": "42f93bf7018222e7020a9e507d190a786d7a1d49a12fb969e1dd75b4c1dc68de",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz",
+  "validation_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/frames.jsonl",
+  "consumed_cases": [
+    {
+      "name": "cartesian-mug-1003",
+      "profile": "cartesian",
+      "part": "mug",
+      "seed": 1003,
+      "layers": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/layers.json"
+    },
+    {
+      "name": "corexy-mug-1003",
+      "profile": "corexy",
+      "part": "mug",
+      "seed": 1003,
+      "layers": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/layers.json"
+    },
+    {
+      "name": "cartesian-cup-1002",
+      "profile": "cartesian",
+      "part": "cup",
+      "seed": 1002,
+      "layers": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/layers.json"
+    },
+    {
+      "name": "bedslinger-cup-1002",
+      "profile": "bedslinger",
+      "part": "cup",
+      "seed": 1002,
+      "layers": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/layers.json"
+    }
+  ],
+  "real_defect_groups": [
+    {
+      "part": "cup",
+      "trajectory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-420.json.gz",
+      "profile_layers": {
+        "bedslinger": [
+          87,
+          88
+        ]
+      }
+    },
+    {
+      "part": "mug",
+      "trajectory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-420.json.gz",
+      "profile_layers": {
+        "cartesian": [
+          90
+        ],
+        "corexy": [
+          88,
+          90
+        ],
+        "bedslinger": [
+          90
+        ]
+      }
+    }
+  ],
+  "candidate": "Arithmetic mean of all eight dihedral signed-distance predictions, aligned at the actual native pixel-centre coordinates. Transform current image, actual preceding image and command mask together; no angle or threshold is selected from results.",
+  "coordinate_gate": "All 24 combinations of native scale 1/2/4 and eight symmetries must recover an affine field exactly in the interior; integer-grid complete images must match exactly.",
+  "diagnostic_gate": "All 16 selected false-alarm/adjacent frames must have no immediate fatal geometry; all 12 local support edges must meet the unchanged 6 mm2 limit; all six previously mislabelled real leaks must remain functional defect detections. Ordinary predictions and truth must reproduce retained records.",
+  "maximum_new_artifact_allowance_bytes": 2000000,
+  "storage_bytes_at_launch": 99968471040,
+  "other_live_reserved_bytes": 17319424,
+  "reserved_fresh_seeds_untouched": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-symmetry-v49/run.py": "da2a72b073e37a9fa1237e7a5866ca7b42ada9eca27266e3e96f2018259c1748",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/training.json": "1cc4f4618d41a0be76170efb927e8b703cd9edf04abffa9011e132643711a8b4",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/geometry-validation/frames.jsonl": "b4b64b44872faa52405076c94ef1cfe35612232d43299245859349a34df9e780",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source/tools/inspect_camera_case.py": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/source/tools/validate_camera_geometry.py": "f5e1ba3b9366cdf78815292903af9407146d15050c8153c83d07d92165a7916e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/layers.json": "4714cce7510665eedbe9180ad320ec5003d9b99977e7261a967ef96e8cb19583",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/corexy-mug-1003/layers.json": "55a0fa1cc6fcf0ec8f993266730019011df16f0ff645fff82710e7fa1c69e686",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/layers.json": "ab3d42c563cb0b4679e2b98ede46c08135b21ec580536813fab7ea4c0eec16d0",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/bedslinger-cup-1002/layers.json": "fc7f8bf906b1b5e16af005d754ccd52f145f701f07820eafd904d8d20e9c98fe",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-420.json.gz": "5f386dafb3753b8b0c2c91cb458e60d6482d62172cbf487ae45db4774498550e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-420.json.gz": "fc1af501f1b64e9b0559d402c1612b02f57ed3305fba41cf257bf0cdbedb6d83"
+  },
+  "limitation": "Selected development diagnostic, not full-frame-grid validation, full-print acceptance or closed-loop recovery. Truth is used only for scoring, never image inference. A pass only qualifies broader camera validation. Existing failures and model weights remain unchanged; no new training or fresh seeds are used."
+}

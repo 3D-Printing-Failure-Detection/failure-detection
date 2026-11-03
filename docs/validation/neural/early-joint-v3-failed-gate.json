@@ -1,0 +1,25 @@
+{
+  "passed": false,
+  "diagnostic_rows": 39,
+  "failures": [
+    {
+      "profile": "cartesian",
+      "part": "spacer",
+      "kind": "shift",
+      "seed": 1002,
+      "method": "neural_risk",
+      "in_place": false,
+      "defective_finished": true
+    },
+    {
+      "profile": "cartesian",
+      "part": "spacer",
+      "kind": "shift",
+      "seed": 1002,
+      "method": "neural_risk_agent",
+      "in_place": false,
+      "defective_finished": true
+    }
+  ],
+  "limitation": "Consumed development and historical cases, not an untouched test"
+}

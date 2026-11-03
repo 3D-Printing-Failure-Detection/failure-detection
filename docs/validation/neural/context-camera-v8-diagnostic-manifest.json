@@ -1,0 +1,37 @@
+{
+  "status": "complete",
+  "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+  "script_sha256": "cd169ab51ff1aeb8a3e096450cbf5863d0bb64ad8c8062803fcb345096be052b",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+      "central=/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/central/boundary.npz",
+      "fine=/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz",
+      "context=/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz"
+    ],
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/cup-under-extrusion-1002"
+  },
+  "checkpoint_paths": {
+    "original": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+    "central": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-camera-v6/central/boundary.npz",
+    "fine": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/fine/boundary.npz",
+    "context": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/context/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "original": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "central": "380a05ea73703be05ee1084384c29ea62c70eccfd16af1df67f3919af85c7ff9",
+    "fine": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+    "context": "ea1683a04e34ef655e11e0cf0723afc723d010b240a8ad6f7323f4e03b1c4bdb"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7"
+}

@@ -1,0 +1,50 @@
+{
+  "status": "evaluation_and_audit_complete",
+  "comparison_status": "pending_cross_version_comparison",
+  "seconds": 3482.534414291382,
+  "source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "runs_sha256": "6cba2bb4f5c08fca2d928f11fdf6af409b6166233adabe3679c908aed3d5dad9",
+  "summary": {
+    "neural_risk": {
+      "failure": {
+        "n": 240,
+        "in_place": 136,
+        "defective_finished": 1,
+        "scrapped": 103,
+        "agent_requests": 0,
+        "neural_queries": 236556,
+        "seconds": 7412.157960193232
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "defective_finished": 0,
+        "scrapped": 0,
+        "agent_requests": 0,
+        "neural_queries": 2064,
+        "seconds": 944.1691690867301
+      }
+    },
+    "neural_risk_agent": {
+      "failure": {
+        "n": 240,
+        "in_place": 136,
+        "defective_finished": 1,
+        "scrapped": 103,
+        "agent_requests": 499,
+        "neural_queries": 236556,
+        "seconds": 10365.993540086434
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "defective_finished": 0,
+        "scrapped": 0,
+        "agent_requests": 0,
+        "neural_queries": 2064,
+        "seconds": 943.5540521889925
+      }
+    }
+  },
+  "limitation": "Consumed development cases; no acceptance or fresh-test superiority claim"
+}

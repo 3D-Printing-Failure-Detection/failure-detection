@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "new_rows": 46,
+  "limitation": "Selected consumed regression gate only. The initial mug gain is not an overall improvement, and preserved selected successes do not replace a full-grid comparison, historical regression or untouched evaluation. The ongoing v33 and v35 jobs keep their own frozen sources.",
+  "default_control_reproduced": true,
+  "mug_gain": true,
+  "regression_rows": 42,
+  "regression_gate_passes": true,
+  "comparison_sha256": "64c5fd0d7fff05a76156d54c272070baf6d9c75532a92edd1a47ba37d540cac4"
+}

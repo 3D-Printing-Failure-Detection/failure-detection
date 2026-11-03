@@ -1,0 +1,11 @@
+{
+  "created_at": "2026-11-03T00:14:36.502049+00:00",
+  "original_protocol_sha256": "6671c411165ee2300a63a030e12e6df4fa6e1bcc11f8eee6d4f078773b1c9c04",
+  "reason": "Descriptive fields inherited from occupancy v10 were stale; exact frozen commands were correct. No commands, source, checkpoints or running jobs changed.",
+  "corrected_fields": {
+    "trainer_sha256": "173d547f254ce00a7d470451393bcdd3a1d6cf86d0b497a67ae828ff88138633",
+    "loss": "Existing edge-weighted smooth-L1 distance loss, with zero occupancy-loss weight; checkpoint selected by validation boundary MAE",
+    "baseline": "Identical wider-context shared-query architecture, rows, seed and optimizer schedule; unaugmented control must reproduce every retained v9 query checkpoint array exactly",
+    "scope": "Existing fine plus stride-four inputs. Train random D4 patch transformations with corresponding XY query transformations; no new data, camera postprocessing, simulator or functional specification changes."
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "status": "passed",
+  "complete_historical_configurations": 11,
+  "failure_cases": 100,
+  "clean_cases": 20,
+  "shared_simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "summary": {
+    "ignore": {
+      "failure": {
+        "n": 100,
+        "in_place": 53,
+        "defective_finished": 47
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "guarded": {
+      "failure": {
+        "n": 100,
+        "in_place": 43,
+        "defective_finished": 0
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "contour": {
+      "failure": {
+        "n": 100,
+        "in_place": 62,
+        "defective_finished": 1
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "combined_neural": {
+      "failure": {
+        "n": 100,
+        "in_place": 67,
+        "defective_finished": 0
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "combined_agent": {
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      },
+      "failure": {
+        "n": 100,
+        "in_place": 67,
+        "defective_finished": 0
+      }
+    },
+    "unrestricted_ignore": {
+      "failure": {
+        "n": 100,
+        "in_place": 53,
+        "defective_finished": 47
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "unrestricted_contour": {
+      "failure": {
+        "n": 100,
+        "in_place": 62,
+        "defective_finished": 1
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "unrestricted_neural": {
+      "failure": {
+        "n": 100,
+        "in_place": 56,
+        "defective_finished": 3
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      }
+    },
+    "hybrid_contour": {
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      },
+      "failure": {
+        "n": 100,
+        "in_place": 62,
+        "defective_finished": 1
+      }
+    },
+    "hybrid_neural": {
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      },
+      "failure": {
+        "n": 100,
+        "in_place": 65,
+        "defective_finished": 0
+      }
+    },
+    "hybrid_agent": {
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "defective_finished": 0
+      },
+      "failure": {
+        "n": 100,
+        "in_place": 65,
+        "defective_finished": 0
+      }
+    }
+  },
+  "limitation": "Read-only verification of previous results and sources; the new historical candidate has not run."
+}

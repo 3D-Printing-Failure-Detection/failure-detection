@@ -1,0 +1,101 @@
+{
+  "status": "verified",
+  "rows": [
+    {
+      "case": "cartesian-mug-1003",
+      "model": "control",
+      "image_sha256": "2c5c94f57e85e8ff42e8ac8aaab78aa68d41c5891770e810fe78a1c5c5a4e032",
+      "previous_sha256": "d503fc663c152ba2eda8ee87c6b50ebcb1d1ca970fbf13d4924b037a159f8b5b",
+      "distance_sha256": "ceae6108cb7b72fae3795b236605685d824c89b7c9b2b5944f4ed386a632b7d4",
+      "region_sha256": "641fa95f7e97edb4883bc6d50252d8e7d461a3b87662a1e5e566a6e837b89d90"
+    },
+    {
+      "case": "cartesian-mug-1003",
+      "model": "penalty125",
+      "image_sha256": "2c5c94f57e85e8ff42e8ac8aaab78aa68d41c5891770e810fe78a1c5c5a4e032",
+      "previous_sha256": "d503fc663c152ba2eda8ee87c6b50ebcb1d1ca970fbf13d4924b037a159f8b5b",
+      "distance_sha256": "ceae6108cb7b72fae3795b236605685d824c89b7c9b2b5944f4ed386a632b7d4",
+      "region_sha256": "641fa95f7e97edb4883bc6d50252d8e7d461a3b87662a1e5e566a6e837b89d90"
+    },
+    {
+      "case": "cartesian-mug-1003",
+      "model": "penalty150",
+      "image_sha256": "2c5c94f57e85e8ff42e8ac8aaab78aa68d41c5891770e810fe78a1c5c5a4e032",
+      "previous_sha256": "d503fc663c152ba2eda8ee87c6b50ebcb1d1ca970fbf13d4924b037a159f8b5b",
+      "distance_sha256": "ceae6108cb7b72fae3795b236605685d824c89b7c9b2b5944f4ed386a632b7d4",
+      "region_sha256": "641fa95f7e97edb4883bc6d50252d8e7d461a3b87662a1e5e566a6e837b89d90"
+    },
+    {
+      "case": "corexy-mug-1003",
+      "model": "control",
+      "image_sha256": "ac140aee81ebafae26b661e7119093755d74677f501eab29bd4ee0049944e9e2",
+      "previous_sha256": "1b6e25b951fa4116c629584305a43221d3e9f971e6eacf233e030d26c3fe4ce4",
+      "distance_sha256": "7702569f6b5405926d51bc229191d011f370fe8b4d6b711ce8ac2ea2b9650d8c",
+      "region_sha256": "a46cb9bc56a9c8df63fd79dda36e35d1ce84c645d79672af37df3410a274e92a"
+    },
+    {
+      "case": "corexy-mug-1003",
+      "model": "penalty125",
+      "image_sha256": "ac140aee81ebafae26b661e7119093755d74677f501eab29bd4ee0049944e9e2",
+      "previous_sha256": "1b6e25b951fa4116c629584305a43221d3e9f971e6eacf233e030d26c3fe4ce4",
+      "distance_sha256": "7702569f6b5405926d51bc229191d011f370fe8b4d6b711ce8ac2ea2b9650d8c",
+      "region_sha256": "a46cb9bc56a9c8df63fd79dda36e35d1ce84c645d79672af37df3410a274e92a"
+    },
+    {
+      "case": "corexy-mug-1003",
+      "model": "penalty150",
+      "image_sha256": "ac140aee81ebafae26b661e7119093755d74677f501eab29bd4ee0049944e9e2",
+      "previous_sha256": "1b6e25b951fa4116c629584305a43221d3e9f971e6eacf233e030d26c3fe4ce4",
+      "distance_sha256": "7702569f6b5405926d51bc229191d011f370fe8b4d6b711ce8ac2ea2b9650d8c",
+      "region_sha256": "a46cb9bc56a9c8df63fd79dda36e35d1ce84c645d79672af37df3410a274e92a"
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "model": "control",
+      "image_sha256": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+      "previous_sha256": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2",
+      "distance_sha256": "9ea833a542b2e84f3cfda25bdaead01d012eeaec61037103dffb8c011dea7e92",
+      "region_sha256": "9a75a306642d53d847b0cd27fc34fb145f829e15d42aea962ded10b82ce25762"
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "model": "penalty125",
+      "image_sha256": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+      "previous_sha256": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2",
+      "distance_sha256": "9ea833a542b2e84f3cfda25bdaead01d012eeaec61037103dffb8c011dea7e92",
+      "region_sha256": "9a75a306642d53d847b0cd27fc34fb145f829e15d42aea962ded10b82ce25762"
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "model": "penalty150",
+      "image_sha256": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+      "previous_sha256": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2",
+      "distance_sha256": "9ea833a542b2e84f3cfda25bdaead01d012eeaec61037103dffb8c011dea7e92",
+      "region_sha256": "9a75a306642d53d847b0cd27fc34fb145f829e15d42aea962ded10b82ce25762"
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "model": "control",
+      "image_sha256": "3072054da2ef656eabbf4dbecc75b7d7200ae710c3d2a78e9f3dfbe1db44c3ae",
+      "previous_sha256": "f97522b4ff2e12b987942fd47f62c5e490c71d8cd67649a1f67b07242652c322",
+      "distance_sha256": "71e1caf2033c547e1bd1530e5ba153529f92b3a98308c874a03f0294df981f4c",
+      "region_sha256": "3072c307d1f2520f9a0fe3a08de98471bb97f5248c1bc9ba4e9709780d031050"
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "model": "penalty125",
+      "image_sha256": "3072054da2ef656eabbf4dbecc75b7d7200ae710c3d2a78e9f3dfbe1db44c3ae",
+      "previous_sha256": "f97522b4ff2e12b987942fd47f62c5e490c71d8cd67649a1f67b07242652c322",
+      "distance_sha256": "71e1caf2033c547e1bd1530e5ba153529f92b3a98308c874a03f0294df981f4c",
+      "region_sha256": "3072c307d1f2520f9a0fe3a08de98471bb97f5248c1bc9ba4e9709780d031050"
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "model": "penalty150",
+      "image_sha256": "3072054da2ef656eabbf4dbecc75b7d7200ae710c3d2a78e9f3dfbe1db44c3ae",
+      "previous_sha256": "f97522b4ff2e12b987942fd47f62c5e490c71d8cd67649a1f67b07242652c322",
+      "distance_sha256": "71e1caf2033c547e1bd1530e5ba153529f92b3a98308c874a03f0294df981f4c",
+      "region_sha256": "3072c307d1f2520f9a0fe3a08de98471bb97f5248c1bc9ba4e9709780d031050"
+    }
+  ]
+}

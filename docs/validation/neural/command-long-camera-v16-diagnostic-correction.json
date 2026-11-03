@@ -1,0 +1,6 @@
+{
+  "status": "superseded_loss_calculation_only",
+  "original": "export-diagnostic.json",
+  "correction": "export-diagnostic-corrected.json",
+  "reason": "Original diagnostic used a different illustrative edge weighting for its loss field. Corrected diagnostic uses the exact trainer weighting .25+.75*(abs(target)<.5). Original numerical differences and sign disagreement counts are unaffected; original files retained."
+}

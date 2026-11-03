@@ -1,0 +1,30 @@
+{
+  "status": "rejected",
+  "diagnostic_passes": false,
+  "control_checkpoint_and_full_diagnostic_reproduced_exactly": true,
+  "hybrid_candidate": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 2 layers (leaks)"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64064.66755575182,
+      "thin_layers": 0
+    }
+  },
+  "raw_candidate": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 2 layers (leaks)"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64064.66755575182,
+      "thin_layers": 0
+    }
+  },
+  "geometry_status": "skipped",
+  "recovery_trials": 0,
+  "limitation": "Asymmetric training cost is not calibrated confidence. Passing consumed diagnostics does not establish actual recovery or fresh-test superiority; failed gates skip recovery and broader follow-ups."
+}

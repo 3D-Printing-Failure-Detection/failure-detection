@@ -1,0 +1,13 @@
+{
+  "full_suite": {
+    "passed": 195,
+    "skipped": 3,
+    "seconds": 29.06
+  },
+  "focused_suite": {
+    "passed": 54,
+    "seconds": 5.67
+  },
+  "suite_output_sha256": "183b0481407e81674da7c77e370524e29d3f522444f9e7b236a63c3bccdcbedf",
+  "storage_verifier_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610"
+}

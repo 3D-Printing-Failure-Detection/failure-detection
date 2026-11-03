@@ -1,0 +1,4961 @@
+{
+  "status": "complete",
+  "rows": 5472,
+  "summary": {
+    "ignore": {
+      "failure": {
+        "n": 240,
+        "in_place": 128,
+        "scrapped": 0,
+        "defective_finished": 112,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 2036.1735946263652,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.91856482119417,
+        "mean_filament_with_assumed_clean_restart": 0.91856482119417
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 402.8284602378262,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999679941364906,
+        "mean_filament_with_assumed_clean_restart": 0.9999679941364906
+      }
+    },
+    "scrap": {
+      "failure": {
+        "n": 240,
+        "in_place": 12,
+        "scrapped": 223,
+        "defective_finished": 5,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 2166.3014565815683,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.6483041347958216,
+        "mean_filament_with_assumed_clean_restart": 1.5774708014624883
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 725.4509148864308,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "alert": {
+      "failure": {
+        "n": 240,
+        "in_place": 58,
+        "scrapped": 177,
+        "defective_finished": 5,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 2330.4171022974188,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.7216013215401257,
+        "mean_filament_with_assumed_clean_restart": 1.4591013215401256
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 747.6149201535154,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "ours": {
+      "failure": {
+        "n": 240,
+        "in_place": 66,
+        "scrapped": 168,
+        "defective_finished": 6,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 3975.9879548841855,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.737182726216999,
+        "mean_filament_with_assumed_clean_restart": 1.4371827262169992
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 742.3744396604598,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "measured": {
+      "failure": {
+        "n": 240,
+        "in_place": 71,
+        "scrapped": 167,
+        "defective_finished": 2,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 4213.6840201674495,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.7353941134037035,
+        "mean_filament_with_assumed_clean_restart": 1.431227446737037
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 809.7970136695076,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "predictive": {
+      "failure": {
+        "n": 240,
+        "in_place": 79,
+        "scrapped": 155,
+        "defective_finished": 6,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 7088.585781397764,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.7475996612748402,
+        "mean_filament_with_assumed_clean_restart": 1.3934329946081736
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 819.0119702495867,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "functional": {
+      "failure": {
+        "n": 240,
+        "in_place": 22,
+        "scrapped": 215,
+        "defective_finished": 3,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 6838.748922321829,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.68649519530467,
+        "mean_filament_with_assumed_clean_restart": 1.5823285286380036
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 841.8744855985278,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "guarded": {
+      "failure": {
+        "n": 240,
+        "in_place": 86,
+        "scrapped": 149,
+        "defective_finished": 5,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 5223.0652778769145,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.7524167113784068,
+        "mean_filament_with_assumed_clean_restart": 1.3732500447117402
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 835.9686396722682,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "contour": {
+      "failure": {
+        "n": 240,
+        "in_place": 128,
+        "scrapped": 106,
+        "defective_finished": 6,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 5628.9918643058045,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8219031210421296,
+        "mean_filament_with_assumed_clean_restart": 1.2635697877087961
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 841.8433102618437,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "contour_risk": {
+      "failure": {
+        "n": 240,
+        "in_place": 133,
+        "scrapped": 104,
+        "defective_finished": 3,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 5840.063823183882,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8214769386166763,
+        "mean_filament_with_assumed_clean_restart": 1.2548102719500096
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 844.6218567778124,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "neural": {
+      "failure": {
+        "n": 240,
+        "in_place": 122,
+        "scrapped": 113,
+        "defective_finished": 5,
+        "neural_queries": 76886,
+        "agent_requests": 0,
+        "seconds": 8197.14348852099,
+        "boundary_queries": 14808,
+        "mean_actual_filament_ratio": 0.8198617016527603,
+        "mean_filament_with_assumed_clean_restart": 1.2906950349860935
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 1684.415840937756,
+        "boundary_queries": 3840,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "previous_combined_neural": {
+      "failure": {
+        "n": 240,
+        "in_place": 129,
+        "scrapped": 107,
+        "defective_finished": 4,
+        "neural_queries": 151907,
+        "agent_requests": 0,
+        "seconds": 8300.797377914307,
+        "boundary_queries": 14808,
+        "mean_actual_filament_ratio": 0.8237285884692124,
+        "mean_filament_with_assumed_clean_restart": 1.2695619218025456
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 1655.726969431038,
+        "boundary_queries": 3840,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "previous_combined_agent": {
+      "failure": {
+        "n": 240,
+        "in_place": 126,
+        "scrapped": 109,
+        "defective_finished": 5,
+        "neural_queries": 145669,
+        "agent_requests": 488,
+        "seconds": 13630.901423098869,
+        "boundary_queries": 14808,
+        "mean_actual_filament_ratio": 0.8222988974742491,
+        "mean_filament_with_assumed_clean_restart": 1.2764655641409157
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 1611.4032138104085,
+        "boundary_queries": 3840,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "neural_camera": {
+      "failure": {
+        "n": 240,
+        "in_place": 129,
+        "scrapped": 106,
+        "defective_finished": 5,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 8193.386695643305,
+        "boundary_queries": 18881,
+        "mean_actual_filament_ratio": 0.822917290736686,
+        "mean_filament_with_assumed_clean_restart": 1.2645839574033526
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 1664.646495655994,
+        "boundary_queries": 4800,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "previous_classical_camera_neural": {
+      "failure": {
+        "n": 240,
+        "in_place": 131,
+        "scrapped": 106,
+        "defective_finished": 3,
+        "neural_queries": 151907,
+        "agent_requests": 0,
+        "seconds": 5356.5321828672895,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8225983192958167,
+        "mean_filament_with_assumed_clean_restart": 1.2642649859624833
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 751.7616364122368,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "analytical_containers_neural": {
+      "failure": {
+        "n": 240,
+        "in_place": 136,
+        "scrapped": 103,
+        "defective_finished": 1,
+        "neural_queries": 236556,
+        "agent_requests": 0,
+        "seconds": 7412.157960193232,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8230926356116711,
+        "mean_filament_with_assumed_clean_restart": 1.2522593022783377
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 944.1691690867301,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "analytical_containers_agent": {
+      "failure": {
+        "n": 240,
+        "in_place": 136,
+        "scrapped": 103,
+        "defective_finished": 1,
+        "neural_queries": 236556,
+        "agent_requests": 499,
+        "seconds": 10365.993540086434,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.8230926356116711,
+        "mean_filament_with_assumed_clean_restart": 1.2522593022783377
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 943.5540521889925,
+        "boundary_queries": 0,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "neural_risk": {
+      "failure": {
+        "n": 240,
+        "in_place": 141,
+        "scrapped": 94,
+        "defective_finished": 5,
+        "neural_queries": 236556,
+        "agent_requests": 0,
+        "seconds": 10748.691100133,
+        "boundary_queries": 15208,
+        "mean_actual_filament_ratio": 0.8360305948954297,
+        "mean_filament_with_assumed_clean_restart": 1.2276972615620962
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 1474.605176891666,
+        "boundary_queries": 3840,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    },
+    "neural_risk_agent": {
+      "failure": {
+        "n": 240,
+        "in_place": 141,
+        "scrapped": 94,
+        "defective_finished": 5,
+        "neural_queries": 236549,
+        "agent_requests": 527,
+        "seconds": 14325.234553134185,
+        "boundary_queries": 15208,
+        "mean_actual_filament_ratio": 0.8360313981592399,
+        "mean_filament_with_assumed_clean_restart": 1.2276980648259064
+      },
+      "clean": {
+        "n": 48,
+        "in_place": 48,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 2064,
+        "agent_requests": 0,
+        "seconds": 1489.640819128952,
+        "boundary_queries": 3840,
+        "mean_actual_filament_ratio": 0.9999678465008817,
+        "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "ignore",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [
+        [
+          "bedslinger",
+          "cup",
+          "under_extrusion",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "under_extrusion",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "under_extrusion",
+          1003
+        ]
+      ],
+      "net_gain": 13,
+      "extra_defective_finishes": -107
+    },
+    {
+      "baseline": "scrap",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "under_extrusion",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1004
+        ]
+      ],
+      "lost": [],
+      "net_gain": 129,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "alert",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 83,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "ours",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 75,
+      "extra_defective_finishes": -1
+    },
+    {
+      "baseline": "measured",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 70,
+      "extra_defective_finishes": 3
+    },
+    {
+      "baseline": "predictive",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 62,
+      "extra_defective_finishes": -1
+    },
+    {
+      "baseline": "functional",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "bracket",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "bracket",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "warp",
+          1004
+        ]
+      ],
+      "lost": [],
+      "net_gain": 119,
+      "extra_defective_finishes": 2
+    },
+    {
+      "baseline": "guarded",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "cup",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1004
+        ],
+        [
+          "corexy",
+          "mug",
+          "under_extrusion",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1003
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1004
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 55,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "contour",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 13,
+      "extra_defective_finishes": -1
+    },
+    {
+      "baseline": "contour_risk",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 8,
+      "extra_defective_finishes": 2
+    },
+    {
+      "baseline": "neural",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1003
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 19,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "previous_combined_neural",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ]
+      ],
+      "lost": [],
+      "net_gain": 12,
+      "extra_defective_finishes": 1
+    },
+    {
+      "baseline": "previous_combined_agent",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "collapse",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 15,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "neural_camera",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "cartesian",
+          "mug",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          1002
+        ]
+      ],
+      "lost": [],
+      "net_gain": 12,
+      "extra_defective_finishes": 0
+    },
+    {
+      "baseline": "previous_classical_camera_neural",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "collapse",
+          1002
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "bracket",
+          "shift",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ]
+      ],
+      "lost": [],
+      "net_gain": 10,
+      "extra_defective_finishes": 2
+    },
+    {
+      "baseline": "analytical_containers_neural",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ]
+      ],
+      "lost": [],
+      "net_gain": 5,
+      "extra_defective_finishes": 4
+    },
+    {
+      "baseline": "analytical_containers_agent",
+      "required_baseline": true,
+      "gained": [
+        [
+          "bedslinger",
+          "mug",
+          "warp",
+          1001
+        ],
+        [
+          "cartesian",
+          "cup",
+          "collapse",
+          1003
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          1002
+        ],
+        [
+          "corexy",
+          "mug",
+          "collapse",
+          1001
+        ],
+        [
+          "corexy",
+          "mug",
+          "warp",
+          1001
+        ]
+      ],
+      "lost": [],
+      "net_gain": 5,
+      "extra_defective_finishes": 4
+    },
+    {
+      "baseline": "neural_risk",
+      "required_baseline": false,
+      "gained": [],
+      "lost": [],
+      "net_gain": 0,
+      "extra_defective_finishes": 0
+    }
+  ],
+  "actual_learning": true,
+  "actual_agent": true,
+  "strictly_more_completions_than_every_baseline": true,
+  "no_lost_baseline_successes": false,
+  "no_higher_defective_finish_count": false,
+  "all_candidate_clean_controls_pass": true,
+  "limitation": "Complete consumed development grids only. Both 576-row candidates and all 15 original configurations remain separate, with exact source/model/options/worker provenance. Gate rows are excluded; historical full regression and untouched evaluation remain required."
+}

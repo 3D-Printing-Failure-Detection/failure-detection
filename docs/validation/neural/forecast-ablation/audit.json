@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "source_sha256": "7ac8fc6a9991eca866db97ab8b80924ef4dfb549c43f9971cdcdd38e78d44936",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+  },
+  "runs_sha256": "65e63b3cb250f7d258c1464bf41cc20b5c058715310bd82b636baa1047993f94",
+  "rows": 6,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "contour_risk",
+      "split": "failure",
+      "n": 3,
+      "in_place": 1,
+      "scrapped": 2,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 40.79110854503233
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 3,
+      "in_place": 3,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 46.898169683991
+    }
+  ],
+  "limitation": "development comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "40fce74808d9966a29b97ffd0971df5eaeceda20d5b9399321bdf6837f71fa06"
+}

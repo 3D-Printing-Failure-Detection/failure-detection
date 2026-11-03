@@ -1,0 +1,12 @@
+{
+  "created_at": "2026-11-03T00:28:26.143178+00:00",
+  "purpose": "Verify that adding a previous-camera renderer preserves every current input and target, before training",
+  "source_sha256": "9855e62751f9b1330b262d7d8c68fba5fa3d8263b6764dc0066902e46a242cff",
+  "builder_sha256": "056555a6b408186743a1dc91d54656144f0256da9ecb0e0dae818bc670b3cb5b",
+  "paths": [
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-clean-60.json.gz",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-313.json.gz",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-410.json.gz"
+  ],
+  "legacy_data": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/dataset/data.npz"
+}

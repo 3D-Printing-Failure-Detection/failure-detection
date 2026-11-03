@@ -1,0 +1,133 @@
+{
+  "status": "verified",
+  "completed_at": "2026-11-03T10:31:28.413251+00:00",
+  "script_sha256": "20054b02a847438611bd3acbf5d410cd38da489449e2b48a504b9becc39a7595",
+  "packer_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+  "directories": 13,
+  "rows": 1176,
+  "allocated_bytes_reclaimed": 15360000,
+  "records": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-full-v33/full/results",
+      "rows": 576,
+      "original_bytes": 9081090,
+      "allocated_bytes_reclaimed": 8486912,
+      "receipt_sha256": "53dc2f93e14b1a36ca4cc968f7d834fc605ca9011eb1b9081e1e3f160fd625b9",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "1c2119bc8e4c693aa6229a8b2d43084da29c62c7325e797d52c28821ee58dcb9"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-containers/results",
+      "rows": 48,
+      "original_bytes": 860964,
+      "allocated_bytes_reclaimed": 815104,
+      "receipt_sha256": "7234af70f94e49579593ed4f2ff2820018154036cc81641521c23f0e1369d419",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "30beb15b34f154509bf2ca08ad22ba19dd09636f029e577358d5a73bbbfca72d"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/heldout-fits/results",
+      "rows": 48,
+      "original_bytes": 303390,
+      "allocated_bytes_reclaimed": 278528,
+      "receipt_sha256": "8a80d957c08a8d3ec5f96b325acb7a482d034ec2ffd5d452495e8f90b57f40ed",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "37540ac5ce942fad974e23a15de03c736f14c62a88db714f0c1c060df2fd0a06"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-containers/results",
+      "rows": 72,
+      "original_bytes": 1655700,
+      "allocated_bytes_reclaimed": 1552384,
+      "receipt_sha256": "d4c13b394f4e846365171120f1a2b748c9adf197c87ff50892e0ed40dc96fe94",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "6a2d2e81fee8ef76bfa6f135a48d51a1d9bc153d95ef1444badbc225e42dd4a9"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-historical-v34/main-fits/results",
+      "rows": 72,
+      "original_bytes": 465241,
+      "allocated_bytes_reclaimed": 425984,
+      "receipt_sha256": "8fb0abe4138e011ba8cc48d028796acd051ad237c8b9261ed9db4129aa2c9927",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "27f1a3eea04e11045f292f309b1a0954956f86c0e8578836b1b575cd9007abaa"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-heldout-containers/results",
+      "rows": 24,
+      "original_bytes": 239755,
+      "allocated_bytes_reclaimed": 229376,
+      "receipt_sha256": "d535ff33283f0e6040ff81d6a5b8bc66776efdf406149249b33c566755d5d419",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "bcbc74b12b064076bc2c7593cbd4930c62415813059725f7954144647a2f21c6"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-heldout-fits/results",
+      "rows": 24,
+      "original_bytes": 110776,
+      "allocated_bytes_reclaimed": 102400,
+      "receipt_sha256": "ad9d3d4f8c735a6ef6b669f0db9785076ae66c6d0219d8f900ab1c67385067ed",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "1adbac1e56c9e0e9684354863e212a55d13c521a8458da5630e9e46fa4c85ac0"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-main-containers/results",
+      "rows": 36,
+      "original_bytes": 425567,
+      "allocated_bytes_reclaimed": 397312,
+      "receipt_sha256": "8442d7abaf95b2d0a6dc47abf319892360a363897807c461f8be5d82beedce73",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "446df19c9083a834c2a588b0b32684a839fee4ae73d0c9f2cde68844ca0940fa"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-main-fits/results",
+      "rows": 36,
+      "original_bytes": 130953,
+      "allocated_bytes_reclaimed": 114688,
+      "receipt_sha256": "d6142daf95938cc6eb7113e7d3cfdb7688ccafbc321acfe91c89967bde689899",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "3c82b4bcfa2c7475bc519d703a58c66a8ac37437388a2da7a45ad0f41976fafc"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-heldout-containers/results",
+      "rows": 48,
+      "original_bytes": 891350,
+      "allocated_bytes_reclaimed": 839680,
+      "receipt_sha256": "7f40dbfc3fc3c275692a366c99eca54be3737f2a94b14f3b9ffd1859c9acc9ba",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "c4fda6b61eb5a5b9a137888e663bc9dc646855284986a5954fb95ed59d49e872"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-heldout-fits/results",
+      "rows": 48,
+      "original_bytes": 304845,
+      "allocated_bytes_reclaimed": 282624,
+      "receipt_sha256": "818328cd4eda2ca56fc79b303103adefc4d72167c263b23096af65ebeac354c5",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "c9afe3cde4b4f7bf2abd0652e3983c5d7e6bee8c5bb2a6e7df2911edd5d7ba85"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-main-containers/results",
+      "rows": 72,
+      "original_bytes": 1509060,
+      "allocated_bytes_reclaimed": 1404928,
+      "receipt_sha256": "d49f937324276160506e13c662f64fc2b7530c34ca455f5132d4e5770eb3de52",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "4f69a5940228dd1b269cd357bed3fa300ccb20ace3437b06027dd7ead82be04b"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-main-fits/results",
+      "rows": 72,
+      "original_bytes": 467362,
+      "allocated_bytes_reclaimed": 430080,
+      "receipt_sha256": "e6c1af08050a7964045f61169a14d2ebb9de70f984a29ac67f3f452867644d0d",
+      "actual_disk_restore_verified": true,
+      "original_sha256": "b6ffcbb05416ef4cc007d5d901548a445a01b4199a1a5a572058f315c8fa16ed"
+    }
+  ],
+  "storage_before_bytes": 99963392000,
+  "storage_after_bytes": 99948052480,
+  "unchanged": "All decoded primary result bytes, manifests and audits. No active runs, model weights or training data changed.",
+  "readers": "Use tools.result_storage.load_run_bytes. Legacy scripts that directly open runs.jsonl require restoration first; their original files and manifests are retained unchanged.",
+  "restore": "Decompress each runs.jsonl.gz to runs.jsonl, verify original_sha256 in runs-storage.json, then remove the gzip copy; the reader rejects both formats being present simultaneously."
+}

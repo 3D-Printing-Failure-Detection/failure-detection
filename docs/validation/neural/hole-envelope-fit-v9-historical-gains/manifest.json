@@ -1,0 +1,156 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian",
+      "corexy",
+      "bedslinger"
+    ],
+    "parts": [
+      "spacer"
+    ],
+    "kinds": [
+      "shift"
+    ],
+    "methods": [
+      "contour_risk",
+      "neural_risk",
+      "neural_risk_agent"
+    ],
+    "n": 1,
+    "seed": 10,
+    "workers": 2,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/historical-gains/results",
+    "neural_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/temporal.npz",
+    "experiment_stage": "development",
+    "neural_calibrate_measurements": false,
+    "neural_forecast_scope": "fits",
+    "neural_reserve_fit": true,
+    "neural_joint_forecast": true,
+    "neural_hole_envelope": true,
+    "boundary_checkpoint": null,
+    "boundary_scope": "all",
+    "boundary_fallback": false,
+    "boundary_joint_forecast": false,
+    "supervisor_endpoint": "http://127.0.0.1:8089",
+    "supervisor_model": "local-qwen3",
+    "supervisor_timeout": 120.0,
+    "supervisor_review_interval": 8,
+    "supervisor_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/supervisor-a.json"
+  },
+  "instrumentation_version": 3,
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    },
+    "corexy": {
+      "name": "corexy",
+      "kinematics": "corexy",
+      "bed_mm": [
+        256,
+        256
+      ],
+      "height_mm": 256,
+      "line_width_mm": 0.45,
+      "moving_mass_kg": 0.16,
+      "camera_position_m": [
+        0.12,
+        -0.15,
+        0.4
+      ],
+      "filament_rgb": [
+        0.75,
+        0.83,
+        0.87
+      ],
+      "noise_std": 1.5
+    },
+    "bedslinger": {
+      "name": "bedslinger",
+      "kinematics": "bedslinger",
+      "bed_mm": [
+        180,
+        180
+      ],
+      "height_mm": 180,
+      "line_width_mm": 0.48,
+      "moving_mass_kg": 0.45,
+      "camera_position_m": [
+        -0.1,
+        -0.18,
+        0.34
+      ],
+      "filament_rgb": [
+        0.87,
+        0.72,
+        0.59
+      ],
+      "noise_std": 2.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "a1bd2862a61ef9e6adf6d1471672645491d29a97",
+  "source_sha256": "13f9e7ad01a01bff3d79dd849801e4abfd017f676ae933d617af212b504dea1a",
+  "expected_runs": 9,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "neural_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "supervisor": {
+    "model": "Qwen/Qwen3-0.6B-GGUF",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "runtime": "llama.cpp b12057",
+    "assets": [
+      {
+        "name": "llama-b12057-bin-ubuntu-x64.tar.gz",
+        "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12057/llama-b12057-bin-ubuntu-x64.tar.gz",
+        "bytes": 22892921,
+        "sha256": "1bdfdac035014ff7b935aaf4a91d7bd5ea5018db9957e1a21b6567f189b8dbe7"
+      },
+      {
+        "name": "Qwen3-0.6B-Q8_0.gguf",
+        "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf",
+        "bytes": 639446688,
+        "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"
+      }
+    ]
+  },
+  "completed_runs": 9,
+  "errors": [],
+  "final_source_sha256": "13f9e7ad01a01bff3d79dd849801e4abfd017f676ae933d617af212b504dea1a",
+  "final_neural_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+}

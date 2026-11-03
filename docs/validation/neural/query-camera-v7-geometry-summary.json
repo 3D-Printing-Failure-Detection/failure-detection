@@ -1,0 +1,66 @@
+{
+  "classical": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 27,
+      "true_negative": 1977,
+      "false_positive": 0,
+      "false_negative": 36
+    },
+    "hard_thin": {
+      "true_positive": 0,
+      "true_negative": 1992,
+      "false_positive": 0,
+      "false_negative": 48
+    },
+    "open_wall": {
+      "true_positive": 54,
+      "true_negative": 1053,
+      "false_positive": 66,
+      "false_negative": 3
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 192,
+      "false_positive": 0,
+      "false_negative": 0
+    }
+  },
+  "query": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 699,
+      "false_positive": 165,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 44,
+      "true_negative": 1977,
+      "false_positive": 0,
+      "false_negative": 19
+    },
+    "hard_thin": {
+      "true_positive": 27,
+      "true_negative": 1992,
+      "false_positive": 0,
+      "false_negative": 21
+    },
+    "open_wall": {
+      "true_positive": 51,
+      "true_negative": 1068,
+      "false_positive": 51,
+      "false_negative": 6
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 191,
+      "false_positive": 1,
+      "false_negative": 0
+    }
+  }
+}

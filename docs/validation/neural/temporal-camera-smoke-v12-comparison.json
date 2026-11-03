@@ -1,0 +1,44 @@
+{
+  "groups": [
+    {
+      "group": "cartesian-cup-clean-60",
+      "validation": false,
+      "frames": 45,
+      "previous_camera_images": 42,
+      "focused_boundary_samples": 270,
+      "sha256": "1aadf17dc832c3687960d7b942cab066956d21ec7a44da8892bd222139f22ac1",
+      "current_pixels_identical": true,
+      "targets_identical": true,
+      "max_current_difference": 0.0,
+      "previous_differs": true,
+      "cold_start_duplicates_current": true
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-313",
+      "validation": false,
+      "frames": 60,
+      "previous_camera_images": 57,
+      "focused_boundary_samples": 360,
+      "sha256": "d431c9d5946e67cdf714db219b4325d696c9d6cf3eb6ecc446ddf78feef36531",
+      "current_pixels_identical": true,
+      "targets_identical": true,
+      "max_current_difference": 0.0,
+      "previous_differs": true,
+      "cold_start_duplicates_current": true
+    },
+    {
+      "group": "cartesian-cup-under_extrusion-410",
+      "validation": true,
+      "frames": 60,
+      "previous_camera_images": 57,
+      "focused_boundary_samples": 360,
+      "sha256": "e3e31b6f847325d79b2c7267fe8513e13006046049555b917081490426a8047d",
+      "current_pixels_identical": true,
+      "targets_identical": true,
+      "max_current_difference": 0.0,
+      "previous_differs": true,
+      "cold_start_duplicates_current": true
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,145 @@
+{
+  "status": "complete",
+  "audit_and_comparison_seconds": 2.139369010925293,
+  "evaluation_previously_completed": true,
+  "prior_failed_audit_retained": true,
+  "rows": 5184,
+  "candidate": {
+    "failure": {
+      "n": 240,
+      "in_place": 136,
+      "scrapped": 103,
+      "defective_finished": 1,
+      "neural_queries": 236556,
+      "agent_requests": 499,
+      "seconds": 10365.993540086434,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.8230926356116711,
+      "mean_filament_with_assumed_clean_restart": 1.2522593022783377
+    },
+    "clean": {
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 2064,
+      "agent_requests": 0,
+      "seconds": 943.5540521889925,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.9999678465008817,
+      "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+    }
+  },
+  "neural_only": {
+    "failure": {
+      "n": 240,
+      "in_place": 136,
+      "scrapped": 103,
+      "defective_finished": 1,
+      "neural_queries": 236556,
+      "agent_requests": 0,
+      "seconds": 7412.157960193232,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.8230926356116711,
+      "mean_filament_with_assumed_clean_restart": 1.2522593022783377
+    },
+    "clean": {
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 2064,
+      "agent_requests": 0,
+      "seconds": 944.1691690867301,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.9999678465008817,
+      "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+    }
+  },
+  "matched_analytical": {
+    "failure": {
+      "n": 240,
+      "in_place": 133,
+      "scrapped": 106,
+      "defective_finished": 1,
+      "neural_queries": 0,
+      "agent_requests": 0,
+      "seconds": 6632.454323370359,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.8180582561235629,
+      "mean_filament_with_assumed_clean_restart": 1.2597249227902296
+    },
+    "clean": {
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 0,
+      "agent_requests": 0,
+      "seconds": 960.4756523927208,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.9999678465008817,
+      "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+    }
+  },
+  "matched_comparison": {
+    "baseline": "matched_analytical",
+    "required_baseline": true,
+    "gained": [
+      [
+        "bedslinger",
+        "spacer",
+        "shift",
+        1002
+      ],
+      [
+        "cartesian",
+        "spacer",
+        "shift",
+        1002
+      ],
+      [
+        "corexy",
+        "spacer",
+        "shift",
+        1002
+      ]
+    ],
+    "lost": [],
+    "net_gain": 3,
+    "extra_defective_finishes": 0
+  },
+  "previous_analytical": {
+    "failure": {
+      "n": 240,
+      "in_place": 133,
+      "scrapped": 104,
+      "defective_finished": 3,
+      "neural_queries": 0,
+      "agent_requests": 0,
+      "seconds": 5840.063823183882,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.8214769386166763,
+      "mean_filament_with_assumed_clean_restart": 1.2548102719500096
+    },
+    "clean": {
+      "n": 48,
+      "in_place": 48,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 0,
+      "agent_requests": 0,
+      "seconds": 844.6218567778124,
+      "boundary_queries": 0,
+      "mean_actual_filament_ratio": 0.9999678465008817,
+      "mean_filament_with_assumed_clean_restart": 0.9999678465008817
+    }
+  },
+  "actual_learning": true,
+  "actual_agent": true,
+  "all_candidate_clean_controls_pass": true,
+  "no_lost_baseline_successes": false,
+  "strictly_more_completions_than_every_baseline": true,
+  "no_higher_defective_finish_count": true,
+  "limitation": "Complete consumed development grid, not untouched validation. The control has no neural inference or language-model requests; trained forecasting and associated neural recovery proposals remain the policy difference."
+}

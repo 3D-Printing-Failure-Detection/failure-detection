@@ -1,0 +1,16 @@
+{
+  "status": "skipped",
+  "verdict": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 2 layers (leaks)",
+      "wall far below 1.4 mm in 1 layers"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64047.50018368567,
+      "thin_layers": 1
+    }
+  },
+  "reason": "known false-gap diagnostic still fails"
+}

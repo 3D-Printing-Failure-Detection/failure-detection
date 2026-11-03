@@ -1,0 +1,311 @@
+{
+  "status": "verified",
+  "created_at": "2026-11-03T09:34:12.248545+00:00",
+  "tool_sha256": "9ecdd362cd0b73521cf30260970cd8678ba30d3763d63ffcf3b0f401b7c0e6a1",
+  "rows": 418,
+  "files": 294,
+  "removed_allocated_bytes": 12640256,
+  "records": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-heldout-containers/results",
+      "rows": 24,
+      "removed_allocated_bytes": 512000,
+      "receipt_sha256": "7fe727f54f3628d8567f4ff750e3748f325f0f34c53fef9adc121431a16763f9",
+      "primary_sha256": "bcbc74b12b064076bc2c7593cbd4930c62415813059725f7954144647a2f21c6",
+      "actual_restore": {
+        "status": "restored",
+        "files": 25,
+        "bytes": 460605
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-heldout-fits/results",
+      "rows": 24,
+      "removed_allocated_bytes": 253952,
+      "receipt_sha256": "a4963fb9d8088712c0629b189fd9d94c58ed99d72305c6926617819944f25b25",
+      "primary_sha256": "1adbac1e56c9e0e9684354863e212a55d13c521a8458da5630e9e46fa4c85ac0",
+      "actual_restore": {
+        "status": "restored",
+        "files": 25,
+        "bytes": 202725
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-main-containers/results",
+      "rows": 36,
+      "removed_allocated_bytes": 905216,
+      "receipt_sha256": "b5d0e6f964dc468772a3b68bba76a850deaddaee1aecf9cdb865c508021f53df",
+      "primary_sha256": "446df19c9083a834c2a588b0b32684a839fee4ae73d0c9f2cde68844ca0940fa",
+      "actual_restore": {
+        "status": "restored",
+        "files": 37,
+        "bytes": 822383
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/analytical-main-fits/results",
+      "rows": 36,
+      "removed_allocated_bytes": 303104,
+      "receipt_sha256": "9a7dae50da18323e52fec57b58e87d7244219d6e19d574a6187a9f9de19a81ac",
+      "primary_sha256": "3c82b4bcfa2c7475bc519d703a58c66a8ac37437388a2da7a45ad0f41976fafc",
+      "actual_restore": {
+        "status": "restored",
+        "files": 37,
+        "bytes": 233269
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-heldout-containers/results",
+      "rows": 48,
+      "removed_allocated_bytes": 1781760,
+      "receipt_sha256": "fb88fa1606d19e8911c0fa19a0a19ebb07f93c40036df5298670ccff2ba9da95",
+      "primary_sha256": "c4fda6b61eb5a5b9a137888e663bc9dc646855284986a5954fb95ed59d49e872",
+      "actual_restore": {
+        "status": "restored",
+        "files": 25,
+        "bytes": 1744343
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-heldout-fits/results",
+      "rows": 48,
+      "removed_allocated_bytes": 606208,
+      "receipt_sha256": "1a84f6dd72ed2ff904b88486fdeb155d7bf1c211dfc88de363793ae4351e64dd",
+      "primary_sha256": "c9afe3cde4b4f7bf2abd0652e3983c5d7e6bee8c5bb2a6e7df2911edd5d7ba85",
+      "actual_restore": {
+        "status": "restored",
+        "files": 25,
+        "bytes": 571393
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-main-containers/results",
+      "rows": 72,
+      "removed_allocated_bytes": 3026944,
+      "receipt_sha256": "ab2eeb88ee3a0fc824c4cf71ce1f14c0914b2b01efe48019fd24f5f3249f3a0c",
+      "primary_sha256": "4f69a5940228dd1b269cd357bed3fa300ccb20ace3437b06027dd7ead82be04b",
+      "actual_restore": {
+        "status": "restored",
+        "files": 37,
+        "bytes": 2960167
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-historical-v43/neural-main-fits/results",
+      "rows": 72,
+      "removed_allocated_bytes": 942080,
+      "receipt_sha256": "5496f520ec995ca83a19af99533af79a68362a6191ba78dd3219f9ae576eaf65",
+      "primary_sha256": "b6ffcbb05416ef4cc007d5d901548a445a01b4199a1a5a572058f315c8fa16ed",
+      "actual_restore": {
+        "status": "restored",
+        "files": 37,
+        "bytes": 876855
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/bedslinger-mug-gain/results",
+      "rows": 2,
+      "removed_allocated_bytes": 69632,
+      "receipt_sha256": "c0801e12a7ea1869e075ed48444926fc466f9ff725cac69ad1074010d31afc71",
+      "primary_sha256": "26a42daa22a5e34c0a54172c1f34a74b4e437a6544614004d0533b882759f0e9",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 66834
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/candidate-mug-gain/results",
+      "rows": 2,
+      "removed_allocated_bytes": 131072,
+      "receipt_sha256": "793184455647cfa9f4b8289b397b95a2cd094db801b11a69ba07e618cbad0dae",
+      "primary_sha256": "19753e2cd43ffde6756f55753397f2a820e6ed2cb3428bc9ccf58cfb16c211f0",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 124884
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/candidate-shift-recoveries/results",
+      "rows": 4,
+      "removed_allocated_bytes": 765952,
+      "receipt_sha256": "0956b79f0b8a56ddf220d7accbb72a2aa843964a1c4c1e6e06d2b5e5cb2e278d",
+      "primary_sha256": "068aec63ee3f69452f82b01588d5a1b0e8d700b0b4011e95bec176d0c36c2f10",
+      "actual_restore": {
+        "status": "restored",
+        "files": 3,
+        "bytes": 762316
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/candidate-under-recovery/results",
+      "rows": 2,
+      "removed_allocated_bytes": 73728,
+      "receipt_sha256": "07bc63183507ebb5ca3e0970e56e6d23f139e7410a177058a0b73dfef128e014",
+      "primary_sha256": "98c15b766fda5578d83177906a3ee75cf78f7d33c2514e00e77b8e09bf05451b",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 71682
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/clean/results",
+      "rows": 8,
+      "removed_allocated_bytes": 65536,
+      "receipt_sha256": "a55afcd6c8840ae801cd9825fe17e79f77501f3852ba69494a73971d5360bd4d",
+      "primary_sha256": "67c7a8a1b05c8c90d747ce2cde7fdc771ed3fe408e0be3ee40cf3dfa26f0a987",
+      "actual_restore": {
+        "status": "restored",
+        "files": 5,
+        "bytes": 50546
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/control-mug-gain/results",
+      "rows": 2,
+      "removed_allocated_bytes": 102400,
+      "receipt_sha256": "fc37bf6943a411ee2f8569634cc908cead709999a255a1ffdfe7be5877a5fd79",
+      "primary_sha256": "c8ee98ef1ccc9f7273f70f9afba27d721cd2783058ef6205db669c8a0be37c30",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 97430
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/control-shift-recoveries/results",
+      "rows": 4,
+      "removed_allocated_bytes": 765952,
+      "receipt_sha256": "cd33a96b38c116b2b3fa3082ca213a422e5593bf91f047bc45a79e7b0ba5afe4",
+      "primary_sha256": "5498d8675f8ae923cf9b9f68b5191ec97aacce97cfc8bffa1e0a6f37893bea6d",
+      "actual_restore": {
+        "status": "restored",
+        "files": 3,
+        "bytes": 762540
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/control-under-recovery/results",
+      "rows": 2,
+      "removed_allocated_bytes": 73728,
+      "receipt_sha256": "aa3a07b141bedb553183843df053f2d8c145c26f3ba533c695b3e433c891730e",
+      "primary_sha256": "e5167cbbae57f1c603bfdac79a8d3a556fcea929bb0eab75f4c049a7a77c92c6",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 71708
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/corexy-mug-gains/results",
+      "rows": 4,
+      "removed_allocated_bytes": 176128,
+      "receipt_sha256": "611f16780df2de847f55dc97139a5e20c1878a3bcc5d06db3327af05258883d0",
+      "primary_sha256": "6934c09eff73c570fe365c6db3bcefc69cf345503ef51b8186081263102e6c2d",
+      "actual_restore": {
+        "status": "restored",
+        "files": 3,
+        "bytes": 168688
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/cup-collapse/results",
+      "rows": 2,
+      "removed_allocated_bytes": 442368,
+      "receipt_sha256": "a93248ff7d1bef95d2eb2627d19fdcdb30727a0e50a2c9d15184f65a6090e258",
+      "primary_sha256": "9b032382c0ff7e1cb84db02c31f693763e2abddae09556dcdb5a0eddc09f0bed",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 438268
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/cup-shift/results",
+      "rows": 2,
+      "removed_allocated_bytes": 335872,
+      "receipt_sha256": "9b4a91115c0348abd1c8257a02e4e9a68f26b6b6e46a936dfd57614ae507ef4f",
+      "primary_sha256": "cb65ec4d5d7da8a3ea73703f38a540e61938e762cf5d017bf34faa6d267b89ac",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 329368
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/defects-1004/results",
+      "rows": 4,
+      "removed_allocated_bytes": 106496,
+      "receipt_sha256": "382dc5e144c97dd870e1f2e64c2f322a6f43f4005288dd8964b8b6deb838c409",
+      "primary_sha256": "3d3bd91ebec3745cb4f6e94fb2f212ff2f13574c449254983aef44aca98dccd8",
+      "actual_restore": {
+        "status": "restored",
+        "files": 3,
+        "bytes": 99388
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/historical-clean/results",
+      "rows": 4,
+      "removed_allocated_bytes": 40960,
+      "receipt_sha256": "bbeb9e6c761cfde78f8e8222619780db0f3eb630ab5b7c631561c07b073f9365",
+      "primary_sha256": "fa779cb42a09583f6b147ad212b96e8cf33e1d61ee801855771d7499326f1c2c",
+      "actual_restore": {
+        "status": "restored",
+        "files": 3,
+        "bytes": 36188
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/historical-cup/results",
+      "rows": 2,
+      "removed_allocated_bytes": 73728,
+      "receipt_sha256": "fccdedfa48d03ab88f099df992426b7bc26dc4ba44d5e51276377091297d03fe",
+      "primary_sha256": "845af39e3e534190a29db42cfb7e9916818b4c7ca2aa0e714511012e766c364e",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 70166
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/historical-mug/results",
+      "rows": 2,
+      "removed_allocated_bytes": 344064,
+      "receipt_sha256": "d7db6790aafc57704d8d528e5c378b5cd4aeca23963c8541e0770f51ee59f0ab",
+      "primary_sha256": "3cda8351d639e755f9248b224806a545b0ca2888f20e2e62eab89e8ab0932191",
+      "actual_restore": {
+        "status": "restored",
+        "files": 2,
+        "bytes": 340196
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/learned-fit-gains/results",
+      "rows": 6,
+      "removed_allocated_bytes": 557056,
+      "receipt_sha256": "e72a72faf92f825878238699047c152bc6cbb25bfd69463b355f360289d8ce51",
+      "primary_sha256": "e207e53b8d902ebaee990c946334c1421a5364c14d12000c9f0fc072f07c9dc9",
+      "actual_restore": {
+        "status": "restored",
+        "files": 4,
+        "bytes": 548846
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/new-defects-1002/results",
+      "rows": 6,
+      "removed_allocated_bytes": 184320,
+      "receipt_sha256": "20099e9be15527fb1625305e86fe87b6c68d4a3ae1180227cc5405b7fe26a999",
+      "primary_sha256": "2c722c608b856b1876b4a21962dcc9a08bd8629432e9b53cd27249cf5f9e60f1",
+      "actual_restore": {
+        "status": "restored",
+        "files": 4,
+        "bytes": 171762
+      }
+    }
+  ],
+  "preservation": "Every export was actually restored and byte-verified; primary data, manifests, audits and prior experiment records remain unchanged."
+}

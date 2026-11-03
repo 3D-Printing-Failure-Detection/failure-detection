@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-11-02T21:41:21.586546+00:00",
+  "status": "candidate_rejected",
+  "criterion": "no_lost_baseline_successes",
+  "case": [
+    "cartesian",
+    "cup",
+    "collapse",
+    1001
+  ],
+  "evidence": [
+    {
+      "journal": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/matrix/results/cases/eba63b3e19b301cb.jsonl",
+      "record_sha256": "de71a9dc995c70182e98fa7b03924b7f7fd898a970eee98ee9050a8062103d94",
+      "method": "contour",
+      "in_place": true,
+      "outcome": "finished",
+      "layers_printed": 160,
+      "k0": 123,
+      "severity": 6.118918400154975,
+      "n_layers": 160
+    },
+    {
+      "journal": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-a/results/cases/eba63b3e19b301cb.jsonl",
+      "record_sha256": "39307862d3c8bd8389cf39a45248ef021c40e160a7cec192d2d44bec07fc37a5",
+      "method": "neural_risk_agent",
+      "in_place": false,
+      "outcome": "scrapped",
+      "layers_printed": 136,
+      "k0": 123,
+      "severity": 6.118918400154975,
+      "n_layers": 160
+    }
+  ],
+  "benchmark_status": "running; retain all remaining runs and original protocol",
+  "limitation": "This counterexample rejects acceptance; it is not a complete-grid success-rate estimate."
+}

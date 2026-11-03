@@ -1,0 +1,34 @@
+{
+  "status": "complete",
+  "stage": "retrospective_development_diagnostic",
+  "data_sha256": "2f04a6fb66c1465d8a1c6e9115b3ddbfb88365cb5c7014316709617fe41fe4da",
+  "source_sha256": "f1d62fdf989e52d039636f0011730ac98127836ca0be8e0b93b93e415b7483c3",
+  "script_sha256": "d27596497d8aef5ebb62815c013476bc722121426280ae321d8d2714331bcba2",
+  "checkpoint_sha256": {
+    "control40": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "long160": "9ff615cde22c36db6cd8f2aaec0964aa874372a50e524200bb2c4ee5747f454e"
+  },
+  "validation_tiles": 2040,
+  "validation_groups": 36,
+  "definition": "All held-out validation tiles: points inside the captured command but at least 0.05 mm outside actual material are truly missing material. Separately count actual material at least 0.05 mm inside its boundary. Command geometry is known; actual geometry supplies scoring labels only.",
+  "limitation": "Correlated selected tile points, not complete gaps, recovery outcomes or independent fresh testing. Does not replace full geometry validation or select an epoch.",
+  "summary": {
+    "control40": {
+      "true_missing_points": 156943,
+      "predicted_missing": 143919,
+      "true_material_points": 3462701,
+      "predicted_material": 3403661,
+      "missing_material_recall": 0.9170144574781928,
+      "material_recall": 0.9829497262397187
+    },
+    "long160": {
+      "true_missing_points": 156943,
+      "predicted_missing": 144673,
+      "true_material_points": 3462701,
+      "predicted_material": 3402818,
+      "missing_material_recall": 0.9218187494822961,
+      "material_recall": 0.9827062746682431
+    }
+  },
+  "full_audit_sha256": "769842501d7c708b9cedbdd682fae5ec9b97e13bf6eed7efa758eef36ee69c4c"
+}

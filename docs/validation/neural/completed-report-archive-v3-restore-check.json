@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "original": "neural-fit-analytical-containers-v22/full/results/cases/6ff5845887b8284f.jsonl",
+  "original_sha256": "9f4e8bbadcfec2358de379e80799bbe05f03f586a380a21068cebee16ecb7926",
+  "restore_script_sha256": "208b9b8a297d5c0301c4c42727c53714801b58533c6f974f62807727fdc85125",
+  "restored_exactly": true,
+  "duplicate_removed_after_verification": true
+}

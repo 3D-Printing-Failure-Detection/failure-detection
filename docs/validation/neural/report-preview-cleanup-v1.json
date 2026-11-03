@@ -1,0 +1,305 @@
+{
+  "status": "complete",
+  "created_at": "2026-11-03T05:47:49.725143+00:00",
+  "files": [
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/checked-camera-16.png",
+      "bytes": 282197,
+      "allocated_bytes": 282624,
+      "sha256": "9ffa1263c33d47a5e293b0166085905b2ca3f020ca43aaad80e0029bb8a00c5b"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/checked-final-17.png",
+      "bytes": 359733,
+      "allocated_bytes": 360448,
+      "sha256": "63185bc2ff546b1601dde29ac3e449a22127eedbf2942b2d09d8a3b80a1acbe0"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/checked-fit-14.png",
+      "bytes": 257275,
+      "allocated_bytes": 258048,
+      "sha256": "c1087c21ad3b76839ad62fd9b4f32c47267ecefa18a972ddeb48ca69b5a2e6ca"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/checked-fit-envelope-17.png",
+      "bytes": 315878,
+      "allocated_bytes": 319488,
+      "sha256": "34229744e23f2accd4992686a70950c219c8ec690a55f71f6b5ff9c0f089d14e"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/command-final-page1.png",
+      "bytes": 231226,
+      "allocated_bytes": 233472,
+      "sha256": "78a5fe587bf88aa24f0aa1255b5712c92e6f1905c16e4a9608e23a89e713bca1"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/command-final-page20.png",
+      "bytes": 341406,
+      "allocated_bytes": 344064,
+      "sha256": "fb5b6892af583272487381408ee3fec41e7b9e8103bfdc17baf8a22ee260e6ff"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/command-pending-page20.png",
+      "bytes": 242646,
+      "allocated_bytes": 245760,
+      "sha256": "3db9eea567f201ef3b2d85a433bc160632d0d5cac32b93dcf67ea5dba2748105"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/command-precision-page20.png",
+      "bytes": 312884,
+      "allocated_bytes": 315392,
+      "sha256": "37aec566021c20e8ea4b77f6d63aae59f3b936fd028fddd5b8316d8eccb23bd1"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/complete-camera-16.png",
+      "bytes": 275190,
+      "allocated_bytes": 278528,
+      "sha256": "b87ac7a9c6d381aa9a6dd74ec83a6d34e867d175049b4175e77e2b768b04ae4f"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/contact-sheet.png",
+      "bytes": 922642,
+      "allocated_bytes": 925696,
+      "sha256": "9a1cfc45576da5d22a745996bae3433267ba9d3c7fa6ada933853e6b55dfd609"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/context-final-16.png",
+      "bytes": 245345,
+      "allocated_bytes": 245760,
+      "sha256": "49517cf9d5d5e08255bb6da7697c6a0d4ad1389efefd73454a13e7b67e38ff79"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/context-update-14.png",
+      "bytes": 244215,
+      "allocated_bytes": 245760,
+      "sha256": "8600d2616b8591a66b305693b3db91fb8123e673c28484f54b73991cf8200a0d"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/context-update-15.png",
+      "bytes": 211058,
+      "allocated_bytes": 212992,
+      "sha256": "e1144c003424debb46238da7d92b7b51183748a7dcc43824e1aed6f462579fda"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/context-update-16.png",
+      "bytes": 228220,
+      "allocated_bytes": 229376,
+      "sha256": "c93b085916080007b20021a9f76822fbc8aa49f91992aeb09066832f2eef09d7"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/current-state-front.png",
+      "bytes": 281860,
+      "allocated_bytes": 282624,
+      "sha256": "199933bf9cb81083717c1d1b488df87d6cc14f764449892a6d16b344183e293f"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-17.png",
+      "bytes": 359407,
+      "allocated_bytes": 360448,
+      "sha256": "5e147e7a5be7df0b8cab881dbc01f14e9a5ea101aa5b2c0fdc1387ff68162b62"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-18.png",
+      "bytes": 23729,
+      "allocated_bytes": 24576,
+      "sha256": "ab70d9dea3df21abdc59c47b1edfedf37ce52d5aa9e4333de36d6163780f9ad2"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-19.png",
+      "bytes": 228962,
+      "allocated_bytes": 229376,
+      "sha256": "ddb6fdd0dd90449633b267aba8ede1421e807e0700eb2d1092169b323de5b51f"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-20.png",
+      "bytes": 251538,
+      "allocated_bytes": 253952,
+      "sha256": "b9c78c106d118efd7f74fa85e59a2b7ebcf2130346eb08847d591a98d52db9d6"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-final-17.png",
+      "bytes": 356494,
+      "allocated_bytes": 360448,
+      "sha256": "baf6ba6a10f4fbaea1842181fd64198a47f42cb54f0c577cdc27f88764bd176b"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-final-18.png",
+      "bytes": 228987,
+      "allocated_bytes": 229376,
+      "sha256": "5a18a450fea45d613cb79f3dceb3053ee0a3a829066c34ea92623f2a49769e88"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-camera-final-19.png",
+      "bytes": 251759,
+      "allocated_bytes": 253952,
+      "sha256": "22506a8b681176ad87c0dba1c2a1bb8c8f5827e567ab6eb2d423b3230c03c389"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/dense-rejected-final.png",
+      "bytes": 294040,
+      "allocated_bytes": 294912,
+      "sha256": "09dd0009d74a4bfd7e9c9d3a34bf40f83b01dee46560be69e88f3384cadf3bd8"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/final-camera-16.png",
+      "bytes": 212258,
+      "allocated_bytes": 212992,
+      "sha256": "53927ce938583a09eeb3c89367d789bfaa92a79c14bcb6a7f916e5a2433b5bdc"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/final-cover.png",
+      "bytes": 248260,
+      "allocated_bytes": 249856,
+      "sha256": "7b111afc8249ac262f6f8029858fd00fd92a3bce27c9c4cf64c3daf6ab51264b"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/final-fit-14.png",
+      "bytes": 226418,
+      "allocated_bytes": 229376,
+      "sha256": "18f5ebe34d32e32b7b1e41bb0af81521ee92b63429fc9799eac6bce77affd6c7"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-14.png",
+      "bytes": 221944,
+      "allocated_bytes": 225280,
+      "sha256": "6dc680e002c59f01bf56c26a6c967671002a0c43c097b121bfadc8e444cdd3b6"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-15.png",
+      "bytes": 190023,
+      "allocated_bytes": 192512,
+      "sha256": "2148ba4fba74d8d3f567129b3caebd99740fa5c44ac0500aae62656468a2de33"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-front.png",
+      "bytes": 259199,
+      "allocated_bytes": 262144,
+      "sha256": "fb0dc7eb622469a18ec5c076d025dde8e801942ad2a0dad34ad51654226efd65"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-full-grid.png",
+      "bytes": 292255,
+      "allocated_bytes": 294912,
+      "sha256": "f9a43bcf7df75241a9f9eb9a30eb0eb574a1cac7bd22075b75781991d5bf073d"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-guard-gate.png",
+      "bytes": 329020,
+      "allocated_bytes": 331776,
+      "sha256": "74a51e009d39b2c3aaa0de3bf3f14f156948b6b45fd83f0b60ec9d1b326f9338"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-joint-verdict.png",
+      "bytes": 255773,
+      "allocated_bytes": 258048,
+      "sha256": "0e323f3c90333a7dd117073a83fd7698a19371210bec7b03226221256d165be4"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-page.png",
+      "bytes": 345830,
+      "allocated_bytes": 348160,
+      "sha256": "d63c3bd57c9c85ac244498459245f3305bded0ac799e0a575997ad1c55925aff"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/latest-refinement.png",
+      "bytes": 314548,
+      "allocated_bytes": 315392,
+      "sha256": "704d458b07ea1176b15ae212d28f2aa6399049b4eb479f3fce20f3c7456fa56e"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-1.png",
+      "bytes": 248649,
+      "allocated_bytes": 249856,
+      "sha256": "2635127ab4c99758a5376324a7b96ace2bffca598159b4290100031d4ad57e9e"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-2.png",
+      "bytes": 220628,
+      "allocated_bytes": 221184,
+      "sha256": "79ad6540c397d6ff2b7295bae7f91e324c702d104cb913b4962c67f7e5b2a4bb"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-3.png",
+      "bytes": 281202,
+      "allocated_bytes": 282624,
+      "sha256": "6312a2564aa8f9a4a77d6bdcfd18614fd986f3cf7135489340b8bb8b3e147029"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-4.png",
+      "bytes": 282326,
+      "allocated_bytes": 282624,
+      "sha256": "44b4834d52a89b04bc827ea64cab912f2bb787726f528b219c83044698851637"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-5.png",
+      "bytes": 268345,
+      "allocated_bytes": 270336,
+      "sha256": "39f519326be6e0f623d690d25fb5e6c7c8da7cd2c24d6c4e1a9303c181f705aa"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-6.png",
+      "bytes": 237927,
+      "allocated_bytes": 241664,
+      "sha256": "b970447bdeff33b597995a299c41017e12901b9856f1246c513237e938047409"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-7.png",
+      "bytes": 290924,
+      "allocated_bytes": 294912,
+      "sha256": "46a2bff9f716f74cc7219c5443d655de30db79ae5e18e4854953a320ac728b1a"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-8.png",
+      "bytes": 275252,
+      "allocated_bytes": 278528,
+      "sha256": "261ab50164145886d51766f765584c456ba57e0efd19e096f66aeb646b4abedc"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page-9.png",
+      "bytes": 293108,
+      "allocated_bytes": 294912,
+      "sha256": "46f176ece92f9bdb065abd8a21ba93791d2b42141f33fbb05608db764d66930a"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/page13.png",
+      "bytes": 245903,
+      "allocated_bytes": 249856,
+      "sha256": "fbe73900cd7111bb72eace1d744e625f98766061846c2453079af8aa146d374d"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/publication-camera-16.png",
+      "bytes": 263666,
+      "allocated_bytes": 266240,
+      "sha256": "921fe03f1c5fecc03d55b0b8765ad86f0a376a8af9109b2052200ccd5dc038a9"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/rescues-page.png",
+      "bytes": 300570,
+      "allocated_bytes": 303104,
+      "sha256": "5e7b60a4756a779422444574d4e5a2f92342e28aeae73ff220d3d69fcea17b4f"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/revised-14.png",
+      "bytes": 225257,
+      "allocated_bytes": 225280,
+      "sha256": "1518b453ae45d8bf0aca59c3b553153382fba4588acd51b8454c1d5ad6ea6285"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/revised-15.png",
+      "bytes": 245485,
+      "allocated_bytes": 245760,
+      "sha256": "fbd9eff0ef5aaab9dec1ae81ff5b4201144644bdba253a7e1a21c0282c081ddf"
+    },
+    {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/report-build/temporal-camera-18.png",
+      "bytes": 241894,
+      "allocated_bytes": 245760,
+      "sha256": "b548234036b02ada6d2e3d8b828e04e9fedafcffd33ced6f6571f6d7e9895a5a"
+    }
+  ],
+  "reason": "Obsolete rendered report page previews; the root PDF, LaTeX source, actual report figure and all experiment evidence are preserved. These previews are not referenced by the report.",
+  "root_report_sha256": "35fe13470e31a0fbc9712ce07a0ce8b18fadd43e83e07be189ba6a79d036eea3",
+  "regenerate_current_preview": "pdftoppm -f PAGE -singlefile -scale-to 1400 -png report.pdf OUTPUT_PREFIX",
+  "reclaimed_allocated_bytes": 13660160,
+  "root_report_unchanged": true
+}

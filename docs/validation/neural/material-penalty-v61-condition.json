@@ -1,0 +1,15 @@
+{
+  "status": "rejected",
+  "reason": "Neither penalty preserves all seven screened functional decisions",
+  "screen_passes": {
+    "penalty125": false,
+    "penalty150": false
+  },
+  "screen_sha256": "ad6f1de98abe6ebdeda3d3a065db3491d50ba60bf90daf250d22b7607ed5d92a",
+  "control_reproduced_exactly": true,
+  "all_seven_control_feature_records_reproduced": true,
+  "new_recovery_trials": 0,
+  "full_print_diagnostics": 0,
+  "validation_frames": 0,
+  "limitation": "Camera qualification only. Rejected heads cannot enter recovery. A qualified head still needs a new actual neural/Qwen recovery protocol and full historical,development and fresh baseline comparisons; no automatic promotion or final evaluation."
+}

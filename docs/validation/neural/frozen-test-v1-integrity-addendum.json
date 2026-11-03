@@ -1,0 +1,11 @@
+{
+  "created_at": "2026-11-02T21:23:11.950928+00:00",
+  "purpose": "Supplementary integrity checks for completed layer counts, persistent fault flags, clean controls, and paired onset/severity across all input directories.",
+  "policy_or_weights_changed": false,
+  "outcome_criteria_changed": false,
+  "original_protocol_sha256": "446605de173c9c084ab112451a23c0552ef2996cf596df94cc284a67597da2fa",
+  "tools": {
+    "compare_neural_experiments.py": "2bd6226d26fb7c780813a5b70075c9181513b3fb6ffa578078f900ee72bd2375",
+    "audit_neural_experiment.py": "aa1f1bfaa2e54915f6a25c346c0dd804f4a28d09468478f732c02b2f2f2a7fd3"
+  }
+}

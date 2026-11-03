@@ -1,0 +1,2 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+cartesian,cup,shift,1002,neural_camera,True,False,False,160,160,1,0,0,114.48396371002309

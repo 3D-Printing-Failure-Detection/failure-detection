@@ -1,0 +1,31 @@
+{
+  "camera": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002/camera-085.png",
+  "previous": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002/camera-084.png",
+  "layer": 85,
+  "models": {
+    "fine": {
+      "background_4_connected": {
+        "cavity_mm2": 0.015625,
+        "center_reaches_exterior": true
+      },
+      "background_8_connected": {
+        "cavity_mm2": 0.015625,
+        "center_reaches_exterior": true
+      },
+      "measured_hole_area_mm2": 0.0030972391359900264,
+      "model_sha256": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525"
+    },
+    "temporal": {
+      "background_4_connected": {
+        "cavity_mm2": 0.0234375,
+        "center_reaches_exterior": true
+      },
+      "background_8_connected": {
+        "cavity_mm2": 0.0234375,
+        "center_reaches_exterior": true
+      },
+      "measured_hole_area_mm2": 0.017202366883935234,
+      "model_sha256": "dfd5aa59770b0c32ace07e929a4404a81786ab1b8f1a2319455a574da6939e3b"
+    }
+  }
+}

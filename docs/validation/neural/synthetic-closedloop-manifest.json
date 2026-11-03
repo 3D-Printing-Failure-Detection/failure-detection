@@ -1,0 +1,102 @@
+{
+  "arguments": {
+    "profiles": [
+      "cartesian"
+    ],
+    "parts": [
+      "cup",
+      "spacer"
+    ],
+    "kinds": [
+      "clean",
+      "shift",
+      "collapse",
+      "under_extrusion"
+    ],
+    "methods": [
+      "ignore",
+      "contour",
+      "neural",
+      "neural_agent"
+    ],
+    "n": 1,
+    "seed": 70,
+    "workers": 2,
+    "clear_failure_on_adapt": false,
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-closedloop-dev-v1/results",
+    "neural_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-closedloop-dev-v1/temporal.npz",
+    "supervisor_endpoint": "http://127.0.0.1:8089",
+    "supervisor_model": "local-qwen3",
+    "supervisor_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-v1/manifest.json"
+  },
+  "profiles": {
+    "cartesian": {
+      "name": "cartesian",
+      "kinematics": "cartesian",
+      "bed_mm": [
+        220,
+        220
+      ],
+      "height_mm": 250,
+      "line_width_mm": 0.42,
+      "moving_mass_kg": 0.25,
+      "camera_position_m": [
+        0,
+        -0.12,
+        0.36
+      ],
+      "filament_rgb": [
+        0.85,
+        0.82,
+        0.75
+      ],
+      "noise_std": 1.0
+    }
+  },
+  "python": "3.12.3",
+  "packages": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "shapely": "2.2.0",
+    "opencv-python-headless": "5.0.0.93",
+    "mujoco": "3.2.7"
+  },
+  "git_revision": "624fac22355d39683ad51d9619f7a8de7bea79a5",
+  "source_sha256": "50baad60de3d83725fb8a7a173e7234619b7ad0a86d19a5f79b6d07ce2138703",
+  "expected_runs": 32,
+  "status": "complete",
+  "assumptions": [
+    "quasi-static waypoints",
+    "geometric bead deposition",
+    "0.1 mm bead-fusion closing before failure injection",
+    "prescribed failures",
+    "controlled current-layer illumination",
+    "exact camera calibration",
+    "geometry-only function verdicts",
+    "restart cost is hypothetical"
+  ],
+  "neural_checkpoint_sha256": "dbb507d434674476c8acb6fadc5f6c4d7435e4c80839819c3379193dd91c91a8",
+  "supervisor": {
+    "model": "Qwen/Qwen3-0.6B-GGUF",
+    "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+    "runtime": "llama.cpp b12057",
+    "assets": [
+      {
+        "name": "llama-b12057-bin-ubuntu-x64.tar.gz",
+        "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12057/llama-b12057-bin-ubuntu-x64.tar.gz",
+        "bytes": 22892921,
+        "sha256": "1bdfdac035014ff7b935aaf4a91d7bd5ea5018db9957e1a21b6567f189b8dbe7"
+      },
+      {
+        "name": "Qwen3-0.6B-Q8_0.gguf",
+        "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf",
+        "bytes": 639446688,
+        "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"
+      }
+    ]
+  },
+  "completed_runs": 32,
+  "errors": [],
+  "final_source_sha256": "50baad60de3d83725fb8a7a173e7234619b7ad0a86d19a5f79b6d07ce2138703",
+  "final_neural_checkpoint_sha256": "dbb507d434674476c8acb6fadc5f6c4d7435e4c80839819c3379193dd91c91a8"
+}

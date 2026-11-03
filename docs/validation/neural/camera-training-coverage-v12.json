@@ -1,0 +1,1851 @@
+{
+  "data": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/dataset/data.npz",
+  "models": {
+    "fine": [
+      {
+        "group": "cartesian-cup-clean-60",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 584,
+        "positive_recall": 0.7962328767123288,
+        "positive_bias": -0.019810836762189865,
+        "negative_recall": 0.8579040852575488
+      },
+      {
+        "group": "cartesian-cup-clean-61",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 510,
+        "positive_recall": 0.8274509803921568,
+        "positive_bias": -9.306505489803385e-06,
+        "negative_recall": 0.882943143812709
+      },
+      {
+        "group": "cartesian-cup-clean-62",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 772,
+        "positive_recall": 0.9015544041450777,
+        "positive_bias": 0.018626127392053604,
+        "negative_recall": 0.8116343490304709
+      },
+      {
+        "group": "cartesian-cup-clean-63",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 685,
+        "positive_recall": 0.8,
+        "positive_bias": -0.014194643124938011,
+        "negative_recall": 0.8305847076461769
+      },
+      {
+        "group": "cartesian-cup-clean-64",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 621,
+        "positive_recall": 0.8470209339774557,
+        "positive_bias": -0.01151382178068161,
+        "negative_recall": 0.8670120898100173
+      },
+      {
+        "group": "cartesian-cup-clean-65",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 646,
+        "positive_recall": 0.848297213622291,
+        "positive_bias": 0.005507905967533588,
+        "negative_recall": 0.7947269303201506
+      },
+      {
+        "group": "cartesian-cup-clean-66",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 610,
+        "positive_recall": 0.8426229508196721,
+        "positive_bias": -0.006905320566147566,
+        "negative_recall": 0.7866666666666666
+      },
+      {
+        "group": "cartesian-cup-clean-67",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 609,
+        "positive_recall": 0.8226600985221675,
+        "positive_bias": -0.004706195555627346,
+        "negative_recall": 0.8549141965678627
+      },
+      {
+        "group": "cartesian-cup-clean-70",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 638,
+        "positive_recall": 0.7617554858934169,
+        "positive_bias": -0.016316303983330727,
+        "negative_recall": 0.7605363984674329
+      },
+      {
+        "group": "cartesian-cup-clean-71",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 607,
+        "positive_recall": 0.7924217462932455,
+        "positive_bias": -0.017697490751743317,
+        "negative_recall": 0.8351477449455676
+      },
+      {
+        "group": "cartesian-cup-clean-72",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 649,
+        "positive_recall": 0.8690292758089369,
+        "positive_bias": 0.011762822046875954,
+        "negative_recall": 0.794912559618442
+      },
+      {
+        "group": "cartesian-cup-clean-73",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 502,
+        "positive_recall": 0.7908366533864541,
+        "positive_bias": -0.011067000217735767,
+        "negative_recall": 0.865040650406504
+      },
+      {
+        "group": "cartesian-cup-collapse-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 856,
+        "positive_recall": 0.8130841121495327,
+        "positive_bias": -0.001267602783627808,
+        "negative_recall": 0.828395061728395
+      },
+      {
+        "group": "cartesian-cup-collapse-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 718,
+        "positive_recall": 0.7618384401114207,
+        "positive_bias": -0.025189759209752083,
+        "negative_recall": 0.9043478260869565
+      },
+      {
+        "group": "cartesian-cup-collapse-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 741,
+        "positive_recall": 0.7759784075573549,
+        "positive_bias": -0.01228425931185484,
+        "negative_recall": 0.8434547908232118
+      },
+      {
+        "group": "cartesian-cup-collapse-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 801,
+        "positive_recall": 0.8127340823970037,
+        "positive_bias": -0.0069320532493293285,
+        "negative_recall": 0.8116308470290771
+      },
+      {
+        "group": "cartesian-cup-collapse-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 669,
+        "positive_recall": 0.8445440956651719,
+        "positive_bias": 7.385256321867928e-05,
+        "negative_recall": 0.8612385321100917
+      },
+      {
+        "group": "cartesian-cup-collapse-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 849,
+        "positive_recall": 0.7314487632508834,
+        "positive_bias": -0.03437332063913345,
+        "negative_recall": 0.8621134020618557
+      },
+      {
+        "group": "cartesian-cup-shift-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 875,
+        "positive_recall": 0.7794285714285715,
+        "positive_bias": -0.01576039381325245,
+        "negative_recall": 0.8211180124223603
+      },
+      {
+        "group": "cartesian-cup-shift-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 678,
+        "positive_recall": 0.7182890855457227,
+        "positive_bias": -0.021098509430885315,
+        "negative_recall": 0.8464088397790055
+      },
+      {
+        "group": "cartesian-cup-shift-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 788,
+        "positive_recall": 0.799492385786802,
+        "positive_bias": -0.0071861292235553265,
+        "negative_recall": 0.827922077922078
+      },
+      {
+        "group": "cartesian-cup-shift-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 808,
+        "positive_recall": 0.7821782178217822,
+        "positive_bias": -0.009230568073689938,
+        "negative_recall": 0.820577164366374
+      },
+      {
+        "group": "cartesian-cup-shift-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 765,
+        "positive_recall": 0.7372549019607844,
+        "positive_bias": -0.01028869766741991,
+        "negative_recall": 0.8
+      },
+      {
+        "group": "cartesian-cup-shift-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 623,
+        "positive_recall": 0.7223113964686998,
+        "positive_bias": -0.023855119943618774,
+        "negative_recall": 0.8669871794871795
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-313",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 806,
+        "positive_recall": 0.7382133995037221,
+        "positive_bias": -0.0323486328125,
+        "negative_recall": 0.8524229074889867
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-335",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 790,
+        "positive_recall": 0.8278481012658228,
+        "positive_bias": -0.008755830116569996,
+        "negative_recall": 0.841596130592503
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-344",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 867,
+        "positive_recall": 0.7612456747404844,
+        "positive_bias": -0.031140873208642006,
+        "negative_recall": 0.8587319243604005
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-355",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 745,
+        "positive_recall": 0.7879194630872484,
+        "positive_bias": -0.016316840425133705,
+        "negative_recall": 0.8480278422273781
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-379",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 776,
+        "positive_recall": 0.7332474226804123,
+        "positive_bias": -0.04134901612997055,
+        "negative_recall": 0.8838451268357811
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-400",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 817,
+        "positive_recall": 0.7796817625458996,
+        "positive_bias": -0.013295887038111687,
+        "negative_recall": 0.8402061855670103
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-410",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 773,
+        "positive_recall": 0.7166882276843467,
+        "positive_bias": -0.03527203947305679,
+        "negative_recall": 0.8791848617176128
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-417",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 934,
+        "positive_recall": 0.7355460385438972,
+        "positive_bias": -0.053469352424144745,
+        "negative_recall": 0.8604060913705583
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-420",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 805,
+        "positive_recall": 0.8074534161490683,
+        "positive_bias": -0.01787458546459675,
+        "negative_recall": 0.845088161209068
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 760,
+        "positive_recall": 0.8118421052631579,
+        "positive_bias": -0.0030552735552191734,
+        "negative_recall": 0.828395061728395
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 841,
+        "positive_recall": 0.7931034482758621,
+        "positive_bias": -0.012873283587396145,
+        "negative_recall": 0.78625
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 756,
+        "positive_recall": 0.7804232804232805,
+        "positive_bias": -0.018760545179247856,
+        "negative_recall": 0.8153034300791556
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 645,
+        "positive_recall": 0.7488372093023256,
+        "positive_bias": -0.028248850256204605,
+        "negative_recall": 0.8560830860534124
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-64",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 754,
+        "positive_recall": 0.7758620689655172,
+        "positive_bias": -0.021511493250727654,
+        "negative_recall": 0.8314087759815243
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-65",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 776,
+        "positive_recall": 0.8234536082474226,
+        "positive_bias": -0.00925440527498722,
+        "negative_recall": 0.8761651131824234
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-66",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 660,
+        "positive_recall": 0.8196969696969697,
+        "positive_bias": 0.016348762437701225,
+        "negative_recall": 0.7133592736705577
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-67",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 836,
+        "positive_recall": 0.777511961722488,
+        "positive_bias": -0.020139869302511215,
+        "negative_recall": 0.8117206982543641
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 926,
+        "positive_recall": 0.8617710583153347,
+        "positive_bias": 0.012852534651756287,
+        "negative_recall": 0.7813712807244502
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 812,
+        "positive_recall": 0.8115763546798029,
+        "positive_bias": -0.010169916786253452,
+        "negative_recall": 0.8427109974424553
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-72",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 843,
+        "positive_recall": 0.7402135231316725,
+        "positive_bias": -0.01568133942782879,
+        "negative_recall": 0.8447729672650475
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-73",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 825,
+        "positive_recall": 0.8933333333333333,
+        "positive_bias": 0.013091877102851868,
+        "negative_recall": 0.8104325699745547
+      },
+      {
+        "group": "cartesian-cup-warp-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 784,
+        "positive_recall": 0.8698979591836735,
+        "positive_bias": 0.004845037590712309,
+        "negative_recall": 0.8389715832205683
+      },
+      {
+        "group": "cartesian-cup-warp-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 705,
+        "positive_recall": 0.798581560283688,
+        "positive_bias": -0.003484454471617937,
+        "negative_recall": 0.8363431151241535
+      },
+      {
+        "group": "cartesian-cup-warp-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 744,
+        "positive_recall": 0.7997311827956989,
+        "positive_bias": -0.01107106450945139,
+        "negative_recall": 0.8584070796460177
+      },
+      {
+        "group": "cartesian-cup-warp-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 744,
+        "positive_recall": 0.8198924731182796,
+        "positive_bias": -0.01079010870307684,
+        "negative_recall": 0.8890469416785206
+      },
+      {
+        "group": "cartesian-cup-warp-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 844,
+        "positive_recall": 0.754739336492891,
+        "positive_bias": -0.02321142889559269,
+        "negative_recall": 0.8430379746835444
+      },
+      {
+        "group": "cartesian-cup-warp-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 720,
+        "positive_recall": 0.7125,
+        "positive_bias": -0.03184586763381958,
+        "negative_recall": 0.8783610755441741
+      },
+      {
+        "group": "cartesian-mug-clean-60",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 439,
+        "positive_recall": 0.8246013667425968,
+        "positive_bias": -0.01385848131030798,
+        "negative_recall": 0.9059304703476483
+      },
+      {
+        "group": "cartesian-mug-clean-61",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 568,
+        "positive_recall": 0.8397887323943662,
+        "positive_bias": -0.007710700388997793,
+        "negative_recall": 0.8722316865417377
+      },
+      {
+        "group": "cartesian-mug-clean-62",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 549,
+        "positive_recall": 0.8633879781420765,
+        "positive_bias": -0.01021564844995737,
+        "negative_recall": 0.8554216867469879
+      },
+      {
+        "group": "cartesian-mug-clean-63",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 516,
+        "positive_recall": 0.8527131782945736,
+        "positive_bias": -0.006664316635578871,
+        "negative_recall": 0.8578856152512998
+      },
+      {
+        "group": "cartesian-mug-clean-64",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 540,
+        "positive_recall": 0.8574074074074074,
+        "positive_bias": -0.009503594599664211,
+        "negative_recall": 0.8586572438162544
+      },
+      {
+        "group": "cartesian-mug-clean-65",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 531,
+        "positive_recall": 0.8681732580037664,
+        "positive_bias": -0.005148147698491812,
+        "negative_recall": 0.8594704684317719
+      },
+      {
+        "group": "cartesian-mug-clean-66",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 571,
+        "positive_recall": 0.8178633975481612,
+        "positive_bias": -0.01725684106349945,
+        "negative_recall": 0.8621323529411765
+      },
+      {
+        "group": "cartesian-mug-clean-67",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 585,
+        "positive_recall": 0.852991452991453,
+        "positive_bias": -0.013098295778036118,
+        "negative_recall": 0.8890784982935154
+      },
+      {
+        "group": "cartesian-mug-clean-70",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 590,
+        "positive_recall": 0.8288135593220339,
+        "positive_bias": -0.017553862184286118,
+        "negative_recall": 0.8724279835390947
+      },
+      {
+        "group": "cartesian-mug-clean-71",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 592,
+        "positive_recall": 0.8902027027027027,
+        "positive_bias": 0.009051600471138954,
+        "negative_recall": 0.831973898858075
+      },
+      {
+        "group": "cartesian-mug-clean-72",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 497,
+        "positive_recall": 0.8289738430583501,
+        "positive_bias": -0.007630373351275921,
+        "negative_recall": 0.8802083333333334
+      },
+      {
+        "group": "cartesian-mug-clean-73",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 624,
+        "positive_recall": 0.875,
+        "positive_bias": -0.0004810091049876064,
+        "negative_recall": 0.8203677510608204
+      },
+      {
+        "group": "cartesian-mug-collapse-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 802,
+        "positive_recall": 0.7356608478802993,
+        "positive_bias": -0.024666110053658485,
+        "negative_recall": 0.87375
+      },
+      {
+        "group": "cartesian-mug-collapse-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 634,
+        "positive_recall": 0.8533123028391167,
+        "positive_bias": -0.00219253683462739,
+        "negative_recall": 0.8702490170380078
+      },
+      {
+        "group": "cartesian-mug-collapse-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 641,
+        "positive_recall": 0.8065522620904836,
+        "positive_bias": -0.009138555265963078,
+        "negative_recall": 0.8649386084583902
+      },
+      {
+        "group": "cartesian-mug-collapse-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 813,
+        "positive_recall": 0.8290282902829028,
+        "positive_bias": -0.01661418378353119,
+        "negative_recall": 0.8581081081081081
+      },
+      {
+        "group": "cartesian-mug-collapse-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 797,
+        "positive_recall": 0.8557089084065245,
+        "positive_bias": -0.004594456870108843,
+        "negative_recall": 0.8306709265175719
+      },
+      {
+        "group": "cartesian-mug-collapse-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 953,
+        "positive_recall": 0.8100734522560336,
+        "positive_bias": -0.021844854578375816,
+        "negative_recall": 0.8725961538461539
+      },
+      {
+        "group": "cartesian-mug-shift-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 661,
+        "positive_recall": 0.8199697428139183,
+        "positive_bias": 0.009071612730622292,
+        "negative_recall": 0.8110236220472441
+      },
+      {
+        "group": "cartesian-mug-shift-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 647,
+        "positive_recall": 0.8268933539412674,
+        "positive_bias": -0.003702666377648711,
+        "negative_recall": 0.8963963963963963
+      },
+      {
+        "group": "cartesian-mug-shift-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 662,
+        "positive_recall": 0.7507552870090635,
+        "positive_bias": -0.02306135557591915,
+        "negative_recall": 0.8769430051813472
+      },
+      {
+        "group": "cartesian-mug-shift-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 788,
+        "positive_recall": 0.7880710659898477,
+        "positive_bias": -0.013243104331195354,
+        "negative_recall": 0.8106796116504854
+      },
+      {
+        "group": "cartesian-mug-shift-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 864,
+        "positive_recall": 0.7268518518518519,
+        "positive_bias": -0.0049079423770308495,
+        "negative_recall": 0.7792207792207793
+      },
+      {
+        "group": "cartesian-mug-shift-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 740,
+        "positive_recall": 0.8067567567567567,
+        "positive_bias": -0.008979310281574726,
+        "negative_recall": 0.8545706371191135
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-313",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 842,
+        "positive_recall": 0.8266033254156769,
+        "positive_bias": -0.012188081629574299,
+        "negative_recall": 0.8602287166454892
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-335",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 726,
+        "positive_recall": 0.8333333333333334,
+        "positive_bias": -0.02134954370558262,
+        "negative_recall": 0.856760374832664
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-344",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 742,
+        "positive_recall": 0.8045822102425876,
+        "positive_bias": -0.00999415572732687,
+        "negative_recall": 0.8273894436519258
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-355",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 880,
+        "positive_recall": 0.7647727272727273,
+        "positive_bias": -0.024077219888567924,
+        "negative_recall": 0.8640776699029126
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-379",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 966,
+        "positive_recall": 0.8136645962732919,
+        "positive_bias": -0.010369027964770794,
+        "negative_recall": 0.8537200504413619
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-400",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 736,
+        "positive_recall": 0.8097826086956522,
+        "positive_bias": -0.0213963370770216,
+        "negative_recall": 0.8902606310013718
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-410",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 782,
+        "positive_recall": 0.8107416879795396,
+        "positive_bias": -0.0176171213388443,
+        "negative_recall": 0.9041713641488163
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-417",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 765,
+        "positive_recall": 0.7986928104575164,
+        "positive_bias": -0.021538319066166878,
+        "negative_recall": 0.8711656441717791
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-420",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 829,
+        "positive_recall": 0.8033775633293124,
+        "positive_bias": -0.009885777719318867,
+        "negative_recall": 0.8252080856123662
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 762,
+        "positive_recall": 0.8385826771653543,
+        "positive_bias": -0.004910482093691826,
+        "negative_recall": 0.8621118012422361
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 661,
+        "positive_recall": 0.8305597579425114,
+        "positive_bias": 0.00014574048691429198,
+        "negative_recall": 0.8605299860529986
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 768,
+        "positive_recall": 0.73046875,
+        "positive_bias": -0.037393718957901,
+        "negative_recall": 0.8950554994954592
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 821,
+        "positive_recall": 0.8453105968331304,
+        "positive_bias": -0.009601748548448086,
+        "negative_recall": 0.8969230769230769
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-64",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 759,
+        "positive_recall": 0.7444005270092227,
+        "positive_bias": -0.025069260969758034,
+        "negative_recall": 0.8734015345268542
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-65",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 891,
+        "positive_recall": 0.8585858585858586,
+        "positive_bias": -0.0006442969315685332,
+        "negative_recall": 0.8915801614763552
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-66",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 876,
+        "positive_recall": 0.708904109589041,
+        "positive_bias": -0.07589226961135864,
+        "negative_recall": 0.8805460750853242
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-67",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 718,
+        "positive_recall": 0.7924791086350975,
+        "positive_bias": -0.018192794173955917,
+        "negative_recall": 0.9177377892030848
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 803,
+        "positive_recall": 0.7745952677459527,
+        "positive_bias": -0.023387035354971886,
+        "negative_recall": 0.8661710037174721
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 791,
+        "positive_recall": 0.7800252844500632,
+        "positive_bias": -0.02860153652727604,
+        "negative_recall": 0.9218967921896792
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-72",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 696,
+        "positive_recall": 0.7887931034482759,
+        "positive_bias": -0.00774403614923358,
+        "negative_recall": 0.8881987577639752
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-73",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 772,
+        "positive_recall": 0.8601036269430051,
+        "positive_bias": 0.010080168955028057,
+        "negative_recall": 0.7806060606060606
+      },
+      {
+        "group": "cartesian-mug-warp-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 1013,
+        "positive_recall": 0.8114511352418559,
+        "positive_bias": -0.018626773729920387,
+        "negative_recall": 0.8731257208765859
+      },
+      {
+        "group": "cartesian-mug-warp-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 700,
+        "positive_recall": 0.7928571428571428,
+        "positive_bias": -0.022820476442575455,
+        "negative_recall": 0.8967468175388967
+      },
+      {
+        "group": "cartesian-mug-warp-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 858,
+        "positive_recall": 0.8706293706293706,
+        "positive_bias": -0.00012072928075212985,
+        "negative_recall": 0.8407079646017699
+      },
+      {
+        "group": "cartesian-mug-warp-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 763,
+        "positive_recall": 0.8505897771952818,
+        "positive_bias": -0.007626714650541544,
+        "negative_recall": 0.9022457067371202
+      },
+      {
+        "group": "cartesian-mug-warp-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 874,
+        "positive_recall": 0.7368421052631579,
+        "positive_bias": -0.031207863241434097,
+        "negative_recall": 0.8705501618122977
+      },
+      {
+        "group": "cartesian-mug-warp-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 693,
+        "positive_recall": 0.7647907647907648,
+        "positive_bias": -0.027883978560566902,
+        "negative_recall": 0.9002808988764045
+      }
+    ],
+    "query": [
+      {
+        "group": "cartesian-cup-clean-60",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 584,
+        "positive_recall": 0.898972602739726,
+        "positive_bias": 0.000615673721767962,
+        "negative_recall": 0.9200710479573713
+      },
+      {
+        "group": "cartesian-cup-clean-61",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 510,
+        "positive_recall": 0.8431372549019608,
+        "positive_bias": -0.009081506170332432,
+        "negative_recall": 0.931438127090301
+      },
+      {
+        "group": "cartesian-cup-clean-62",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 772,
+        "positive_recall": 0.9015544041450777,
+        "positive_bias": -0.00012738262012135237,
+        "negative_recall": 0.8864265927977839
+      },
+      {
+        "group": "cartesian-cup-clean-63",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 685,
+        "positive_recall": 0.9036496350364963,
+        "positive_bias": 0.0017952104099094868,
+        "negative_recall": 0.8845577211394303
+      },
+      {
+        "group": "cartesian-cup-clean-64",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 621,
+        "positive_recall": 0.8631239935587761,
+        "positive_bias": -0.00883589219301939,
+        "negative_recall": 0.9430051813471503
+      },
+      {
+        "group": "cartesian-cup-clean-65",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 646,
+        "positive_recall": 0.8823529411764706,
+        "positive_bias": -0.0005764152738265693,
+        "negative_recall": 0.8926553672316384
+      },
+      {
+        "group": "cartesian-cup-clean-66",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 610,
+        "positive_recall": 0.8655737704918033,
+        "positive_bias": -0.00820168200880289,
+        "negative_recall": 0.8946666666666667
+      },
+      {
+        "group": "cartesian-cup-clean-67",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 609,
+        "positive_recall": 0.8423645320197044,
+        "positive_bias": -0.005130844656378031,
+        "negative_recall": 0.9297971918876755
+      },
+      {
+        "group": "cartesian-cup-clean-70",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 638,
+        "positive_recall": 0.8605015673981191,
+        "positive_bias": 4.725919643533416e-05,
+        "negative_recall": 0.8563218390804598
+      },
+      {
+        "group": "cartesian-cup-clean-71",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 607,
+        "positive_recall": 0.8336079077429983,
+        "positive_bias": -0.007313490379601717,
+        "negative_recall": 0.9237947122861586
+      },
+      {
+        "group": "cartesian-cup-clean-72",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 649,
+        "positive_recall": 0.8690292758089369,
+        "positive_bias": -0.0025632160250097513,
+        "negative_recall": 0.875993640699523
+      },
+      {
+        "group": "cartesian-cup-clean-73",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 502,
+        "positive_recall": 0.8804780876494024,
+        "positive_bias": 0.0002817632630467415,
+        "negative_recall": 0.9186991869918699
+      },
+      {
+        "group": "cartesian-cup-collapse-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 856,
+        "positive_recall": 0.9030373831775701,
+        "positive_bias": 0.01746559329330921,
+        "negative_recall": 0.8592592592592593
+      },
+      {
+        "group": "cartesian-cup-collapse-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 718,
+        "positive_recall": 0.8467966573816156,
+        "positive_bias": -0.007118566893041134,
+        "negative_recall": 0.9304347826086956
+      },
+      {
+        "group": "cartesian-cup-collapse-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 741,
+        "positive_recall": 0.8798920377867746,
+        "positive_bias": 0.005268210545182228,
+        "negative_recall": 0.8663967611336032
+      },
+      {
+        "group": "cartesian-cup-collapse-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 801,
+        "positive_recall": 0.8963795255930087,
+        "positive_bias": 0.005429726094007492,
+        "negative_recall": 0.8963337547408344
+      },
+      {
+        "group": "cartesian-cup-collapse-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 669,
+        "positive_recall": 0.85949177877429,
+        "positive_bias": 0.002529837191104889,
+        "negative_recall": 0.8944954128440367
+      },
+      {
+        "group": "cartesian-cup-collapse-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 849,
+        "positive_recall": 0.8221436984687868,
+        "positive_bias": -0.012166561558842659,
+        "negative_recall": 0.884020618556701
+      },
+      {
+        "group": "cartesian-cup-shift-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 875,
+        "positive_recall": 0.8754285714285714,
+        "positive_bias": 0.0056290049105882645,
+        "negative_recall": 0.853416149068323
+      },
+      {
+        "group": "cartesian-cup-shift-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 678,
+        "positive_recall": 0.8348082595870207,
+        "positive_bias": 0.0018735065823420882,
+        "negative_recall": 0.8839779005524862
+      },
+      {
+        "group": "cartesian-cup-shift-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 788,
+        "positive_recall": 0.9302030456852792,
+        "positive_bias": 0.011038683354854584,
+        "negative_recall": 0.8051948051948052
+      },
+      {
+        "group": "cartesian-cup-shift-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 808,
+        "positive_recall": 0.870049504950495,
+        "positive_bias": 0.011657662689685822,
+        "negative_recall": 0.8067754077791719
+      },
+      {
+        "group": "cartesian-cup-shift-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 765,
+        "positive_recall": 0.8287581699346406,
+        "positive_bias": 0.005996148567646742,
+        "negative_recall": 0.823030303030303
+      },
+      {
+        "group": "cartesian-cup-shift-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 623,
+        "positive_recall": 0.8571428571428571,
+        "positive_bias": 0.004296592902392149,
+        "negative_recall": 0.8621794871794872
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-313",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 806,
+        "positive_recall": 0.8573200992555832,
+        "positive_bias": -0.005949840415269136,
+        "negative_recall": 0.9107929515418502
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-335",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 790,
+        "positive_recall": 0.8430379746835444,
+        "positive_bias": -0.007761093787848949,
+        "negative_recall": 0.8923821039903265
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-344",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 867,
+        "positive_recall": 0.8189158016147635,
+        "positive_bias": -0.02446621283888817,
+        "negative_recall": 0.9243604004449388
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-355",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 745,
+        "positive_recall": 0.8335570469798658,
+        "positive_bias": -0.004372608382254839,
+        "negative_recall": 0.8805104408352669
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-379",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 776,
+        "positive_recall": 0.8685567010309279,
+        "positive_bias": -0.0024652713909745216,
+        "negative_recall": 0.8785046728971962
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-400",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 817,
+        "positive_recall": 0.8800489596083231,
+        "positive_bias": 0.0018582092598080635,
+        "negative_recall": 0.8608247422680413
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-410",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 773,
+        "positive_recall": 0.8538163001293662,
+        "positive_bias": -0.008872268721461296,
+        "negative_recall": 0.8922852983988355
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-417",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 934,
+        "positive_recall": 0.7858672376873662,
+        "positive_bias": -0.056145522743463516,
+        "negative_recall": 0.8730964467005076
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-420",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 805,
+        "positive_recall": 0.8782608695652174,
+        "positive_bias": -0.00482240179553628,
+        "negative_recall": 0.8967254408060453
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 760,
+        "positive_recall": 0.868421052631579,
+        "positive_bias": 0.011129740625619888,
+        "negative_recall": 0.8135802469135802
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 841,
+        "positive_recall": 0.906064209274673,
+        "positive_bias": 0.010806355625391006,
+        "negative_recall": 0.83125
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 756,
+        "positive_recall": 0.8386243386243386,
+        "positive_bias": -0.007856806740164757,
+        "negative_recall": 0.8878627968337731
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 645,
+        "positive_recall": 0.889922480620155,
+        "positive_bias": -0.0058774081990122795,
+        "negative_recall": 0.8916913946587537
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-64",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 754,
+        "positive_recall": 0.8859416445623343,
+        "positive_bias": -0.0005788834532722831,
+        "negative_recall": 0.874133949191686
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-65",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 776,
+        "positive_recall": 0.8672680412371134,
+        "positive_bias": -0.006104730535298586,
+        "negative_recall": 0.918774966711052
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-66",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 660,
+        "positive_recall": 0.8954545454545455,
+        "positive_bias": 0.03867161646485329,
+        "negative_recall": 0.7276264591439688
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-67",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 836,
+        "positive_recall": 0.8672248803827751,
+        "positive_bias": 0.0026037367060780525,
+        "negative_recall": 0.8615960099750624
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 926,
+        "positive_recall": 0.9319654427645788,
+        "positive_bias": 0.024898063391447067,
+        "negative_recall": 0.7981888745148771
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 812,
+        "positive_recall": 0.8694581280788177,
+        "positive_bias": 0.003335881745442748,
+        "negative_recall": 0.8491048593350383
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-72",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 843,
+        "positive_recall": 0.8351126927639383,
+        "positive_bias": 0.005141635425388813,
+        "negative_recall": 0.8310454065469906
+      },
+      {
+        "group": "cartesian-cup-under_extrusion-73",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 825,
+        "positive_recall": 0.9054545454545454,
+        "positive_bias": 0.02323772944509983,
+        "negative_recall": 0.8193384223918575
+      },
+      {
+        "group": "cartesian-cup-warp-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 784,
+        "positive_recall": 0.9005102040816326,
+        "positive_bias": 0.009582587517797947,
+        "negative_recall": 0.8876860622462788
+      },
+      {
+        "group": "cartesian-cup-warp-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 705,
+        "positive_recall": 0.8411347517730496,
+        "positive_bias": -0.0037923555355519056,
+        "negative_recall": 0.8724604966139955
+      },
+      {
+        "group": "cartesian-cup-warp-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 744,
+        "positive_recall": 0.8790322580645161,
+        "positive_bias": -0.0012699826620519161,
+        "negative_recall": 0.8950695322376738
+      },
+      {
+        "group": "cartesian-cup-warp-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 744,
+        "positive_recall": 0.8951612903225806,
+        "positive_bias": -3.899809962604195e-05,
+        "negative_recall": 0.9004267425320057
+      },
+      {
+        "group": "cartesian-cup-warp-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 844,
+        "positive_recall": 0.8518957345971564,
+        "positive_bias": -0.0001694255624897778,
+        "negative_recall": 0.8696202531645569
+      },
+      {
+        "group": "cartesian-cup-warp-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 720,
+        "positive_recall": 0.8916666666666667,
+        "positive_bias": 0.005977809429168701,
+        "negative_recall": 0.8655569782330346
+      },
+      {
+        "group": "cartesian-mug-clean-60",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 439,
+        "positive_recall": 0.9066059225512528,
+        "positive_bias": -0.006977157201617956,
+        "negative_recall": 0.9366053169734151
+      },
+      {
+        "group": "cartesian-mug-clean-61",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 568,
+        "positive_recall": 0.8732394366197183,
+        "positive_bias": -0.003768238006159663,
+        "negative_recall": 0.9182282793867121
+      },
+      {
+        "group": "cartesian-mug-clean-62",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 549,
+        "positive_recall": 0.8852459016393442,
+        "positive_bias": -0.008878882974386215,
+        "negative_recall": 0.9363166953528399
+      },
+      {
+        "group": "cartesian-mug-clean-63",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 516,
+        "positive_recall": 0.8837209302325582,
+        "positive_bias": -0.008866450749337673,
+        "negative_recall": 0.9202772963604853
+      },
+      {
+        "group": "cartesian-mug-clean-64",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 540,
+        "positive_recall": 0.8944444444444445,
+        "positive_bias": -0.006012155208736658,
+        "negative_recall": 0.901060070671378
+      },
+      {
+        "group": "cartesian-mug-clean-65",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 531,
+        "positive_recall": 0.8738229755178908,
+        "positive_bias": -0.010142817161977291,
+        "negative_recall": 0.9307535641547862
+      },
+      {
+        "group": "cartesian-mug-clean-66",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 571,
+        "positive_recall": 0.8756567425569177,
+        "positive_bias": -0.009559893980622292,
+        "negative_recall": 0.9411764705882353
+      },
+      {
+        "group": "cartesian-mug-clean-67",
+        "validation": false,
+        "patches": 675,
+        "positive_points": 585,
+        "positive_recall": 0.9008547008547009,
+        "positive_bias": -0.010869082994759083,
+        "negative_recall": 0.9419795221843004
+      },
+      {
+        "group": "cartesian-mug-clean-70",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 590,
+        "positive_recall": 0.888135593220339,
+        "positive_bias": -0.005297152325510979,
+        "negative_recall": 0.9218106995884774
+      },
+      {
+        "group": "cartesian-mug-clean-71",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 592,
+        "positive_recall": 0.8868243243243243,
+        "positive_bias": -0.0039240638725459576,
+        "negative_recall": 0.9233278955954323
+      },
+      {
+        "group": "cartesian-mug-clean-72",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 497,
+        "positive_recall": 0.9134808853118712,
+        "positive_bias": 0.003580144140869379,
+        "negative_recall": 0.890625
+      },
+      {
+        "group": "cartesian-mug-clean-73",
+        "validation": true,
+        "patches": 675,
+        "positive_points": 624,
+        "positive_recall": 0.8862179487179487,
+        "positive_bias": -0.0030043816659599543,
+        "negative_recall": 0.8995756718528995
+      },
+      {
+        "group": "cartesian-mug-collapse-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 802,
+        "positive_recall": 0.8528678304239401,
+        "positive_bias": -0.0010472331196069717,
+        "negative_recall": 0.88375
+      },
+      {
+        "group": "cartesian-mug-collapse-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 634,
+        "positive_recall": 0.8690851735015773,
+        "positive_bias": -0.008318599313497543,
+        "negative_recall": 0.926605504587156
+      },
+      {
+        "group": "cartesian-mug-collapse-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 641,
+        "positive_recall": 0.8892355694227769,
+        "positive_bias": -0.0037454564590007067,
+        "negative_recall": 0.9331514324693042
+      },
+      {
+        "group": "cartesian-mug-collapse-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 813,
+        "positive_recall": 0.8794587945879458,
+        "positive_bias": -0.00540429400280118,
+        "negative_recall": 0.8972972972972973
+      },
+      {
+        "group": "cartesian-mug-collapse-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 797,
+        "positive_recall": 0.8833124215809285,
+        "positive_bias": 0.0009090296225622296,
+        "negative_recall": 0.8817891373801917
+      },
+      {
+        "group": "cartesian-mug-collapse-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 953,
+        "positive_recall": 0.8488982161594963,
+        "positive_bias": -0.010109889321029186,
+        "negative_recall": 0.8701923076923077
+      },
+      {
+        "group": "cartesian-mug-shift-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 661,
+        "positive_recall": 0.8547655068078669,
+        "positive_bias": 0.0029842392541468143,
+        "negative_recall": 0.9023622047244094
+      },
+      {
+        "group": "cartesian-mug-shift-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 647,
+        "positive_recall": 0.8547140649149922,
+        "positive_bias": -0.0009785774163901806,
+        "negative_recall": 0.920045045045045
+      },
+      {
+        "group": "cartesian-mug-shift-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 662,
+        "positive_recall": 0.8625377643504532,
+        "positive_bias": -0.0013537689810618758,
+        "negative_recall": 0.8782383419689119
+      },
+      {
+        "group": "cartesian-mug-shift-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 788,
+        "positive_recall": 0.8527918781725888,
+        "positive_bias": -0.0058094714768230915,
+        "negative_recall": 0.866504854368932
+      },
+      {
+        "group": "cartesian-mug-shift-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 864,
+        "positive_recall": 0.8194444444444444,
+        "positive_bias": 0.0036313494201749563,
+        "negative_recall": 0.8614718614718615
+      },
+      {
+        "group": "cartesian-mug-shift-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 740,
+        "positive_recall": 0.8432432432432433,
+        "positive_bias": -0.004988293629139662,
+        "negative_recall": 0.9182825484764543
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-313",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 842,
+        "positive_recall": 0.8574821852731591,
+        "positive_bias": -0.014843915589153767,
+        "negative_recall": 0.9123252858958069
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-335",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 726,
+        "positive_recall": 0.8787878787878788,
+        "positive_bias": -0.00991098117083311,
+        "negative_recall": 0.9236947791164659
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-344",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 742,
+        "positive_recall": 0.8921832884097035,
+        "positive_bias": -0.004012155346572399,
+        "negative_recall": 0.8873038516405135
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-355",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 880,
+        "positive_recall": 0.8829545454545454,
+        "positive_bias": -0.003324603196233511,
+        "negative_recall": 0.9150485436893204
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-379",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 966,
+        "positive_recall": 0.8509316770186336,
+        "positive_bias": -0.0007439454202540219,
+        "negative_recall": 0.8751576292559899
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-400",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 736,
+        "positive_recall": 0.842391304347826,
+        "positive_bias": -0.012967308983206749,
+        "negative_recall": 0.9382716049382716
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-410",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 782,
+        "positive_recall": 0.8452685421994884,
+        "positive_bias": -0.014247952960431576,
+        "negative_recall": 0.9210822998872604
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-417",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 765,
+        "positive_recall": 0.8366013071895425,
+        "positive_bias": -0.013580314815044403,
+        "negative_recall": 0.898159509202454
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-420",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 829,
+        "positive_recall": 0.8250904704463209,
+        "positive_bias": -0.00818471796810627,
+        "negative_recall": 0.8703923900118906
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 762,
+        "positive_recall": 0.8792650918635171,
+        "positive_bias": 0.0011353547452017665,
+        "negative_recall": 0.8869565217391304
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 661,
+        "positive_recall": 0.8986384266263238,
+        "positive_bias": 0.015254178084433079,
+        "negative_recall": 0.8940027894002789
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 768,
+        "positive_recall": 0.84765625,
+        "positive_bias": -0.01269316952675581,
+        "negative_recall": 0.9091826437941474
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 821,
+        "positive_recall": 0.8781973203410475,
+        "positive_bias": -0.0022280020639300346,
+        "negative_recall": 0.9261538461538461
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-64",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 759,
+        "positive_recall": 0.849802371541502,
+        "positive_bias": 0.0017139367992058396,
+        "negative_recall": 0.881074168797954
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-65",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 891,
+        "positive_recall": 0.8933782267115601,
+        "positive_bias": 0.0010436937445774674,
+        "negative_recall": 0.9215686274509803
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-66",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 876,
+        "positive_recall": 0.7773972602739726,
+        "positive_bias": -0.04909462109208107,
+        "negative_recall": 0.8998862343572241
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-67",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 718,
+        "positive_recall": 0.871866295264624,
+        "positive_bias": -0.007328176870942116,
+        "negative_recall": 0.910025706940874
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 803,
+        "positive_recall": 0.887920298879203,
+        "positive_bias": 0.003593898145481944,
+        "negative_recall": 0.8996282527881041
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 791,
+        "positive_recall": 0.820480404551201,
+        "positive_bias": -0.01231737993657589,
+        "negative_recall": 0.9163179916317992
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-72",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 696,
+        "positive_recall": 0.8390804597701149,
+        "positive_bias": 0.004421978257596493,
+        "negative_recall": 0.9366459627329192
+      },
+      {
+        "group": "cartesian-mug-under_extrusion-73",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 772,
+        "positive_recall": 0.8950777202072538,
+        "positive_bias": 0.022937269881367683,
+        "negative_recall": 0.8121212121212121
+      },
+      {
+        "group": "cartesian-mug-warp-60",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 1013,
+        "positive_recall": 0.859822309970385,
+        "positive_bias": -0.010195229202508926,
+        "negative_recall": 0.9388696655132641
+      },
+      {
+        "group": "cartesian-mug-warp-61",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 700,
+        "positive_recall": 0.8671428571428571,
+        "positive_bias": -0.0062365843914449215,
+        "negative_recall": 0.917963224893918
+      },
+      {
+        "group": "cartesian-mug-warp-62",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 858,
+        "positive_recall": 0.872960372960373,
+        "positive_bias": -0.004762620665132999,
+        "negative_recall": 0.9026548672566371
+      },
+      {
+        "group": "cartesian-mug-warp-63",
+        "validation": false,
+        "patches": 900,
+        "positive_points": 763,
+        "positive_recall": 0.8741808650065531,
+        "positive_bias": -0.002399370539933443,
+        "negative_recall": 0.9326287978863936
+      },
+      {
+        "group": "cartesian-mug-warp-70",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 874,
+        "positive_recall": 0.8432494279176201,
+        "positive_bias": -0.00877242162823677,
+        "negative_recall": 0.8867313915857605
+      },
+      {
+        "group": "cartesian-mug-warp-71",
+        "validation": true,
+        "patches": 900,
+        "positive_points": 693,
+        "positive_recall": 0.8528138528138528,
+        "positive_bias": -0.008978908881545067,
+        "negative_recall": 0.9087078651685393
+      }
+    ]
+  },
+  "data_sha256": "6ebfb076910be282f2a564716c689f0d2dcf71b509ee98fb64912400c8f5bdb8",
+  "checkpoint_sha256": {
+    "fine": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+    "query": "c96ac7e9fe82dd3cc15b5dc744ff7a7e46c152211fd52aa26e76ddde44c8ad58"
+  },
+  "criterion": "Positive samples with true distance in (0, 0.15) mm; negative samples in (-0.15, 0] mm; group aggregates are correlated and do not establish whole-print success"
+}

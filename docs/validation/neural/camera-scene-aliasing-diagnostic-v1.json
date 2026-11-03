@@ -1,0 +1,33 @@
+{
+  "stage": "consumed diagnostic",
+  "part": "cup",
+  "kind": "under_extrusion",
+  "seed": 1002,
+  "layer": 85,
+  "geometry_sha256": "3383cafac04a7525f5db0d72b56823f5faa65cc179251264475358e3f04643e6",
+  "truth_minimum_wall_mm": 0.26813093428536866,
+  "truth_cavity_mm2": 1704.5513718276563,
+  "scene_rasterization": [
+    {
+      "scene_pixels_per_mm": 4,
+      "largest_cavity_mm2": 1747.15625,
+      "has_container_cavity": true
+    },
+    {
+      "scene_pixels_per_mm": 8,
+      "largest_cavity_mm2": 1725.6328125,
+      "has_container_cavity": true
+    },
+    {
+      "scene_pixels_per_mm": 16,
+      "largest_cavity_mm2": 1714.505859375,
+      "has_container_cavity": true
+    },
+    {
+      "scene_pixels_per_mm": 32,
+      "largest_cavity_mm2": 1709.65087890625,
+      "has_container_cavity": true
+    }
+  ],
+  "limitation": "Scene-raster diagnostic before optical rendering; does not establish camera inference or completed-print recovery"
+}

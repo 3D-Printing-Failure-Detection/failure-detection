@@ -1,0 +1,20 @@
+{
+  "repository": {
+    "passed": 212,
+    "skipped": 3,
+    "seconds": 28.1,
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MUJOCO_GL=egl .venv/bin/python -m pytest -q"
+  },
+  "focused": {
+    "passed": 48,
+    "seconds": 1.2,
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 .venv/bin/python -m pytest -q tests/test_damped_continuation.py tests/test_camera_fallback.py tests/test_contour_trend.py tests/test_experiment_audit.py"
+  },
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "test_sha256": {
+    "tests/test_damped_continuation.py": "a2f2e624694ec41fe5340de7bbc0e65874a985f13f3196255540c52c578776c9",
+    "tests/test_camera_fallback.py": "f745c535abd3fa99124ef0ce512f1cbb39d2fd9bd6b07d0ba53e809342d1e073",
+    "tests/test_contour_trend.py": "caef9b5c89ab18084f0d6cb05ef4fe4c4a45130ca76a2ece56ff144389686d0f",
+    "tests/test_experiment_audit.py": "35679252481b625f31fba748431cfd62348b81c7059b1c56f0a2574b4c996b2e"
+  }
+}

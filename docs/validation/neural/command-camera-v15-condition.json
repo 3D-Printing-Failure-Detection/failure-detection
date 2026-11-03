@@ -1,0 +1,16 @@
+{
+  "status": "skipped",
+  "verdict": {
+    "ok": false,
+    "violations": [
+      "base not flat/solid in 2 layers",
+      "wall far below 1.4 mm in 1 layers"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64671.915964848675,
+      "thin_layers": 2
+    }
+  },
+  "reason": "known full-stack diagnostic still fails"
+}

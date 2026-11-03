@@ -1,0 +1,26 @@
+{
+  "fine": {
+    "checkpoint_sha256": "b647cc925447527b858ccf013c9bee87bd3234ec8c3295682a3f80b94c89e525",
+    "rows": 30600,
+    "boundary_mae_mm": 0.06493093073368073,
+    "pixel_accuracy": 0.9760845588235294
+  },
+  "context": {
+    "checkpoint_sha256": "ea1683a04e34ef655e11e0cf0723afc723d010b240a8ad6f7323f4e03b1c4bdb",
+    "rows": 30600,
+    "boundary_mae_mm": 0.04817039892077446,
+    "pixel_accuracy": 0.9828941993464052
+  },
+  "central": {
+    "checkpoint_sha256": "380a05ea73703be05ee1084384c29ea62c70eccfd16af1df67f3919af85c7ff9",
+    "rows": 30600,
+    "boundary_mae_mm": 0.06574985384941101,
+    "pixel_accuracy": 0.9750490196078432
+  },
+  "query": {
+    "checkpoint_sha256": "8a4aaacad958b7473821cfe86505de527a87f1572dfb7559d5e95ad644825222",
+    "rows": 30600,
+    "boundary_mae_mm": 0.06876221299171448,
+    "pixel_accuracy": 0.9739930555555556
+  }
+}

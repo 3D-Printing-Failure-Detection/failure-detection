@@ -32,12 +32,12 @@
 \fancyhf{}
 \fancyhead[L]{\small\color{muted}FUNCTIONAL RECOVERY FROM 3D-PRINT FAILURES}
 \fancyhead[R]{\small\color{muted}Project report}
-\fancyfoot[L]{\small\color{muted}Research prototype\quad\textbullet\quad 2 November 2026}
+\fancyfoot[L]{\small\color{muted}Research prototype\quad\textbullet\quad 3 November 2026}
 \fancyfoot[R]{\small\color{muted}\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
-\newcommand{\repourl}{https://github.com/3D-Printing-Failure-Detection/failure-detection/blob/9770276}
+\newcommand{\repourl}{https://github.com/3D-Printing-Failure-Detection/failure-detection/blob/work/neural-local-recovery}
 \newcommand{\repo}[2]{\href{\repourl/#1}{#2}}
 \newcommand{\note}[1]{\begin{tcolorbox}[colback=pale,colframe=teal!55,boxrule=0.5pt,arc=2pt,left=8pt,right=8pt,top=5pt,bottom=5pt]#1\end{tcolorbox}}
 \newcommand{\nextpage}{\clearpage}
@@ -59,43 +59,48 @@ preserve the part's functional requirements.}
 
 The project is a Python research prototype that measures each printed layer,
 estimates how commands turn into deposited material, and chooses whether to
-continue, replace the remaining layer plan, or stop. The newest experimental
-policy, \code{contour}, separates inner and outer wall boundaries when predicting
-deformation. It retains the function checks and action limits of \code{guarded}.
+continue, replace the remaining layer plan, or stop. The established \code{contour}
+policy separates inner and outer boundaries when predicting deformation. Trained
+models and a free local Qwen supervisor are implemented. The strongest validated
+historical result is 67/100 functional completions with zero defective finishes.
+Later changes have not established overall superiority: global trend damping
+loses historical recoveries, and newer camera replacements fail qualification.
+Two narrower controller fixes pass targeted preservation checks. The overall
+improvement goal remains open.
 
+\subsection*{What 67/100 means: fourteen additional successful prints}
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
-{\Large\bfseries\color{teal}62/100} & {\Large\bfseries 43/100} & {\Large\bfseries 53/100}\\
-New contour policy & Previous guarded policy & Ignore the failure\\
+{\Large\bfseries 53/100} & {\Large\bfseries 62/100} & {\Large\bfseries\color{teal}67/100}\\
+No intervention & Analytical contour recovery & Neural hybrid recovery\\
 \bottomrule
 \end{tabular*}
 \end{center}
-These are functional completions in the latest \emph{paired simulated failure
-scenarios}. The new policy preserves all 53 ignore-baseline successes and adds
-nine genuine rescues. Against guarded, it gains twenty cases and loses one.
-It also permits one defective spacer to finish. Scraps and defective completions
-are never counted as successes.
+These are total functional completions on the same \emph{100 historical simulated
+fault cases}. Our system preserves all 53 prints that succeed without intervention
+and rescues \textbf{14 additional prints}: \textbf{five more successes than
+analytical contour recovery}. The other 33 are stopped; none finishes defective.
+Thus 67/100 is not 67 rescues: the added rescues are 14 of the 47 cases that fail
+when ignored. Qwen and neural-only both achieve 67/100, so these gains belong to
+the complete recovery system, without a demonstrated extra benefit from Qwen.
+The separate test below did not reproduce the earlier candidate's advantage;
+the historical gain is not proof of performance on new cases.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
-Validation & 53 tests passed, one optional neural module skipped; 484 final audited simulator runs.\\
-Controls & All 80 clean runs passed; zero alarms in 6,000 monitored clean frames.\\
+Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
+Latest checks & Continuation fallback passes 58 targeted runs. The wall-warning guard passes 54 more: it preserves 14/19 fault successes and all six clean controls per variant, reducing defective finishes from one to zero without adding a recovery.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
-Integration & Branch \code{review/mujoco-generalization}; \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} was open and unmerged when this report was prepared.\\
+Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
 \end{tabularx}
 
-\subsection*{What this report covers}
-The system and its functional contract (page 2); observation and prediction
-(page 3); recovery decisions and cost assumptions (page 4); implementation
-history and evaluation design (page 5); results (page 6); limitations and next
-work (page 7); code and operation (page 8); evidence and reproducibility (page 9).
-
-{\small\color{muted}Implementation snapshot: \code{9770276}. Results describe the
-recorded experiments, not real-printer reliability. Detailed evidence is linked
+{\small\color{muted}Historical contour snapshot: \code{9770276}. Neural experiments
+retain separate frozen source hashes. Results describe simulated experiments,
+not real-printer reliability. Detailed evidence is linked
 throughout the report.}
 
 \nextpage
@@ -149,8 +154,8 @@ passing software verdict is not independently verified physical success.
 \section{Seeing and predicting the build}
 
 \subsection*{Perception used in the reported experiments}
-The evaluated pipeline uses classical OpenCV perception, not a newly trained
-network. A calibrated camera view is rectified to the current layer plane. The
+The established contour benchmark uses classical OpenCV perception. New trained
+models are described on page 10. A calibrated camera view is rectified to the current layer plane. The
 segmenter extracts material contours from controlled current-layer illumination.
 The detector measures boundary deviation and uses geometric changes to assign a
 failure label. Its main deviation threshold is 1 mm.
@@ -370,7 +375,7 @@ For the cup-collapse trajectory, mean boundary error fell from 1.116 mm to
 0.313 mm. Better contour accuracy helps, but it does not guarantee a correct
 functional verdict in every case.
 
-\note{\textbf{Validation:} 53 tests passed; one optional neural module skipped.
+\note{\textbf{Original contour validation:} 53 tests passed; one optional module skipped.
 All 80 clean runs passed with zero alarms in 6,000 monitored frames. All 216
 overlapping baseline replays matched the prior study. The audit covers all 484
 final runs with stable source hashes and complete, unique scenario grids.}
@@ -398,7 +403,7 @@ counted as a defective finish, with the original threshold unchanged.
 Simulation recovery & Runs end to end with classical perception; strongest current evidence is the paired geometric benchmark.\\
 Live Bambu path & Camera calibration, telemetry, pause/cancel and replacement-job code exist. Physical resume behavior and recovery remain unvalidated. \code{run_live} still selects \code{RulePolicy}; contour is not wired into live mode.\\
 Optional FEA & Coarse linear-elastic screening exists, including loads and leak/connectivity checks. Latest success counts are geometry-only, not load-bearing validation.\\
-Neural / LLM paths & Neural detector/segmenter training and optional LLM spec/planning code exist. They were not used to produce these results; the latest predictor is analytical.\\
+Neural / LLM paths & A temporal network, optional learned camera and actual local Qwen supervision now run in separate experiments. They were not used to produce the historical contour results on page 6; see pages 10--11.\\
 Deployment & Open PR; experimental policies are opt-in. Existing hardware/platform/parser concerns require their own checks before release.\\
 \bottomrule
 \end{tabularx}
@@ -486,7 +491,7 @@ adapter for physical recovery.
 
 \subsection*{Evidence to read first}
 \begin{enumerate}
-\item \repo{docs/contour-prediction-trial.md}{Contour prediction trial}: latest
+\item \repo{docs/contour-prediction-trial.md}{Contour prediction trial}: established
 method, same-frame diagnostics, paired results, regressions and reproduction.
 \item \repo{docs/validation/contour/outcomes.csv}{Outcome counts} and
 \repo{docs/validation/contour/runs.csv}{per-run records}: machine-readable evidence
@@ -517,19 +522,19 @@ inspiration for the correction budget and expected-cost decomposition. Its
 assumed probabilities were not adopted as learned estimates.
 \end{itemize}
 
-\note{\textbf{Do not pool unrelated study totals.} The latest headline uses
+\note{\textbf{Do not pool unrelated study totals.} The historical headline uses
 seed 10 on three profiles plus fresh seeds 22--23 on Cartesian. Earlier reports
 used other seed sets and policy combinations. Compare paired methods within a
 study, or explicitly verified overlapping replays.}
 
-\subsection*{Exact latest-study footprint}
+\subsection*{Exact historical contour-study footprint}
 \begin{tabularx}{\linewidth}{@{}p{1.6in}Y@{}}
 \toprule
 Implementation & Commit \code{9770276} on \code{review/mujoco-generalization}.\\
 Final audit & 288 main + 192 fresh-seed + 4 selected-rescue runs = 484.\\
 Separate development & 27 development-policy runs and eight untouched diagnostic trajectories; excluded from the final benchmark totals.\\
 Raw data location & \path{/mnt/data/ishaan/hri-workspace/failure-detection/}\\
-Active integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{GitHub PR \#1}; open at preparation time.\\
+Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{GitHub PR \#1}, now merged into main.\\
 \bottomrule
 \end{tabularx}
 
@@ -546,5 +551,1740 @@ This PDF is generated from \code{docs/report.tex}; its results figure comes from
 the committed contour evidence. Run \code{python3 tools/build_report.py} from the
 repository to rebuild root-level \code{report.pdf}. Update the narrative, tables
 and evidence links together when a new experiment changes the project state.
+
+\nextpage
+\section{Trained recovery and local supervision}
+
+\subsection*{What is learned}
+The temporal model predicts future command-to-deposit displacement from four
+camera-derived local offsets, four global translations, the requested horizon
+and whether a point belongs to an inner or outer boundary. A small neural
+network (18 inputs, two 64-unit hidden layers, two outputs) predicts a bounded
+change from the latest observed displacement. Runtime inference uses exported
+NumPy weights; training used PyTorch on CPU.
+
+The latest model expresses vectors in coordinates aligned with observed motion,
+then rotates its output back to camera coordinates. Rotating the whole observed
+scene therefore rotates the forecast. It does not learn four training directions
+as unrelated cases. Zero observed motion produces zero predicted motion.
+Training labels use simulated deposited geometry; runtime inputs never receive
+that geometry, failure parameters, random seeds or final truth verdicts.
+
+Whole trajectories are separated by seed: training uses 60--63, validation
+70--71. The frozen final comparison on seeds 1001--1004 started on November 2;
+it completes with 126/240 successful failure cases, versus contour's 128/240,
+and rejects this candidate. These seeds cannot be reused as untouched test data. The
+classical-camera model's validation displacement error is 0.1921 mm, versus
+0.3435 mm for the analytical forecast. These are point-displacement errors,
+not print-completion rates. Training manifests pin dataset and checkpoint hashes.
+
+An optional camera model learns signed boundary distance from 9 by 9 grayscale
+patches. Its validation boundary error is 0.0792 mm. On 16 Cartesian seed-10
+failure cases excluding detach, it tied contour's 14 functional completions
+while stopping the one defective spacer finish. Both versions passed four clean
+controls. That model is a separate ablation; its improved image metric alone
+did not increase successful completions.
+
+\subsection*{Recover before a passing fit becomes unusable}
+A central forecast can still pass while a narrowing hole is close to losing its
+fit. Waiting for a definite failure may allow the next deposited layer to make
+recovery impossible. The preventive planner considers alternatives when signed
+fit clearance is smaller than uncertainty inferred from recent observations.
+It replaces a passing continuation only when a feasible candidate improves
+central clearance by more than half a camera pixel.
+
+One new target gradually enlarges an existing hole in future layers within the
+original allowed diameter, at the existing 0.25 mm/layer correction assumption.
+The prefix cannot be widened. All original functional checks, printer bounds and
+the three-adaptation limit still apply. Signed clearance under buffered forecast
+scenarios ranks risk; it is not a calibrated failure probability.
+
+\subsection*{What the local agent actually does}
+Qwen3-0.6B Q8\_0 runs on localhost through llama.cpp on CPU, with no API key.
+It receives observations and tool-computed candidate assessments and chooses an
+eligible candidate ID through structured JSON. The selected plan controls the
+printer. Every request, response, selected ID, validation result and latency is
+recorded. Errors fail the experiment instead of silently substituting a rule.
+
+The small model initially selected weaker recovery options and reduced success.
+A tool now ranks choices and excludes materially worse fit-risk options when
+other functional differences are below explicit measurement tolerances. Genuine
+tradeoffs remain available. Fresh geometry checks run on every warning; a prior
+review may be reused for fewer than eight layers only when passing continuation
+is the sole action. Reused reviews are not counted as model inference.
+
+\nextpage
+\section{Neural evidence and current acceptance status}
+
+\subsection*{Selected spacer-shift development cases}
+All rows below use the same three previously inspected seed-10 cases, one per
+printer profile. They are useful debugging evidence, not an unbiased estimate
+of general success rate.
+
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+Method & Functional & Defective finishes\\
+\midrule
+Established analytical contour & 0/3 & 1\\
+Same new preventive planner, analytical forecast & 1/3 & 0\\
+Learned forecast plus preventive fit planner & 3/3 & 0\\
+Learned planner plus unrestricted Qwen choices & 1/3 & 0\\
+Learned planner plus guarded Qwen choices & 3/3 & 0\\
+\bottomrule
+\end{tabularx}
+
+The guarded-agent run made ten validated local-model calls. It preserved the
+neural planner's three successes and added no further completion. The matched
+analytical-planner ablation supports a contribution from the learned forecast
+on these cases. It does not prove that a language model improved success.
+
+\subsection*{A wider regression found a limitation}
+Using the learned forecast on every part lost cup and mug successes that contour
+kept, including shifts and material starvation. That unrestricted replacement
+scored 56/100 functional completions versus contour's 62/100 on the complete
+historical grid, with three versus one defective finishes. Its three gains were
+spacers; all nine losses were containers. Both passed 20 clean controls. It is not
+accepted. An explicit hybrid variant selects the trained forecast only
+when the original part specification contains through-hole fit constraints;
+other parts retain analytical contour forecasting. The selection is made from
+the specification before observations, never from simulator outcomes or fault
+labels. Each result records which forecast ran and its actual neural-call count.
+
+The learned camera also recovered the known bedslinger mug-shift case that
+contour had lost to guarded: it and guarded completed 3/3 mug-shift cases across
+profiles, versus contour's 2/3. A combined variant now uses that learned camera
+for containers and the trained forecast for tight-fit parts. Classical camera
+measurements remain paired with the fit forecast's training domain; incompatible
+model combinations are rejected before evaluation.
+
+The full hybrid finishes at \textbf{65/100}; the combined models finish at
+\textbf{67/100 versus contour's 62/100}. Both retain every contour success and
+produce zero defective finishes. Qwen matches the combined neural-only result
+with 201 validated requests; all 20 clean controls pass. The frozen fresh test
+started on November 2 at 21:13 UTC: 240 failure cases and 48 clean controls per
+configuration, across all nine earlier baselines and six candidate/ablation
+configurations (4,320 runs). The complete comparison rejects the candidate:
+126/240 successes versus 133/240 for the strongest analytical preventive planner.
+
+\note{\textbf{The first frozen candidate is rejected.} A useful trained model,
+lower forecast error and historical gains are insufficient. A revised candidate must
+outperform the strongest earlier policy on a frozen fresh comparison, preserve
+historical successes and avoid a worse defective-finish rate. Agent contribution
+must be reported separately. None of these simulation results is a physical
+printer validation.}
+
+\subsection*{Reproduction and retained evidence}
+The \repo{docs/neural-recovery-plan.md}{neural recovery plan} records the protocol,
+models and failed attempts; \repo{docs/validation/neural}{docs/validation/neural}
+contains compact audits. Full datasets, checkpoints, source snapshots and request
+logs remain under \path{/mnt/data/ishaan/hri-workspace/failure-detection/}.
+
+\begin{Code}
+tmux attach -t neural-recovery
+.venv/bin/python -m recovery.eval.mujoco_eval --help
+\end{Code}
+This opt-in configuration leaves the live entry point unchanged.
+
+\nextpage
+\section{What the fresh test changed}
+
+The historical 67/100 result did not establish generalization. All 4,320 fresh-test
+runs now finish and pass both integrity audits. The original combined candidate
+with Qwen completes 126/240 failure cases (52.5\%), versus contour's 128/240
+(53.3\%) and the analytical preventive planner's 133/240 (55.4\%). It loses thirteen
+successes against that strongest baseline and finishes five defective prints
+versus three. All methods pass 48 clean controls. Qwen makes 488 requests but
+reduces the neural-only result from 129 to 126 successes. The candidate fails the
+predeclared outcome criteria; successful audit exits do not imply acceptance.
+
+\subsection*{Two separate causes and a revised candidate}
+The learned camera can change estimated wall thickness and the projected shape
+enough to reject a recoverable print. The proposed fallback keeps classical
+measurements as the primary view and maintains a separate learned view of every
+frame. It preserves a feasible primary plan. Only when none passes does it
+consider plans from the learned view, against the same original specification.
+The already printed prefix is never rewritten in either history.
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,
+  flowbox/.style={draw=teal!65,rounded corners=2pt,fill=pale,align=center,font=\small,
+               text width=2.35in,minimum height=.50in},
+  arr/.style={->,thick,color=teal}]
+\node[flowbox] (a) at (0,0) {Classical measurement\\and primary forecast};
+\node[flowbox] (b) at (7,0) {Learned camera measurement\\and independent history};
+\node[flowbox] (c) at (0,-1.9) {A primary plan passes?\\Preserve that feasible choice};
+\node[flowbox] (d) at (7,-1.9) {No primary plan passes?\\Check learned-view alternatives};
+\node[flowbox,text width=4.4in] (e) at (3.5,-3.8) {Rank verified choices; Qwen selects a consistent ID\\Continue, adapt future layers, or stop if none passes};
+\draw[arr] (a)--(c);
+\draw[arr] (b)--(d);
+\draw[arr] (c)--(d);
+\draw[arr] (c)--(e);
+\draw[arr] (d)--(e);
+\end{tikzpicture}
+\end{center}
+The learned temporal forecast still handles specified fits using its matching
+classical camera input. The camera fallback applies to parts without such fits.
+This diagram describes the revision under test, not an accepted replacement.
+
+The Qwen failure was separate: on a bracket, it described the best-ranked plan
+but returned ID 1 for a different plan. IDs now match the displayed rank order.
+Two actual request replays selected the intended clearance plan after this fix.
+Replays verify the interface change; they are not completed-print evidence.
+
+\subsection*{What did not improve, and the next test}
+A larger camera network trained with rotations and reflections worsened boundary
+validation error from 0.0792 to 0.0887 mm, so it is retained as a failed attempt.
+The fallback uses the earlier checkpoint. An equivariant calibration model also
+lowered displacement error but still scrapped a recoverable thinning diagnostic.
+Denser training captures now target brief thinning across all three camera views;
+their results and a remaining limitation are described next. New seeds 2001--2004 are reserved for
+a revised frozen comparison; seeds 1001--1004 are now diagnostic data. Acceptance
+still requires actual learning and Qwen calls, better completion than every
+earlier baseline, preserved passing cases, and no worse defective-finish count.
+
+\clearpage
+\section{Why better camera error was insufficient}
+
+The denser training run is complete. On the same 676,800 validation patches from
+48 held-out trajectories, boundary distance error fell from 0.0838 mm for the
+original camera model to 0.0731 mm for the new model, about 13\%. This did not
+resolve the recoverable cup-thinning diagnostic. The actual 160-layer deposit
+passes the original specification, while classical and both learned measurements
+report two open walls and a support violation. Lower average distance error is
+therefore insufficient evidence for better print recovery.
+
+The new diagnostic follows the original commands throughout the print and gives
+each segmenter the same actual camera frames. Simulator truth is used only for
+scoring. Images and measured and true geometry at layers 84--87 are retained on
+the data volume. This separates perception errors from intervention effects;
+it is not a successful recovery trial.
+
+\subsection*{Predicting between camera pixels: an unsuccessful trial}
+The original network predicts one signed distance per camera pixel and then
+interpolates those values. If a thin wall lies between pixel centres and all
+surrounding predictions are negative, interpolation cannot recover that wall.
+The next experiment predicts sixteen distinct subpixel distances from each
+camera patch. It can represent a 0.0625 mm output grid while using the existing
+0.25 mm camera pixels. This changes the learned representation, not the physical
+camera information. No rule closes gaps or reconstructs nominal walls.
+
+Native subpixel training uses the same 144 disjoint trajectories, dense captures
+across all three views, and exact signed-distance labels at each query position.
+Its completed pipeline is retained in the \texttt{native-camera-v4} window of
+\texttt{neural-recovery}. Native-grid error is 0.07372 mm, but the diagnostic still
+reports both false wall gaps and adds three false base-hole reports. This model
+is not promoted. Old checkpoints keep their existing behavior. The full source
+suite passes 94 tests, with one optional module skipped. Fresh test seeds
+2001--2004 remain untouched.
+
+\subsection*{Recovery revisions still have mixed results}
+The revised camera fallback and consistent Qwen IDs restore the consumed
+cup-collapse and bracket-collapse cases, including an actual agent-supervised
+bracket completion with two adaptations. The fallback also loses a cup-shift
+success, so it is not an accepted replacement.
+
+A separate trial kept neural forecasting but used analytical inversion to
+construct corrections. It restored two consumed spacer failures but lost all
+three historical spacer-shift gains. That completed, audited ablation is retained
+as negative evidence.
+
+Keeping both inverse constructions and checking plans under both forward
+forecasts performs better on that small diagnostic: all seven failure cases and
+two clean controls complete, preserving the three historical gains and restoring
+the two regressions. The policy uses the smaller fit slack when both forecasts
+pass; if no jointly passing plan exists, it retains the original neural choices.
+The optional \texttt{--neural-joint-forecast} flag enables this check. Broader
+historical and actual Qwen evaluation is now complete for fit parts, as reported
+next. These diagnostics do not establish superiority over the analytical policy.
+
+\clearpage
+\section{Fit recovery improves on both baselines}
+
+The revised 291-run study is complete. It covers bracket and spacer fits,
+consumed failure diagnostics, historical cases and validation. Both the earlier
+and revised neural policies match their actual-Qwen variants' completion counts.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Comparison & Contour & Earlier neural & Revised neural\\
+\midrule
+Historical fit failures completed & 30/50 (60\%) & 33/50 (66\%) & 33/50 (66\%)\\
+Historical defective finishes & 1 & 0 & 0\\
+Historical clean controls & 10/10 & 10/10 & 10/10\\
+Validation fit failures completed & 10/20 (50\%) & 12/20 (60\%) & 13/20 (65\%)\\
+Validation defective finishes & 1 & 0 & 0\\
+Validation clean controls & 4/4 & 4/4 & 4/4\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Qwen makes 40 actual historical requests and 32 validation requests. It preserves
+the neural result; these runs show no additional completed print from supervision.
+These fit-only results must not be substituted for the full-project 100-case
+historical comparison or for a fresh frozen test.
+
+\note{\textbf{The earlier validation regression is resolved.} The revision retains all passing
+contour and earlier-neural validation cases, including the previously lost
+bracket collapse. This does not establish superiority for containers or on the
+reserved fresh test.}
+
+\subsection*{The recovery check happened one layer too late}
+At bracket layer index 27, the neural forecast accepts continuation. The previous
+joint implementation skipped its analytical check when only this passing choice
+existed. At the next observation, the already printed hole is too small to fix.
+Analytical contours intervene at 27 and finish the part.
+
+The revised optional check also assesses that apparently healthy continuation
+under the analytical forecast. Failure or low fit slack opens recovery planning
+before the next layer. An alternative must pass both forecasts; when both accept
+continuation, a replacement also needs more than half a camera pixel of additional
+central fit slack. With no jointly passing alternative, the original neural
+choice remains. This is a forecast comparison, not access to simulator truth.
+
+The 39-run \texttt{early-joint-fit-v3} diagnostic restores the bracket but fails
+its gate: an unnecessary second correction makes a previously passing spacer
+finish defective, with and without Qwen. Its broader rerun is skipped. The next
+guard also requires an early replacement's fit bound under both forecasts to be
+at least as good as the original neural continuation's bound. That revision
+passes all six bracket/spacer failure diagnostics and all four clean controls
+with and without Qwen, with no defective finishes and 20 actual model requests.
+The three historical gains also pass, making nine selected failure cases and
+four clean controls preserved, with 30 actual model requests. The broader
+50-case historical fit comparison completes at 33/50 for both neural variants
+versus 30/50 for contour, with zero versus one defective finish, no lost contour
+successes, all ten clean controls passed and 40 actual Qwen requests. Validation
+also completes with the improvement shown above. The comparison checks the actual
+earlier and current source snapshots, weights and common simulation contract.
+Source tests pass 136 cases, with one optional module skipped. Seeds 2001--2004
+remain untouched.
+
+\subsection*{Local supervision now uses shorter requests}
+Every eligible plan still goes to Qwen. Failed or dominated plans stay in the
+full audit, and an independent check verifies that no eligible choice disappears
+from the request. One actual replay reduced the user payload from 6,531 to 944
+characters, kept both choices and selected the same plan. It returned in 6.65
+seconds, but differing server concurrency prevents a controlled latency claim.
+This replay tests the interface; it is not a new successful print.
+
+\clearpage
+\section{Camera experiments remain unsuccessful}
+
+The camera branch has not resolved the recoverable cup-thinning diagnostic.
+A signed-distance model trained for the 80th percentile reaches 80.6\% boundary
+point coverage, yet still reports two false wall gaps and six false base-hole
+layers. Per-point coverage is not a whole-print reliability guarantee.
+
+An expanded dataset adds 18 complete cup and mug trajectories at a previously
+missing range of thinning severity. Seeds are selected from the generator's
+severity range before inspecting their outcomes. Training includes every base
+frame and more samples near the deformation. The neural input remains a grayscale
+camera patch. The combined split has 106 training and 56 validation trajectories,
+with no shared groups. The following diagnostic used the earlier contour conversion.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrr@{}}
+\toprule
+Expanded-data model & Central estimate & Upper estimate\\
+\midrule
+Native-grid distance error (mm) & 0.07203 & 0.09465\\
+Boundary-point upper coverage & 47.2\% & 77.2\%\\
+False wall-gap layers in cup diagnostic & 2 & 1\\
+False base-hole layers in cup diagnostic & 3 & 5\\
+Passes diagnostic specification & No & No\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The actual deposit passes the original specification. Both measured stacks fail;
+neither new model is promoted. As declared in advance, their conditional recovery
+runs are skipped, with explicit retained reasons. The first broad measurement
+validation fails after 960 frames because an invalid pixel contour crashes the
+polygon union. Contours are now repaired individually before union, with tests
+for the crash and preservation of visible holes. This also changes some tiny
+base-hole reports: a retained identical-mask example concerns background touching
+the exterior diagonally. The full 36-trajectory, 2,040-frame validation completes
+under the same repaired conversion for all models. These are geometric camera
+statistics, not complete-print success rates; the functional checks are unchanged.
+
+A new camera network shares one distance decoder across subpixel XY coordinates
+instead of using sixteen independent output heads. It completes 80 training epochs
+on the same separated data and exports verified NumPy weights. Its 0.07351 mm
+validation error is slightly worse than the central model's 0.07203 mm. The
+completed cup diagnostic still reports two false wall gaps and a false support
+violation; its conditional recovery trial is skipped. Both models lose their
+base-hole reports under the repaired conversion, so that change is not evidence
+for the shared decoder. Its geometric validation also completes; the model is not promoted.
+
+The camera-fallback diagnostic also completes at 16/24 for both neural variants,
+matching contour, but with one defective finish versus zero. It remains a rejected
+replacement. The broader validation without Qwen finishes at 21/40 versus
+contour's 19/40, with zero versus one defective finish and all eight clean controls
+passed. The original frozen comparison completes unchanged and fails acceptance.
+
+\clearpage
+\section{Camera validation and remaining failures}
+
+Across the completed validation set, 57 of 1,176 wall frames contain a real
+opening. All 864 base frames are negative for the base-problem flag. Thus the
+sample estimates false base alarms, but cannot establish base-fault recall.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Measurement model & False wall gaps & Missed gaps & False base alarms\\
+\midrule
+Classical & 66 & 3 & 0\\
+Original neural & 63 & 5 & 0\\
+Expanded-data central & 49 & 6 & 259\\
+Expanded-data upper & 39 & 7 & 270\\
+Shared-query decoder & 51 & 6 & 165\\
+Matched fine-only model & 48 & 5 & 55\\
+Wider-context model & 51 & 6 & 134\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Newer networks detect more thinning, but fewer false wall gaps come with more
+missed gaps and many false base alarms. Frames from one trajectory are correlated;
+these counts are not independent trials or complete-print success rates. None of
+these camera replacements is accepted.
+
+\subsection*{Cross-checking a proposed correction}
+An optional camera check retains independent classical and learned measurements
+of every frame. When classical continuation fails but correction is possible,
+each view assesses corrections proposed by both. A jointly passing alternative
+can replace a correction rejected by the other view. Without one, preserve the
+original proposal. Passing classical continuation remains unchanged. These are
+two interpretations of one image, not two physical cameras.
+
+The completed candidate comparison passes 3/4 selected failures versus contour's
+2/4 and ignore's 4/4, with no defective finishes and both clean controls passed.
+Qwen makes 19 actual requests and matches neural-only results. The shifted cup
+now completes with one correction, but the false-gap thinning case still scraps.
+That lost ignore success fails acceptance. The matched previous fallback completes
+2/4; the learned camera alone completes 1/4 and finishes one defective print.
+All 36 planned rows are audited. The zero-call thinning shard is explicitly
+\texttt{not\_reached}, not actual supervision; its original audit failure is retained.
+
+\subsection*{More image context, with a matched ablation}
+The wider camera adds a stride-four 9-by-9 image patch to the fine patch. Both
+inputs come from the existing image; renderer and functional checks are unchanged.
+
+The experiment uses all 66 training and 36 validation container trajectories,
+with 86,400 patches and whole-trajectory separation. A fine-only model trains on
+the identical rows, targets, seed and optimizer schedule. Both complete 160
+epochs with verified NumPy export. On the same 30,600 validation patches, boundary
+error is 0.06493 mm for the fine-only model and 0.04817 mm with context. Yet the
+completed cup diagnostic still reports two false gaps and a false support failure;
+its conditional recovery trial is skipped. The complete geometry check favors the
+fine-only model on all three error counts above, despite its higher patch error.
+A retained image shows the thin wall fragmented by the prediction: average error
+hides a local failure. A shared distance decoder with the same wider inputs trains
+to 0.04462 mm on the identical validation patches, yet still reports two false
+gaps and adds one false base-problem layer. Its recovery and wider checks are
+skipped as predeclared. Both models remain rejected; no completed-print improvement
+is claimed from their lower average error.
+
+\subsection*{Evidence and next acceptance check}
+See \repo{docs/validation/neural}{the validation evidence} and
+\repo{docs/neural-recovery-plan.md}{the development protocol}. Full snapshots,
+weights and Qwen logs stay on the data volume. Cross-version checks pin code,
+options and models while holding simulation and functional checks fixed.
+Acceptance requires all parts and failures, the strongest prior neural and
+analytical baselines, preserved passing cases and no extra defects on a fresh test.
+
+\clearpage
+\section{Broader fit regression and the latest camera trial}
+
+The completed \texttt{fit-consumed-grid-v5} study covers every fit case in the
+consumed seed grid: three printer profiles, bracket and spacer, five failure
+kinds and four seeds, plus clean controls. All 576 runs and their audits finish.
+These are development cases; fresh seeds 2001--2004 remain untouched.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Policy & Successful failures & Defective finishes & Clean passes\\
+\midrule
+Contour & 71/120 & 3 & 24/24\\
+Analytical preventive & 76/120 & 0 & 24/24\\
+Revised neural & 78/120 & 0 & 24/24\\
+Revised neural with Qwen & 78/120 & 0 & 24/24\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Qwen makes 158 actual requests and preserves the neural-only result. This
+demonstrates exercised supervision, not additional successful prints caused by it.
+
+\note{\textbf{This candidate still fails acceptance.} Against analytical preventive
+recovery it gains three cases but loses one: CoreXY bracket shift, seed 1001.
+A higher total alone does not satisfy the requirement to preserve baseline successes.}
+
+\subsection*{Why the remaining fit case is lost}
+At layer index 26, the neural forecast still accepts continuation. The analytical
+forecast predicts a failed hole fit and has a correction that completes the
+physical simulation. The neural policy waits and scraps at index 27, when the
+already printed hole cannot be repaired by changing future commands.
+
+An observational replay records the otherwise discarded candidate assessments.
+The analytical correction passes both central forecasts, but its neural fit bound
+under the uncertainty scenarios is $-0.150$ mm, below the passing continuation's
+$-0.014$ mm. The guard therefore rejects it. These are geometric scenario bounds,
+not probabilities. Simple mixtures of the two inverse corrections also fail
+that guard in a candidate-only diagnostic.
+
+The new optional \texttt{--neural-hole-envelope} proposal retains both models'
+compensated hole openings in future commands, keeping the neural proposal's
+exterior. It changes neither measurements nor the printed prefix. Both forward
+checks and the original robustness guard still apply. This raises the limiting
+diagnostic bound to $+0.047$ mm. In the actual simulation, the previously lost
+bracket now completes with one adaptation for both neural variants; Qwen makes
+two validated requests. The 51-run gate passes all 11 selected failures and six
+clean controls for both neural variants, with 38 actual Qwen requests and no
+defective finishes. The broader comparison completes at 79/120 for both neural
+variants versus analytical preventive recovery's 76/120 and the previous neural
+policy's 78/120. All prior successes are preserved, with zero defective finishes
+and all 24 clean controls passed; Qwen makes 161 actual requests. Historical and
+validation fit checks tie the previous best at 33/50 and 13/20, preserving all
+passing cases and clean controls with no defects. The option remains off by
+default; fresh acceptance is required.
+
+\subsection*{Explicit material classification did not fix the camera}
+The \texttt{occupancy-camera-v10} trial adds a fixed classification term to the
+distance objective, using the same fine-only inputs, data, seed and 160-epoch
+schedule. Its zero-weight control reproduces every array of the earlier model
+exactly. Both trained models export successfully to NumPy inference.
+
+Near-boundary sign accuracy worsens from 82.09\% to 81.35\%, and boundary error
+rises from 0.06493 to 0.06604 mm. On the full 160-layer cup diagnostic, both false
+wall gaps remain and the false support violation grows from 15 to 23 mm$^2$.
+The predeclared condition skips recovery and wider geometry trials. This network
+is retained as a failed experiment and is not promoted into the recovery loop.
+
+Rotating and reflecting image patches and their continuous queries also fails.
+The unaugmented control exactly reproduces the earlier shared-query checkpoint.
+Augmentation worsens boundary error from 0.04462 to 0.05504 mm, retains both false
+gaps and raises false base-problem layers from one to eight. This checkpoint is
+rejected; follow-up recovery and wider validation are skipped. Reserved test
+seeds remain untouched.
+
+\clearpage
+\section{Learning from two observed camera frames}
+
+The camera studies still lose thin walls that are physically present. A new
+coverage analysis finds missed near-boundary material in training examples as
+well as validation. The \texttt{temporal-camera-v12} experiment therefore tests
+an additional observed image: the immediately preceding layer. This may help
+distinguish faint current material from older layers visible underneath. It is
+an experiment, not an accepted improvement.
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,
+ frame/.style={draw=teal!65,fill=pale,rounded corners=2pt,text width=4.1cm,align=center,minimum height=1.5cm,font=\small},
+ stage/.style={draw=navy!55,rounded corners=2pt,text width=9.3cm,align=center,minimum height=0.95cm,font=\small}]
+\node[frame] (previous) {\textbf{Previous layer image}\\9-by-9 grayscale patch\\at the same location};
+\node[frame,right=0.7cm of previous] (current) {\textbf{Current layer image}\\9-by-9 grayscale patch\\at the same location};
+\node[stage,below=0.6cm of previous.south east,xshift=0.35cm,anchor=north] (network) {\textbf{Trained camera network}\\162 inputs $\rightarrow$ 64 $\rightarrow$ 32 $\rightarrow$ 16 signed distances};
+\node[stage,below=0.5cm of network] (geometry) {\textbf{Estimate the current layer's material}\\Zero contour on the native subpixel output grid};
+\node[stage,below=0.5cm of geometry] (loop) {\textbf{Existing recovery loop}\\Future forecasts, functional checks and local Qwen};
+\draw[->] (previous.south)--(network.north -| previous.south);
+\draw[->] (current.south)--(network.north -| current.south);
+\draw[->] (network)--(geometry);
+\draw[->] (geometry)--(loop);
+\end{tikzpicture}
+\end{center}
+
+This network estimates only the current layer. The separate learned deposition
+model predicts future layers. No nominal geometry, failure identity, simulator
+truth or future image enters the camera network. At the first layer, both input
+slots use the current image. Later calls retain the preceding observation;
+they do not acquire a second current-layer image or alter the measured prefix.
+Legacy checkpoints keep their one-image behavior.
+
+\subsection*{A matched control and explicit history handling}
+The study reuses all 66 training and 36 validation trajectories. A three-trajectory
+check covers 165 current frames and 156 predecessor renders across all three
+views: every current input and target exactly matches the retained dataset.
+An independent renderer supplies the prior image with independent camera noise,
+preserving the current-image sequence. These are re-rendered camera samples,
+not new physical printing trials.
+
+The full 86,400-patch build preserves all current inputs, targets, groups and
+splits exactly. A model trained on only current-image columns exactly reproduces
+the earlier fine-only checkpoint. Both variants completed 160 epochs. Offline geometry
+validation supplies the immediate predecessor for every selected frame; it never
+uses the last selected frame when intervening layers were skipped.
+
+Boundary error improves from 0.06493 to 0.06174 mm and near-boundary sign accuracy
+from 82.09\% to 82.64\%. However, the full-stack cup diagnostic retains two false
+wall gaps and adds one false hard-thin layer, despite eliminating the false
+support violation. The checkpoint is rejected; conditional recovery and wider
+geometry trials are skipped. All-part, fresh-test superiority remains unproven.
+
+\clearpage
+\section{Training for connected camera geometry}
+
+A diagnostic on the retained layer-85 image finds that the central air region
+already connects to the image exterior in both the fine-only and two-image
+networks' native pixel masks. This occurs under both four- and eight-neighbor
+background connectivity, before mask-to-contour conversion. The source images,
+model hashes and diagnostic procedure are retained. This is one consumed frame,
+not a fresh recovery benchmark. True geometry sampled on the identical native
+grid retains a closed wall under both connectivity definitions, enclosing
+1704.50 mm$^2$. The output grid can represent the missing connection.
+
+The \texttt{dense-topology-camera-v13} experiment tests spatial supervision.
+It follows the soft-clDice formulation of Shit et al., CVPR 2021
+(\url{https://arxiv.org/abs/2003.07311}), which compares predicted material and
+reference centre lines. Here it is an experimental training objective, with no
+claim that minimizing it guarantees a valid printed part.
+
+\subsection*{The matched experiment}
+Both models retain the two-image camera architecture and train on the same 102
+retained trajectories. Each selected image contributes one 24-by-24 input tile,
+including the existing 9-by-9 convolution's border. The outputs are a contiguous
+64-by-64 signed-distance grid at quarter-pixel spacing. Labels are clipped to
+$[-1,1]$ mm and stored in half precision. Entire trajectories remain separated
+between training and validation.
+
+The control uses the existing weighted distance objective. The candidate adds a
+fixed 0.1 weight on equally weighted soft-Dice and soft-clDice losses, with 20
+soft-skeleton iterations and a 0.1 mm distance-to-logit scale. Homogeneous tiles
+omit the clDice term. Both models use the same initialization, sample order,
+40-epoch schedule and per-objective validation selection rule. Truth supplies
+training labels and sampling locations only. Runtime receives observed images;
+there is no morphology-based repair or change to physical or functional limits.
+
+\subsection*{Verification and acceptance}
+The dense convolution exports to the existing NumPy/OpenCV runtime. Focused tests
+verify native-coordinate alignment, image-border handling and numerical parity
+with full-frame inference. The loss penalizes both a removed wall segment and an
+invented bridge. All three focused checks pass in the Torch environment; the
+project suite passes 139 tests with two optional modules skipped.
+
+Both 40-epoch runs complete with verified exports. The control trains in 46
+seconds and the connectivity model in 746 seconds. Boundary error is 0.07839
+versus 0.07911 mm; near-boundary sign accuracy is 78.73\% versus 77.73\%.
+
+\note{\textbf{The full-print diagnostic still fails.} Both models invent open
+walls at layers 85 and 86 of the simulated 160-layer cup whose true geometry
+passes the specification. The distance
+control also introduces a false base alarm and false support violation. The
+connectivity model removes those extra alarms, but retains both false wall gaps.}
+
+The checkpoint is rejected. Its conditional recovery and wider geometry trials
+are skipped under the predeclared gate. No new recovery success is claimed;
+reserved seeds 2001--2004 remain untouched. Logs, source and failed results are
+retained on the data volume. The following sampling audit checks whether the
+training tiles adequately represent the very thin surviving material.
+
+\clearpage
+\section{Rare thin material and commanded geometry}
+
+An exact replay verifies every target in the 5,760-tile dense dataset. Only 39 of
+3,720 training tiles contain the selected very thin surviving material, totalling
+1,648 positive points. Validation has 26 such tiles and 1,147 positive points.
+The diagnostic identifies material lost by a discrete 0.15 mm-radius opening on
+the existing native grid, excludes nominal thin pixels, and uses a halo to avoid
+crop-edge effects. This is an analysis of training exposure; it does not change
+runtime geometry or functional checks.
+
+\subsection*{Rebalancing helps recall but fails the print diagnostic}
+The \texttt{balanced-camera-v14} trial places half the training sampling mass on
+the 39 identified tiles and half on the remaining training tiles. It samples with
+replacement, retaining the same number of samples per epoch, distance loss and
+40-epoch schedule. Validation never supplies training samples or sampling mass.
+The unweighted control reproduces every earlier dense-distance checkpoint array
+and its file hash. Both exports pass numerical checks.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Measurement & Distance control & Balanced training \\
+\midrule
+Thin-material recall, training & 21.54\% & 56.98\% \\
+Thin-material recall, validation & 6.02\% & 21.62\% \\
+Validation boundary error & 0.07839 mm & 0.08212 mm \\
+False wall gaps in the cup & 2 & 1 \\
+False base alarms in the cup & 1 & 8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The layer-86 false gap disappears, but layer 85 remains open in the estimate and
+one false hard-thin layer appears. The model fails its predeclared gate. Recovery
+and wider geometry trials are skipped; no successful recovery is credited.
+
+\subsection*{Commanded geometry removes gaps but does not yet pass}
+The \texttt{command-camera-v15} experiment appends a binary commanded-layer
+mask to the current and preceding observed image tiles. The mask comes from the
+captured command, not the actual deposit. The builder verifies every old target
+and retains all image inputs, targets, groups and splits bitwise. Training truth
+still serves only labels and sampling checks.
+
+The image-only balanced control reproduces v14 exactly. Both models use the same
+sample weights, loss and training schedule; different input dimensions mean
+identical parameter initialization is not claimed. Both exports pass, and boundary
+error falls from 0.08212 to 0.07876 mm. The full-stack cup diagnostic removes both
+false wall gaps, but retains two false base alarms and one false hard-thin layer.
+It still fails; recovery and wider geometry checks are skipped. This is a camera
+diagnostic improvement, not an accepted recovery result.
+
+The best validation score occurs at epoch 40. A predeclared 160-epoch extension
+uses identical data, sampling and loss. Training finishes, but the
+export check fails: the largest float32 Torch/NumPy difference is 0.000010848 mm,
+just above the 0.000010 mm tolerance. A float64 reference attributes this to
+accumulation precision; one of 8,355,840 output signs differs. The failed run is
+retained. A replay verifies all 160 training records and learned weight arrays
+are identical, with explicit float64 inference. Export error falls to
+0.000006810 mm, passing the unchanged tolerance. Boundary error improves to
+0.06862 mm, but the full cup diagnostic reintroduces one false wall gap and retains
+two false base alarms and one false hard-thin layer. It is also rejected.
+
+A separate audit of all 2,040 validation tiles finds missing-material point
+recall of 91.70\% for 40 epochs and 92.18\% for 160 epochs. These are points where
+material is truly absent inside the commanded shape, not recovery successes.
+The audit does not replace whole-print geometry validation. Conditional recovery
+and wider geometry trials are skipped after the failed gate.
+
+All long jobs run in tmux session \texttt{neural-recovery}, with retained logs and
+exit status. The latest 18 focused model checks pass, including both inference
+precisions, commanded-mask export parity and rejection of malformed masks.
+
+\clearpage
+\section{Testing camera errors in the recovery loop}
+
+\subsection*{Spatial training and offset diagnostics}
+The \texttt{gradient-camera-v18} trial adds a loss matching adjacent predicted
+signed-distance differences to the labeled differences. It uses the same tiles,
+initialization, sampling, split and 40-epoch schedule as the commanded-mask
+model. The zero-weight control reproduces that checkpoint exactly. All numerical
+exports pass, but neither candidate passes the unchanged 160-layer cup check.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Gradient weight & Boundary error & False gaps & False bases & Hard-thin alarms \\
+\midrule
+0 (control) & 0.07876 mm & 0 & 2 & 1 \\
+0.1 & 0.08678 mm & 2 & 1 & 1 \\
+0.3 & 0.08631 mm & 2 & 0 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Both candidates are rejected, with conditional follow-ups skipped. A separate
+audit checks whether a uniform signed-distance offset is justified. Within
+0.15 mm of the true boundary, mean target minus prediction is $-0.01629$ mm in
+training and $-0.01377$ mm in validation; the wall-only means are $-0.00715$ and
+$-0.00299$ mm. A blanket positive offset to thicken the estimate opposes these
+average residuals. None is applied; average bias does not explain every rare
+thin-wall error.
+
+The \texttt{command-base-topology-v20} diagnostic examines the raw mask on the
+first five cup frames. False holes at layers 0 and 4 are disconnected from the
+exterior under both four- and eight-neighbor background connectivity. Each
+converted hole is 0.000335 mm$^2$, compared with 0.003906 mm$^2$ per native pixel.
+The layer-0 hole lies in actual material; the layer-4 pockets are enclosed by an
+erroneous predicted bulge. These are model errors before contour conversion,
+distinct from the earlier diagonal-connectivity issue. No runtime hole filling
+or relaxation of the specification is introduced.
+
+\subsection*{A specification-based camera alternative}
+The \texttt{base-wall-recovery-v21} study tests completed recovery directly.
+An optional alternative history uses classical geometry on the specification's
+solid-base layers and learned geometry on walls. Both models process every
+actual image, preserving the network's preceding-image input. The primary
+history remains classical, and neither history rewrites earlier observations.
+Selection uses the original part specification, not fault identity or truth.
+Qwen still chooses only eligible plans under the existing checks.
+
+The protocol compares neural-only and actual Qwen against a same-checkpoint
+ablation without the base split and all six prior methods: four fault cases and
+two clean controls per method, 54 rows in total. Old raw results retain their
+own source, model and supervisor provenance. A broader container run is
+conditional on passing all six gate cases. All 54 rows are complete and audited.
+Both new variants score 2/4 fault cases, versus 3/4 for the previous joint-camera
+policy and 4/4 for ignore, with zero defective finishes and both clean controls
+passed. Qwen makes 12 actual requests and ties neural-only. The same-checkpoint
+ablation without the split also scores 2/4. The thinning case scraps at layer 86;
+the shifted cup loses a previous success after one adaptation. The hybrid is
+rejected and the broader follow-up is skipped.
+
+The next full-grid trial retains analytical container measurements and forecasts,
+with the improved learned forecast for specification-defined fit parts. It completes
+576 new cases with and without Qwen, against the original 4,320 baseline rows.
+One frozen policy is rerun on every part; old fit and container counts are not
+added together as a new result. The complete development comparison reaches
+136/240, detailed on page 23. Historical regression and a new frozen test remain
+required; fresh seeds 2001--2004 are untouched.
+
+The camera-change checkpoint passes 141 tests with two optional modules skipped. Focused
+checks verify the training loss, both camera histories and full/partial base
+frame accounting. Logs, failed experiments and source snapshots are retained.
+
+\clearpage
+\section{Retaining actual rescues in the full policy}
+
+\subsection*{A successful print is not always a recovery}
+Many fault-injected prints still meet their specification without a correction.
+The comparison therefore separates functional completions from actual rescues:
+a rescue finishes successfully when the matched \code{ignore} run fails. A
+retrospective accounting of the original 4,320 rows gives the following results
+on 240 fault cases per policy.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Original policy & Completions & Rescues & Lost ignore passes & Defective finishes \\
+\midrule
+Analytical preventive & 133 & 15 & 10 & 3 \\
+Combined neural & 129 & 15 & 14 & 4 \\
+Combined neural + Qwen & 126 & 12 & 14 & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every completed print with zero adaptations matches its ignore counterfactual.
+This supports attributing the observed rescues to changed commands in this
+simulator. It does not prove real-printer causality or generalization. The new
+full runs must improve completed outcomes while retaining prior successes and
+controlling defective finishes; model calls alone earn no recovery credit.
+
+\subsection*{Preserve earlier container rescues}
+The \texttt{joint-historical-gate-v23} study checks the complete improved fit
+policy with analytical containers against the same policy retaining the earlier
+trained camera as an independent second opinion. It uses the existing joint
+forecast checks and the original camera checkpoint, not a rejected replacement.
+Both variants run with and without actual Qwen on two known bedslinger cases:
+cup under-extrusion and mug shift, seed 10, plus two clean controls. Contour and
+ignore are rerun under the same frozen source as paired controls.
+
+All 24 rows finish and pass audit. Analytical containers and contour complete
+0/2 fault cases; ignore finishes both defective. Both joint-camera variants
+complete 2/2, with zero defective finishes and both clean controls passed. The
+cup uses one adaptation and the mug three. Qwen makes 11 actual requests and
+matches neural-only outcomes. These are preserved historical rescues, not new
+untouched successes or proof of the best overall policy.
+
+The gate passes. Its complete 576-row follow-up reaches 141/240 successes but
+five defective finishes, detailed on page 25. Each run uses one frozen policy on
+every part, with separate raw results and matched neural-only/Qwen outcomes.
+Historical regression and a new untouched comparison remain required.
+
+\subsection*{Verify earlier workers without rewriting their records}
+The original Qwen workers recorded an asset-only attestation and a richer server
+attestation. The comparison now pins each exact input manifest and retains both
+records. A separately pinned runtime check verifies matching model assets and
+inference command settings; only server addresses and JSON whitespace are
+normalized. Changed models, settings, evidence or unused shard pins fail checks.
+All 23 focused provenance tests pass. Replaying the full original comparison
+reproduces all 15 policies' outcome and inference counts, paired gains and losses,
+and defective-finish differences across the unchanged 4,320 rows.
+
+The new studies run in tmux session \texttt{neural-recovery}. Complete audits,
+source snapshots, checkpoint hashes and actual model requests remain available.
+Fresh seeds 2001--2004 remain untouched, and the overall objective is unmet.
+
+\clearpage
+\section{A modest gain on the complete development grid}
+
+\subsection*{Complete comparisons, with the remaining losses visible}
+The \texttt{fit-analytical-containers-v22} run finishes and passes audit: 576 new
+rows plus all 4,320 original rows, covering 17 separate configurations. One
+frozen policy uses classical camera measurements throughout, learned forecasts
+and shared-hole recovery proposals for specified fits, and analytical container
+forecasts. All three profiles, four parts, five faults and clean controls are
+included on consumed seeds 1001--1004.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Policy & Completions & Rescues & Defective & Clean \\
+\midrule
+Earlier analytical preventive & 133/240 & 15 & 3 & 48/48 \\
+Matched current analytical & 133/240 & 15 & 1 & 48/48 \\
+Latest neural & 136/240 & 18 & 1 & 48/48 \\
+Latest neural + Qwen & 136/240 & 18 & 1 & 48/48 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every earlier analytical success is retained. The three gains are spacer shifts
+at seed 1002, one per profile. The latest policy completes 109 fault cases without
+adaptation and 27 after adaptation; 18 are rescues that the matched ignore policy
+fails. It still loses ten ignore successes, as does the earlier analytical policy.
+It also loses successes of other earlier policies and the two historical camera
+rescues discussed on the preceding page. Its one defective finish is bedslinger
+mug under-extrusion at seed 1004. Qwen makes 499 actual requests and adds no
+completions over neural-only. The neural forecast makes 236,556 calls on fault
+cases and 2,064 on clean controls.
+
+\subsection*{Separate learning from accompanying measurement changes}
+The earlier analytical baseline used an older contour-conversion implementation.
+\texttt{matched-analytical-v26} completes all 288 analytical-control cases with
+the exact current source and classical camera used above. It makes no neural or
+agent calls and retains a separate comparison label. The combined 5,184-row
+comparison confirms 136/240 versus 133/240, with every analytical success retained
+and one defective finish each. The three gains remain the spacer shifts. Thus
+the learned policy adds three rescues; the earlier reduction from three defects
+to one also occurs without learning. The difference includes forecasting and
+associated proposals, not a pure forecast-only ablation. Fresh-test superiority
+remains unproven.
+
+The initial neural-only auditor refused a control with no model. A tested
+\texttt{--analytical-only} mode now requires analytical methods, no model assets
+and zero learned/agent calls. All 38 audit/provenance checks pass. Re-auditing
+the 576 neural rows preserves the earlier results, including 499 agent calls.
+Only audit/comparison resumes; failed logs and all original raw runs are retained.
+
+\subsection*{Two additional camera ideas fail their gates}
+Fixed equal averaging of the short- and long-trained signed-distance outputs
+retains one false wall gap, two false base layers and one false hard-thin layer
+on the complete known cup trajectory. Both member controls reproduce exactly.
+Classical bases remove only the base alarms; averaging is rejected.
+
+Tripling the training cost of underpredicted signed distance also fails. Its
+unit-weight control exactly reproduces the earlier checkpoint, and both exports
+pass. Validation boundary error worsens from 0.07876 to 0.09269 mm and sign
+accuracy from 78.11\% to 74.20\%. The candidate retains one false gap, two false
+base layers and two false hard-thin layers. The wider follow-up is skipped and
+no recovery credit is claimed. This asymmetric loss is not a calibrated
+confidence bound. Eight focused Torch tests pass; the default loss is unchanged.
+
+Full raw results, pinned sources and rejected models remain on the data volume;
+compact evidence is retained in the repository. The report does not claim a
+physical-printer result or an accepted overall winner.
+
+\clearpage
+\section{What the false thickness alarm measures}
+
+\subsection*{Invented material can make a measured wall look too thin}
+The minimum-wall check uses the fraction of material removed by a morphological
+opening, relative to the nominal layer. It can therefore reject a prediction
+with spurious narrow protrusions even when the real wall passes. The retained
+\texttt{thin-attribution-v27} analysis partitions the short-trained camera's
+thin region on the known cup's layer 86:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Predicted thin material lies & Area (mm$^2$) \\
+\midrule
+Inside actually thin material & 6.1633 \\
+Inside actually thick material & 0.2431 \\
+Outside the actual deposited material & 2.0401 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The partition reproduces the metric after accounting for the opening's small
+exterior area. Predicted thin excess is 0.030745, above the unchanged 0.03 limit;
+actual excess is 0.024405. Removing contour simplification worsens it to 0.037241.
+Truth explains this error retrospectively; it is never a runtime input.
+
+\subsection*{Train a small spatial output layer with the camera held fixed}
+The \texttt{native-refinement-v28} experiment keeps every existing camera weight
+fixed and learns a 3-by-3 convolution plus bias on the native distance logits,
+before the final tanh: ten new parameters, initialized to identity. Adjacent
+output positions can influence one another across the original pixel blocks.
+The network still receives only observed images and the commanded layer mask.
+
+Training uses the original distance loss, balanced training-only sampling and
+40 epochs. Valid convolutions score the common 62-by-62 tile interior, excluding
+artificial crop-edge padding. Base and refinement use the same dataset and the
+same disjoint 66 training and 36 validation groups. Validation loss selects the
+weights; the known cup's outcome does not choose an epoch or kernel.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Matched tile-interior metric & Identity control & Learned refinement \\
+\midrule
+Boundary MAE (mm) & 0.078446 & 0.072209 \\
+Near-boundary sign accuracy & 78.16\% & 80.50\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Training takes 21.2 seconds. Base weights remain identical. Export disagreement
+is 0.000006527 mm, below the unchanged 0.000010 tolerance. Full-image inference
+agrees across block boundaries; identity preserves the old field exactly.
+All 24 focused checks pass; the repository suite passes 147 tests with three
+optional modules skipped.
+
+The complete 160-frame cup diagnostic passes for both the raw refined camera and
+its classical-base alternative: no false gap, base, thickness or overhang
+failures. Original and identity controls exactly reproduce the earlier two false
+base layers and one false hard-thin layer. Every model observes all 160 frames.
+The complete 2,040-frame validation rejects the model: it misses ten of 57 real
+gap frames, versus five for the original camera. False gap alarms fall from 63
+to 35. Severe-thinning misses improve from 40 to nine, but false thinning alarms
+rise from zero to 16. False base alarms fall from the commanded control's 452
+to five; no true base failures occur in this validation set. These improvements
+do not waive the missed-gap gate. Passing a known diagnostic earns no recovery
+credit, and the learned output layer is not a calibrated confidence bound.
+
+The conditional \texttt{refined-recovery-gate-v29} comparison requires both main
+variants to pass six fault cases and four clean controls without defective
+finishes. It retains earlier configurations and a camera ablation. The failed
+geometry gate skips this run: zero recovery rows are executed or credited.
+Original orchestration failures and the successful audit-only repair are retained.
+
+The follow-up \texttt{gap-sensitive-refinement-v30} doubles the training cost of
+invented material, retaining data, groups, initialization and epochs. Its control
+reproduces v28 exactly. Boundary error is 0.074073 mm versus the control's 0.072209;
+both exports pass. However, two false wall gaps return in the full cup diagnostic,
+with or without classical bases. The model is rejected before broader validation
+or recovery. All 25 focused tests pass; camera improvement remains unproven.
+
+\clearpage
+\section{More completions, but an unacceptable defect trade-off}
+
+\subsection*{The complete joint-camera comparison}
+The \texttt{joint-historical-gate-v23} follow-up completes all 576 rows. Adding
+the same-code analytical control in \texttt{joint-matched-comparison-v31} produces
+5,760 audited rows across 20 configurations. All 19 earlier summaries remain
+identical; no simulation is rerun or pooled under a changed policy label.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Policy & Successes & Rescues & Defective & Clean \\
+\midrule
+Matched analytical & 133/240 & 15 & 1 & 48/48 \\
+Prior neural + Qwen & 136/240 & 18 & 1 & 48/48 \\
+Joint-camera neural & 141/240 & 18 & 5 & 48/48 \\
+Joint-camera neural + Qwen & 141/240 & 18 & 5 & 48/48 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every success from the active recovery baselines is retained. Five ignore
+successes remain lost, down from ten. Qwen makes 527 actual requests and adds
+no completions over neural-only. The five gains over the prior candidate are
+cartesian cup collapse/1003 and shift/1002, corexy mug collapse/1001 and warp/1001,
+and bedslinger mug warp/1001. Four finish without adaptation; one uses a
+correction. These restore usable prints; genuine rescues remain 18.
+
+Four additional defective finishes follow corrections supported only by the
+learned camera when no classical plan passes: mug under-extrusion/1002 on all
+three profiles and corexy mug under-extrusion/1004. All those alternatives have
+robust margin $-1$: their existing uncertainty envelope fails. The prior
+bedslinger mug under-extrusion/1004 defect remains. The five remaining lost
+ignore successes are all scrapped before adaptation. Recorded reasons guide
+the next experiment; they are not causal proof of a simulation failure.
+
+\subsection*{Test a guard on unsupported corrections}
+The opt-in \texttt{--boundary-robust-fallback} requires a finite existing robust
+margin of at least zero for a learned-camera correction when no classical plan
+passes. Rejected alternatives remain in the audit and cannot be eligible Qwen
+choices. Passing continuations and jointly checked corrections keep their
+existing behavior. Both historical rescues and successful container corrections
+in the full grid used jointly checked plans, motivating this distinction.
+The geometry specification and uncertainty calculation do not change; the
+guard is not a calibrated probability.
+
+The \texttt{robust-fallback-v32} run tests 42 rows: five new gains, four extra
+defects, the prior defect, two historical rescues, three learned fit gains and
+six clean controls, with and without Qwen. Both methods must retain all ten
+reference fault successes and six clean controls, introduce no new defective
+case and finish at most the one previously defective case. Actual neural,
+camera and agent calls are required. All 42 rows complete and pass audit. Each
+variant retains ten fault successes and six clean controls, stops the four extra
+defective prints without adaptation, and retains the one existing defect.
+Each makes 104,468 neural and 2,280 boundary queries; Qwen makes 60 actual calls
+and ties neural-only. This passes the targeted gate, not final acceptance.
+
+All 159 repository tests pass, with three optional modules skipped. They check
+negative/nonfinite and zero margins, default behavior, preserved continuations
+and joint plans, and audit rejection of missing or bypassed guards. Re-auditing
+the completed 576-row comparison preserves every prior field except the auditor
+digest, including all 527 Qwen calls. Full historical regression and untouched
+seeds 2001--2004 remain outstanding. No physical-printer reliability is claimed.
+
+The completed \texttt{robust-full-v33} run adds 576 rows and compares all 22
+configurations across 6,336 rows. All 20 earlier summaries remain identical.
+The guarded Qwen variant retains 141/240 successes, reduces defects from five
+to one, and passes all 48 clean controls, with 523 actual agent calls.
+Neural-only records 140/240 and one defect; its extra loss has an anomalous
+pre-fault camera/measurement trace, so the agent's apparent advantage needs
+investigation. Both retain 18 genuine rescues. The complete
+\texttt{robust-historical-v34} follow-up completes 240 new rows and passes regression: both variants
+retain 67/100 historical successes with zero defects and all 20 clean controls,
+including every prior successful case. Fit-only results retain 33/50 successes
+with zero defects. Qwen makes 200 calls and ties neural-only. Five development
+ignore losses remain, and untouched evaluation is still required.
+
+\clearpage
+\section{A nonlinear camera refinement experiment}
+
+The linear spatial head removes false alarms in a known cup print but misses
+more real gaps in broader validation. The \texttt{nonlinear-refinement-v35}
+experiment tests whether a local nonlinear correction can distinguish those
+patterns. It freezes the same commanded temporal camera and learns 89 parameters:
+a $3\times3$ convolution with eight hidden channels, ReLU, a $1\times1$ output
+and a residual connection before tanh. Zero output weights and bias initially
+preserve the original logits exactly. The dataset, 66 training and 36 validation
+groups, sampling, symmetric loss and 40-epoch schedule remain matched.
+
+The retrained linear control reproduces the v28 checkpoint hash exactly. Both
+heads start with identical validation predictions and preserve every backbone
+weight. Only full tile validation loss selects the saved checkpoint.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Refinement & Parameters & Boundary MAE (mm) & Sign accuracy \\
+\midrule
+Linear control & 10 & 0.072209 & 80.50\% \\
+Nonlinear residual & 89 & 0.071095 & 80.39\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The candidate's maximum Torch/NumPy export difference is 0.000008285 mm, within
+the unchanged 0.000010 mm tolerance. Lower tile error does not establish fewer
+missed gaps or better recovery. The full 160-frame cup diagnostic passes for
+both the raw learned geometry and the classical-base hybrid, with no false gaps,
+base failures, thinning or overhang. Its linear control and actual truth reproduce
+exactly. The completed 2,040-frame comparison reproduces every prior control
+frame but rejects the candidate: it misses eleven real wall gaps versus the
+original camera's five and the linear control's ten. False gap alarms fall from
+63 to 35 and severe-thinning misses from forty to eight, but the required gap
+recall is worse. There are also 36 false base alarms versus zero originally;
+this collection contains no true base faults. Recovery trials remain zero,
+and untouched seeds remain reserved.
+
+All 159 repository tests pass, with three optional modules skipped. In the
+existing Torch environment, all 22 focused camera/export tests pass, covering
+full images, native block seams, both inference precisions, exact identity
+behavior and invalid checkpoint rejection. Training and diagnostics completed in
+\texttt{neural-recovery:nonlinear-v35} with two CPU threads and an 8 MB artifact
+allowance. The separate guarded-policy benchmark retains its frozen source,
+original camera and unchanged model weights.
+
+\clearpage
+\section{Separating camera errors from forecast errors}
+
+The \texttt{forecast-attribution-v36} replay diagnoses the consumed bedslinger
+mug-collapse case at seed 1001. It prints all 160 layers without changing any
+commands. At layer 137, both current forecasts reproduce the recorded false
+handle-connection failure near z=35.2 mm. The actual print and both complete
+camera histories pass the unchanged functional specification.
+
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Offline diagnostic & Classical camera & Learned camera \\
+\midrule
+Observed prefix + actual future & Pass & Pass \\
+Actual prefix + current forecast & Fail & Fail \\
+Observed prefix + current forecast & Fail & Fail \\
+Observed prefix + latest deformation held & Pass & Pass \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The selected false alarm comes from future extrapolation. Holding the latest
+measured deformation removes it in this diagnostic, but that does not establish
+a successful recovery or a generally better forecast. Actual future geometry is
+used only for offline attribution; it is never an estimator input.
+
+The opt-in \texttt{--contour-trend-shrinkage} discounts the existing observation
+uncertainty from each clipped median increment's magnitude, floored at zero.
+It retains the increment's direction, the complete latest deformation, measured
+history and the three-layer horizon. The trained fit forecasts are unchanged.
+There is no new fitted threshold or runtime fault/outcome input, and the
+uncertainty is not a calibrated confidence bound.
+
+The \texttt{trend-shrinkage-v37} test first runs the same-source default and
+candidate on the mug, both with and without actual Qwen. The default must
+reproduce the prior scrap and action sequence. Both candidates must finish
+successfully before all 42 earlier targeted rows run. The complete gate requires
+all ten prior fault successes, the new mug success, all six clean controls and
+at most the same single existing defective case. Actual neural, camera and
+agent calls are required; fit rows must record zero shrinkage calls. A passing
+first phase produces 46 new rows overall: two controls and 44 candidate rows.
+The first four rows complete and pass audit. Both default controls reproduce the
+prior scrap and action sequence; both candidates finish with zero adaptations or
+defective finishes. Each records 1,190 shrinkage queries. Qwen makes three actual
+candidate calls and ties neural-only. This preserves an ignore-successful print;
+it does not add a genuine rescue. All 46 rows now pass: both candidates retain
+every earlier success, complete 11/16 fault cases and all six clean controls,
+with only the same existing defective finish. Qwen makes 62 calls and ties
+neural-only. Full comparisons and untouched evaluation remain required.
+
+All 164 repository tests pass, with three optional modules skipped. The 21 focused
+forecast/fallback tests check unchanged observations and learned fit states,
+retained deformation, suppression of small increments, preserved larger trends,
+the existing horizon and propagation to both camera forecasts. The experiment
+runs in \texttt{neural-recovery:trend-shrinkage-v37} with at most two simulation
+workers and an 8 MB artifact allowance. Older validations keep their frozen sources.
+
+The \texttt{trend-full-v38} comparison completed after all 46 targeted
+rows passed and existing jobs finished. It adds 576 neural/agent rows and
+288 matched analytical rows using the same trend correction, retaining all
+22 previous configurations. Its 7,200-row, 25-configuration comparison separates
+the forecast correction's benefit from the learned policy's contribution.
+Both variants finish 142/240 faults, one defective print and all 48 clean
+controls. Every prior active recovery success is retained; four ignore successes
+remain lost. Qwen makes 518 actual calls and ties neural-only. The same-source
+analytical trend control reaches 127/240 with three defects: container successes
+rise from 57 to 63, but fit successes fall from 76 to 64. The neural candidate
+retains its learned fit forecast, and all stronger earlier controls stay included.
+
+The historical follow-up completed in the \texttt{neural-recovery} tmux session,
+window \texttt{trend-history-resume-v43}, after the full system passed its
+development prerequisites. It adds
+240 neural/agent and 120 matched analytical rows, retaining every completed
+earlier historical configuration, including failed variants. Configuration
+preflight passes. The original report rejected an omitted old-policy label
+mapping; a reporting-only repair preserves every result and all original failure
+records. The zero-row historical watcher then resumes with unchanged commands
+and numerical gates. Three four-worker commands share a 24 MB allowance.
+Both candidates fall to 64/100 successes with one defect, versus the preceding
+guard's 67/100 with zero. Three mug recoveries are lost. Fit-only remains 33/50
+with zero defects. All clean controls pass. The global trend change is rejected.
+
+\clearpage
+\section{Checking a pre-fault measurement discrepancy}
+
+The full guarded comparison exposes one unexpected difference: neural-only
+scraps cartesian cup warp/1003 after four layers, while the Qwen variant completes
+the print without adaptation. Both older variants also complete it. The injected
+fault starts at layer 45, and the successful agent run first consults Qwen at
+layer 46. The failed run already reports a false warp alarm on layer zero and
+an uncertainty of 45.959 mm on layer three. Its measured geometry has mean IoU
+0.318 over those four layers, despite nearly identical physical motion tracking.
+These observations do not establish an agent rescue or a policy-caused loss.
+
+The \texttt{camera-repeatability-v40} diagnostic retains the original paired
+rows unchanged and uses the same frozen source and simulation contract. It
+repeats the first four layers eight times across four independent processes,
+then runs a separate full neural/Qwen replay with the original options.
+The prefix test compares raw image bytes, rectified image bytes, measured
+geometry and actual deposited geometry. Truth is used only for offline scoring;
+it is never supplied to a policy or estimator.
+
+All 32 prefix frames match exactly at each layer for all four recorded hashes.
+Every detection is \texttt{ok}, with minimum measured IoU 0.988. The full paired
+replay completes and passes audit: both variants finish all 160 layers without
+adaptation, defective finish or pre-fault alarm. Their mean measurement IoU is
+identical at 0.885466; Qwen makes three actual calls. The original anomaly is not
+reproduced, and its cause remains unresolved. Its benchmark row remains a
+failure; the replay neither replaces it nor earns an extra recovery. The apparent
+one-case agent advantage is not established as a Qwen benefit.
+
+\subsection*{Record and compare actual camera inputs}
+Future evaluations now record a compact 128-bit SHA-256 fingerprint of every
+camera image through the first adaptation, including its triggering frame.
+Capture occurs before segmentation; these fingerprints never enter a detector,
+estimator, policy or supervisor. The trace records its algorithm, version and
+exact frame count. Audits reject malformed or truncated traces and unequal
+common prefixes. The comparator also checks separately audited inputs, so a
+failed short print can be compared with a longer successful print before their
+commands diverge.
+
+The \texttt{--require-camera-traces} option requires this evidence from every
+compared configuration. Legacy records remain readable but explicitly unverified
+for camera-input consistency. All 176 repository tests pass, with three optional
+modules skipped. Tests cover different prefix lengths, actual interventions,
+cross-directory comparisons, invalid evidence and capture before segmentation.
+The simulation contract remains unchanged.
+
+The frozen \texttt{camera-trace-v41} check replays the anomalous cup and a
+historical cup recovery with and without Qwen. Its four rows must preserve
+the retained control outcomes, action sequences and measurement IoU while
+passing the new camera checks. All four complete and pass strict audits and
+the cross-directory comparator. The 536 recorded prefix frames supply 268
+matching paired frames: 160 for the unadapted cup and 108 through the historical
+recovery's triggering frame. Both methods reproduce the control outcomes,
+action sequences and mean measurement IoU exactly; Qwen makes four actual calls.
+This validates instrumentation without claiming new recovery or replacing the
+original benchmark results.
+
+\clearpage
+\section{Preparing the untouched comparison}
+
+The completed guarded policy improves the development completion/defect tradeoff
+and preserves the historical best counts. The trend correction passes its
+complete targeted regression and reaches 142/240 in the full comparison.
+Historical regression of the changed policy rejects it at 64/100 with one defect,
+losing three earlier mug recoveries. Seeds 2001--2004
+remain untouched; no final superiority claim is justified yet.
+
+The \texttt{fresh-preparation-v42} preparation covers all 25 configurations from
+the full comparison. Five earlier snapshot directories contain four distinct
+runtime versions. A source-copy utility adds camera trace collection to each
+version without changing the original snapshots. It inserts exactly five
+evaluation-only additions: the helper import, trace initialization, image
+fingerprinting before segmentation, the result trace and the manifest version.
+Removing those five AST nodes must reproduce the original evaluator exactly.
+Every other runtime file remains byte-identical, and the simulator contract
+is unchanged. The independent legacy instrumentation version is retained.
+
+All 25 configurations pass a separate argument-parsing check with their original
+policy settings and model paths. Execution is intercepted immediately after
+parsing, before any simulation. This prepares camera evidence collection for
+the final test; it neither executes fresh cases nor retroactively validates
+old inputs. Final audits and the cross-configuration comparison must require
+camera traces. The final protocol and supervisor runtime provenance will be
+frozen only after complete development and historical validation.
+
+All 195 repository tests pass, with three optional modules skipped. The 54
+focused camera/provenance tests include rejection of altered policy behavior,
+altered trace collection, duplicate or missing insertion sites and attempts to
+overwrite original snapshots. The earlier four real instrumentation checks
+remain separate evidence of matching images and unchanged outcomes.
+
+The \texttt{legacy-camera-trace-v44} integration additionally passes ten real
+rows across all four earlier runtime versions, including the ignore policy's
+empty trace. Consumed clean-cup and spacer-recovery cases preserve their original
+outcomes, actions, measurement IoU and inference counts. Strict audits compare
+748 recorded frames and 561 matching paired frames. These checks establish
+instrumentation compatibility, not new policy gains.
+
+The \texttt{packed-evidence-v45} check validates lossless storage on copies of
+those completed rows. Audited raw results shrink from 161,377 to 31,512 bytes,
+before receipt overhead. Restored bytes, re-audit reports and the entire
+comparison remain identical. Readers reject corrupt or ambiguous evidence;
+unfinished results cannot be packed. Original evidence remains unchanged.
+
+The original zero-row historical watcher \texttt{v39} was superseded before
+full results existed. Requiring the neural-only ablation to tie the best score
+could block a better full system. The amended \texttt{v43} protocol retains
+every full-system numerical requirement and all ablation results; its reason
+and the old terminal record are retained. This changes experimental eligibility,
+not any policy or simulation outcome.
+
+To preserve the shared storage allowance, 124 duplicate journals and CSV exports
+from the completed historical run are compressed from 6,384,738 to 424,298 bytes.
+Every archive member is verified before removing its duplicate. Actual sample
+restores from all four shards pass. Primary raw results, manifests, audits and
+completed comparison files remain unchanged and available.
+
+The export compactor also verifies exact reconstruction from retained primary
+rows. All 291 duplicate files from a completed fit-grid run are actually restored
+and verified before re-compaction, freeing about 9 MB of allocated space. Checks
+on compressed real evidence preserve the entire comparison byte-for-byte and
+reject changed exports, unfinished runs and damaged restoration receipts.
+
+The \texttt{final-plan-v47} matrix prepares 300 commands for all 25 configurations:
+7,200 fresh rows, using both existing Qwen workers and at most twelve simulation
+workers. Every command passes argument checks without executing a case. The
+plan reserves 60 MB for results and 6 MB for supervisor logs. Launch still requires
+strict development improvement, historical regression, all clean controls,
+actual neural and accepted agent decisions, no higher defect count and no lost
+passing case against any included policy. Fresh seeds remain unused; no final
+runner is launched or queued.
+
+\clearpage
+\section{Completed development result and remaining perception errors}
+
+The full trend comparison now contains 7,200 audited rows across 25
+configurations. All 22 earlier summaries are reproduced exactly. Both neural
+variants exceed the previous best completion count, while the unchanged trained
+fit forecast avoids the regressions of applying trend damping to every part.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Policy & Successes & Genuine rescues & Defects \\
+\midrule
+Matched analytical & 133/240 & 15 & 1 \\
+Previous guarded + Qwen & 141/240 & 18 & 1 \\
+Trend neural & 142/240 & 18 & 1 \\
+Trend neural + Qwen & 142/240 & 18 & 1 \\
+Analytical with trend damping & 127/240 & 3 & 3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+All five pass 48/48 clean controls. Qwen makes 518 actual calls and adds no
+completions over neural-only. The latest gain preserves an ignore-successful mug;
+it is not an additional genuine rescue. All 3,719 completed unadapted rows in
+the comparison agree with their paired ignore outcomes. Four ignore successes
+remain lost: cup under-extrusion seed 1002 on Cartesian and bedslinger, and mug
+under-extrusion seed 1003 on Cartesian and CoreXY. These losses still block
+acceptance and the untouched test.
+
+\subsection*{Reporting repair without changing results}
+The comparison initially rejected a source collision caused by two omitted old-policy
+labels. A separate reporting repair verifies all 25 configurations without changing
+or repeating simulations. Original failure records remain retained. The resumed
+historical run preserves its commands and gates, completing at 64/100 with one defect instead
+of 67/100 with zero. Damping delays the two shifted mugs' first intervention
+from layer 108 to 110 and suppresses an under-extruded mug's necessary correction
+at layer 14. The next controller experiment should retain the original executable
+plans and consider damped continuation only when the original policy would scrap.
+
+\subsection*{A supplemental camera hypothesis fails the mug checks}
+The rejected nonlinear camera misses six additional leak labels, but all six
+are still classified as hard-thin defects under the unchanged specification.
+Across 2,040 retained validation frames, with classical specified bases, it
+detects 95/99 immediate functional violations versus the original camera's
+90/99, retaining every original true detection. False positives rise from 33
+to 35. This does not validate inter-layer support or the soft-thin layer budget;
+true base and connection faults are absent from these selected frames.
+
+The separate \texttt{functional-camera-gate-v48} diagnostic replays 480 actual
+frames from the remaining cup and two mugs. Both cups pass; both mugs falsely
+fail, with a leak at layer 45 and large apparent overhang. Cartesian also has a
+false broken connection at layer 46. This supplemental camera is rejected before
+recovery trials. Its earlier per-feature rejection remains recorded.
+
+To fund the historical run within quota, 279 duplicate exports covering 833
+completed rows are actually restored and verified before compaction, reclaiming
+13.6 MB of allocated space. Primary results and provenance remain unchanged.
+
+\subsection*{A new model receives the preceding command}
+Rotation/reflection averaging is rejected after 22 paired frame checks: it
+retains six selected real defects but introduces cup leaks and worsens apparent
+mug support. A different trained model now sees the preceding commanded shape,
+as well as the current command and two actual images. A verified 141 kB sidecar
+adds this known input while preserving every original image, target and split.
+The matched control checkpoint reproduces exactly. Tile-validation boundary
+error falls from 0.0788 to 0.0758 mm, and boundary sign accuracy rises from
+78.1\% to 79.2\%. All four complete diagnostics fail across 640 actual frames:
+false leaks and overhang remain, and both cups retain false hard-thin layers.
+The model is rejected before recovery trials. Existing camera outputs remain bitwise equal;
+201 repository tests and 20 Torch/export tests pass. No print-success gain is
+claimed from this new training result.
+
+\clearpage
+\section{Preserving recovery plans and diagnosing thin-wall errors}
+
+The new opt-in \code{--boundary-trend-continuation-fallback} keeps the original
+candidate forecasts and their ranking whenever any executable plan passes.
+Only when all original plans fail may it test unchanged continuation with damped
+trends. Both camera histories must pass the complete functional specification.
+Private forecast copies preserve observations, residuals and original counters.
+This option proposes no damped corrections and leaves learned fit forecasts alone.
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Consumed mug case & Prior guard & Global damping & New fallback \\
+\midrule
+Cartesian shift, seed 10 & Pass & Scrap & Pass \\
+CoreXY shift, seed 10 & Pass & Scrap & Pass \\
+Cartesian under-extrusion, seed 23 & Pass & Defect & Pass \\
+Bedslinger collapse, seed 1001 & Scrap & Pass & Pass \\
+\bottomrule
+\end{tabular}
+\end{center}
+Both neural-only and Qwen variants agree. All 16 newly paired rows pass their
+gate: controls reproduce earlier outcomes, actions and measurement IoU; all eight
+candidate prints succeed without defects. Historical actions remain unchanged
+and invoke no damping. The extra mug completes with zero adaptations and just
+one pair of damped checks, totaling 88 displacement queries. Qwen makes 29
+candidate requests and adds no successes. All 1,135 common camera frames match.
+The next 42 preservation rows also pass: both variants retain ten required fault
+successes and six clean controls, with no additional defects. Across all 58 rows,
+3,345 common camera frames match. Full-grid, historical and untouched superiority
+remain unproven.
+
+\subsection*{What the camera diagnostics rule out}
+All 26 distinct retained trained cameras are compared on the same 22 frames,
+including six selected real defects. Every model falsely opens both mugs at
+onset. Only the nonlinear refinement covers both local cup windows while retaining
+those six detections. The 572 predictions reproduce the prior nonlinear features
+and truth. These selected frames do not qualify a replacement camera.
+
+A separate visibility ablation reproduces eight original images and compares
+current-layer visibility with and without older visual layers. Removing older
+layers does not restore closure. The mug has a real 1,630.7 mm2 cavity, but its
+scene raster already has none. The cup retains a 1,747.2 mm2 cavity in its raw
+raster, while its projected visibility mask loses closure. Segmentation labels
+are used only for diagnosis. Physical state, camera counters and noise streams
+remain unchanged. A failed segment-ID diagnostic and its separate repair are
+retained with the evidence.
+
+An exact union of each model's positive pixel squares also resolves no new case
+in 52 onset-frame comparisons. It adds no material and preserves foreground
+area before filtering. Every raw mug prediction already lacks a cavity. The
+experiment therefore does not justify a runtime contour-conversion change.
+
+\subsection*{Targeted training does not generalize}
+Whole-tile balancing still gives few pixels to very thin surviving material.
+A verified sidecar recovers 1,648 such training pixels and 1,147 validation pixels
+using the earlier audited definition. The new model assigns these training
+pixels half the expected distance-loss weight, leaving the other half to ordinary
+pixels. Inputs, architecture, initialization, sampling and the 40-epoch schedule
+remain matched; the control checkpoint reproduces exactly. Validation selection
+retains its original unbalanced objective. Critical-pixel recall rises from
+60.0\% to 91.6\% on training tiles but falls from 35.2\% to 29.7\% on validation
+tiles. Both complete mugs retain false leaks; Cartesian also has 25.1 mm2
+apparent overhang. Both cups retain a false hard-thin layer. All four full-print
+checks fail across 640 frames, rejecting the model before recovery evaluation.
+A saved audit replay reproduces every pixel
+count exactly; no checkpoint was selected using these retrospective scores.
+
+The updated source passes 221 repository tests, with three optional modules
+skipped, plus 29 tests of training labels, Torch export and refinement. Runs remain in tmux;
+fresh seeds are untouched. No new camera recovery gain is established.
+
+\newpage
+\section{Broadening training coverage under unchanged evaluation}
+The rare-material weighting experiment fits its training examples but fails to
+generalize. A coverage audit finds that 1,538 of its 1,648 thin-positive training
+pixels (93.3\%) come from only two trajectories. The next experiment therefore
+varies fault location and severity while preserving the existing camera,
+physical model, part specifications and evaluation cases.
+
+Retained clean training deposits are augmented with the original under-extrusion
+operator. Eight new training seeds and four severities (0.90, 1.05, 1.15 and
+1.30 mm) produce 64 groups across cup and mug. All three existing camera profiles
+observe the first and last affected frames. Four crop locations are selected on
+the commanded boundary inside the fault zone, independently of model scores.
+Deposited geometry supplies targets and sampling locations only. The network
+still receives the current image, preceding image and issued command mask.
+These are training augmentations, not new physical rollouts or recovered prints.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Coverage measure & Original rare labels & Added training examples\\
+\midrule
+Thin-positive pixels & 1,648 & 30,090\\
+Share from the two largest groups & 93.3\% & 18.3\%\\
+Additional training tiles & --- & 1,344\\
+Groups with at least 16 thin-positive pixels & --- & 56\\
+Groups containing actually open-wall frames & --- & 42\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All additional parents belong to the original training split. The loader checks
+their provenance and preserves every original validation byte and index. Both
+models retain the same architecture, initialization, optimizer, 40 epochs and
+3,720 sampled tiles per epoch. The candidate draws half its sampling mass from
+the original training data with its existing weights, and half uniformly from
+the augmented groups and their tiles. Its loss has no extra pixel weighting.
+Checkpoint selection uses the unchanged 2,040 original validation tiles.
+
+\subsection*{Broader coverage alone fails qualification}
+The control reproduces its checkpoint exactly. The candidate's boundary error
+worsens from 0.078765 to 0.085009 mm and near-boundary sign accuracy falls from
+78.11\% to 77.13\%. On the original rare-material validation tiles, thin-positive
+recall falls from 35.22\% to 8.02\%, while false-positive background pixels fall
+from 3,971 to 2,035. This is a more conservative material estimate, not an
+established functional improvement. The audit reproduces the earlier control
+and weighted-model counts exactly and never selects a checkpoint.
+
+All four complete-print camera diagnostics fail across 640 actual frames.
+Both mugs retain a false leak and approximately 46 mm2 apparent overhang;
+both cups retain two false leaks. All four actual printed geometries pass.
+The gate rejects the model and skips broader validation and recovery. The implementation passes
+230 repository tests, with three optional modules skipped, plus 38 Torch and
+training checks. Runs and logs remain in tmux, and fresh seeds 2001--2004 remain
+untouched.
+
+\subsection*{Testing coverage and weighting together}
+The next paired run combines these exact augmented examples with the earlier
+50\% critical-pixel loss weighting. Its label builder reproduces all 1,344 added
+targets and masks, preserves every original validation label, and binds the
+sidecar to both dataset hashes. There are 31,738 critical training pixels and
+the unchanged 1,147 validation pixels. The unweighted control reproduces the
+coverage checkpoint exactly. The weighted candidate finishes with 59.11\%
+rare-material validation recall, versus the original 35.22\%, but increases
+background false positives from 3,971 to 4,706 and worsens average boundary error
+to 0.093091 mm. This local recall gain does not establish functional success.
+The full Cartesian mug check now passes. CoreXY closes the false gap but retains
+one false hard-thin layer. Both cups retain two false hard-thin layers, so the
+one-of-four result rejects replacement qualification. Inputs,
+initialization, sampling, training budget, validation selection and full-print
+qualification remain matched. All 640 per-layer control feature
+records and full-stack verdicts reproduce exactly. The latest source passes 231 repository
+tests and 39 Torch and training checks. No new recovery benefit is established.
+
+\clearpage
+\section{Learning spatial refinement after broader training}
+The combined coverage and weighting model closes the false gaps but leaves
+small extra cavities and false thin-wall alarms. On the CoreXY mug's affected
+layer, it predicts eight cavities where the actual geometry has one. The
+hard-thin excess is 0.03029, above the unchanged 0.03 threshold; the actual
+layer's excess is 0.00495. Both cup cases have similar false alarms.
+
+The next experiment freezes every weight of that camera and trains the existing
+native spatial refinement heads: a ten-parameter linear convolution and an
+89-parameter nonlinear residual layer. Both start as identity transformations
+and use the same augmented training data, critical-pixel weighting, 40 epochs,
+seed and 3,720 samples per epoch. No material is filled by a postprocessing rule.
+Inputs, thickness thresholds, physical simulation and functional requirements
+remain unchanged.
+
+\subsection*{Matched training and export checks}
+The convolution uses a valid 62-by-62 interior of each 64-by-64 tile. Loss weights
+are computed only on those interior training pixels; validation selection stays
+unweighted on the same 2,040 original validation tiles. Scores are compared with
+the frozen base at identical coordinates, not with its earlier whole-tile scores.
+Disabling the added training options reproduces the earlier linear refinement
+checkpoint exactly. Eight identity checks, covering both heads and all four
+retained onset images, reproduce the base distances and measured geometry exactly.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Camera & Interior boundary error (mm) & Sign accuracy\\
+\midrule
+Frozen base & 0.092894 & 73.50\%\\
+Linear refinement & 0.093104 & 74.46\%\\
+Nonlinear refinement & 0.089384 & 74.50\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Qualification remains separate from training}
+A fixed-checkpoint screen on the four retained onset images reproduces all base
+features. Both new heads remove the false hard-thin flags on these sampled
+images; the CoreXY mug now has one predicted cavity. Both new heads then pass all
+four complete 160-layer diagnostics, covering both mugs and both cups. Every
+predicted stack has zero apparent overhang and no functional violations. All
+640 per-layer base-control feature records reproduce exactly. This is camera
+qualification evidence, not a new completed-print recovery rate.
+
+The broader validation completes all 2,040 retained frames and rejects both
+heads. The original camera detects 90 true functional defects, misses nine and
+raises 33 false alarms. The linear head detects 94, misses five and raises 76
+false alarms; the nonlinear head detects 93, misses six and raises 85. Despite
+fewer total misses, the new heads lose two and three original true detections.
+Both therefore fail the unchanged preservation requirement. All truth,
+classical and original-camera controls reproduce exactly. Component errors and
+lost case identities remain in the retained evidence. The conditional recovery
+launcher exits with status skipped: zero new recovery trials run.
+
+The implementation passes 238 repository tests, with three optional modules
+skipped, and 41 Torch/training checks. The frozen run and logs are retained in
+\code{neural-recovery:native-coverage-v58}. Fresh seeds 2001--2004 remain untouched.
+The rejected experiment establishes no new completed-print success rate.
+
+The final comparison's training/test separation audit now reads augmented seeds
+separately from severity and includes their parent data. All 25 retained
+configurations preserve their original seed sets, and both new camera manifests
+remain disjoint from the reserved test seeds. Unknown augmentation formats and
+overlap through training, validation or parent data are rejected. The older
+final-run plan must be regenerated with this audit before launch.
+
+Lossless packing of 1,176 completed result rows reclaims 15.36 MB. Actual disk
+restoration verifies every original byte in all 13 directories; manifests and
+audits remain unchanged. No active run, checkpoint or training dataset is removed.
+
+\clearpage
+\section{A known defect that the neural camera already detects}
+A separate camera replay examines the retained bedslinger mug under-extrusion
+case at seed 1004. Both the ignore baseline and the earlier neural/Qwen controller
+finish with one seriously thin wall. The replay follows nominal commands through
+160 layers; it does not run a recovery controller. All 102 camera frames through
+the first adaptation match each of the two retained controller runs, giving 204
+exact comparisons. This consumed development example is not fresh test data.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+View at layer 101 & Hard-thin excess & Exceeds 0.03 cutoff\\
+\midrule
+Actual geometry & 0.04678 & Yes\\
+Classical camera & 0.00109 & No\\
+Original neural camera & 0.03140 & Yes\\
+New linear refinement & 0.04149 & Yes\\
+New nonlinear refinement & 0.04168 & Yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All learned views detect the real thin wall, including the original camera
+already available to the controller. Their full-stack verdicts, with the
+existing classical measurement of specified bases, correctly reject the print.
+There is no change to geometry, thickness thresholds or physical scoring.
+
+\subsection*{The warning can be lost during plan selection}
+Code inspection identifies a relevant branch in \code{_camera_candidates}:
+when no correction passes both camera views, it returns the primary classical
+candidates unchanged. A true neural warning can therefore be discarded before
+Qwen receives its eligible plans. This diagnosis shows that better camera
+accuracy alone cannot resolve every remaining failure. It does not establish
+the outcome of a changed controller.
+
+A blanket veto on negative robust margins would reject previously successful
+historical recoveries, so it is not adopted. A narrower guard on observed
+hard-thin walls requires actual recovery comparisons, preservation of earlier
+successes, and unchanged functional requirements.
+
+\subsection*{Stronger overprediction penalties also fail}
+Two fixed signed-distance overprediction costs, 1.25 and 1.5, are trained for the
+linear spatial head. The previous control reproduces exactly, as do twelve
+identity checks. The declared asymmetric cost affects both training and
+checkpoint selection; validation receives no critical-pixel reweighting.
+Both improve average error but restore false leaks on the two good mug onsets
+and still miss real defects. All seven screen controls reproduce exactly.
+The short screen rejects both before full diagnostics or recovery evaluation.
+
+\subsection*{Testing retention of the existing neural warning}
+The optional \code{--boundary-observed-wall-guard} now applies the unchanged hard
+thickness rule to the learned observation of a printed container wall. It uses
+the original design as its reference, retains both observation histories, and
+rejects all future plans when this measured prefix already violates the hard
+limit. A classical \code{ok} detection cannot suppress the warning, and damped
+continuation cannot override it. Disabled-option behavior is preserved.
+
+All 246 repository tests pass, with three optional modules skipped. The four
+paired known-defect runs also pass: controls finish defective after one
+adaptation, while both guarded variants stop at layer 101 without adapting.
+All 510 common camera frames match. Qwen reviews one control correction;
+guarded variants have no eligible plan and make no call.
+
+The 50 retained regression rows complete in
+\code{neural-recovery:observed-wall-v62}. Each variant preserves all 14/19 fault
+successes and all six clean controls, with unchanged successful action sequences.
+Defective finishes fall from one to zero. Qwen makes 88 actual preservation
+requests and ties neural-only. All 8,217 common camera frames in the complete
+comparison match. Physics and functional rules remain unchanged. Stopping a
+defective finish is not another recovered print. Fresh seeds 2001--2004 remain
+untouched; this selected comparison does not establish overall superiority.
+
+\clearpage
+\section{Current verdict: reliability progress, no new recovery gain}
+The observed-wall guard passes all 54 new controller runs, including paired
+controls and fifty preservation rows. It prevents the known defective finish
+without losing an earlier success. The number of successful recoveries does not
+increase. This is a verified reliability improvement on selected consumed cases;
+the strongest prior method and fresh benchmark still have to be beaten overall.
+
+\subsection*{Direct image guidance does not fix the camera}
+Two further spatial heads receive the current and previous camera images and
+commanded mask already supplied to the base network. Their 37 and 305 parameters
+reduce average boundary error to 0.089590 and 0.089083 mm, versus 0.093104 mm for
+the exactly reproduced control. Both fail the seven-frame functional screen.
+The linear head detects one missed defect but restores false leaks on good mugs
+and loses another alarm. The nonlinear head keeps the four good onsets valid but
+misses all three selected defects. Neither enters recovery evaluation.
+
+The source passes 249 repository tests, with three optional modules skipped,
+and 54 focused Torch/training checks. These checks establish implementation
+consistency; they do not turn a rejected checkpoint into a qualified policy.
+
+\subsection*{The remaining errors include wall width, not only gaps}
+Two missed defects have closed actual walls, with hard-thin excesses 0.030402 and
+0.036836. The unchanged cutoff is 0.03. The third case is both open and too thin.
+The original camera's overall alarms on the first two are correct even though
+its predicted open-wall component is wrong. Merely encouraging closed contours
+therefore cannot resolve all functional errors.
+
+The earlier extra training weights focus on material roughly 0.3 mm thick.
+The physical hard-wall limits are 0.96 mm for mugs and 0.84 mm for cups. A training-only
+label helper uses that existing physical scale, marks both sides of the thin
+boundary and retains every previous critical-positive label. A focused label
+suite passes 22 tests. No new weighted model has been trained yet.
+
+The first label audit stops because its replay wrapper omits the original
+dataset's intermediate float32 rounding. One target pixel differs by
+0.000244140625 mm. The original recipe reproduces it exactly. A separately frozen
+audit restores the documented per-dataset recipes, then exposes an invalid
+derived polygon opening at row 5291. Repairing that opening changes its area by
+only $2.27\times10^{-13}$ mm$^2$; larger changes are rejected. A third audit
+completes with exact agreement on all 7,104 targets and augmented geometries.
+Its 587,576 training labels retain all 31,738 old critical-positive labels;
+validation labels remain audit-only. Stored data, camera inputs and functional
+thresholds are unchanged.
+Fresh seeds 2001--2004 remain untouched; the overall improvement goal is still open.
 
 \end{document}

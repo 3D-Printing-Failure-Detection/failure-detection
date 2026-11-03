@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "files": 124,
+  "original_bytes": 6384738,
+  "archive_bytes": 424298,
+  "storage_before_bytes": 99947008000,
+  "storage_after_bytes": 99940904960,
+  "receipt_sha256": "09023711d9d24bb65265febc2e2ca5d080df0db11ede81fe6db67d323b21eb0c",
+  "raw_results_manifests_audits_unchanged": true,
+  "limitation": "Only completed duplicate case journals and CSV exports are archived. Exact bytes can be restored using restore.py and receipt.json."
+}

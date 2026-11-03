@@ -1,0 +1,16 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+bedslinger,spacer,shift,10,ignore,False,False,True,48,0,0,0,0,2.2679898779606447
+bedslinger,spacer,shift,10,contour,False,True,False,35,35,1,0,0,5.507018867996521
+bedslinger,spacer,shift,10,neural,False,False,True,48,48,1,0,0,10.743012961931527
+bedslinger,spacer,shift,10,neural_risk,True,False,False,48,48,1,0,0,18.601272705942392
+bedslinger,spacer,shift,10,neural_risk_agent,False,True,False,38,38,1,2,2,82.57344131497666
+cartesian,spacer,shift,10,ignore,False,False,True,48,0,0,0,0,2.423913588980213
+cartesian,spacer,shift,10,contour,False,False,True,48,48,2,0,0,8.379986278014258
+cartesian,spacer,shift,10,neural,False,True,False,39,39,1,0,0,9.281334973988123
+cartesian,spacer,shift,10,neural_risk,True,False,False,48,48,1,0,0,18.504399947007187
+cartesian,spacer,shift,10,neural_risk_agent,False,True,False,39,39,2,3,3,112.26163503399584
+corexy,spacer,shift,10,ignore,False,False,True,48,0,0,0,0,2.306332273990847
+corexy,spacer,shift,10,contour,False,True,False,39,39,3,0,0,7.771279381006025
+corexy,spacer,shift,10,neural,False,True,False,38,38,2,0,0,10.394859418971464
+corexy,spacer,shift,10,neural_risk,False,True,False,41,41,1,0,0,17.513600524980575
+corexy,spacer,shift,10,neural_risk_agent,False,True,False,39,39,3,4,4,124.93484621390235

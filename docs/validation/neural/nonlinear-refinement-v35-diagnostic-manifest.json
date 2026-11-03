@@ -1,0 +1,57 @@
+{
+  "status": "complete",
+  "source_sha256": "42f93bf7018222e7020a9e507d190a786d7a1d49a12fb969e1dd75b4c1dc68de",
+  "script_sha256": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "control=/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/control/boundary.npz",
+      "nonlinear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz"
+    ],
+    "include_classical_base_hybrids": true,
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002"
+  },
+  "checkpoint_paths": {
+    "control": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/control/boundary.npz",
+    "nonlinear": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/nonlinear/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "control": "41bebe514d52f5aa91e115ccf8ab837182a70c98de19567964d0c34295b3b25b",
+    "nonlinear": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b"
+  },
+  "hybrid_classical_base_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hybrid_labels": {
+    "control": "control:classical-base",
+    "nonlinear": "nonlinear:classical-base"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "42f93bf7018222e7020a9e507d190a786d7a1d49a12fb969e1dd75b4c1dc68de",
+  "checkpoint_queries": {
+    "control": 160,
+    "nonlinear": 160
+  },
+  "observation_counts": {
+    "classical": 160,
+    "control": 160,
+    "nonlinear": 160,
+    "control:classical-base": 160,
+    "nonlinear:classical-base": 160
+  }
+}

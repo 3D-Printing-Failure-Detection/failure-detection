@@ -1,0 +1,19 @@
+{
+  "matched_initialization_data_and_split": true,
+  "models": {
+    "distance": {
+      "checkpoint_sha256": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+      "validation_boundary_mae_mm": 0.07838711636506973,
+      "near_boundary_sign_accuracy": 0.7873340804819108,
+      "validation_selection_score": 0.024675146599902827,
+      "export_max_abs_error": 2.8014183044433594e-06
+    },
+    "topology": {
+      "checkpoint_sha256": "ddeb9c91ce8ee1dd2659df15ff6854124c633addd942359418b494c426f1f3d1",
+      "validation_boundary_mae_mm": 0.07911234958036376,
+      "near_boundary_sign_accuracy": 0.7772850988887833,
+      "validation_selection_score": 0.029533819386772082,
+      "export_max_abs_error": 3.1441450119018555e-06
+    }
+  }
+}

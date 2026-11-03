@@ -1,0 +1,237 @@
+{
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/main/results",
+      "manifest_sha256": "c1b793dedb5f3340cb09050d5a034e5789bdeb32b36ca8804170dcb078dd8a46",
+      "audit_sha256": "d103fa64e66305c026f29b4065b7506a28c0e0a7b848d8d6ac8854c814172711",
+      "runs_sha256": "63567cc5bfaf7ebffba0d25eb6477b5d321cec85497b73f452a880ca59ee218c"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-risk-historical-v1/heldout/results",
+      "manifest_sha256": "1d80150a7863f9a0285821ad44c0e92c7d78dd9999cfa7e0160b0e70577a3636",
+      "audit_sha256": "d90e4310136fb1d138de05278f73fa02785c615a06b1862fa071363ffbcea7fc",
+      "runs_sha256": "db8b35fd1f1650205a0c4c43dc969fd29d43c2904fcf2d9cd50caad7df5bfaaf"
+    }
+  ],
+  "source_sha256": "ad201eb784bf89e4fc108f986ae433842532fe844c684c6c9d346faad3b24e51",
+  "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "training_manifest_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+  "candidate": "neural_risk",
+  "failure_cases": 100,
+  "clean_cases": 20,
+  "summary": {
+    "ignore": {
+      "failure": {
+        "n": 100,
+        "in_place": 53,
+        "scrapped": 0,
+        "defective_finished": 47,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 726.737570388359,
+        "mean_actual_filament_ratio": 0.918437747853991,
+        "mean_filament_with_assumed_clean_restart": 0.918437747853991
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 142.5187838949496,
+        "mean_actual_filament_ratio": 0.9999703028880138,
+        "mean_filament_with_assumed_clean_restart": 0.9999703028880138
+      }
+    },
+    "contour": {
+      "failure": {
+        "n": 100,
+        "in_place": 62,
+        "scrapped": 37,
+        "defective_finished": 1,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 1872.3510003896663,
+        "mean_actual_filament_ratio": 0.8526766097526377,
+        "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "seconds": 279.11858735606074,
+        "mean_actual_filament_ratio": 0.9999702140658442,
+        "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+      }
+    },
+    "neural_risk": {
+      "failure": {
+        "n": 100,
+        "in_place": 56,
+        "scrapped": 41,
+        "defective_finished": 3,
+        "neural_queries": 204561,
+        "agent_requests": 0,
+        "seconds": 1688.6134274799842,
+        "mean_actual_filament_ratio": 0.8387925022114253,
+        "mean_filament_with_assumed_clean_restart": 1.2487925022114252
+      },
+      "clean": {
+        "n": 20,
+        "in_place": 20,
+        "scrapped": 0,
+        "defective_finished": 0,
+        "neural_queries": 4260,
+        "agent_requests": 0,
+        "seconds": 288.25599753763527,
+        "mean_actual_filament_ratio": 0.9999702140658442,
+        "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "baseline": "ignore",
+      "gained": [
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          10
+        ],
+        [
+          "cartesian",
+          "cup",
+          "under_extrusion",
+          23
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          10
+        ],
+        [
+          "corexy",
+          "mug",
+          "under_extrusion",
+          10
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          10
+        ]
+      ],
+      "lost": [
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          10
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          10
+        ]
+      ],
+      "net_gain": 3,
+      "extra_defective_finishes": -44
+    },
+    {
+      "baseline": "contour",
+      "gained": [
+        [
+          "bedslinger",
+          "spacer",
+          "shift",
+          10
+        ],
+        [
+          "cartesian",
+          "spacer",
+          "shift",
+          10
+        ],
+        [
+          "corexy",
+          "spacer",
+          "shift",
+          10
+        ]
+      ],
+      "lost": [
+        [
+          "bedslinger",
+          "mug",
+          "under_extrusion",
+          10
+        ],
+        [
+          "cartesian",
+          "cup",
+          "shift",
+          10
+        ],
+        [
+          "cartesian",
+          "cup",
+          "under_extrusion",
+          10
+        ],
+        [
+          "cartesian",
+          "mug",
+          "shift",
+          10
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          10
+        ],
+        [
+          "cartesian",
+          "mug",
+          "under_extrusion",
+          23
+        ],
+        [
+          "corexy",
+          "cup",
+          "shift",
+          10
+        ],
+        [
+          "corexy",
+          "cup",
+          "under_extrusion",
+          10
+        ],
+        [
+          "corexy",
+          "mug",
+          "shift",
+          10
+        ]
+      ],
+      "net_gain": -6,
+      "extra_defective_finishes": 2
+    }
+  ],
+  "actual_learning": true,
+  "actual_agent": null,
+  "strictly_more_completions_than_every_baseline": false,
+  "no_lost_baseline_successes": false,
+  "no_higher_defective_finish_count": false,
+  "all_candidate_clean_controls_pass": true,
+  "limitation": "Paired simulation outcomes; no physical reliability claim. Restart filament is hypothetical."
+}

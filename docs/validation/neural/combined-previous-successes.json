@@ -1,0 +1,32 @@
+{
+  "previous_csv_sha256": "86fd800ffcbf5dc00a5d6694608b1829814c635f5046ce3e88c117b0fde43cad",
+  "candidate": "combined neural_risk",
+  "cases": 100,
+  "baselines": [
+    {
+      "method": "ignore",
+      "previous_successes": 53,
+      "lost": [],
+      "replayed_outcomes_matched": 100
+    },
+    {
+      "method": "ours",
+      "previous_successes": 38,
+      "lost": [],
+      "replayed_outcomes_matched": 0
+    },
+    {
+      "method": "guarded",
+      "previous_successes": 43,
+      "lost": [],
+      "replayed_outcomes_matched": 100
+    },
+    {
+      "method": "contour",
+      "previous_successes": 62,
+      "lost": [],
+      "replayed_outcomes_matched": 100
+    }
+  ],
+  "limitation": "The original ours results are compared from the previous audited study, not newly replayed here. All nine baselines will be replayed in the frozen test."
+}

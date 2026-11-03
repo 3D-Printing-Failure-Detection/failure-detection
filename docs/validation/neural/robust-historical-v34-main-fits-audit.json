@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "source_sha256": "3a194dd002fe610af0e9e106d1f018a6f812efce75cb588f0b8df33f88fa1b7e",
+  "analytical_only": false,
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "27f1a3eea04e11045f292f309b1a0954956f86c0e8578836b1b575cd9007abaa",
+  "rows": 72,
+  "actual_agent_calls": 25,
+  "reused_reviews": 90,
+  "summary": [
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 6,
+      "in_place": 6,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 41.932765275007114
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 30,
+      "in_place": 21,
+      "scrapped": 9,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 43933,
+      "seconds": 351.53149364166893
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 6,
+      "in_place": 6,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 40.93781720625702
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 30,
+      "in_place": 21,
+      "scrapped": 9,
+      "defective_finished": 0,
+      "agent_requests": 25,
+      "neural_queries": 43933,
+      "seconds": 692.5475432772655
+    }
+  ],
+  "agent_decision_opportunities": 115,
+  "agent_review_status": "exercised",
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "26f36f7e142fa8b2e936d8355e5435a05e6e992beea3111e15c5b44e4d31b573",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

@@ -1,0 +1,149 @@
+{
+  "status": "passed",
+  "source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "6d7204eee2dcf66c20e4511fde0aaf258585c3062a3656d90aa357e91c23fd2e",
+  "rows": 24,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 0,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 15.109871302964166
+    },
+    {
+      "method": "scrap",
+      "split": "failure",
+      "n": 2,
+      "in_place": 0,
+      "scrapped": 2,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 14.274992936989293
+    },
+    {
+      "method": "alert",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 15.608326410874724
+    },
+    {
+      "method": "ours",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 19.780801582848653
+    },
+    {
+      "method": "measured",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 21.217777552083135
+    },
+    {
+      "method": "predictive",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 70.55401817697566
+    },
+    {
+      "method": "functional",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 79.94214306492358
+    },
+    {
+      "method": "guarded",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 67.40398593212012
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 43.45249304699246
+    },
+    {
+      "method": "contour_risk",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 44.89823006198276
+    },
+    {
+      "method": "neural",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 166,
+      "seconds": 49.550702735898085
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 2,
+      "in_place": 1,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 1568,
+      "seconds": 52.679323670919985
+    }
+  ],
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "6fa100efba5faf18b3417d16f61e10bd705914ddc04e6ef5594ea3ec377e2758"
+}

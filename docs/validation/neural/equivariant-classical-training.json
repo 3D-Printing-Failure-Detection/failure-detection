@@ -1,0 +1,447 @@
+{
+  "architecture": "18-64-64-2 ReLU; bounded residual XY output",
+  "feature_version": 1,
+  "seed": 2026,
+  "epochs": 60,
+  "torch": "2.7.1+cu126",
+  "device": "cpu",
+  "seconds": 11.671689510345459,
+  "data_sha256": "4febd9140d85578861404dea86402496787f6e3ad57be2668f610ea33dfe9a75",
+  "checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "training_groups": [
+    "cartesian-bracket-clean-60",
+    "cartesian-bracket-clean-61",
+    "cartesian-bracket-clean-62",
+    "cartesian-bracket-clean-63",
+    "cartesian-bracket-collapse-60",
+    "cartesian-bracket-collapse-61",
+    "cartesian-bracket-collapse-62",
+    "cartesian-bracket-collapse-63",
+    "cartesian-bracket-shift-60",
+    "cartesian-bracket-shift-61",
+    "cartesian-bracket-shift-62",
+    "cartesian-bracket-shift-63",
+    "cartesian-bracket-under_extrusion-60",
+    "cartesian-bracket-under_extrusion-61",
+    "cartesian-bracket-under_extrusion-62",
+    "cartesian-bracket-under_extrusion-63",
+    "cartesian-bracket-warp-60",
+    "cartesian-bracket-warp-61",
+    "cartesian-bracket-warp-62",
+    "cartesian-bracket-warp-63",
+    "cartesian-cup-clean-60",
+    "cartesian-cup-clean-61",
+    "cartesian-cup-clean-62",
+    "cartesian-cup-clean-63",
+    "cartesian-cup-collapse-60",
+    "cartesian-cup-collapse-61",
+    "cartesian-cup-collapse-62",
+    "cartesian-cup-collapse-63",
+    "cartesian-cup-shift-60",
+    "cartesian-cup-shift-61",
+    "cartesian-cup-shift-62",
+    "cartesian-cup-shift-63",
+    "cartesian-cup-under_extrusion-60",
+    "cartesian-cup-under_extrusion-61",
+    "cartesian-cup-under_extrusion-62",
+    "cartesian-cup-under_extrusion-63",
+    "cartesian-cup-warp-60",
+    "cartesian-cup-warp-61",
+    "cartesian-cup-warp-62",
+    "cartesian-cup-warp-63",
+    "cartesian-mug-clean-60",
+    "cartesian-mug-clean-61",
+    "cartesian-mug-clean-62",
+    "cartesian-mug-clean-63",
+    "cartesian-mug-collapse-60",
+    "cartesian-mug-collapse-61",
+    "cartesian-mug-collapse-62",
+    "cartesian-mug-collapse-63",
+    "cartesian-mug-shift-60",
+    "cartesian-mug-shift-61",
+    "cartesian-mug-shift-62",
+    "cartesian-mug-shift-63",
+    "cartesian-mug-under_extrusion-60",
+    "cartesian-mug-under_extrusion-61",
+    "cartesian-mug-under_extrusion-62",
+    "cartesian-mug-under_extrusion-63",
+    "cartesian-mug-warp-60",
+    "cartesian-mug-warp-61",
+    "cartesian-mug-warp-62",
+    "cartesian-mug-warp-63",
+    "cartesian-spacer-clean-60",
+    "cartesian-spacer-clean-61",
+    "cartesian-spacer-clean-62",
+    "cartesian-spacer-clean-63",
+    "cartesian-spacer-collapse-60",
+    "cartesian-spacer-collapse-61",
+    "cartesian-spacer-collapse-62",
+    "cartesian-spacer-collapse-63",
+    "cartesian-spacer-shift-60",
+    "cartesian-spacer-shift-61",
+    "cartesian-spacer-shift-62",
+    "cartesian-spacer-shift-63",
+    "cartesian-spacer-under_extrusion-60",
+    "cartesian-spacer-under_extrusion-61",
+    "cartesian-spacer-under_extrusion-62",
+    "cartesian-spacer-under_extrusion-63",
+    "cartesian-spacer-warp-60",
+    "cartesian-spacer-warp-61",
+    "cartesian-spacer-warp-62",
+    "cartesian-spacer-warp-63"
+  ],
+  "validation_groups": [
+    "cartesian-bracket-clean-70",
+    "cartesian-bracket-clean-71",
+    "cartesian-bracket-collapse-70",
+    "cartesian-bracket-collapse-71",
+    "cartesian-bracket-shift-70",
+    "cartesian-bracket-shift-71",
+    "cartesian-bracket-under_extrusion-70",
+    "cartesian-bracket-under_extrusion-71",
+    "cartesian-bracket-warp-70",
+    "cartesian-bracket-warp-71",
+    "cartesian-cup-clean-70",
+    "cartesian-cup-clean-71",
+    "cartesian-cup-collapse-70",
+    "cartesian-cup-collapse-71",
+    "cartesian-cup-shift-70",
+    "cartesian-cup-shift-71",
+    "cartesian-cup-under_extrusion-70",
+    "cartesian-cup-under_extrusion-71",
+    "cartesian-cup-warp-70",
+    "cartesian-cup-warp-71",
+    "cartesian-mug-clean-70",
+    "cartesian-mug-clean-71",
+    "cartesian-mug-collapse-70",
+    "cartesian-mug-collapse-71",
+    "cartesian-mug-shift-70",
+    "cartesian-mug-shift-71",
+    "cartesian-mug-under_extrusion-70",
+    "cartesian-mug-under_extrusion-71",
+    "cartesian-mug-warp-70",
+    "cartesian-mug-warp-71",
+    "cartesian-spacer-clean-70",
+    "cartesian-spacer-clean-71",
+    "cartesian-spacer-collapse-70",
+    "cartesian-spacer-collapse-71",
+    "cartesian-spacer-shift-70",
+    "cartesian-spacer-shift-71",
+    "cartesian-spacer-under_extrusion-70",
+    "cartesian-spacer-under_extrusion-71",
+    "cartesian-spacer-warp-70",
+    "cartesian-spacer-warp-71"
+  ],
+  "train_rows": 385280,
+  "validation_rows": 154780,
+  "analytical_mm": 0.34352654218673706,
+  "persistence_mm": 0.30732113122940063,
+  "neural_mm": 0.1921098381280899,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.10497710348363731,
+      "validation_mm": 0.2295151799917221
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.09414289963997875,
+      "validation_mm": 0.21502086520195007
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.09010455883618605,
+      "validation_mm": 0.21396426856517792
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.08857143241355189,
+      "validation_mm": 0.21062596142292023
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.08745940012789248,
+      "validation_mm": 0.20236212015151978
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0865410109542533,
+      "validation_mm": 0.20347319543361664
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.08579039124901905,
+      "validation_mm": 0.20247769355773926
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.08511987510709668,
+      "validation_mm": 0.20020350813865662
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.0844993858836418,
+      "validation_mm": 0.2028244286775589
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.08403891922033506,
+      "validation_mm": 0.1972162127494812
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.08354227754760818,
+      "validation_mm": 0.19827517867088318
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.08326385818743627,
+      "validation_mm": 0.1985805779695511
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.08286568119478384,
+      "validation_mm": 0.19772416353225708
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.08261101019639905,
+      "validation_mm": 0.20196376740932465
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.0823526355069737,
+      "validation_mm": 0.20208753645420074
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.08207833717431737,
+      "validation_mm": 0.1958860158920288
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.08189308716609232,
+      "validation_mm": 0.19862110912799835
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.08163461917361547,
+      "validation_mm": 0.19607309997081757
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.08140573591934486,
+      "validation_mm": 0.1956966370344162
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.08122626785622086,
+      "validation_mm": 0.19699130952358246
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.08106882266725021,
+      "validation_mm": 0.19791178405284882
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.08085872642324612,
+      "validation_mm": 0.1957809329032898
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.08069216949104074,
+      "validation_mm": 0.19408264756202698
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.08048467608880364,
+      "validation_mm": 0.20229008793830872
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.08035003573593508,
+      "validation_mm": 0.19365660846233368
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.08020916886107866,
+      "validation_mm": 0.197652667760849
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.08006549488963478,
+      "validation_mm": 0.19671909511089325
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.07994793900520698,
+      "validation_mm": 0.19295385479927063
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.07976939258385338,
+      "validation_mm": 0.1949152946472168
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.07967918614711476,
+      "validation_mm": 0.19280213117599487
+    },
+    {
+      "epoch": 31,
+      "train_loss": 0.07951775487772254,
+      "validation_mm": 0.1937999129295349
+    },
+    {
+      "epoch": 32,
+      "train_loss": 0.07938260704873012,
+      "validation_mm": 0.19390320777893066
+    },
+    {
+      "epoch": 33,
+      "train_loss": 0.07928366160570981,
+      "validation_mm": 0.19420994818210602
+    },
+    {
+      "epoch": 34,
+      "train_loss": 0.0791816336272959,
+      "validation_mm": 0.19786962866783142
+    },
+    {
+      "epoch": 35,
+      "train_loss": 0.07907245469053718,
+      "validation_mm": 0.19788092374801636
+    },
+    {
+      "epoch": 36,
+      "train_loss": 0.07901181245464027,
+      "validation_mm": 0.1926908642053604
+    },
+    {
+      "epoch": 37,
+      "train_loss": 0.07888583721116532,
+      "validation_mm": 0.19497860968112946
+    },
+    {
+      "epoch": 38,
+      "train_loss": 0.07882566130488022,
+      "validation_mm": 0.19370989501476288
+    },
+    {
+      "epoch": 39,
+      "train_loss": 0.07874812663245043,
+      "validation_mm": 0.19512644410133362
+    },
+    {
+      "epoch": 40,
+      "train_loss": 0.07868188250302477,
+      "validation_mm": 0.19634953141212463
+    },
+    {
+      "epoch": 41,
+      "train_loss": 0.07859051720892075,
+      "validation_mm": 0.20392808318138123
+    },
+    {
+      "epoch": 42,
+      "train_loss": 0.07852648599599286,
+      "validation_mm": 0.1957613229751587
+    },
+    {
+      "epoch": 43,
+      "train_loss": 0.07844500402081449,
+      "validation_mm": 0.1921098232269287
+    },
+    {
+      "epoch": 44,
+      "train_loss": 0.07837365722636448,
+      "validation_mm": 0.19253799319267273
+    },
+    {
+      "epoch": 45,
+      "train_loss": 0.07832101232486706,
+      "validation_mm": 0.19707515835762024
+    },
+    {
+      "epoch": 46,
+      "train_loss": 0.07829708468874427,
+      "validation_mm": 0.19350369274616241
+    },
+    {
+      "epoch": 47,
+      "train_loss": 0.07821333616278893,
+      "validation_mm": 0.19342680275440216
+    },
+    {
+      "epoch": 48,
+      "train_loss": 0.07819031467568438,
+      "validation_mm": 0.1932152956724167
+    },
+    {
+      "epoch": 49,
+      "train_loss": 0.07815321931411262,
+      "validation_mm": 0.20941698551177979
+    },
+    {
+      "epoch": 50,
+      "train_loss": 0.07809710217472723,
+      "validation_mm": 0.19654403626918793
+    },
+    {
+      "epoch": 51,
+      "train_loss": 0.07806035148542981,
+      "validation_mm": 0.19555386900901794
+    },
+    {
+      "epoch": 52,
+      "train_loss": 0.07798991179545456,
+      "validation_mm": 0.19790272414684296
+    },
+    {
+      "epoch": 53,
+      "train_loss": 0.07789941063751019,
+      "validation_mm": 0.19459101557731628
+    },
+    {
+      "epoch": 54,
+      "train_loss": 0.07790283215204347,
+      "validation_mm": 0.2014768421649933
+    },
+    {
+      "epoch": 55,
+      "train_loss": 0.07786111098983359,
+      "validation_mm": 0.19618874788284302
+    },
+    {
+      "epoch": 56,
+      "train_loss": 0.07779727004889238,
+      "validation_mm": 0.20517092943191528
+    },
+    {
+      "epoch": 57,
+      "train_loss": 0.07777485830146214,
+      "validation_mm": 0.1966104805469513
+    },
+    {
+      "epoch": 58,
+      "train_loss": 0.07769905295581912,
+      "validation_mm": 0.19693629443645477
+    },
+    {
+      "epoch": 59,
+      "train_loss": 0.07769256304961898,
+      "validation_mm": 0.19455288350582123
+    },
+    {
+      "epoch": 60,
+      "train_loss": 0.07769011683341277,
+      "validation_mm": 0.20819562673568726
+    }
+  ],
+  "supports_calibration": false,
+  "measurement_source": "classical",
+  "equivariant": true,
+  "trainer_sha256": "eb99579707e2608666987dbc47bf6b2d5dd9ef3a8a9102f1e4d8e579e3477dbd",
+  "limitation": "held-out forecast validation is not closed-loop recovery evidence"
+}

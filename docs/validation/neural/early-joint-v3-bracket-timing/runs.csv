@@ -1,0 +1,13 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+cartesian,bracket,clean,70,contour,True,False,False,32,32,0,0,0,6.341556428000331
+cartesian,bracket,clean,70,neural_risk,True,False,False,32,32,0,0,0,6.288287268020213
+cartesian,bracket,clean,70,neural_risk_agent,True,False,False,32,32,0,0,0,6.2550750389928
+cartesian,bracket,clean,71,contour,True,False,False,32,32,0,0,0,6.314310651039705
+cartesian,bracket,clean,71,neural_risk,True,False,False,32,32,0,0,0,6.836634548031725
+cartesian,bracket,clean,71,neural_risk_agent,True,False,False,32,32,0,0,0,6.319702644948848
+cartesian,bracket,collapse,70,contour,True,False,False,32,32,0,0,0,7.396605018991977
+cartesian,bracket,collapse,70,neural_risk,True,False,False,32,32,0,0,0,9.379893271019682
+cartesian,bracket,collapse,70,neural_risk_agent,True,False,False,32,32,0,2,2,20.375635411939584
+cartesian,bracket,collapse,71,contour,True,False,False,32,32,2,0,0,7.992155725019984
+cartesian,bracket,collapse,71,neural_risk,True,False,False,32,32,1,0,0,20.288142804056406
+cartesian,bracket,collapse,71,neural_risk_agent,True,False,False,32,32,1,2,2,31.840231900918297

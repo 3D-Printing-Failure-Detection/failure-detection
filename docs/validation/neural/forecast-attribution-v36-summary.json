@@ -1,0 +1,2578 @@
+{
+  "status": "complete",
+  "case": [
+    "bedslinger",
+    "mug",
+    "collapse",
+    1001
+  ],
+  "snapshot_layer": 137,
+  "frames": 160,
+  "actual_full_print": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 60945.89604233378,
+      "thin_layers": 0
+    }
+  },
+  "both_recorded_continuation_violations_reproduced": true,
+  "results": {
+    "classical camera": {
+      "observed_prefix_with_actual_future": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61477.22309227321,
+          "thin_layers": 0
+        }
+      },
+      "full_observed_print": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61565.475962730656,
+          "thin_layers": 0
+        }
+      },
+      "uncertainty_mm": 0.125,
+      "forecasts": {
+        "current_trend": {
+          "measured_prefix_with_prediction": {
+            "ok": false,
+            "violations": [
+              "expected 1 piece(s) near z=35.2, found 2"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61569.229733141525,
+              "thin_layers": 0
+            }
+          },
+          "actual_prefix_with_prediction": {
+            "ok": false,
+            "violations": [
+              "expected 1 piece(s) near z=35.2, found 2"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61037.90268320209,
+              "thin_layers": 0
+            }
+          },
+          "future_frames": [
+            {
+              "layer": 138,
+              "z": 34.75,
+              "measured": {
+                "area_mm2": 458.88682185960124,
+                "components": 1,
+                "hole_area_mm2": 1619.8551235273321,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0006404690326358153,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00039031785252319207,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "294d7bf185f398229e3c8ea75d265c6b829dd5545e89da5e7ed1f0b95fc709b7"
+            },
+            {
+              "layer": 139,
+              "z": 35.0,
+              "measured": {
+                "area_mm2": 458.76581284315535,
+                "components": 1,
+                "hole_area_mm2": 1620.0283543888836,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0006399694147776191,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00038399707691827434,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "2fd039dac86c8cc39b681df04032916b110fcc17f5ce3cffbb85afe168717a0e"
+            },
+            {
+              "layer": 140,
+              "z": 35.25,
+              "measured": {
+                "area_mm2": 458.70606501029243,
+                "components": 2,
+                "hole_area_mm2": 1620.2006465874388,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": true,
+                "soft_thin_excess": 0.0007999171322683463,
+                "soft_thin": false,
+                "hard_thin_excess": 0.0005290860091413663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "a1f3c035e0cc66440f24d55f029962e709b04542ab0f237462e1b810e19f2e24"
+            },
+            {
+              "layer": 141,
+              "z": 35.5,
+              "measured": {
+                "area_mm2": 458.70606501029243,
+                "components": 2,
+                "hole_area_mm2": 1620.2006465874388,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": true,
+                "soft_thin_excess": 0.0007999171322683463,
+                "soft_thin": false,
+                "hard_thin_excess": 0.0005290860091413663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "a1f3c035e0cc66440f24d55f029962e709b04542ab0f237462e1b810e19f2e24"
+            },
+            {
+              "layer": 142,
+              "z": 35.75,
+              "measured": {
+                "area_mm2": 458.70606501029243,
+                "components": 2,
+                "hole_area_mm2": 1620.2006465874388,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007999171322683463,
+                "soft_thin": false,
+                "hard_thin_excess": 0.0005290860091413663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "a1f3c035e0cc66440f24d55f029962e709b04542ab0f237462e1b810e19f2e24"
+            },
+            {
+              "layer": 143,
+              "z": 36.0,
+              "measured": {
+                "area_mm2": 458.70606501029243,
+                "components": 2,
+                "hole_area_mm2": 1620.2006465874388,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007999171322683463,
+                "soft_thin": false,
+                "hard_thin_excess": 0.0005290860091413663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "a1f3c035e0cc66440f24d55f029962e709b04542ab0f237462e1b810e19f2e24"
+            },
+            {
+              "layer": 144,
+              "z": 36.25,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.864551335550857e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865682557043e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 145,
+              "z": 36.5,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 146,
+              "z": 36.75,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 147,
+              "z": 37.0,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 148,
+              "z": 37.25,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 149,
+              "z": 37.5,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 150,
+              "z": 37.75,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 151,
+              "z": 38.0,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 152,
+              "z": 38.25,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 153,
+              "z": 38.5,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 154,
+              "z": 38.75,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 155,
+              "z": 39.0,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 156,
+              "z": 39.25,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 157,
+              "z": 39.5,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 158,
+              "z": 39.75,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            },
+            {
+              "layer": 159,
+              "z": 40.0,
+              "measured": {
+                "area_mm2": 365.9700033072734,
+                "components": 1,
+                "hole_area_mm2": 1620.2006465874383,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 7.9503627294919e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 2.712326620746275e-06,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "db81657d1465a39ac3782039a5b65c1378e575277cae2f5bf11272e5c0d2d28f"
+            }
+          ]
+        },
+        "last_residual_only": {
+          "measured_prefix_with_prediction": {
+            "ok": true,
+            "violations": [],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61566.50087774052,
+              "thin_layers": 0
+            }
+          },
+          "actual_prefix_with_prediction": {
+            "ok": true,
+            "violations": [],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61035.17382780108,
+              "thin_layers": 0
+            }
+          },
+          "future_frames": [
+            {
+              "layer": 138,
+              "z": 34.75,
+              "measured": {
+                "area_mm2": 459.00395083569515,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027778,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0006395951900344254,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00040131305479162993,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "760997cde3c4d3ea78a5a21f4fefc3d53e0013c932e6114f60e084833ee8540b"
+            },
+            {
+              "layer": 139,
+              "z": 35.0,
+              "measured": {
+                "area_mm2": 459.00395083569515,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027778,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0006395951900344254,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00040131305479162993,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "760997cde3c4d3ea78a5a21f4fefc3d53e0013c932e6114f60e084833ee8540b"
+            },
+            {
+              "layer": 140,
+              "z": 35.25,
+              "measured": {
+                "area_mm2": 459.00395083569515,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027778,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0006395951900344254,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00040131305479162993,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "760997cde3c4d3ea78a5a21f4fefc3d53e0013c932e6114f60e084833ee8540b"
+            },
+            {
+              "layer": 141,
+              "z": 35.5,
+              "measured": {
+                "area_mm2": 459.00395083569515,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027778,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0006395951900344254,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00040131305479162993,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "760997cde3c4d3ea78a5a21f4fefc3d53e0013c932e6114f60e084833ee8540b"
+            },
+            {
+              "layer": 142,
+              "z": 35.75,
+              "measured": {
+                "area_mm2": 459.00395083569515,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027778,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0006395951900344254,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00040131305479162993,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "760997cde3c4d3ea78a5a21f4fefc3d53e0013c932e6114f60e084833ee8540b"
+            },
+            {
+              "layer": 143,
+              "z": 36.0,
+              "measured": {
+                "area_mm2": 459.00395083569515,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027778,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0006395951900344254,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00040131305479162993,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "760997cde3c4d3ea78a5a21f4fefc3d53e0013c932e6114f60e084833ee8540b"
+            },
+            {
+              "layer": 144,
+              "z": 36.25,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.864551335550857e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865682557043e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 145,
+              "z": 36.5,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 146,
+              "z": 36.75,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 147,
+              "z": 37.0,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 148,
+              "z": 37.25,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 149,
+              "z": 37.5,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 150,
+              "z": 37.75,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 151,
+              "z": 38.0,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 152,
+              "z": 38.25,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 153,
+              "z": 38.5,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 154,
+              "z": 38.75,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 155,
+              "z": 39.0,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 156,
+              "z": 39.25,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 157,
+              "z": 39.5,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 158,
+              "z": 39.75,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            },
+            {
+              "layer": 159,
+              "z": 40.0,
+              "measured": {
+                "area_mm2": 365.4724431729294,
+                "components": 1,
+                "hole_area_mm2": 1619.6809540027784,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -6.181080579592546e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -4.6080008653248683e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "56f465486ec1d6b81c07a4978def7f70a99c31fa92d2fed699513c7f4f3b8410"
+            }
+          ]
+        }
+      }
+    },
+    "learned camera": {
+      "observed_prefix_with_actual_future": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61381.12721445435,
+          "thin_layers": 0
+        }
+      },
+      "full_observed_print": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61459.54320581588,
+          "thin_layers": 0
+        }
+      },
+      "uncertainty_mm": 0.125,
+      "forecasts": {
+        "current_trend": {
+          "measured_prefix_with_prediction": {
+            "ok": false,
+            "violations": [
+              "expected 1 piece(s) near z=35.2, found 2"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61463.523700320555,
+              "thin_layers": 0
+            }
+          },
+          "actual_prefix_with_prediction": {
+            "ok": false,
+            "violations": [
+              "expected 1 piece(s) near z=35.2, found 2"
+            ],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61028.292528199985,
+              "thin_layers": 0
+            }
+          },
+          "future_frames": [
+            {
+              "layer": 138,
+              "z": 34.75,
+              "measured": {
+                "area_mm2": 448.4151847783605,
+                "components": 1,
+                "hole_area_mm2": 1618.0169629003335,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.00011606584008461152,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00034046837670675956,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "0de2f8a016e406dc573f82e80acca827a49bffdf8ec1209e14b0e071d21c8884"
+            },
+            {
+              "layer": 139,
+              "z": 35.0,
+              "measured": {
+                "area_mm2": 448.1046786013187,
+                "components": 1,
+                "hole_area_mm2": 1618.237959864224,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 7.625216774098664e-05,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00031432237740147695,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "ee5eb71e83af1e12695ea48682132e8de9c8216c06ae07531474de09b7d73de1"
+            },
+            {
+              "layer": 140,
+              "z": 35.25,
+              "measured": {
+                "area_mm2": 447.78681266428805,
+                "components": 2,
+                "hole_area_mm2": 1618.4611517865135,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": true,
+                "soft_thin_excess": 3.1594096499998336e-05,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00025004312142784535,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "847b4aed86e5ccb36d48dc00212886ee5dab608fe00e5c9d414992947da52841"
+            },
+            {
+              "layer": 141,
+              "z": 35.5,
+              "measured": {
+                "area_mm2": 447.78681266428805,
+                "components": 2,
+                "hole_area_mm2": 1618.4611517865135,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": true,
+                "soft_thin_excess": 3.1594096499998336e-05,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00025004312142784535,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "847b4aed86e5ccb36d48dc00212886ee5dab608fe00e5c9d414992947da52841"
+            },
+            {
+              "layer": 142,
+              "z": 35.75,
+              "measured": {
+                "area_mm2": 447.78681266428805,
+                "components": 2,
+                "hole_area_mm2": 1618.4611517865135,
+                "main_holes": 2,
+                "open_wall": false,
+                "soft_thin_excess": 3.1594096499998336e-05,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00025004312142784535,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "847b4aed86e5ccb36d48dc00212886ee5dab608fe00e5c9d414992947da52841"
+            },
+            {
+              "layer": 143,
+              "z": 36.0,
+              "measured": {
+                "area_mm2": 447.78681266428805,
+                "components": 2,
+                "hole_area_mm2": 1618.4611517865135,
+                "main_holes": 2,
+                "open_wall": false,
+                "soft_thin_excess": 3.1594096499998336e-05,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00025004312142784535,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "847b4aed86e5ccb36d48dc00212886ee5dab608fe00e5c9d414992947da52841"
+            },
+            {
+              "layer": 144,
+              "z": 36.25,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.864551335550857e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865682557043e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 145,
+              "z": 36.5,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 146,
+              "z": 36.75,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 147,
+              "z": 37.0,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 148,
+              "z": 37.25,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 149,
+              "z": 37.5,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 150,
+              "z": 37.75,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 151,
+              "z": 38.0,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 152,
+              "z": 38.25,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 153,
+              "z": 38.5,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 154,
+              "z": 38.75,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 155,
+              "z": 39.0,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 156,
+              "z": 39.25,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 157,
+              "z": 39.5,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 158,
+              "z": 39.75,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            },
+            {
+              "layer": 159,
+              "z": 40.0,
+              "measured": {
+                "area_mm2": 359.40637809408486,
+                "components": 1,
+                "hole_area_mm2": 1618.4597662341293,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 2.8753816917470587e-06,
+                "soft_thin": false,
+                "hard_thin_excess": 8.95175655268865e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "c784e6ab90728b3dffc9c692af6f0a8f09b1717b3084b97650cb8c8ad4f23d84"
+            }
+          ]
+        },
+        "last_residual_only": {
+          "measured_prefix_with_prediction": {
+            "ok": true,
+            "violations": [],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61460.03501421414,
+              "thin_layers": 0
+            }
+          },
+          "actual_prefix_with_prediction": {
+            "ok": true,
+            "violations": [],
+            "metrics": {
+              "max_overhang_mm2": 0.0,
+              "capacity_mm3": 61024.80384209357,
+              "thin_layers": 0
+            }
+          },
+          "future_frames": [
+            {
+              "layer": 138,
+              "z": 34.75,
+              "measured": {
+                "area_mm2": 448.7215523412963,
+                "components": 1,
+                "hole_area_mm2": 1617.7958521785986,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.00018392141999934442,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00035219322099455663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "134c56c1421728f26d57e9d6473a50df05605bcd298d8cdc862dc5b6272e7f96"
+            },
+            {
+              "layer": 139,
+              "z": 35.0,
+              "measured": {
+                "area_mm2": 448.7215523412963,
+                "components": 1,
+                "hole_area_mm2": 1617.7958521785986,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.00018392141999934442,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00035219322099455663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "134c56c1421728f26d57e9d6473a50df05605bcd298d8cdc862dc5b6272e7f96"
+            },
+            {
+              "layer": 140,
+              "z": 35.25,
+              "measured": {
+                "area_mm2": 448.7215523412963,
+                "components": 1,
+                "hole_area_mm2": 1617.7958521785986,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.00018392141999934442,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00035219322099455663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "134c56c1421728f26d57e9d6473a50df05605bcd298d8cdc862dc5b6272e7f96"
+            },
+            {
+              "layer": 141,
+              "z": 35.5,
+              "measured": {
+                "area_mm2": 448.7215523412963,
+                "components": 1,
+                "hole_area_mm2": 1617.7958521785986,
+                "main_holes": 2,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.00018392141999934442,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00035219322099455663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "connection_problem": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "134c56c1421728f26d57e9d6473a50df05605bcd298d8cdc862dc5b6272e7f96"
+            },
+            {
+              "layer": 142,
+              "z": 35.75,
+              "measured": {
+                "area_mm2": 448.7215523412963,
+                "components": 1,
+                "hole_area_mm2": 1617.7958521785986,
+                "main_holes": 2,
+                "open_wall": false,
+                "soft_thin_excess": 0.00018392141999934442,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00035219322099455663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980358,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "134c56c1421728f26d57e9d6473a50df05605bcd298d8cdc862dc5b6272e7f96"
+            },
+            {
+              "layer": 143,
+              "z": 36.0,
+              "measured": {
+                "area_mm2": 448.7215523412963,
+                "components": 1,
+                "hole_area_mm2": 1617.7958521785986,
+                "main_holes": 2,
+                "open_wall": false,
+                "soft_thin_excess": 0.00018392141999934442,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00035219322099455663,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 447.0294325980353,
+                "components": 1,
+                "hole_area_mm2": 1603.448640841928,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": 0.0007196492059121651,
+                "soft_thin": false,
+                "hard_thin_excess": 0.00020593755353881527,
+                "hard_thin": false
+              },
+              "geometry_sha256": "134c56c1421728f26d57e9d6473a50df05605bcd298d8cdc862dc5b6272e7f96"
+            },
+            {
+              "layer": 144,
+              "z": 36.25,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.864551335550857e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865682557043e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 145,
+              "z": 36.5,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 146,
+              "z": 36.75,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 147,
+              "z": 37.0,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 148,
+              "z": 37.25,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 149,
+              "z": 37.5,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 150,
+              "z": 37.75,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 151,
+              "z": 38.0,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 152,
+              "z": 38.25,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 153,
+              "z": 38.5,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 154,
+              "z": 38.75,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 155,
+              "z": 39.0,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 156,
+              "z": 39.25,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 157,
+              "z": 39.5,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 158,
+              "z": 39.75,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.5288182481902,
+                "components": 1,
+                "hole_area_mm2": 1603.44861030608,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8645514021642384e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.481865016423228e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            },
+            {
+              "layer": 159,
+              "z": 40.0,
+              "measured": {
+                "area_mm2": 359.0475914529552,
+                "components": 1,
+                "hole_area_mm2": 1617.7953707599727,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -2.3620679145963663e-07,
+                "soft_thin": false,
+                "hard_thin_excess": -2.729851629190705e-07,
+                "hard_thin": false
+              },
+              "truth": {
+                "area_mm2": 357.52880192643033,
+                "components": 1,
+                "hole_area_mm2": 1603.4486398364568,
+                "main_holes": 1,
+                "open_wall": false,
+                "soft_thin_excess": -1.8610761154391753e-08,
+                "soft_thin": false,
+                "hard_thin_excess": -7.4705068797698e-09,
+                "hard_thin": false
+              },
+              "geometry_sha256": "61c608cd76641653b62bed1c6098320a5f35cd1748a4e29158c8f4a64bd68859"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "protocol_sha256": "3c9373f8597fb7766956fa72f1d0c65612531efdde8fb05778aaabcb3832e675",
+  "runner_sha256": "ca09c954a1ec5e820f138b061655aaca76e204d7a8c4c6d14dcff091037907fd",
+  "source_sha256": "3a194dd002fe610af0e9e106d1f018a6f812efce75cb588f0b8df33f88fa1b7e",
+  "recovery_trials": 0,
+  "limitation": "Selected retrospective attribution, not a recovery trial or policy acceptance. Actual geometry is used only for offline scoring; predictors receive observed camera geometry and commands. The last-residual forecast is a diagnostic ablation, not a promoted policy. No reserved fresh seeds are used."
+}

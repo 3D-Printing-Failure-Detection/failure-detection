@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "policies": 15,
+  "rows": 4320,
+  "original_comparison": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/comparison.json",
+  "original_comparison_sha256": "e3d193a1c1a3bec0bf13900927e86e9174524833d407d5372283ff72ebdd24cf",
+  "replayed_comparison": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/baseline-replay.json",
+  "replayed_comparison_sha256": "8e96d0a5b4d1c843e106e27e4482de4c6129225ed832a798c269f3c6f59e58eb",
+  "outcomes_and_inference_counts_identical": true,
+  "paired_gains_losses_and_defect_differences_identical": true,
+  "original_raw_files_unchanged": true,
+  "supervisor_runtime_evidence_sha256": "439c318addd0231ecd895a2a3a0bec790a00381df328919422ca0ea432923c8a",
+  "limitation": "Reproduction of a previously rejected comparison, not a new recovery result."
+}

@@ -1,0 +1,20 @@
+{
+  "created_at": "2026-11-03T04:37:08.723203+00:00",
+  "purpose": "Resume only audit and comparison of the already completed analytical-control grid; preserve the initial failed audit and do not rerun any simulation",
+  "original_protocol_sha256": "47854da94c0953c999cc18f155b2fbfaf1b82eead341f4d546c86e1efce7deeb",
+  "original_runner_sha256": "e4b85c31ab369d13805e3903878bdef55255854161d8e6a37ae82269f6cb836b",
+  "failed_exit_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+  "failed_log_sha256": "d8a159a6d7686ada53da3d478b222d0174e4d2e8c0fc7c67ff720b640e66a429",
+  "completed_manifest_sha256": "32c6ca82eaab3c0b39fd573d20b4ffc90537d6e206edf47ba30562d9fc11d1bc",
+  "completed_runs_sha256": "e67752440f43c33423b9c9ef609e711fa9e06f657f78a241c6e927ab55897603",
+  "auditor_sha256": "e96359d9f3e412857acd3306012da210f8905fdc116568c45aefcd6199beb587",
+  "tests_sha256": "92824878ac375044b0823cff4fc0272826451257c8f0f0041ffad91f4b0c5e53",
+  "audit_command": [
+    "/home/ishaan/failure-detection/.venv/bin/python",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-matched-analytical-v26/audit-resume-source/audit_neural_experiment.py",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-matched-analytical-v26/full/results",
+    "--analytical-only",
+    "--out",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-matched-analytical-v26/full/audit"
+  ]
+}

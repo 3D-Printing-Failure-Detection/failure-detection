@@ -100,6 +100,9 @@ class GuardedPolicy(FunctionalPolicy):
             return Decision("scrap", "part detached: nothing to build on")
         context = context or DecisionContext()
         candidates = self.candidates(known, current_plan, context)
+        return self.pick_candidates(candidates, context)
+
+    def pick_candidates(self, candidates, context):
         considered = [{k: v for k, v in c.items() if k not in ("plan", "predicted", "verdict", "stress")}
                       | dict(ok=c["verdict"].ok, violations=c["verdict"].violations,
                              fidelity=c["plan"].fidelity, adapts_remaining=context.adapts_remaining)

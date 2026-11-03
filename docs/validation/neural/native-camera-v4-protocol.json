@@ -1,0 +1,93 @@
+{
+  "created_at": "2026-11-02T22:15:50.289840+00:00",
+  "stage": "development",
+  "purpose": "Predict 4x4 signed-distance samples directly from each image patch instead of interpolating one value; test representation of narrow continuous walls",
+  "estimated_extra_artifact_bytes": 80000000,
+  "source_trajectories": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/combined-trajectories/trajectories",
+  "expected_groups": 144,
+  "training_seeds": [
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67
+  ],
+  "validation_seeds": [
+    70,
+    71,
+    72,
+    73
+  ],
+  "consumed_diagnostic_seed": 1002,
+  "reserved_test_seeds_untouched": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "native_grid_spacing_mm": 0.0625,
+  "actual_camera_pixel_spacing_mm": 0.25,
+  "limitations": "Subpixel predictions use learned optical evidence; this does not increase physical camera information or guarantee recovery",
+  "commands": [
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/source/tools/build_boundary_data.py",
+      "--trajectories",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-camera-v3/combined-trajectories/trajectories",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/dataset",
+      "--frames",
+      "12",
+      "--pixels",
+      "120",
+      "--workers",
+      "2",
+      "--all-profiles",
+      "--dense-start",
+      "--output-upsample",
+      "4"
+    ],
+    [
+      "/mnt/data/ishaan/hri-workspace/envs/openpi/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/source/tools/train_boundary.py",
+      "--data",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/dataset/data.npz",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model",
+      "--hidden",
+      "64",
+      "32",
+      "--epochs",
+      "80"
+    ],
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/source/tools/inspect_camera_case.py",
+      "--part",
+      "cup",
+      "--kind",
+      "under_extrusion",
+      "--seed",
+      "1002",
+      "--checkpoint",
+      "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+      "--checkpoint",
+      "native=/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/boundary.npz",
+      "--snapshot-layers",
+      "84",
+      "85",
+      "86",
+      "87",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002"
+    ]
+  ],
+  "script_sha256": {
+    "build_boundary_data.py": "4e01f00dbc8f123e907f1bc00d3d5956888e5d72f1f25b6ce6904263a75228eb",
+    "train_boundary.py": "6955a30e66923328f31c93ec99c70b87485e8705a2993ad467e6a4907fddd719",
+    "inspect_camera_case.py": "1dff882b979ab7dc5afb790ec8d0e58118b1f93a8896fcdb7b1fe3120c922866"
+  }
+}

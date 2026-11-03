@@ -1,0 +1,32 @@
+[
+  {
+    "kind": "clean",
+    "n": 42668,
+    "analytical_mm": 0.16764535009860992,
+    "neural_mm": 0.012883706018328667
+  },
+  {
+    "kind": "collapse",
+    "n": 27994,
+    "analytical_mm": 0.32946500182151794,
+    "neural_mm": 0.2920036017894745
+  },
+  {
+    "kind": "warp",
+    "n": 28378,
+    "analytical_mm": 0.24826383590698242,
+    "neural_mm": 0.10242287069559097
+  },
+  {
+    "kind": "shift",
+    "n": 28762,
+    "analytical_mm": 0.8591188788414001,
+    "neural_mm": 0.7292197942733765
+  },
+  {
+    "kind": "under_extrusion",
+    "n": 28122,
+    "analytical_mm": 0.22958612442016602,
+    "neural_mm": 0.06517019122838974
+  }
+]

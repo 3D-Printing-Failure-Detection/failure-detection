@@ -1,0 +1,182 @@
+{
+  "status": "rejected",
+  "new_recovery_trials": 0,
+  "diagnostic_frames": 640,
+  "validation_frames": 2040,
+  "qualified_heads": [
+    "linear",
+    "nonlinear"
+  ],
+  "geometry_gate": {
+    "linear": false,
+    "nonlinear": false
+  },
+  "all_prior_geometry_controls_reproduced": true,
+  "all_640_base_control_feature_records_reproduced": true,
+  "functional_detection_counts": {
+    "classical": {
+      "true_negative": 1914,
+      "false_positive": 27,
+      "true_positive": 93,
+      "false_negative": 6
+    },
+    "original": {
+      "true_negative": 1908,
+      "false_positive": 33,
+      "true_positive": 90,
+      "false_negative": 9
+    },
+    "base": {
+      "true_negative": 1766,
+      "false_positive": 175,
+      "true_positive": 95,
+      "false_negative": 4
+    },
+    "linear": {
+      "true_negative": 1865,
+      "false_positive": 76,
+      "true_positive": 94,
+      "false_negative": 5
+    },
+    "nonlinear": {
+      "true_negative": 1856,
+      "false_positive": 85,
+      "true_positive": 93,
+      "false_negative": 6
+    }
+  },
+  "component_detection_counts": {
+    "classical": {
+      "open_wall": {
+        "true_negative": 1917,
+        "false_positive": 66,
+        "true_positive": 54,
+        "false_negative": 3
+      },
+      "hard_thin": {
+        "true_negative": 1992,
+        "false_negative": 48
+      },
+      "base_problem": {
+        "true_negative": 2040
+      },
+      "connection_problem": {
+        "true_negative": 2040
+      }
+    },
+    "original": {
+      "open_wall": {
+        "true_negative": 1920,
+        "false_positive": 63,
+        "true_positive": 52,
+        "false_negative": 5
+      },
+      "hard_thin": {
+        "true_negative": 1992,
+        "false_negative": 40,
+        "true_positive": 8
+      },
+      "base_problem": {
+        "true_negative": 2040
+      },
+      "connection_problem": {
+        "true_negative": 2040
+      }
+    },
+    "base": {
+      "open_wall": {
+        "true_negative": 1953,
+        "false_positive": 30,
+        "true_positive": 37,
+        "false_negative": 20
+      },
+      "hard_thin": {
+        "true_negative": 1813,
+        "false_positive": 179,
+        "true_positive": 41,
+        "false_negative": 7
+      },
+      "base_problem": {
+        "true_negative": 2040
+      },
+      "connection_problem": {
+        "true_negative": 2019,
+        "false_positive": 21
+      }
+    },
+    "linear": {
+      "open_wall": {
+        "true_negative": 1955,
+        "false_positive": 28,
+        "true_positive": 40,
+        "false_negative": 17
+      },
+      "hard_thin": {
+        "true_negative": 1920,
+        "false_positive": 72,
+        "true_positive": 38,
+        "false_negative": 10
+      },
+      "base_problem": {
+        "true_negative": 2040
+      },
+      "connection_problem": {
+        "true_negative": 2023,
+        "false_positive": 17
+      }
+    },
+    "nonlinear": {
+      "open_wall": {
+        "true_negative": 1955,
+        "false_positive": 28,
+        "true_positive": 40,
+        "false_negative": 17
+      },
+      "hard_thin": {
+        "true_negative": 1916,
+        "false_positive": 76,
+        "true_positive": 36,
+        "false_negative": 12
+      },
+      "base_problem": {
+        "true_negative": 2040
+      },
+      "connection_problem": {
+        "true_negative": 2019,
+        "false_positive": 21
+      }
+    }
+  },
+  "lost_original_true_detections": {
+    "linear": [
+      [
+        "cartesian-mug-under_extrusion-410",
+        "bedslinger",
+        56
+      ],
+      [
+        "cartesian-mug-under_extrusion-420",
+        "corexy",
+        88
+      ]
+    ],
+    "nonlinear": [
+      [
+        "cartesian-mug-under_extrusion-410",
+        "bedslinger",
+        56
+      ],
+      [
+        "cartesian-mug-under_extrusion-417",
+        "bedslinger",
+        32
+      ],
+      [
+        "cartesian-mug-under_extrusion-420",
+        "corexy",
+        88
+      ]
+    ]
+  },
+  "limitation": "Training and camera qualification only. No recovery trial, final benchmark or promotion is automatic. A camera qualification result is not a completed-print recovery count."
+}

@@ -1,0 +1,27 @@
+{
+  "group": "cartesian-cup-clean-70",
+  "profile": "cartesian",
+  "layer": 1,
+  "camera_frames_consumed": 2,
+  "image_sha256": "b9210d5b87efa529b5f2eea42a79d8bfe0f1069eb1e5706706a4833214cabd3f",
+  "model_sha256": "380a05ea73703be05ee1084384c29ea62c70eccfd16af1df67f3919af85c7ff9",
+  "old_camera_sha256": "d83c5931316313aa94af6fb08f881637613bd867af87feab112601c7bda39b81",
+  "new_camera_sha256": "24a7942c7bceee88782ecbac49bb3485e29773eb0323489baaee59433a9dfdca",
+  "old_holes": 1,
+  "new_holes": 0,
+  "changed_area_mm2": 0.894778478659995,
+  "holes": [
+    {
+      "area_mm2": 0.0003351032719800844,
+      "centroid": [
+        -8.993898057941385,
+        -20.1875
+      ],
+      "nearby_zero_pixels": 128,
+      "nearest_predicted_material": false,
+      "new_contains_centroid": true,
+      "raw_background_connected_to_edge_4": false,
+      "raw_background_connected_to_edge_8": true
+    }
+  ]
+}

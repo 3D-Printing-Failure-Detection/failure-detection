@@ -1,0 +1,71 @@
+{
+  "status": "verified",
+  "complete": true,
+  "frames": 640,
+  "script_sha256": "420b9ee4cb7c7d933ef767d6ebada3615e5a87c85c81b6ec9f47100605308b18",
+  "protocol_sha256": "dbfe1ae8791527f1cfa78ffc43bc6c235b1556eb3fc93db393076029e91a4d98",
+  "records": [
+    {
+      "case": [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "frames": 160,
+      "current": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/cartesian-mug-1003",
+      "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/cartesian-mug-1003",
+      "current_layers_sha256": "79b7d2215872d0d05620df83b16b55725ac1183e0807ba92f9af51ae67b50571",
+      "reference_layers_sha256": "bbd2af1560ff431707cbc5cc7343a265b6d9486e6870eb48762b0440522608fa",
+      "current_final_sha256": "5683df7442c131595bb8b3b2dee4c0a51ddf9b5b783a91757b62c7fed9579bac",
+      "reference_final_sha256": "309b4b33a851108ed6c4911571a4338cad2e5af0a11f9ac9f115780f444c6e15"
+    },
+    {
+      "case": [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "frames": 160,
+      "current": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/corexy-mug-1003",
+      "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/corexy-mug-1003",
+      "current_layers_sha256": "8c05aa6775b9e4168ed8787ea0460ded2613e4aca4c042b93f744048f62c9dfd",
+      "reference_layers_sha256": "5f53090df76c88e28daf154f71e18109e54b3db66239245d63cf7dcae55e8e75",
+      "current_final_sha256": "c4b433ba66d864f9c1d3ed763ae73215e02f60e6541b58a85682676256c56ef5",
+      "reference_final_sha256": "4cd565046e2a36b270d0ed1cfc969171bb82fa29ef95bcb85f1c5fcfb66dbbed"
+    },
+    {
+      "case": [
+        "cartesian",
+        "cup",
+        "under_extrusion",
+        1002
+      ],
+      "frames": 160,
+      "current": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/cartesian-cup-1002",
+      "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/cartesian-cup-1002",
+      "current_layers_sha256": "9ed02c963cfcde7c6edab0261f034812284d403a2cee4e6a8043346ea58fc1e8",
+      "reference_layers_sha256": "c59e37e886042185c001c5379a96186770bdcbbb78702d4f6e7250bbc803afab",
+      "current_final_sha256": "e60cbef34f96ba29d34c03e663ceb19b505b09827920c306975354f8f8e79ee3",
+      "reference_final_sha256": "089a55a43a95eceab8743acb4d66ec3e9c9328a723f90a4a62b7d1b08b2356ad"
+    },
+    {
+      "case": [
+        "bedslinger",
+        "cup",
+        "under_extrusion",
+        1002
+      ],
+      "frames": 160,
+      "current": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/bedslinger-cup-1002",
+      "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/bedslinger-cup-1002",
+      "current_layers_sha256": "c5e88812b3cc16b1d0127e21acb8fbe13a637ff9f3361cf076dcc6305c8b3260",
+      "reference_layers_sha256": "bfbbb31ae7732f19e3805c644207c3d5b5425a225790b210359eb1f6eb33a5b6",
+      "current_final_sha256": "fe313b87341623675e31dda195972ccd9dc030e818a1a418eba15a543cefa539",
+      "reference_final_sha256": "cb20e1191f8044ba157b0e8815d4f785c4a4d2e366e09f87bd8785ed0fe8fa92"
+    }
+  ],
+  "scope": "Exact per-layer truth, camera features, IoU, boundary distance, and final verdict/metrics",
+  "limitation": "These diagnostics retain no per-frame RGB hashes or complete measured geometry; neither is claimed to match byte-for-byte."
+}

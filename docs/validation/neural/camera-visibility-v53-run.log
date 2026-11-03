@@ -1,0 +1,13 @@
+{"case": "cartesian-mug-1003", "layer": 44, "image_sha256_128": "1f956587a08b4d30b1e4482cd97db92e", "original_image_reproduced": true, "diagnostic_segmentation_not_a_model_input": true, "full_scene_current_visible_pixels": 7413, "current_only_visible_pixels": 8093, "hidden_by_older_scene_pixels": 680, "hidden_fraction": 0.0840232299518102, "deformed_roi_current_only_pixels": 254, "deformed_roi_hidden_pixels": 31, "deformed_roi_hidden_fraction": 0.1220472440944882, "scene_raster": {"hole_area_mm2": 1625.5936288215696, "area_mm2": 496.35414888728315, "open_wall": false}, "full_scene_current_visibility": {"hole_area_mm2": 0, "area_mm2": 458.8753491740897, "open_wall": true}, "current_only_visibility": {"hole_area_mm2": 1616.9235147336358, "area_mm2": 510.67613859612356, "open_wall": false}}
+{"case": "cartesian-mug-1003", "layer": 45, "image_sha256_128": "1aa1e609df702cd69205180f3ba02c30", "original_image_reproduced": true, "diagnostic_segmentation_not_a_model_input": true, "full_scene_current_visible_pixels": 6773, "current_only_visible_pixels": 7144, "hidden_by_older_scene_pixels": 371, "hidden_fraction": 0.05193169092945129, "deformed_roi_current_only_pixels": 329, "deformed_roi_hidden_pixels": 54, "deformed_roi_hidden_fraction": 0.1641337386018237, "scene_raster": {"hole_area_mm2": 0, "area_mm2": 439.5927193029245, "open_wall": true}, "full_scene_current_visibility": {"hole_area_mm2": 0, "area_mm2": 386.07638323620375, "open_wall": true}, "current_only_visibility": {"hole_area_mm2": 0, "area_mm2": 450.18360951330123, "open_wall": true}}
+Traceback (most recent call last):
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-visibility-v53/run.py", line 75, in <module>
+    full_visible=visibility(printer,current_start)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-visibility-v53/run.py", line 38, in visibility
+    labels=printer.renderer.render()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ishaan/failure-detection/.venv/lib/python3.12/site-packages/mujoco/renderer.py", line 238, in render
+    out = segid2output[segimage]
+          ~~~~~~~~~~~~^^^^^^^^^^
+IndexError: index 1344 is out of bounds for axis 0 with size 1343

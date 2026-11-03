@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "original": "neural-matched-analytical-v26/full/results/cases/ee305adbd0215d97.jsonl",
+  "original_sha256": "bb948a000b004f80396653dbbcf77355b88c0d765f37ae4d2597a504041bbe06",
+  "restore_script_sha256": "208b9b8a297d5c0301c4c42727c53714801b58533c6f974f62807727fdc85125",
+  "restored_exactly": true,
+  "duplicate_removed_after_verification": true
+}

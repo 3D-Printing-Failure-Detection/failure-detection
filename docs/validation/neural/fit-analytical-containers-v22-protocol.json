@@ -1,0 +1,132 @@
+{
+  "created_at": "2026-11-03T02:41:51.290542+00:00",
+  "stage": "development",
+  "purpose": "Test the complete improved fit neural forecast with analytical container measurements and forecasting, plus actual local Qwen, against all 15 original full-grid configurations",
+  "source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "old_source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+  "old_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+  "old_inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/matrix/results",
+      "manifest_sha256": "b5b94b16e0907d4f2d6fee0db251bb3884f4315d8b23a9a323ba07fb20321d6e",
+      "audit_sha256": "7a49b64b9517339a397abb5336273d6b2d60638aaea0b3b64728d73e8e10137b",
+      "runs_sha256": "ffb70af63655f68ada7f21fb1df758d07d33f0e54d1745e81da03797f0984340",
+      "labels": {
+        "neural_risk": "previous_combined_neural"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-a/results",
+      "manifest_sha256": "867a6698511584e234ca1517a48f2bd7bf1ed4179118076d670a97630d157403",
+      "audit_sha256": "98c21b2a6fcda540f34bdb05a5a37b06c6380b2f4e87e28839c4a31e62b6dcbd",
+      "runs_sha256": "1636d8c00f00095d0c52b0e9bcfc1149ddbe18ca9ec394dd4af8496ce7237e0d",
+      "labels": {
+        "neural_risk_agent": "previous_combined_agent"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-b/results",
+      "manifest_sha256": "9431a17513a513d64ec30ce627670c1019775c25c08beb8119e9a0fab87c5e84",
+      "audit_sha256": "0adf43695d167dd2883e66eab2a24d216c8b2bea9115369adb1b9f32a2685c7c",
+      "runs_sha256": "45a9749f206c3f61c7b528deb1a893741d59b44392fbb98d921b90a5a3a5722e",
+      "labels": {
+        "neural_risk_agent": "previous_combined_agent"
+      }
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/camera/results",
+      "manifest_sha256": "6487eadc6b649a105f6180e9d3d11e54bc3fda4c17cd574d0ce4d3ebb6e71957",
+      "audit_sha256": "35378346bc502d4e21549940b2e7bb57aa0dda324b6a81fedc7583cdb6e75476",
+      "runs_sha256": "9147e71fa0567fdf308d6a452b60b9105299665255e7abe852ef93f0825332bb",
+      "labels": {}
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/classical/results",
+      "manifest_sha256": "443abc187a613ea1be8d870142238b0783cb86e48d86477a69817db0bd64c3ac",
+      "audit_sha256": "3135f5f1ab514d99bf0febf37c82fab797f0e53cbe84387af0d71049ba3a676a",
+      "runs_sha256": "a9140acf28a34c43cfacd3ad6c82a026bbd14aa1b103d3250954bb965ef80c3d",
+      "labels": {
+        "neural_risk": "previous_classical_camera_neural"
+      }
+    }
+  ],
+  "temporal_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-equivariant-v1/classical/temporal.npz",
+  "temporal_checkpoint_sha256": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62",
+  "temporal_training": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-equivariant-v1/classical/training.json",
+  "temporal_training_sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+  "supervisor_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-worker-v1/manifest.json",
+  "supervisor_manifest_sha256": "a736e16d0314835c3552ddc4bd3a1d78e9292daeb47dbc2172b71221eb80cd0f",
+  "old_temporal_training": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/temporal-training.json",
+  "old_boundary_training": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/boundary-training.json",
+  "storage_bytes_at_launch": 99899772928,
+  "maximum_new_artifact_allowance_bytes": 35000000,
+  "expected_new_rows": 576,
+  "expected_comparison_rows": 4896,
+  "expected_failure_cases_per_configuration": 240,
+  "expected_clean_cases_per_configuration": 48,
+  "command": [
+    "/home/ishaan/failure-detection/.venv/bin/python",
+    "-m",
+    "recovery.eval.mujoco_eval",
+    "--profiles",
+    "cartesian",
+    "corexy",
+    "bedslinger",
+    "--parts",
+    "cup",
+    "bracket",
+    "mug",
+    "spacer",
+    "--kinds",
+    "clean",
+    "collapse",
+    "warp",
+    "shift",
+    "under_extrusion",
+    "detach",
+    "--methods",
+    "neural_risk",
+    "neural_risk_agent",
+    "--n",
+    "4",
+    "--seed",
+    "1001",
+    "--workers",
+    "6",
+    "--neural-checkpoint",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-equivariant-v1/classical/temporal.npz",
+    "--neural-forecast-scope",
+    "fits",
+    "--neural-reserve-fit",
+    "--neural-joint-forecast",
+    "--neural-hole-envelope",
+    "--supervisor-endpoint",
+    "http://127.0.0.1:8090",
+    "--supervisor-manifest",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-worker-v1/manifest.json",
+    "--experiment-stage",
+    "development",
+    "--out",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/full/results"
+  ],
+  "audit_command": [
+    "/home/ishaan/failure-detection/.venv/bin/python",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/source/tools/audit_neural_experiment.py",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/full/results",
+    "--out",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/full/audit"
+  ],
+  "reserved_seeds_untouched": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "acceptance": "Report all paired gains, losses and defective finishes against every prior full-grid configuration. This consumed development grid cannot establish fresh-test superiority; historical regression and a new frozen comparison remain required. No automatic acceptance or further launch.",
+  "candidate_policy": "One frozen source and configuration on every part. Classical camera for all parts; trained equivariant forecast with shared-hole recovery only where the original specification defines through-hole fits; analytical container forecasting; actual Qwen chooses among passing executable plans. No fault identity, seed, severity, onset or truth is a policy input.",
+  "timing_estimate_minutes": [
+    30,
+    50
+  ]
+}

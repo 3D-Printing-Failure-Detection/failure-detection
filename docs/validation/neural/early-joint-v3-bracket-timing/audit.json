@@ -1,0 +1,83 @@
+{
+  "status": "passed",
+  "source_sha256": "174f765d023ebe5bedfce54a8e201d016576358867ea05c12b527be9f618c5d3",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+  },
+  "runs_sha256": "efd1638b4d9341cc5c851fe528a04f7d6d65695ac5a7674894b4c5a7bb288166",
+  "rows": 12,
+  "actual_agent_calls": 4,
+  "reused_reviews": 13,
+  "summary": [
+    {
+      "method": "contour",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 12.655867079040036
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 15.388760744011961
+    },
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 168,
+      "seconds": 13.124921816051938
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 2734,
+      "seconds": 29.66803607507609
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 168,
+      "seconds": 12.574777683941647
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 4,
+      "neural_queries": 2734,
+      "seconds": 52.21586731285788
+    }
+  ],
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "ebc3b1f48eb06fa37d172e30f95cf5019967c7bccb3c61afd00bd14b8307ccde",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

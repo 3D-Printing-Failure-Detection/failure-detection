@@ -1,0 +1,57 @@
+{
+  "status": "complete",
+  "source_sha256": "b07a2ef7f4562f9528347a915a7be74b233ef96161c431aff2104095d8f408f9",
+  "script_sha256": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+  "arguments": {
+    "profile": "bedslinger",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "control=/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/control/boundary.npz",
+      "previous_command=/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/candidate/boundary.npz"
+    ],
+    "include_classical_base_hybrids": true,
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/bedslinger-cup-1002"
+  },
+  "checkpoint_paths": {
+    "control": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/control/boundary.npz",
+    "previous_command": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-history-v50/candidate/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "control": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "previous_command": "fd847d59b6371e32caf65a83457541b55c562190825b51ac559c582a0676eb79"
+  },
+  "hybrid_classical_base_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hybrid_labels": {
+    "control": "control:classical-base",
+    "previous_command": "previous_command:classical-base"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "b07a2ef7f4562f9528347a915a7be74b233ef96161c431aff2104095d8f408f9",
+  "checkpoint_queries": {
+    "control": 160,
+    "previous_command": 160
+  },
+  "observation_counts": {
+    "classical": 160,
+    "control": 160,
+    "previous_command": 160,
+    "control:classical-base": 160,
+    "previous_command:classical-base": 160
+  }
+}

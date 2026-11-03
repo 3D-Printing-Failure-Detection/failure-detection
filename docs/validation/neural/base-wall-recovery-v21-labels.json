@@ -1,0 +1,50 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/joint-cup-shift/results": {
+    "ignore": "ignore",
+    "contour": "contour",
+    "neural_risk": "previous_joint_neural",
+    "neural_risk_agent": "previous_joint_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/joint-collapse-controls/results": {
+    "ignore": "ignore",
+    "contour": "contour",
+    "neural_risk": "previous_joint_neural",
+    "neural_risk_agent": "previous_joint_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/joint-cup-thinning/results": {
+    "ignore": "ignore",
+    "contour": "contour",
+    "neural_risk": "previous_joint_neural",
+    "neural_risk_agent": "previous_joint_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/fallback-cup-shift/results": {
+    "neural_risk": "neural_risk_fallback"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/fallback-collapse-controls/results": {
+    "neural_risk": "neural_risk_fallback"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/fallback-cup-thinning/results": {
+    "neural_risk": "neural_risk_fallback"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/learned-cup-shift/results": {
+    "neural_camera": "neural_camera"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/learned-collapse-controls/results": {
+    "neural_camera": "neural_camera"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-joint-dev-v1/learned-cup-thinning/results": {
+    "neural_camera": "neural_camera"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-base-wall-recovery-v21/split-cup-thinning/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-base-wall-recovery-v21/split-collapse-controls/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-base-wall-recovery-v21/split-cup-shift/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-base-wall-recovery-v21/unsplit-cup-thinning/results": {
+    "neural_risk": "command_camera_without_base_split"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-base-wall-recovery-v21/unsplit-collapse-controls/results": {
+    "neural_risk": "command_camera_without_base_split"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-base-wall-recovery-v21/unsplit-cup-shift/results": {
+    "neural_risk": "command_camera_without_base_split"
+  }
+}

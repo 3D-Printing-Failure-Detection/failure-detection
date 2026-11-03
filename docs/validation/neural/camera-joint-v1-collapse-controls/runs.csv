@@ -1,0 +1,17 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+cartesian,cup,clean,1001,ignore,True,False,False,160,0,0,0,0,16.25655828404706
+cartesian,cup,clean,1001,contour,True,False,False,160,160,0,0,0,32.58469263999723
+cartesian,cup,clean,1001,neural_risk,True,False,False,160,160,0,0,0,52.55023961106781
+cartesian,cup,clean,1001,neural_risk_agent,True,False,False,160,160,0,0,0,54.01063234300818
+cartesian,cup,collapse,1001,ignore,True,False,False,160,0,0,0,0,15.650998485973105
+cartesian,cup,collapse,1001,contour,True,False,False,160,160,0,0,0,46.33713197091129
+cartesian,cup,collapse,1001,neural_risk,True,False,False,160,160,0,0,0,62.43549507902935
+cartesian,cup,collapse,1001,neural_risk_agent,True,False,False,160,160,0,5,5,81.90749299002346
+cartesian,mug,clean,1001,ignore,True,False,False,160,0,0,0,0,18.328319448046386
+cartesian,mug,clean,1001,contour,True,False,False,160,160,0,0,0,31.82585470902268
+cartesian,mug,clean,1001,neural_risk,True,False,False,160,160,0,0,0,53.101073540979996
+cartesian,mug,clean,1001,neural_risk_agent,True,False,False,160,160,0,0,0,54.03784306906164
+cartesian,mug,collapse,1001,ignore,True,False,False,160,0,0,0,0,15.922354429028928
+cartesian,mug,collapse,1001,contour,True,False,False,160,160,0,0,0,39.46628100494854
+cartesian,mug,collapse,1001,neural_risk,True,False,False,160,160,0,0,0,60.71089946990833
+cartesian,mug,collapse,1001,neural_risk_agent,True,False,False,160,160,0,3,3,70.60435672500171

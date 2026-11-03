@@ -1,0 +1,11 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/control/boundary.npz": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/control/identity.npz": "4f7c59b0c66f4b0f0a2bf9113dfd9e7d4547cfe7dfd2bb40845a8fc98878ec69",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/control/training.json": "96288b49f734c6440fd49b38c7effc736f9e552cd8f4ae2997003590e01f7b75",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/penalty125/boundary.npz": "0928679d681caf0402f44ab493fae327e3eeb56f13799a2d07dff5423639b021",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/penalty125/identity.npz": "4f7c59b0c66f4b0f0a2bf9113dfd9e7d4547cfe7dfd2bb40845a8fc98878ec69",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/penalty125/training.json": "cc26b041a5828ab087be615820f96ab228b5666b52aa5411ef7f7b2bcb7e5fb5",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/penalty150/boundary.npz": "9475ccab0e97327f555f8d2ed69739b1c77af4c4244425fb00b688f52b32cbe2",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/penalty150/identity.npz": "4f7c59b0c66f4b0f0a2bf9113dfd9e7d4547cfe7dfd2bb40845a8fc98878ec69",
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-material-penalty-v61/penalty150/training.json": "810b205d2e33767f2989e9808d0d90a0fb02fe33f9154a7b967b5953d922b67e"
+}

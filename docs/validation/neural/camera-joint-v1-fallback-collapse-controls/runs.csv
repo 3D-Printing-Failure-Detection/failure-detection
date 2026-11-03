@@ -1,0 +1,5 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+cartesian,cup,clean,1001,neural_risk,True,False,False,160,160,0,0,0,59.97911902004853
+cartesian,cup,collapse,1001,neural_risk,True,False,False,160,160,0,0,0,70.40710449405015
+cartesian,mug,clean,1001,neural_risk,True,False,False,160,160,0,0,0,56.450820425059646
+cartesian,mug,collapse,1001,neural_risk,True,False,False,160,160,0,0,0,61.35502258106135

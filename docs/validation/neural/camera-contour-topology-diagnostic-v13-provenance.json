@@ -1,0 +1,12 @@
+{
+  "record_type": "retrospective diagnostic provenance",
+  "inputs": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002/camera-085.png": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002/camera-084.png": "623da83694190f837d2491f40f366bd2e8a4065648d3cc9787d56a9b5a7498d2"
+  },
+  "results_sha256": "d03d7bac71b0094d7662b7016f69c06382e1d0fa6e5275799560b5d525211892",
+  "runtime_source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-temporal-camera-v12/source",
+  "runtime_sha256": "9855e62751f9b1330b262d7d8c68fba5fa3d8263b6764dc0066902e46a242cff",
+  "method": "At layer 85, threshold each native signed-distance output at >0. Label the complementary background with scipy.ndimage.label using 4- and 8-neighbor connectivity. Check whether the image-centre label touches any image border; report largest enclosed background area. Prime the temporal model with actual camera-084.png. This precedes contour conversion.",
+  "limitation": "One consumed diagnostic frame; neither a recovery trial nor a prospective test."
+}

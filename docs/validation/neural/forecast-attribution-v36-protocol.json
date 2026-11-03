@@ -1,0 +1,31 @@
+{
+  "created_at": "2026-11-03T05:44:54.647214+00:00",
+  "stage": "development",
+  "purpose": "Separate observed-prefix and future-forecast errors in a consumed lost mug success, with actual future geometry used only for offline attribution",
+  "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/source",
+  "source_sha256": "3a194dd002fe610af0e9e106d1f018a6f812efce75cb588f0b8df33f88fa1b7e",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "runner_sha256": "ca09c954a1ec5e820f138b061655aaca76e204d7a8c4c6d14dcff091037907fd",
+  "profile": "bedslinger",
+  "part": "mug",
+  "kind": "collapse",
+  "seed": 1001,
+  "layer": 137,
+  "reference_case": [
+    "bedslinger",
+    "mug",
+    "collapse",
+    1001,
+    "neural_risk_agent"
+  ],
+  "reference_runs": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/full/results/runs.jsonl",
+  "boundary_checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+  "boundary_training": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/training.json",
+  "maximum_new_artifact_allowance_bytes": 500000,
+  "storage_bytes_at_launch": 99952668672,
+  "other_live_job_reserved_bytes": 35537088,
+  "limitation": "Selected retrospective attribution, not a recovery trial or policy acceptance. Actual geometry is used only for offline scoring; predictors receive observed camera geometry and commands. The last-residual forecast is a diagnostic ablation, not a promoted policy. No reserved fresh seeds are used.",
+  "reference_runs_sha256": "ac59fb78e3fdc8c158b722b2fc201999ab7add68e19a166b080af7bdd78b20bb",
+  "boundary_checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+  "boundary_training_sha256": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d"
+}

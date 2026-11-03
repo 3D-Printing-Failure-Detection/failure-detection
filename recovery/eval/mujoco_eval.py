@@ -1,6 +1,6 @@
 """Paired full-print transfer evaluation across MuJoCo printer rigs.
 
-The same classical perception and rule policy are frozen for every profile.
+Each selected perception/policy configuration is frozen for every profile.
 Every monitored layer is imaged; no clean-prefix or quiet-horizon shortcuts.
 Raw rows distinguish successful in-place prints from a hypothetical clean restart.
 """
@@ -31,20 +31,26 @@ from ..models.classical import ClassicalDetector, ClassicalSegmenter, boundary_d
 from ..parts import PART_NAMES, get_part
 from ..printer.profiles import PROFILES
 from .run_eval import METHODS, ScrapPolicy
+from .camera_trace import TRACE_VERSION, camera_frame_digest, encode_camera_prefix
 
-EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded", "contour"]
+EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded", "contour", "contour_risk", "neural", "neural_agent", "neural_camera", "neural_camera_agent", "neural_risk", "neural_risk_agent"]
 
 
 class ObservedSegmenter(ClassicalSegmenter):
     """Evaluation-only ground truth access; never changes a measurement/decision."""
-    def __init__(self, printer):
+    def __init__(self, printer, segmenter=None):
         self.printer = printer
+        self.segmenter = segmenter
         self.ious = []
         self.policy = None
         self.forecast_scores = []
+        self.camera_prefix = []
 
     def measure(self, image, expected_mask=None):
-        measured = super().measure(image, expected_mask)
+        if not getattr(self.printer, 'replacements', []):
+            self.camera_prefix.append(camera_frame_digest(image))
+        measured = (self.segmenter.measure(image, expected_mask) if self.segmenter is not None
+                    else super().measure(image, expected_mask))
         self.ious.append(iou(measured, self.printer.printed[-1].region))
         # Score BEFORE observe() fits the current measurement. Truth is used
         # only here, and no score is fed back to the policy or estimator.
@@ -63,7 +69,18 @@ class ObservedSegmenter(ClassicalSegmenter):
 
 def run_case(job):
     from ..printer.mujoco import MujocoPrinter
-    profile, part_name, kind, seed, methods, clear_on_adapt = job
+    profile, part_name, kind, seed, methods, clear_on_adapt = job[:6]
+    options = job[6] if len(job) > 6 else {}
+    journal = None
+    if options.get('case_artifacts'):
+        identity = hashlib.sha256(json.dumps(job[:4]).encode()).hexdigest()[:16]
+        journal = Path(options['case_artifacts']) / (identity + '.jsonl')
+
+    def record_case(record):
+        if journal:
+            with journal.open('a') as stream:
+                stream.write(json.dumps(dict(profile=profile, part=part_name, kind=kind, seed=seed,
+                                            **record)) + '\n')
     part = get_part(part_name)
     nominal = part.layers()
     nominal_check = check(nominal, nominal, part.spec, part.layer_h)
@@ -74,17 +91,74 @@ def run_case(job):
     rows = []
     for method in methods:
         started = time.perf_counter()
+        policy = None
         with MujocoPrinter(nominal, failure, seed, profile, clear_on_adapt,
                             render=method != "ignore") as pr:
-            seg = ObservedSegmenter(pr)
+            learned_segmenter = None
+            if (method.startswith('neural')
+                    and options.get('boundary_checkpoint')
+                    and (options.get('boundary_scope', 'all') == 'all' or not part.spec.get('holes'))):
+                from ..models.boundary import BoundarySegmenter
+                if options.get('boundary_fallback'):
+                    from ..models.dual_camera import DualCameraSegmenter
+                    base_h = part.spec.get('container', {}).get('base_h', float('-inf'))
+                    base_layers = ([i for i, layer in enumerate(nominal) if layer.z <= base_h]
+                                   if options.get('boundary_classical_base') else [])
+                    learned_segmenter = DualCameraSegmenter(options['boundary_checkpoint'], base_layers)
+                else:
+                    learned_segmenter = BoundarySegmenter(options['boundary_checkpoint'])
+            seg = ObservedSegmenter(pr, learned_segmenter)
             events = []
             if method == "ignore":
                 pr.fast_forward()
                 verdict = check(pr.printed, nominal, part.spec, part.layer_h)
                 functional, outcome = verdict.ok, "finished"
             else:
-                if method in ("guarded", "contour"):
-                    policy = {"guarded": GuardedPolicy, "contour": ContourPolicy}[method](part.spec, nominal, part.layer_h)
+                if method == 'neural_camera_agent':
+                    from ..loop.local_agent import AgentContourPolicy, LocalSupervisor
+                    policy = AgentContourPolicy(part.spec, nominal, part.layer_h,
+                        shrink_trend=options.get('contour_trend_shrinkage', False),
+                        supervisor=LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
+                                                   options.get('supervisor_timeout', 120)),
+                        review_interval_layers=options.get('supervisor_review_interval', 8))
+                elif method in ("neural", "neural_agent", 'neural_risk', 'neural_risk_agent'):
+                    from ..loop.neural import NeuralPolicy
+                    from ..loop.risk_neural import RiskAwareNeuralPolicy
+                    from ..loop.local_agent import AgentNeuralPolicy, AgentRiskAwareNeuralPolicy, LocalSupervisor
+                    policy_options = dict(checkpoint=options['neural_checkpoint'],
+                                          shrink_trend=options.get('contour_trend_shrinkage', False),
+                                          calibrate_measurements=options.get('neural_calibrate_measurements', False),
+                                          forecast_scope=options.get('neural_forecast_scope', 'all'))
+                    if method in ('neural_risk', 'neural_risk_agent'):
+                        policy_options['reserve_fit'] = options.get('neural_reserve_fit', False)
+                        policy_options['joint_forecast'] = options.get('neural_joint_forecast', False)
+                        policy_options['hole_envelope'] = options.get('neural_hole_envelope', False)
+                    if method.endswith('_agent'):
+                        policy_options['supervisor'] = LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
+                                                                      options.get('supervisor_timeout', 120))
+                        policy_options['review_interval_layers'] = options.get('supervisor_review_interval', 8)
+                    policies = {'neural': NeuralPolicy, 'neural_agent': AgentNeuralPolicy,
+                                'neural_risk': RiskAwareNeuralPolicy, 'neural_risk_agent': AgentRiskAwareNeuralPolicy}
+                    if options.get('boundary_fallback'):
+                        from ..loop.camera_fallback import FallbackNeuralPolicy, FallbackRiskNeuralPolicy
+                        from ..loop.local_agent import AgentFallbackNeuralPolicy, AgentFallbackRiskNeuralPolicy
+                        policies = {'neural': FallbackNeuralPolicy, 'neural_agent': AgentFallbackNeuralPolicy,
+                                    'neural_risk': FallbackRiskNeuralPolicy, 'neural_risk_agent': AgentFallbackRiskNeuralPolicy}
+                        policy_options['dual_segmenter'] = learned_segmenter
+                        policy_options['joint_camera'] = options.get('boundary_joint_forecast', False)
+                        policy_options['robust_fallback'] = options.get('boundary_robust_fallback', False)
+                        policy_options['trend_continuation_fallback'] = options.get('boundary_trend_continuation_fallback', False)
+                        policy_options['observed_wall_guard'] = options.get('boundary_observed_wall_guard', False)
+                    policy = policies[method](part.spec, nominal, part.layer_h, **policy_options)
+                elif method in ("guarded", "contour", "contour_risk", "neural_camera"):
+                    from ..loop.risk_neural import RiskAwareContourPolicy
+                    policy_options = ({'reserve_fit': options.get('neural_reserve_fit', False)}
+                                      if method == 'contour_risk' else {})
+                    if method != 'guarded':
+                        policy_options['shrink_trend'] = options.get('contour_trend_shrinkage', False)
+                    policy = {"guarded": GuardedPolicy, "contour": ContourPolicy,
+                              'contour_risk': RiskAwareContourPolicy,
+                              'neural_camera': ContourPolicy}[method](part.spec, nominal, part.layer_h, **policy_options)
                 elif method in ("measured", "predictive", "functional"):
                     policy = FunctionalPolicy(part.spec, nominal, part.layer_h,
                                               predict=method != "measured", rank_margin=method == "functional")
@@ -92,8 +166,13 @@ def run_case(job):
                     policy = {"ours": RulePolicy, "alert": AlertOnlyPolicy, "scrap": ScrapPolicy}[method](
                         part.spec, nominal, part.layer_h)
                 seg.policy = policy
-                res = Controller(pr, seg, ClassicalDetector(), policy, part.spec,
-                                 nominal, part.layer_h).run()
+                try:
+                    res = Controller(pr, seg, ClassicalDetector(), policy, part.spec,
+                                     nominal, part.layer_h).run()
+                except Exception as exc:
+                    record_case(dict(type='error', method=method, error=repr(exc), layers_printed=pr.n_done,
+                                     agent_audit=getattr(getattr(policy, 'supervisor', None), 'audit', [])))
+                    raise
                 functional, outcome, verdict, events = res.functional, res.outcome, res.final, res.events
             used = filament_of(pr.printed, part.layer_h)
             k0 = failure.k0 if failure else len(nominal)
@@ -109,6 +188,7 @@ def run_case(job):
                 filament_ratio=used / full,
                 filament_with_assumed_clean_restart=(used + (full if pr.cancelled else 0)) / full,
                 n_layers=len(nominal), layers_printed=pr.n_done, frames=pr.camera_frames,
+                camera_prefix=encode_camera_prefix(seg.camera_prefix),
                 n_events=len(events), pre_failure_alarms=sum(e.layer < k0 for e in events),
                 alarm_delay=post_failure[0].layer-k0 if post_failure else -1,
                 first_label=events[0].label if events else "",
@@ -118,10 +198,36 @@ def run_case(job):
                 command_boundary_error_mm=float(np.mean([s["command_mm"] for s in forecast_scores])) if forecast_scores else None,
                 tracking_rms_mm=float(pr.tracking_rms_mm), max_tracking_mm=pr.max_tracking_mm,
                 executed_waypoints=pr.executed_waypoints,
+                neural_queries=getattr(getattr(policy, 'state', None), 'neural_queries', 0),
+                analytical_candidate_checks=getattr(policy, 'analytical_candidate_checks', 0),
+                joint_camera_checks=getattr(policy, 'joint_camera_checks', 0),
+                damped_continuation_checks=getattr(policy, 'damped_continuation_checks', 0),
+                damped_continuation_queries=getattr(policy, 'damped_continuation_queries', 0),
+                wall_guard_checks=getattr(policy, 'wall_guard_checks', 0),
+                wall_guard_findings=getattr(policy, 'wall_guard_findings', []),
+                trend_shrinkage_queries=sum(getattr(getattr(owner, 'state', None), 'trend_shrinkage_queries', 0)
+                    for owner in (policy, getattr(policy, 'alternative', None))),
+                has_fit_constraints=bool(part.spec.get('holes')),
+                forecast_source=getattr(policy, 'forecast_source',
+                    'analytical' if getattr(policy, 'state', None) is not None else None),
+                boundary_queries=getattr(learned_segmenter, 'queries', 0),
+                measurement_source=getattr(learned_segmenter, 'measurement_source',
+                                           getattr(learned_segmenter, 'sha256', 'classical')),
+                alternative_measurement_source=(learned_segmenter.sha256
+                    if options.get('boundary_fallback') and learned_segmenter is not None else None),
+                alternative_observations=len(getattr(getattr(getattr(policy, 'alternative', None), 'state', None),
+                                                     'observations', [])),
+                alternative_classical_base_frames=getattr(learned_segmenter, 'classical_base_frames', 0),
+                alternative_learned_frames=getattr(learned_segmenter, 'learned_frames', 0),
+                agent_requests=len(getattr(getattr(policy, 'supervisor', None), 'audit', [])),
+                agent_accepted=sum(a['accepted'] for a in getattr(getattr(policy, 'supervisor', None), 'audit', [])),
                 violations=verdict.violations if verdict else [events[-1].reason],
                 actions=[dict(layer=e.layer, label=e.label, action=e.action, reason=e.reason,
                               considered=e.considered) for e in events],
                 seconds=time.perf_counter()-started))
+            record_case(dict(type='result', method=method, row=rows[-1]))
+            print(f'{profile}/{part_name}/{kind}/{seed} {method}: '
+                  f'functional={functional} outcome={outcome} adaptations={len(pr.replacements)}', flush=True)
     return rows
 
 
@@ -164,12 +270,15 @@ def paired_comparison(rows):
     key = lambda r: (r["profile"], r["part"], r["kind"], r["seed"])
     by_method = {m: {key(r): r for r in rows if r["method"] == m} for m in EXPERIMENT_METHODS}
     comparisons = []
-    for baseline, treatment in (("ignore", "ours"), ("ignore", "measured"), ("ignore", "predictive"),
+    comparisons_to_run = [("ignore", "ours"), ("ignore", "measured"), ("ignore", "predictive"),
                                 ("ignore", "functional"), ("ours", "measured"), ("measured", "predictive"),
                                 ("predictive", "functional"), ("ours", "functional"),
                                 ("ignore", "guarded"), ("ours", "guarded"),
                                 ("predictive", "guarded"), ("functional", "guarded"),
-                                ("ignore", "contour"), ("guarded", "contour")):
+                                ("ignore", "contour"), ("guarded", "contour")]
+    comparisons_to_run += [(baseline, treatment) for treatment in ('neural', 'neural_agent', 'neural_camera', 'neural_camera_agent', 'neural_risk', 'neural_risk_agent')
+                          for baseline in EXPERIMENT_METHODS if baseline != treatment]
+    for baseline, treatment in comparisons_to_run:
         for split in ("clean", "failure"):
             keys = sorted(k for k in by_method[baseline].keys() & by_method[treatment].keys()
                           if (k[2] == "clean") == (split == "clean"))
@@ -205,17 +314,112 @@ def main(argv=None):
     parser.add_argument("--clear-failure-on-adapt", action="store_true",
                         help="optimistic ablation: adaptation removes the prescribed failure cause")
     parser.add_argument("--out", default="results/mujoco")
+    parser.add_argument('--neural-checkpoint', type=Path)
+    parser.add_argument('--experiment-stage', choices=('development', 'historical', 'frozen-test'),
+                        default='development', help='provenance label; does not change simulation or policy behavior')
+    parser.add_argument('--neural-calibrate-measurements', action='store_true')
+    parser.add_argument('--neural-forecast-scope', choices=('all', 'fits'), default='all',
+                        help='fits uses the learned forecast only for parts with specified through-hole fits')
+    parser.add_argument('--neural-reserve-fit', action='store_true',
+                        help='offer a bounded clearance-reserve candidate to the preventive learned policy')
+    parser.add_argument('--neural-joint-forecast', action='store_true',
+                        help='prefer recovery candidates verified by both learned and analytical fit forecasts')
+    parser.add_argument('--neural-hole-envelope', action='store_true',
+                        help='try shared future hole clearances if existing early joint recovery choices fail the robustness guard')
+    parser.add_argument('--contour-trend-shrinkage', action='store_true',
+                        help='discount existing observation uncertainty from analytical contour trend magnitudes; trained forecasts remain unchanged')
+    parser.add_argument('--boundary-checkpoint', type=Path,
+                        help='learned camera boundary model for neural methods; historical baselines stay classical')
+    parser.add_argument('--boundary-scope', choices=('all', 'nonfits'), default='all',
+                        help='nonfits retains classical measurements for specified fits and uses the learned camera elsewhere')
+    parser.add_argument('--boundary-fallback', action='store_true',
+                        help='retain feasible classical-camera plans; consult an independent learned-camera history otherwise')
+    parser.add_argument('--boundary-joint-forecast', action='store_true',
+                        help='cross-check adaptation candidates under both camera histories when the primary continuation fails')
+    parser.add_argument('--boundary-classical-base', action='store_true',
+                        help='use classical measurements for specified solid base layers in the alternative camera history')
+    parser.add_argument('--boundary-robust-fallback', action='store_true',
+                        help='require the existing uncertainty envelope to pass for learned-camera corrections when no classical plan passes')
+    parser.add_argument('--boundary-trend-continuation-fallback', action='store_true',
+                        help='only after all original plans fail, try unchanged continuation with both camera trends damped')
+    parser.add_argument('--boundary-observed-wall-guard', action='store_true',
+                        help='retain a learned-camera hard-thin warning on an already printed container wall when selecting any plan')
+    parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
+    parser.add_argument('--supervisor-model', default='local-qwen3')
+    parser.add_argument('--supervisor-timeout', type=float, default=120.)
+    parser.add_argument('--supervisor-review-interval', type=int, default=8,
+                        help='maximum layer interval between reviews of an unchanged, passing continuation')
+    parser.add_argument('--supervisor-manifest', type=Path,
+                        help='pinned local runtime/model asset provenance')
     args = parser.parse_args(argv)
     if args.n < 1 or args.workers < 1:
         parser.error("--n and --workers must be positive")
+    neural = any(m in ('neural', 'neural_agent', 'neural_risk', 'neural_risk_agent') for m in args.methods)
+    if neural and not args.neural_checkpoint:
+        parser.error('neural methods require --neural-checkpoint')
+    if any(m in args.methods for m in ('neural_camera', 'neural_camera_agent')) and not args.boundary_checkpoint:
+        parser.error('learned-camera methods require --boundary-checkpoint')
+    if args.boundary_checkpoint and args.neural_calibrate_measurements:
+        parser.error('the temporal calibrator was trained on classical measurements; do not apply it to learned camera output')
+    if args.boundary_scope == 'nonfits' and not args.boundary_checkpoint:
+        parser.error('nonfits boundary scope requires --boundary-checkpoint')
+    if args.boundary_joint_forecast and not args.boundary_fallback:
+        parser.error('--boundary-joint-forecast requires --boundary-fallback')
+    if args.boundary_classical_base and not args.boundary_fallback:
+        parser.error('--boundary-classical-base requires --boundary-fallback')
+    if args.boundary_robust_fallback and not args.boundary_fallback:
+        parser.error('--boundary-robust-fallback requires --boundary-fallback')
+    if args.boundary_observed_wall_guard and not args.boundary_fallback:
+        parser.error('--boundary-observed-wall-guard requires --boundary-fallback')
+    if args.boundary_trend_continuation_fallback and (not args.boundary_fallback or args.contour_trend_shrinkage):
+        parser.error('trend continuation fallback requires --boundary-fallback and excludes --contour-trend-shrinkage')
+    if args.neural_hole_envelope and not args.neural_joint_forecast:
+        parser.error('--neural-hole-envelope requires --neural-joint-forecast')
+    if args.boundary_fallback and (not args.boundary_checkpoint or args.boundary_scope != 'nonfits'
+                                  or args.neural_forecast_scope != 'fits'
+                                  or any(m in args.methods for m in ('neural_camera', 'neural_camera_agent'))):
+        parser.error('camera fallback requires a boundary checkpoint, nonfits camera scope, and fits forecast scope')
+    if neural:
+        if args.boundary_scope == 'nonfits' and args.neural_forecast_scope != 'fits':
+            parser.error('nonfits camera scope requires fits forecast scope to keep model input domains consistent')
+        from ..models.temporal import TemporalModel
+        temporal_model = TemporalModel(args.neural_checkpoint)
+        measurement_source = (hashlib.sha256(args.boundary_checkpoint.read_bytes()).hexdigest()
+                              if args.boundary_checkpoint and args.boundary_scope == 'all' else 'classical')
+        if temporal_model.measurement_source != measurement_source:
+            parser.error('temporal checkpoint was trained on a different measurement model; retrain or use its matching segmenter')
+    if any(m.endswith('_agent') for m in args.methods) and not args.supervisor_manifest:
+        parser.error('agent evaluation requires --supervisor-manifest')
+    options = dict(neural_checkpoint=str(args.neural_checkpoint.resolve()) if args.neural_checkpoint else None,
+                   boundary_checkpoint=str(args.boundary_checkpoint.resolve()) if args.boundary_checkpoint else None,
+                   boundary_scope=args.boundary_scope,
+                   boundary_fallback=args.boundary_fallback,
+                   boundary_joint_forecast=args.boundary_joint_forecast,
+                   boundary_classical_base=args.boundary_classical_base,
+                   boundary_robust_fallback=args.boundary_robust_fallback,
+                   boundary_trend_continuation_fallback=args.boundary_trend_continuation_fallback,
+                   boundary_observed_wall_guard=args.boundary_observed_wall_guard,
+                   neural_calibrate_measurements=args.neural_calibrate_measurements,
+                   neural_forecast_scope=args.neural_forecast_scope,
+                   neural_reserve_fit=args.neural_reserve_fit,
+                   neural_joint_forecast=args.neural_joint_forecast,
+                   neural_hole_envelope=args.neural_hole_envelope,
+                   contour_trend_shrinkage=args.contour_trend_shrinkage,
+                   supervisor_endpoint=args.supervisor_endpoint, supervisor_model=args.supervisor_model,
+                   supervisor_timeout=args.supervisor_timeout,
+                   supervisor_review_interval=args.supervisor_review_interval)
     output = Path(args.out)
     output.mkdir(parents=True, exist_ok=True)
     if (output / "runs.jsonl").exists():
         parser.error("output already contains runs.jsonl; use a fresh directory")
-    jobs = [(p, part, kind, seed, args.methods, args.clear_failure_on_adapt)
+    (output / 'cases').mkdir(exist_ok=True)
+    options['case_artifacts'] = str((output / 'cases').resolve())
+    jobs = [(p, part, kind, seed, args.methods, args.clear_failure_on_adapt, options)
             for p in args.profiles for part in args.parts for kind in args.kinds
             for seed in range(args.seed, args.seed + args.n)]
-    manifest = dict(arguments=vars(args), profiles={k: asdict(PROFILES[k]) for k in args.profiles},
+    manifest = dict(arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
+                    instrumentation_version=4, camera_trace_version=TRACE_VERSION,
+                    profiles={k: asdict(PROFILES[k]) for k in args.profiles},
                     python=platform.python_version(),
                     packages={p: importlib.metadata.version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},
                     git_revision=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
@@ -224,6 +428,19 @@ def main(argv=None):
                     "0.1 mm bead-fusion closing before failure injection",
                     "prescribed failures", "controlled current-layer illumination", "exact camera calibration",
                     "geometry-only function verdicts", "restart cost is hypothetical"])
+    if neural:
+        manifest['neural_checkpoint_sha256'] = hashlib.sha256(args.neural_checkpoint.read_bytes()).hexdigest()
+    manifest['boundary_classical_base_layers'] = {name: [] for name in args.parts}
+    if args.boundary_classical_base:
+        for name in args.parts:
+            base_part = get_part(name)
+            base_h = base_part.spec.get('container', {}).get('base_h', float('-inf'))
+            manifest['boundary_classical_base_layers'][name] = [
+                i for i, layer in enumerate(base_part.layers()) if layer.z <= base_h]
+    if args.boundary_checkpoint:
+        manifest['boundary_checkpoint_sha256'] = hashlib.sha256(args.boundary_checkpoint.read_bytes()).hexdigest()
+    if args.supervisor_manifest:
+        manifest['supervisor'] = json.loads(args.supervisor_manifest.read_text())
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
     rows, errors = [], []
     # Spawn isolates GL contexts; forking an initialized EGL runtime is unsafe.
@@ -250,6 +467,16 @@ def main(argv=None):
     (output / "paired.json").write_text(json.dumps(paired_comparison(rows), indent=2))
     manifest.update(status="failed" if errors else "complete", completed_runs=len(rows), errors=errors,
                     final_source_sha256=source_digest())
+    if neural:
+        manifest['final_neural_checkpoint_sha256'] = hashlib.sha256(args.neural_checkpoint.read_bytes()).hexdigest()
+        if manifest['final_neural_checkpoint_sha256'] != manifest['neural_checkpoint_sha256']:
+            manifest['status'] = 'failed'
+            errors.append(dict(error='neural checkpoint changed during evaluation'))
+    if args.boundary_checkpoint:
+        manifest['final_boundary_checkpoint_sha256'] = hashlib.sha256(args.boundary_checkpoint.read_bytes()).hexdigest()
+        if manifest['final_boundary_checkpoint_sha256'] != manifest['boundary_checkpoint_sha256']:
+            manifest['status'] = 'failed'
+            errors.append(dict(error='boundary checkpoint changed during evaluation'))
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2))
     if errors:
         raise SystemExit(f"{len(errors)} scenarios failed; see manifest.json")

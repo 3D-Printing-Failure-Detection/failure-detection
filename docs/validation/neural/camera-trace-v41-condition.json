@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "new_rows": 4,
+  "camera_inputs_match_before_adaptation": true,
+  "prior_outcomes_and_actions_preserved": true
+}

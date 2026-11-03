@@ -1,0 +1,282 @@
+{
+  "status": "complete",
+  "case": [
+    "bedslinger",
+    "mug",
+    "under_extrusion",
+    1004
+  ],
+  "recovery_trials": 0,
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "all_pre_adaptation_camera_frames_reproduced": true,
+  "paired_prefixes": [
+    {
+      "method": "neural_risk",
+      "frames": 102,
+      "first_adaptation": 101
+    },
+    {
+      "method": "neural_risk_agent",
+      "frames": 102,
+      "first_adaptation": 101
+    }
+  ],
+  "camera_prefix": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "frames": 160,
+    "digests": "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"
+  },
+  "true_fatal_layers": [
+    {
+      "layer": 101,
+      "truth": {
+        "area_mm2": 372.70131796324165,
+        "components": 2,
+        "hole_area_mm2": 1620.5091800357823,
+        "main_holes": 1,
+        "open_wall": false,
+        "soft_thin_excess": 0.04815214820292746,
+        "soft_thin": true,
+        "hard_thin_excess": 0.04677908318269808,
+        "hard_thin": true
+      },
+      "measured": {
+        "classical": {
+          "area_mm2": 389.7096915078971,
+          "components": 2,
+          "hole_area_mm2": 1634.3304950064335,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.06234799664978086,
+          "soft_thin": true,
+          "hard_thin_excess": 0.0010948271339307203,
+          "hard_thin": false,
+          "iou": 0.8707302089460108,
+          "boundary_error_mm": 0.39446759724642816
+        },
+        "original": {
+          "area_mm2": 370.6730707364069,
+          "components": 2,
+          "hole_area_mm2": 1635.4134345894508,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.04524748487091079,
+          "soft_thin": true,
+          "hard_thin_excess": 0.03139541425376802,
+          "hard_thin": true,
+          "iou": 0.9072660931126084,
+          "boundary_error_mm": 0.35129325915769805
+        },
+        "base": {
+          "area_mm2": 369.09833194466285,
+          "components": 2,
+          "hole_area_mm2": 1638.2679819293821,
+          "main_holes": 5,
+          "open_wall": false,
+          "soft_thin_excess": 0.05038463663857096,
+          "soft_thin": true,
+          "hard_thin_excess": 0.046645534538713895,
+          "hard_thin": true,
+          "iou": 0.90485690295573,
+          "boundary_error_mm": 0.3395355696897935
+        },
+        "linear": {
+          "area_mm2": 368.82332255708735,
+          "components": 2,
+          "hole_area_mm2": 1638.478141508034,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.043974351655358235,
+          "soft_thin": true,
+          "hard_thin_excess": 0.041487606065594984,
+          "hard_thin": true,
+          "iou": 0.9056337929174768,
+          "boundary_error_mm": 0.348366887076303
+        },
+        "nonlinear": {
+          "area_mm2": 368.8634394416411,
+          "components": 2,
+          "hole_area_mm2": 1638.5714803265255,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.04410642757736116,
+          "soft_thin": true,
+          "hard_thin_excess": 0.04168316271245065,
+          "hard_thin": true,
+          "iou": 0.9056308224834378,
+          "boundary_error_mm": 0.34159497772533015
+        },
+        "original:classical-base": {
+          "area_mm2": 370.6730707364069,
+          "components": 2,
+          "hole_area_mm2": 1635.4134345894508,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.04524748487091079,
+          "soft_thin": true,
+          "hard_thin_excess": 0.03139541425376802,
+          "hard_thin": true,
+          "iou": 0.9072660931126084,
+          "boundary_error_mm": 0.35129325915769805
+        },
+        "base:classical-base": {
+          "area_mm2": 369.09833194466285,
+          "components": 2,
+          "hole_area_mm2": 1638.2679819293821,
+          "main_holes": 5,
+          "open_wall": false,
+          "soft_thin_excess": 0.05038463663857096,
+          "soft_thin": true,
+          "hard_thin_excess": 0.046645534538713895,
+          "hard_thin": true,
+          "iou": 0.90485690295573,
+          "boundary_error_mm": 0.3395355696897935
+        },
+        "linear:classical-base": {
+          "area_mm2": 368.82332255708735,
+          "components": 2,
+          "hole_area_mm2": 1638.478141508034,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.043974351655358235,
+          "soft_thin": true,
+          "hard_thin_excess": 0.041487606065594984,
+          "hard_thin": true,
+          "iou": 0.9056337929174768,
+          "boundary_error_mm": 0.348366887076303
+        },
+        "nonlinear:classical-base": {
+          "area_mm2": 368.8634394416411,
+          "components": 2,
+          "hole_area_mm2": 1638.5714803265255,
+          "main_holes": 1,
+          "open_wall": false,
+          "soft_thin_excess": 0.04410642757736116,
+          "soft_thin": true,
+          "hard_thin_excess": 0.04168316271245065,
+          "hard_thin": true,
+          "iou": 0.9056308224834378,
+          "boundary_error_mm": 0.34159497772533015
+        }
+      }
+    }
+  ],
+  "final": {
+    "truth": {
+      "ok": false,
+      "violations": [
+        "wall far below 1.6 mm in 1 layers"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 0.0,
+        "capacity_mm3": 60954.06197476359,
+        "thin_layers": 1
+      }
+    },
+    "measured": {
+      "classical": {
+        "ok": true,
+        "violations": [],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61588.10880426311,
+          "thin_layers": 1
+        }
+      },
+      "original": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61484.44499456015,
+          "thin_layers": 1
+        }
+      },
+      "base": {
+        "ok": false,
+        "violations": [
+          "base not flat/solid in 7 layers",
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61611.78153237152,
+          "thin_layers": 1
+        }
+      },
+      "linear": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61618.81959007508,
+          "thin_layers": 1
+        }
+      },
+      "nonlinear": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61623.424336130985,
+          "thin_layers": 1
+        }
+      },
+      "original:classical-base": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61484.44499456015,
+          "thin_layers": 1
+        }
+      },
+      "base:classical-base": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61611.78153237152,
+          "thin_layers": 1
+        }
+      },
+      "linear:classical-base": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61618.81959007508,
+          "thin_layers": 1
+        }
+      },
+      "nonlinear:classical-base": {
+        "ok": false,
+        "violations": [
+          "wall far below 1.6 mm in 1 layers"
+        ],
+        "metrics": {
+          "max_overhang_mm2": 0.0,
+          "capacity_mm3": 61623.424336130985,
+          "thin_layers": 1
+        }
+      }
+    }
+  },
+  "manifest_sha256": "0f80316e36c6bccf16163038f5783a5b880ccc1455022873aca371bb0de07895",
+  "layers_sha256": "b5a59ba0a2b71a6d3151a5d6aeb41b946fe3135908a238f0f5ecfd9a8aaddf6b",
+  "final_sha256": "bd2aa7a949116e3e8c33b7ef304bc4e810c51406985cdf80e2f43c2c5d1f7923",
+  "limitation": "Supplemental camera diagnosis on one consumed nominal-command trajectory. No recovery controller runs, no physical or scoring rule changes, no checkpoint selection, and no replacement for the ongoing 2040-frame or queued recovery gates."
+}

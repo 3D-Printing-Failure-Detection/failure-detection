@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "source_sha256": "b84e8001caca497fe81cf5ce92241238711314d14a20c08690758abb1a7f098d",
+  "checkpoints": {
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "322a7a28d923608bdcf8bb94cdb80320706b74aa09263b5340282d845fd46c89",
+  "rows": 1,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "neural_camera",
+      "split": "failure",
+      "n": 1,
+      "in_place": 1,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 114.48396371002309
+    }
+  ],
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "a9b37d5dd79f9275ec466026951f46dee807606a310bc558c54708d045be32f2",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

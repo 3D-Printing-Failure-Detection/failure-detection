@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "new_rows": 58,
+  "limitation": "Consumed targeted regression only; passing it does not establish full-grid, historical or untouched superiority. Four known camera failures remain separate. No fresh seeds or automatic broad evaluation.",
+  "paired_gate_passes": true,
+  "regression_rows": 42,
+  "comparison_sha256": "a9963efdcf8418f57858e853cffaed01633fb55a6f274554c6f0a8d017d6b475"
+}

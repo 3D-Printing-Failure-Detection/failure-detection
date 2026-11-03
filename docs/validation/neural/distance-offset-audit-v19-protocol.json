@@ -1,0 +1,16 @@
+{
+  "stage": "training_bias_diagnostic",
+  "created_at": "2026-11-03T02:07:25.765336+00:00",
+  "data": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/dataset/data.npz",
+  "data_sha256": "2f04a6fb66c1465d8a1c6e9115b3ddbfb88365cb5c7014316709617fe41fe4da",
+  "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/boundary.npz",
+  "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-gradient-camera-v18/source",
+  "purpose": "Measure signed-distance bias on all retained tiles; separate training from validation and bases from walls. Diagnostic only; no runtime offset or threshold change.",
+  "bins_mm": [
+    0.05,
+    0.15,
+    0.5
+  ],
+  "summaries": "Mean target-minus-prediction where |target| is within each bin, plus mean where |prediction| is within 0.15 mm. Native samples are correlated; not recovery rates."
+}

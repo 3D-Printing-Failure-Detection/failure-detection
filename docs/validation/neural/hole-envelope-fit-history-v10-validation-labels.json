@@ -1,0 +1,12 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-joint-fit-dev-v4/validation/results": {
+    "contour": "previous_contour",
+    "neural_risk": "previous_neural_risk",
+    "neural_risk_agent": "previous_neural_risk_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-history-v10/validation/results": {
+    "contour_risk": "contour_risk",
+    "neural_risk": "neural_risk",
+    "neural_risk_agent": "neural_risk_agent"
+  }
+}

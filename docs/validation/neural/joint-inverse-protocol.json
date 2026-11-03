@@ -1,0 +1,99 @@
+{
+  "created_at": "2026-11-02T22:20:02.141609+00:00",
+  "stage": "development",
+  "purpose": "Compare both learned and analytical correction candidates; prefer those passing both forward forecasts when any exist, otherwise retain the original neural candidates",
+  "expected_runs": 18,
+  "estimated_extra_artifact_bytes": 5000000,
+  "diagnostic_seeds": [
+    1001,
+    1002
+  ],
+  "historical_seeds": [
+    10
+  ],
+  "reserved_seeds_untouched": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "modified_policy_sha256": "c8b05e3c34876bb42a56ed9543a1a0afbf567d5e40f99f452b7c07c29458461f",
+  "commands": [
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "-m",
+      "recovery.eval.mujoco_eval",
+      "--parts",
+      "spacer",
+      "--experiment-stage",
+      "development",
+      "--workers",
+      "2",
+      "--methods",
+      "contour",
+      "neural_risk",
+      "--neural-checkpoint",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/temporal.npz",
+      "--neural-forecast-scope",
+      "fits",
+      "--neural-reserve-fit",
+      "--profiles",
+      "cartesian",
+      "--seed",
+      "1001",
+      "--n",
+      "2",
+      "--kinds",
+      "clean",
+      "collapse",
+      "shift",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/diagnostics/results"
+    ],
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/source/tools/audit_neural_experiment.py",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/diagnostics/results",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/diagnostics/audit"
+    ],
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "-m",
+      "recovery.eval.mujoco_eval",
+      "--parts",
+      "spacer",
+      "--experiment-stage",
+      "development",
+      "--workers",
+      "2",
+      "--methods",
+      "contour",
+      "neural_risk",
+      "--neural-checkpoint",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/temporal.npz",
+      "--neural-forecast-scope",
+      "fits",
+      "--neural-reserve-fit",
+      "--profiles",
+      "cartesian",
+      "corexy",
+      "bedslinger",
+      "--seed",
+      "10",
+      "--n",
+      "1",
+      "--kinds",
+      "shift",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/historical/results"
+    ],
+    [
+      "/home/ishaan/failure-detection/.venv/bin/python",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/source/tools/audit_neural_experiment.py",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/historical/results",
+      "--out",
+      "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-inverse-dev-v1/historical/audit"
+    ]
+  ]
+}

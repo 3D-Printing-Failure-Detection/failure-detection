@@ -1,0 +1,36 @@
+{
+  "created_from_protocol_sha256": "e3c4b204d3d618b30bcb4f47a5d056502f643bb02fda5ac347cd15a47be2c405",
+  "configurations_sha256": "36a7aae5aad4ba22a7c6617d0bccac4a69e6beb38d04f8a216905fb6d26a85be",
+  "labels_sha256": "9c0535d96d3ac25f77027c3ab3c055f17596b3018828d88c69a54092619537bb",
+  "comparator_sha256": "4d13de5cd04cf4e8da50533038b1533a8f0f61f51234bb26036ffd496093a99e",
+  "provenance_verifier_sha256": "f739e929191f3f661e30e0cb196bd4217be5ceb17c59b0641726df336117af7a",
+  "inputs": [
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/matrix/results",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-a/results",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-b/results",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/camera/results",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/classical/results",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/full/results"
+  ],
+  "candidate": "neural_risk_agent",
+  "baselines": [
+    "ignore",
+    "scrap",
+    "alert",
+    "ours",
+    "measured",
+    "predictive",
+    "functional",
+    "guarded",
+    "contour",
+    "contour_risk",
+    "neural",
+    "previous_combined_neural",
+    "previous_combined_agent",
+    "neural_camera",
+    "previous_classical_camera_neural"
+  ],
+  "failure_cases": 240,
+  "expected_rows": 4896,
+  "limitation": "This is consumed development evidence. The original asset-only and detailed Qwen attestations remain intact and are tied to exact input manifests plus retained matching-runtime evidence."
+}

@@ -1,0 +1,23 @@
+{
+  "control_arrays_and_hash_identical": true,
+  "matched_observed_images_targets_sampling_and_split": true,
+  "initialization": "Same seed. Additional input channels change candidate parameter initialization; no claim of identical initialization between architectures.",
+  "models": {
+    "control": {
+      "checkpoint_sha256": "b66867737cd9ca4175858e43cf592c7d095fc0f32951dc8fb258c9584ef947ab",
+      "include_expected_mask": false,
+      "validation_boundary_mae_mm": 0.08212283121892773,
+      "near_boundary_sign_accuracy": 0.765965297616963,
+      "validation_selection_score": 0.02964339790244897,
+      "export_max_abs_error": 3.5762786865234375e-06
+    },
+    "command": {
+      "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "include_expected_mask": true,
+      "validation_boundary_mae_mm": 0.07876487318073729,
+      "near_boundary_sign_accuracy": 0.7811275772873504,
+      "validation_selection_score": 0.025601016350236594,
+      "export_max_abs_error": 6.794929504394531e-06
+    }
+  }
+}

@@ -1,0 +1,4 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+cartesian,cup,under_extrusion,1002,ignore,True,False,False,160,0,0,0,0,12.138509565033019
+cartesian,cup,under_extrusion,1002,contour,False,True,False,86,86,0,0,0,43.36213227501139
+cartesian,cup,under_extrusion,1002,neural_risk,False,True,False,86,86,0,0,0,31.58186817006208

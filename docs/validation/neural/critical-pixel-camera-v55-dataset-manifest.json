@@ -1,0 +1,451 @@
+{
+  "status": "complete",
+  "parent_data_sha256": "2f04a6fb66c1465d8a1c6e9115b3ddbfb88365cb5c7014316709617fe41fe4da",
+  "parent_audit_sha256": "38836132e91008ef4cf0b900468476642cc483b635605c55ac6b80ea49905836",
+  "parent_manifest_sha256": "ba0f7aa5dd02a804858f32675d89943052cb8ca99520d123a095afa97d6971a9",
+  "script_sha256": "2c8d7abf267d18cd221b8d4c1e67f9d0273126467365960ca8cfe25dd8cf584b",
+  "sidecar_sha256": "cb630f6da9268a0f6853750196c26cf51d6590ee0e5acb934079c013e16970ee",
+  "rows": 5760,
+  "audited_rows_reproduced": 2520,
+  "critical_training_pixels": 1648,
+  "critical_validation_pixels": 1147,
+  "nonzero_rows": [
+    {
+      "dataset_row": 1312,
+      "group": "cartesian-cup-under_extrusion-313",
+      "validation": false,
+      "pixels": 5
+    },
+    {
+      "dataset_row": 1313,
+      "group": "cartesian-cup-under_extrusion-313",
+      "validation": false,
+      "pixels": 7
+    },
+    {
+      "dataset_row": 1332,
+      "group": "cartesian-cup-under_extrusion-335",
+      "validation": false,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 1411,
+      "group": "cartesian-cup-under_extrusion-344",
+      "validation": false,
+      "pixels": 6
+    },
+    {
+      "dataset_row": 1412,
+      "group": "cartesian-cup-under_extrusion-344",
+      "validation": false,
+      "pixels": 8
+    },
+    {
+      "dataset_row": 1414,
+      "group": "cartesian-cup-under_extrusion-344",
+      "validation": false,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 1472,
+      "group": "cartesian-cup-under_extrusion-355",
+      "validation": false,
+      "pixels": 105
+    },
+    {
+      "dataset_row": 1491,
+      "group": "cartesian-cup-under_extrusion-355",
+      "validation": false,
+      "pixels": 269
+    },
+    {
+      "dataset_row": 1492,
+      "group": "cartesian-cup-under_extrusion-355",
+      "validation": false,
+      "pixels": 271
+    },
+    {
+      "dataset_row": 1571,
+      "group": "cartesian-cup-under_extrusion-400",
+      "validation": true,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 1633,
+      "group": "cartesian-cup-under_extrusion-410",
+      "validation": true,
+      "pixels": 263
+    },
+    {
+      "dataset_row": 1651,
+      "group": "cartesian-cup-under_extrusion-410",
+      "validation": true,
+      "pixels": 146
+    },
+    {
+      "dataset_row": 1671,
+      "group": "cartesian-cup-under_extrusion-410",
+      "validation": true,
+      "pixels": 224
+    },
+    {
+      "dataset_row": 1711,
+      "group": "cartesian-cup-under_extrusion-417",
+      "validation": true,
+      "pixels": 5
+    },
+    {
+      "dataset_row": 1733,
+      "group": "cartesian-cup-under_extrusion-417",
+      "validation": true,
+      "pixels": 6
+    },
+    {
+      "dataset_row": 1791,
+      "group": "cartesian-cup-under_extrusion-420",
+      "validation": true,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 1852,
+      "group": "cartesian-cup-under_extrusion-60",
+      "validation": false,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 1911,
+      "group": "cartesian-cup-under_extrusion-61",
+      "validation": false,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 1931,
+      "group": "cartesian-cup-under_extrusion-62",
+      "validation": false,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 1974,
+      "group": "cartesian-cup-under_extrusion-62",
+      "validation": false,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 2111,
+      "group": "cartesian-cup-under_extrusion-65",
+      "validation": false,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 2192,
+      "group": "cartesian-cup-under_extrusion-66",
+      "validation": false,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 2253,
+      "group": "cartesian-cup-under_extrusion-67",
+      "validation": false,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 2272,
+      "group": "cartesian-cup-under_extrusion-67",
+      "validation": false,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 2391,
+      "group": "cartesian-cup-under_extrusion-71",
+      "validation": true,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 2412,
+      "group": "cartesian-cup-under_extrusion-72",
+      "validation": true,
+      "pixels": 6
+    },
+    {
+      "dataset_row": 2452,
+      "group": "cartesian-cup-under_extrusion-72",
+      "validation": true,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 2455,
+      "group": "cartesian-cup-under_extrusion-72",
+      "validation": true,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 2511,
+      "group": "cartesian-cup-under_extrusion-73",
+      "validation": true,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 4173,
+      "group": "cartesian-mug-under_extrusion-313",
+      "validation": false,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 4174,
+      "group": "cartesian-mug-under_extrusion-313",
+      "validation": false,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 4193,
+      "group": "cartesian-mug-under_extrusion-313",
+      "validation": false,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 4273,
+      "group": "cartesian-mug-under_extrusion-344",
+      "validation": false,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 4313,
+      "group": "cartesian-mug-under_extrusion-344",
+      "validation": false,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 4314,
+      "group": "cartesian-mug-under_extrusion-344",
+      "validation": false,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 4391,
+      "group": "cartesian-mug-under_extrusion-379",
+      "validation": false,
+      "pixels": 2
+    },
+    {
+      "dataset_row": 4392,
+      "group": "cartesian-mug-under_extrusion-379",
+      "validation": false,
+      "pixels": 5
+    },
+    {
+      "dataset_row": 4411,
+      "group": "cartesian-mug-under_extrusion-379",
+      "validation": false,
+      "pixels": 5
+    },
+    {
+      "dataset_row": 4532,
+      "group": "cartesian-mug-under_extrusion-410",
+      "validation": true,
+      "pixels": 4
+    },
+    {
+      "dataset_row": 4552,
+      "group": "cartesian-mug-under_extrusion-410",
+      "validation": true,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 4574,
+      "group": "cartesian-mug-under_extrusion-417",
+      "validation": true,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 4591,
+      "group": "cartesian-mug-under_extrusion-417",
+      "validation": true,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 4613,
+      "group": "cartesian-mug-under_extrusion-417",
+      "validation": true,
+      "pixels": 6
+    },
+    {
+      "dataset_row": 4614,
+      "group": "cartesian-mug-under_extrusion-417",
+      "validation": true,
+      "pixels": 6
+    },
+    {
+      "dataset_row": 4853,
+      "group": "cartesian-mug-under_extrusion-62",
+      "validation": false,
+      "pixels": 5
+    },
+    {
+      "dataset_row": 4872,
+      "group": "cartesian-mug-under_extrusion-63",
+      "validation": false,
+      "pixels": 10
+    },
+    {
+      "dataset_row": 4893,
+      "group": "cartesian-mug-under_extrusion-63",
+      "validation": false,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 4972,
+      "group": "cartesian-mug-under_extrusion-64",
+      "validation": false,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 5011,
+      "group": "cartesian-mug-under_extrusion-65",
+      "validation": false,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 5031,
+      "group": "cartesian-mug-under_extrusion-65",
+      "validation": false,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 5052,
+      "group": "cartesian-mug-under_extrusion-66",
+      "validation": false,
+      "pixels": 184
+    },
+    {
+      "dataset_row": 5071,
+      "group": "cartesian-mug-under_extrusion-66",
+      "validation": false,
+      "pixels": 179
+    },
+    {
+      "dataset_row": 5075,
+      "group": "cartesian-mug-under_extrusion-66",
+      "validation": false,
+      "pixels": 27
+    },
+    {
+      "dataset_row": 5091,
+      "group": "cartesian-mug-under_extrusion-66",
+      "validation": false,
+      "pixels": 183
+    },
+    {
+      "dataset_row": 5092,
+      "group": "cartesian-mug-under_extrusion-66",
+      "validation": false,
+      "pixels": 189
+    },
+    {
+      "dataset_row": 5093,
+      "group": "cartesian-mug-under_extrusion-66",
+      "validation": false,
+      "pixels": 131
+    },
+    {
+      "dataset_row": 5132,
+      "group": "cartesian-mug-under_extrusion-67",
+      "validation": false,
+      "pixels": 7
+    },
+    {
+      "dataset_row": 5251,
+      "group": "cartesian-mug-under_extrusion-71",
+      "validation": true,
+      "pixels": 140
+    },
+    {
+      "dataset_row": 5271,
+      "group": "cartesian-mug-under_extrusion-71",
+      "validation": true,
+      "pixels": 154
+    },
+    {
+      "dataset_row": 5272,
+      "group": "cartesian-mug-under_extrusion-71",
+      "validation": true,
+      "pixels": 152
+    },
+    {
+      "dataset_row": 5295,
+      "group": "cartesian-mug-under_extrusion-72",
+      "validation": true,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 5314,
+      "group": "cartesian-mug-under_extrusion-72",
+      "validation": true,
+      "pixels": 5
+    },
+    {
+      "dataset_row": 5315,
+      "group": "cartesian-mug-under_extrusion-72",
+      "validation": true,
+      "pixels": 1
+    },
+    {
+      "dataset_row": 5391,
+      "group": "cartesian-mug-under_extrusion-73",
+      "validation": true,
+      "pixels": 3
+    },
+    {
+      "dataset_row": 5393,
+      "group": "cartesian-mug-under_extrusion-73",
+      "validation": true,
+      "pixels": 7
+    }
+  ],
+  "trajectory_pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-313.json.gz": "d431c9d5946e67cdf714db219b4325d696c9d6cf3eb6ecc446ddf78feef36531",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-335.json.gz": "eb8654aca4b2b843784321059b98902d85a0ae03ab7c4901bf1c24d5b36d5de9",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-344.json.gz": "936153d6c85cba158e34ad5ac7e1693d4407ddb1499d3e19634d58b4e62fa66e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-355.json.gz": "ff5e1f450b9becd4df2953eb500465744f43625d1fabd38ce04d81b9247dc545",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-379.json.gz": "1ace4f7661413bd663df22dd40bb0cf3a239242aaa89ba5ea41759721ef0a5a2",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-400.json.gz": "d43a1d991e9e17fc1ab8df5017081d6cece64bada2cb6625d8f14e70c58f6a9d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-410.json.gz": "e3e31b6f847325d79b2c7267fe8513e13006046049555b917081490426a8047d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-417.json.gz": "a07c4beaf751b105fdf19ac0326789c90bccd0e76e64c2d777b7252e3674997e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-420.json.gz": "5f386dafb3753b8b0c2c91cb458e60d6482d62172cbf487ae45db4774498550e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-60.json.gz": "3dd3e8d2da49027c1ac1bbe999a48d90fd8226798d24b0b844f889f24bcd32ff",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-61.json.gz": "e61004f11ba7db5d2c2d0b581b958c8bef2f1a14f7fde3609384d970451907d1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-62.json.gz": "b2eb1b33546d85588e532bb17b96958c631a2e44dfc36bc9f618477c7f56dc70",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-63.json.gz": "9e6dea8b15e304b0f19ad1f99b0bcc43189b3b310fbe48dae81c6986c95af620",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-64.json.gz": "0ffe601b38b4492ec36c902f9b2d5b3ec2cdef5438ef3c8ee5f8d98f6550e05b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-65.json.gz": "42969dcc72d133870c280cea37ac4090058f6664fc235a406e2e07717ac7dc10",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-66.json.gz": "a543b2217de610151ce86f678f4281386b969fbf6c0714c841481816eb63dd14",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-67.json.gz": "ff6da7fb35296abf14b70f7dc74429372b0a3996e206416c51f1bb70f9cf4976",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-70.json.gz": "9705a81a09ff371b090d59f995388398989612355b8522cbb5b14b95d99696b9",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-71.json.gz": "529cee49a254ca7049db4906294638293789cd1724da80fbcd0b77412e2099b6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-72.json.gz": "b3a12bca6d8afe6f5863a629527ec2b29909e2f8a4d7d7e8fad3f42958c80b33",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-cup-under_extrusion-73.json.gz": "de6b09d8fed92f281c6e6b223fab6919d946d41073810129e5c2ddf9c100fda6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-313.json.gz": "f5d6d387aa4cc6e7d0b63afc16e38575ed67a3de48da402c5de0b248bbb4ab86",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-335.json.gz": "5b001ef1104035977cf24fbbd5005c9bd5a99cc52a1df667781d6116343f262d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-344.json.gz": "80fa6caaf0f7b1eda51a56321050697c38c78f49d9d7a7db3e2da011208b970c",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-355.json.gz": "4f13aa80c4a19028e65c809b5868106047ec79eef7ae72821e0e3d4f4999b383",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-379.json.gz": "ade108c41d0fe4f1fc7bfdc44275e4da13c7436897bfb196f1f6a5e30e985c41",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-400.json.gz": "ac83e4651b289b6e123a7abb4f20ea0ce161322f192956552b7c99d08b574de1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-410.json.gz": "d6dae58b09f0226458ed8bf3fd0434c97158d4d2339db57e9721584132032721",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-417.json.gz": "227a2f2f1a8fc938303a5deaa2c6b888d22203a90b2ccfd68a8eeb62c616eeb5",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-420.json.gz": "fc1af501f1b64e9b0559d402c1612b02f57ed3305fba41cf257bf0cdbedb6d83",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-60.json.gz": "883d6b0f33fb9336fea475ea4757c6ff80efb02182a1ecb53f79aa225df49412",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-61.json.gz": "ce4cc7fdf4cb35c2d32d86e936938f333c4c583f586920ead5dbcd713e5e55a5",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-62.json.gz": "1b6066e9aef8c78e2354ff0ad1ce1367034dbbd17f3f66a778ed9ab3200d6935",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-63.json.gz": "326d63e4a5a3678d2fe6ba5f8932a38a193c66926e1c8c7d49875dc517680d0c",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-64.json.gz": "5fab959631d63923a8f55ce39fca6771d9dd63948e632dacaa1c7c28affa61eb",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-65.json.gz": "b01669d03fca9f29711d90ba3ccfbae1478c227d9349b8b742c1a50709310926",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-66.json.gz": "c93b8941b1035707884db458f32216dc1b17568b94a21e3711938fe9c11070c5",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-67.json.gz": "07e38d13acc5a69ede3dc4164e605381bd3e61ff761d0ca16f6df971f4443686",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-70.json.gz": "b7754a1a25cea70210bc92ec478784a3e52977adf70c8610845c7b479288d1c8",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-71.json.gz": "e0f85ac5fe677595c142a86586fef38eb37328a01049046aa08c39d9d059bd4f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-72.json.gz": "d879ad9e8522b2e47acf987822da2753fcf1c422c21c968bc467285fad0e82e1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-context-camera-v8/trajectories/trajectories/cartesian-mug-under_extrusion-73.json.gz": "691f6f099620c6d58d634c7d1e5a8528da1a9e313540aea5c82df23aada364b8"
+  },
+  "original_dataset_unchanged": true,
+  "use": "Supervision weights only; neither these labels nor true geometry are runtime or network inputs",
+  "limitation": "Reuses the existing audited thin-material definition and trajectory split; no accuracy or recovery gain implied."
+}

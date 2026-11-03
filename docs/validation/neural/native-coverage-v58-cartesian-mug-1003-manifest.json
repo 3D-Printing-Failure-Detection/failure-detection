@@ -1,0 +1,64 @@
+{
+  "status": "complete",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "script_sha256": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "mug",
+    "kind": "under_extrusion",
+    "seed": 1003,
+    "checkpoint": [
+      "base=/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/candidate/boundary.npz",
+      "linear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/linear/boundary.npz",
+      "nonlinear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/nonlinear/boundary.npz"
+    ],
+    "include_classical_base_hybrids": true,
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/cartesian-mug-1003"
+  },
+  "checkpoint_paths": {
+    "base": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/candidate/boundary.npz",
+    "linear": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/linear/boundary.npz",
+    "nonlinear": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/nonlinear/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "base": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+    "linear": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+    "nonlinear": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351"
+  },
+  "hybrid_classical_base_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hybrid_labels": {
+    "base": "base:classical-base",
+    "linear": "linear:classical-base",
+    "nonlinear": "nonlinear:classical-base"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "checkpoint_queries": {
+    "base": 160,
+    "linear": 160,
+    "nonlinear": 160
+  },
+  "observation_counts": {
+    "classical": 160,
+    "base": 160,
+    "linear": 160,
+    "nonlinear": 160,
+    "base:classical-base": 160,
+    "linear:classical-base": 160,
+    "nonlinear:classical-base": 160
+  }
+}

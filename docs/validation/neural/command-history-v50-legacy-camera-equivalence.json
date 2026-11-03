@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "all_three_existing_checkpoints_bitwise_equal": true,
+  "script_sha256": "9e9b04fff482bccfae7d6f2b9ae0a9c559559322762245d883be0217a390ef59",
+  "models": [
+    {
+      "checkpoint": "neural-boundary-v1/model/boundary.npz",
+      "checkpoint_sha256": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+      "distance_sha256": "b3fb5dfd77670f7502fc9bac339a32054045e156e5c29ad8c1fa130c0b227ee7",
+      "geometry_sha256": "46f80a06cbc2786930b2d62bbe707603fda1eea163e9435c956fcf9f9bae17c1",
+      "queries": 1
+    },
+    {
+      "checkpoint": "neural-command-camera-v15/command/boundary.npz",
+      "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "distance_sha256": "f3519a9fff42f6e77f7bf480931f98d6aa20f6aff7aa19b1a1ed7805d061384f",
+      "geometry_sha256": "74e932f530eb79ce07e72190534824d776e987eff1ad1017da6817a924abdf7d",
+      "queries": 1
+    },
+    {
+      "checkpoint": "neural-nonlinear-refinement-v35/nonlinear/boundary.npz",
+      "checkpoint_sha256": "24400f10df07cf748ec70ca86383d5ecf1a2152017f143538633977a454fb67b",
+      "distance_sha256": "0ae0e5580373487e778f3a0da2dd5a24d01ac88bf53c2fc7ea4c4a6765c11d78",
+      "geometry_sha256": "5c4600683ae82059948bf8da81622650173d4ce9525ac9d59809414e935478f8",
+      "queries": 1
+    }
+  ],
+  "actual_images": [
+    "camera-085.png",
+    "camera-086.png"
+  ],
+  "limitation": "Actual-image inference compatibility for three retained checkpoints, not new policy performance."
+}

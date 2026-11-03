@@ -1,0 +1,31 @@
+{
+  "status": "complete",
+  "source_sha256": "9855e62751f9b1330b262d7d8c68fba5fa3d8263b6764dc0066902e46a242cff",
+  "script_sha256": "cd169ab51ff1aeb8a3e096450cbf5863d0bb64ad8c8062803fcb345096be052b",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "distance=/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/distance/boundary.npz",
+      "topology=/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/topology/boundary.npz"
+    ],
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/cup-under-extrusion-1002"
+  },
+  "checkpoint_paths": {
+    "distance": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/distance/boundary.npz",
+    "topology": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-dense-topology-camera-v13/topology/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "distance": "a48d48623d83989be7f057d5400728e1fff022b86d0cd8b83e710b2345fea654",
+    "topology": "ddeb9c91ce8ee1dd2659df15ff6854124c633addd942359418b494c426f1f3d1"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "9855e62751f9b1330b262d7d8c68fba5fa3d8263b6764dc0066902e46a242cff"
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "scale": 1,
+    "turns": 0,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 0,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 1,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 1,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 2,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 2,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 3,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 1,
+    "turns": 3,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 0,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 0,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 1,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 1,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 2,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 2,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 3,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 2,
+    "turns": 3,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 0,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 0,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 1,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 1,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 2,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 2,
+    "mirror": true,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 3,
+    "mirror": false,
+    "max_interior_error": 0.0
+  },
+  {
+    "scale": 4,
+    "turns": 3,
+    "mirror": true,
+    "max_interior_error": 0.0
+  }
+]

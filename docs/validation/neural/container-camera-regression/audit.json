@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source_sha256": "1b0c9b2cce03e588038b80e753234446725975fa72d2f5611b354ec0f9985b80",
+  "checkpoints": {
+    "boundary": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1"
+  },
+  "runs_sha256": "0657c09728a404c0a7c926e422d675bd0184caf2f4ceed9f1538604fb94f65b8",
+  "rows": 9,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "guarded",
+      "split": "failure",
+      "n": 3,
+      "in_place": 3,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 285.02953264303505
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 3,
+      "in_place": 2,
+      "scrapped": 1,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 149.97170869796537
+    },
+    {
+      "method": "neural_camera",
+      "split": "failure",
+      "n": 3,
+      "in_place": 3,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 233.2627562979469
+    }
+  ],
+  "stage": "historical",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "52fd17c8a2f17eeb9d62dabe78a3a467e2f9f7a93b3f0ee27795df2545cb3cab"
+}

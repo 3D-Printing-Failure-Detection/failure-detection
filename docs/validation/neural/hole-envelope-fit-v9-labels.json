@@ -1,0 +1,13 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/matrix/results": {
+    "contour": "contour",
+    "contour_risk": "contour_risk",
+    "neural_risk": "previous_neural_risk"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/full-neural/results": {
+    "neural_risk": "neural_risk"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-hole-envelope-fit-dev-v9/full-agent/results": {
+    "neural_risk_agent": "neural_risk_agent"
+  }
+}

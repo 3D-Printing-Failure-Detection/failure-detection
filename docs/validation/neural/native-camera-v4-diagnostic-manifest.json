@@ -1,0 +1,36 @@
+{
+  "status": "complete",
+  "source_sha256": "e28317e676ffcc94bbce8cbbe4f304ba3cc503fbefa940c9e4c54f6ccbfdc790",
+  "script_sha256": "1dff882b979ab7dc5afb790ec8d0e58118b1f93a8896fcdb7b1fe3120c922866",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+      "native=/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/boundary.npz"
+    ],
+    "snapshot_layers": [
+      84,
+      85,
+      86,
+      87
+    ],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002"
+  },
+  "checkpoint_paths": {
+    "original": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+    "native": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/model/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "original": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "native": "03bc310d93e29c2f912419f8aef559fcc36e1a5147988f4049ef7e30dfed205e"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "e28317e676ffcc94bbce8cbbe4f304ba3cc503fbefa940c9e4c54f6ccbfdc790"
+}

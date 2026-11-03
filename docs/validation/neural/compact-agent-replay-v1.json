@@ -1,0 +1,120 @@
+{
+  "stage": "development replay",
+  "source_sha256": "57b1360f23a701ae97a322dde71b9d74426f287b1afac0952b079d60de0aac30",
+  "case": {
+    "profile": "cartesian",
+    "part": "spacer",
+    "kind": "collapse",
+    "seed": 1001
+  },
+  "layer": 41,
+  "old_request_sha256": "a6bce8733c5b07719747189bf55671e885c0d073e1e9dc37d27c86a8d5622806",
+  "old_request_chars": 6531,
+  "new_request_chars": 944,
+  "eligible_ids_preserved": [
+    1,
+    2
+  ],
+  "old_selected": {
+    "candidate": 1,
+    "reason": "The candidate with the highest functional_rank (1) and the best fit_at_risk is recommended for a functional completed print. It has the largest fit_robust_clearance_mm and the best margin, making it the most suitable choice."
+  },
+  "new_selected": {
+    "candidate": 1,
+    "reason": "The candidate has a functional_rank of 1, which indicates it is the most recommended and eligible for recovery. It meets all the criteria for a functional completed print, including a positive both_forecasts_pass, sufficient margin, and clearance."
+  },
+  "new_audit": {
+    "request": {
+      "model": "local-qwen3",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You supervise recovery of a 3D print. Choose one candidate using the supplied tool results. Only candidates marked ok, executable, and review_eligible are allowed. The assessment tool ranks them by functional risk: functional_rank 1 is its recommendation. In policy requests the candidate IDs match their displayed ranks; return that candidate ID. Aim for a functional completed print. Prefer continuing when it passes with adequate margin; unnecessary intervention consumes a limited budget. If fit_at_risk is true, prioritize the largest fit_robust_clearance_mm, then fit_clearance_mm: a verified recovery with greater clearance can preserve a through-hole before the next layers damage its fit. For recovery, consider functional margin, robustness under uncertainty, material change, and remaining correction distance. margin and robust_margin are dimensionless; fit_clearance_mm and uncertainty_mm are lengths in millimetres. Larger margins are better. Negative robust margin means the uncertainty envelope fails, even if the central prediction passes. Do not invent measurements or change the functional specification. Reply with JSON and a short reason."
+        },
+        {
+          "role": "user",
+          "content": "{\"observation\":{\"printed_layers\":42,\"total_layers\":48,\"detector_label\":\"collapse\",\"deviation_mm\":3.0342,\"uncertainty_mm\":0.2774,\"adapts_remaining\":3,\"checkpoint_sha256\":\"4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62\"},\"candidates\":[{\"id\":1,\"name\":\"analytical inverse:bounded hole clearance\",\"ok\":true,\"executable\":true,\"margin\":0.534,\"robust_margin\":0.534,\"fit_clearance_mm\":0.4005,\"fit_robust_clearance_mm\":0.4005,\"command_change_fraction\":0.0105,\"uncertainty_mm\":0.2774,\"adapts_remaining\":3,\"fidelity\":0.8983,\"functional_rank\":1,\"review_eligible\":true,\"both_forecasts_pass\":true},{\"id\":2,\"name\":\"compensate:bounded hole clearance\",\"ok\":true,\"executable\":true,\"margin\":0.534,\"robust_margin\":0.5174,\"fit_clearance_mm\":0.4005,\"fit_robust_clearance_mm\":0.388,\"command_change_fraction\":0.0116,\"uncertainty_mm\":0.2774,\"adapts_remaining\":3,\"fidelity\":0.8983,\"functional_rank\":2,\"review_eligible\":true,\"both_forecasts_pass\":true}]}"
+        }
+      ],
+      "temperature": 0.0,
+      "seed": 2026,
+      "max_tokens": 160,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "recovery_decision",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "candidate": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2
+                ]
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "candidate",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "accepted": true,
+    "endpoint": "http://127.0.0.1:8089",
+    "timeout_s": 120,
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\n  \"candidate\": 1,\n  \"reason\": \"The candidate has a functional_rank of 1, which indicates it is the most recommended and eligible for recovery. It meets all the criteria for a functional completed print, including a positive both_forecasts_pass, sufficient margin, and clearance.\"\n}"
+          }
+        }
+      ],
+      "created": 1793658685,
+      "model": "local-qwen3",
+      "system_fingerprint": "b12057-cd8427d01",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 592,
+        "total_tokens": 654,
+        "prompt_tokens_details": {
+          "cached_tokens": 230
+        }
+      },
+      "id": "chatcmpl-Grumbp6I5O4Wo5Zqk2korjP2mTJqAzdF",
+      "timings": {
+        "cache_n": 230,
+        "prompt_n": 362,
+        "prompt_ms": 3295.935,
+        "prompt_per_token_ms": 9.104792817679558,
+        "prompt_per_second": 109.83226307557644,
+        "predicted_n": 62,
+        "predicted_ms": 3289.693,
+        "predicted_per_token_ms": 53.92939344262295,
+        "predicted_per_second": 18.54276371685747
+      }
+    },
+    "selected": {
+      "candidate": 1,
+      "reason": "The candidate has a functional_rank of 1, which indicates it is the most recommended and eligible for recovery. It meets all the criteria for a functional completed print, including a positive both_forecasts_pass, sufficient margin, and clearance."
+    },
+    "seconds": 6.646892157034017,
+    "request_sha256": "143d83152b23c6ccdc799cd57d4c529ecd7b914b62b15a6a954c3b8ba4deb2dc"
+  },
+  "limitation": "Actual Qwen interface replay; not a new completed print. Server concurrency differed, so latency alone does not isolate compaction benefit"
+}

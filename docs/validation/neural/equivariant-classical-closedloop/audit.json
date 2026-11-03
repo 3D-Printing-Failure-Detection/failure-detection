@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "source_sha256": "1f170f33fc15cd1a752a7a49e0f45706b498581176836aff17b4b312ea83582e",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+  },
+  "runs_sha256": "4d294569c05c8a98f4f7d21ff643263c54edfaba960203473654aa7372f94f8d",
+  "rows": 15,
+  "actual_agent_calls": 11,
+  "reused_reviews": 13,
+  "summary": [
+    {
+      "method": "ignore",
+      "split": "failure",
+      "n": 3,
+      "in_place": 0,
+      "scrapped": 0,
+      "defective_finished": 3,
+      "agent_requests": 0,
+      "seconds": 7.010597784887068
+    },
+    {
+      "method": "contour",
+      "split": "failure",
+      "n": 3,
+      "in_place": 0,
+      "scrapped": 2,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "seconds": 21.573335531982593
+    },
+    {
+      "method": "neural",
+      "split": "failure",
+      "n": 3,
+      "in_place": 0,
+      "scrapped": 3,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 21.72350686613936
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 3,
+      "in_place": 3,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "seconds": 47.148555986001156
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 3,
+      "in_place": 1,
+      "scrapped": 2,
+      "defective_finished": 0,
+      "agent_requests": 11,
+      "seconds": 319.9876715358114
+    }
+  ],
+  "limitation": "development comparison; does not establish superiority on untouched test cases"
+}
