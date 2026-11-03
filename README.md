@@ -166,9 +166,12 @@ Ten real checks across all four earlier runtime versions now preserve outcomes,
 actions, measurements and inference counts, with 561 matching paired camera
 frames. Completed results can also be stored losslessly: packing copied real
 evidence preserves every restored byte, audit and comparison result exactly.
-The historical follow-up is running in `neural-recovery:trend-history-resume-v43`;
-eligibility follows the full neural-plus-agent system, with the neural-only
-ablation still evaluated and reported.
+The historical follow-up is complete and **rejects the global trend correction**:
+both variants fall to 64/100 successes with one defective finish, versus the
+preceding guarded policy's 67/100 with zero defects. All 20 clean controls pass;
+three earlier mug recoveries are lost. Qwen makes 190 calls and ties neural-only.
+Fit-only remains 33/50 with zero defects. The next controller change must retain
+the original executable recovery plans instead of delaying their interventions.
 The final 7,200-row command matrix is prepared and passes all 300 argument checks,
 with identical frozen policy settings and model paths. It uses both existing Qwen
 workers and keeps fresh seeds untouched until development and historical gates
@@ -201,6 +204,15 @@ scrap; it does not add a genuine rescue over the preceding guarded policy.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.
+An optional camera model now accepts the preceding commanded shape alongside
+the current command and two observed images. Its matched control reproduces
+exactly; the new model lowers tile-validation boundary error from 0.0788 to
+0.0758 mm. All four complete-print camera checks fail across 640 actual frames,
+so this model is rejected before any recovery trial.
+Existing camera checkpoints produce identical outputs on retained images.
+The updated source passes 201 tests with three optional modules skipped, plus
+20 Torch/export tests. Prediction improvements alone do not establish better
+print success.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.

@@ -62,10 +62,10 @@ estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
 policy separates inner and outer boundaries when predicting deformation. Trained
 models and a free local Qwen supervisor are implemented. The latest complete
-policy exceeds the previous development success count while keeping the same
-single defective finish. Four ignore successes remain lost. An earlier candidate
-failed its fresh test. The overall objective is still unmet; regression checks,
-resolution of those lost successes and a new frozen test are required.
+candidate exceeds the previous development success count but fails historical
+regression: 64/100 successes and one defect versus the preceding guard's 67/100
+and zero defects. Four development ignore successes also remain lost. The overall
+objective is still unmet; these regressions must be resolved before a new frozen test.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
@@ -87,7 +87,7 @@ and matches neural-only. Genuine rescues remain 18 versus matched analytical's
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The completed trend comparison records 142/240 successes and one defect, with or without Qwen. All 22 previous summaries are preserved. The preceding guarded policy passed historical regression at 67/100 with zero defects; the changed policy's historical run is underway. Fresh-test superiority remains unproven.\\
+Latest checks & The trend candidate records 142/240 development successes but fails historical regression at 64/100 with one defect, versus the preceding guard's 67/100 with zero. Three mug recoveries are lost. The candidate is rejected; fresh-test superiority remains unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1734,16 +1734,18 @@ analytical trend control reaches 127/240 with three defects: container successes
 rise from 57 to 63, but fit successes fall from 76 to 64. The neural candidate
 retains its learned fit forecast, and all stronger earlier controls stay included.
 
-The historical follow-up is running in the \texttt{neural-recovery} tmux session,
+The historical follow-up completed in the \texttt{neural-recovery} tmux session,
 window \texttt{trend-history-resume-v43}, after the full system passed its
-prerequisites. It adds
+development prerequisites. It adds
 240 neural/agent and 120 matched analytical rows, retaining every completed
 earlier historical configuration, including failed variants. Configuration
 preflight passes. The original report rejected an omitted old-policy label
 mapping; a reporting-only repair preserves every result and all original failure
 records. The zero-row historical watcher then resumes with unchanged commands
 and numerical gates. Three four-worker commands share a 24 MB allowance.
-Historical success still cannot establish an untouched test result.
+Both candidates fall to 64/100 successes with one defect, versus the preceding
+guard's 67/100 with zero. Three mug recoveries are lost. Fit-only remains 33/50
+with zero defects. All clean controls pass. The global trend change is rejected.
 
 \clearpage
 \section{Checking a pre-fault measurement discrepancy}
@@ -1808,7 +1810,8 @@ original benchmark results.
 The completed guarded policy improves the development completion/defect tradeoff
 and preserves the historical best counts. The trend correction passes its
 complete targeted regression and reaches 142/240 in the full comparison.
-Historical regression of the changed policy is running. Seeds 2001--2004
+Historical regression of the changed policy rejects it at 64/100 with one defect,
+losing three earlier mug recoveries. Seeds 2001--2004
 remain untouched; no final superiority claim is justified yet.
 
 The \texttt{fresh-preparation-v42} preparation covers all 25 configurations from
@@ -1906,13 +1909,14 @@ under-extrusion seed 1003 on Cartesian and CoreXY. These losses still block
 acceptance and the untouched test.
 
 \subsection*{Reporting repair without changing results}
-The original comparison command rejected an old/new source collision: the v33
-input lacked its two preregistered renamed labels. A separate repaired label
-file fixes only those mappings and passes all 25 configuration checks. No
-simulation is repeated or altered. The failed exit, original labels and protocol
-remain retained. The historical watcher had skipped with zero rows; its resumed
-runner accepts the pinned repaired report and retains every command and
-numerical gate. That historical run is now underway.
+The comparison initially rejected a source collision caused by two omitted old-policy
+labels. A separate reporting repair verifies all 25 configurations without changing
+or repeating simulations. Original failure records remain retained. The resumed
+historical run preserves its commands and gates, completing at 64/100 with one defect instead
+of 67/100 with zero. Damping delays the two shifted mugs' first intervention
+from layer 108 to 110 and suppresses an under-extruded mug's necessary correction
+at layer 14. The next controller experiment should retain the original executable
+plans and consider damped continuation only when the original policy would scrap.
 
 \subsection*{A supplemental camera hypothesis fails the mug checks}
 The rejected nonlinear camera misses six additional leak labels, but all six
@@ -1923,17 +1927,28 @@ detects 95/99 immediate functional violations versus the original camera's
 to 35. This does not validate inter-layer support or the soft-thin layer budget;
 true base and connection faults are absent from these selected frames.
 
-The separate \texttt{functional-camera-gate-v48} diagnostic then replays 480
-actual frames from the remaining bedslinger cup and two mug cases. The cup
-passes, agreeing with the retained Cartesian cup. Both mugs fail despite valid
-actual printed geometry: a false leak occurs at layer 45, with large apparent
-overhang; Cartesian also has a false broken connection at layer 46. The proposed
-general supplemental camera is rejected, with no recovery trial or promotion.
-Its earlier per-feature rejection is also retained. Next work must resolve
-these measurement errors without hiding real defects or changing the print spec.
+The separate \texttt{functional-camera-gate-v48} diagnostic replays 480 actual
+frames from the remaining cup and two mugs. Both cups pass; both mugs falsely
+fail, with a leak at layer 45 and large apparent overhang. Cartesian also has a
+false broken connection at layer 46. This supplemental camera is rejected before
+recovery trials. Its earlier per-feature rejection remains recorded.
 
 To fund the historical run within quota, 279 duplicate exports covering 833
 completed rows are actually restored and verified before compaction, reclaiming
 13.6 MB of allocated space. Primary results and provenance remain unchanged.
+
+\subsection*{A new model receives the preceding command}
+Rotation/reflection averaging is rejected after 22 paired frame checks: it
+retains six selected real defects but introduces cup leaks and worsens apparent
+mug support. A different trained model now sees the preceding commanded shape,
+as well as the current command and two actual images. A verified 141 kB sidecar
+adds this known input while preserving every original image, target and split.
+The matched control checkpoint reproduces exactly. Tile-validation boundary
+error falls from 0.0788 to 0.0758 mm, and boundary sign accuracy rises from
+78.1\% to 79.2\%. All four complete diagnostics fail across 640 actual frames:
+false leaks and overhang remain, and both cups retain false hard-thin layers.
+The model is rejected before recovery trials. Existing camera outputs remain bitwise equal;
+201 repository tests and 20 Torch/export tests pass. No print-success gain is
+claimed from this new training result.
 
 \end{document}

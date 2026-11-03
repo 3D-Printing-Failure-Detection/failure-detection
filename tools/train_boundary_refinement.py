@@ -77,7 +77,8 @@ def frozen_tile_logits(checkpoint, inputs, batch_size=32):
     network = TileNetwork(exported.input_frames,
                           hidden=tuple(len(b) for _, b in exported.weights[:2]),
                           scale=exported.output_upsample,
-                          include_expected_mask=exported.include_expected_mask)
+                          include_expected_mask=exported.include_expected_mask,
+                          include_previous_expected_mask=exported.include_previous_expected_mask)
     with torch.no_grad():
         for layer, (weight, bias) in zip(network.layers, exported.weights):
             layer.weight.copy_(torch.from_numpy(weight).reshape_as(layer.weight))
@@ -159,6 +160,7 @@ def main():
         assert np.array_equal(data['input_scales'], [1])
     base = BoundarySegmenter(args.base_checkpoint)
     assert base.input_frames == 2 and base.include_expected_mask
+    assert not base.include_previous_expected_mask, 'refinement training does not yet load command-history sidecars'
     assert x.shape == (len(x), 3, 24, 24) and y.shape == (len(x), 1, 64, 64)
     assert validation.dtype == bool and validation.shape == groups.shape == (len(x),)
     assert validation.any() and (~validation).any()

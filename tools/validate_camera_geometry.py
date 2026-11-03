@@ -83,7 +83,8 @@ def inspect_group(job):
                             # Selected frames can be far apart. Prime from the
                             # actual immediate predecessor, never the last
                             # selected validation frame or another profile.
-                            model.prime_history(previous_image)
+                            model.prime_history(previous_image,
+                                camera.expected_mask(nominal[max(index-1, 0)]))
                         region = clean(model.measure(image, expected).simplify(.25/4))
                     except Exception as exc:
                         raise RuntimeError(f"{record['group']}/{profile}/layer-{index}/{name}: camera measurement failed") from exc

@@ -120,6 +120,49 @@ def test_native_outputs_represent_material_between_negative_pixel_centres(tmp_pa
         BoundarySegmenter(tmp_path/'native.npz', upsample=1)
 
 
+def test_previous_command_tracks_executed_masks_without_aliasing_or_advancing_on_reads(tmp_path):
+    first = np.zeros((1, 324), dtype='float32')
+    first[0, 3*81+40] = 1.  # Read only the previous command's centre pixel.
+    weights = [(first, np.zeros(1, dtype='float32')),
+               (np.ones((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.ones((1, 1), dtype='float32'), np.array([-.5], dtype='float32'))]
+    model = BoundarySegmenter(checkpoint(tmp_path/'commands.npz', weights,
+        input_frames=np.array(2), include_expected_mask=np.array(True),
+        include_previous_expected_mask=np.array(True)))
+    image = np.zeros((24, 32), dtype='uint8')
+    full, empty = np.ones_like(image), np.zeros_like(image)
+    assert np.all(model.signed_distance(image, full) > 0)  # Cold start uses this command.
+    model.measure(image, full)
+    full[:] = 0  # Mutating the caller's buffer cannot rewrite recorded command history.
+    assert np.all(model.signed_distance(image, empty) > 0)
+    assert np.all(model.signed_distance(image, empty) > 0)
+    model.measure(image, empty)
+    full[:] = 1
+    assert np.all(model.signed_distance(image, full) < 0)
+    assert model.queries == 2
+    with pytest.raises(ValueError, match='requires the previous commanded'):
+        model.prime_history(image)
+    assert np.all(model.signed_distance(image, full) < 0)
+    with pytest.raises(ValueError, match='invalid previous commanded'):
+        model.prime_history(image, np.zeros((3, 3)))
+    model.prime_history(image, full)
+    full[:] = 0
+    assert np.all(model.signed_distance(image, empty) > 0)
+    model.reset_history()
+    assert np.all(model.signed_distance(image, empty) < 0)
+
+
+@pytest.mark.parametrize('frames,current', [(1, True), (2, False)])
+def test_previous_command_metadata_requires_matching_observed_context(tmp_path, frames, current):
+    weights = [(np.zeros((1, 81*(frames+int(current)+1)), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.ones((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.ones((1, 1), dtype='float32'), np.zeros(1, dtype='float32'))]
+    with pytest.raises(ValueError, match='previous command requires'):
+        BoundarySegmenter(checkpoint(tmp_path/'bad-command-history.npz', weights,
+            input_frames=np.array(frames), include_expected_mask=np.array(current),
+            include_previous_expected_mask=np.array(True)))
+
+
 def test_output_grid_metadata_must_match_checkpoint_heads(tmp_path):
     weights = [(np.zeros((1, 81), dtype='float32'), np.zeros(1, dtype='float32')),
                (np.zeros((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),

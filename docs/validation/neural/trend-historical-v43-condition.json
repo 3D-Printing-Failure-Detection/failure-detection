@@ -1,29 +1,5 @@
 {
-  "status": "running",
-  "new_rows": 0,
-  "storage_bytes_at_launch": 99961024512,
-  "branch": "with-prior",
-  "full_comparison_pins": {
-    "comparison.json": "d36979a75c539dc24a67ac9b6fe16bcb1a53986d8bf329bf1bb2e32a2e8d8dfe",
-    "neural-only-comparison.json": "849ad3afc7d6ea760a63b0eac28a6672b9d2c2aec7091256e56ed88882a57fa4"
-  },
-  "full_gate_results": {
-    "comparison.json": {
-      "passes": true,
-      "required": true
-    },
-    "neural-only-comparison.json": {
-      "passes": true,
-      "required": false
-    }
-  },
-  "prior_terminal": {
-    "status": "evaluation_audit_and_comparison_complete",
-    "new_rows": 240,
-    "regression_passes": true
-  },
-  "prior_report_pins": {
-    "comparison.json": "a15f681dd83bcc9f1df410392ae6c8695e4fcac48be5bf6c1c48f0f28ed427af",
-    "fits-comparison.json": "639ed197ac98059e4908757705571db80c267c88a99bec8847cb3b8849417bda"
-  }
+  "status": "evaluation_audit_and_comparison_complete",
+  "new_rows": 360,
+  "regression_passes": false
 }

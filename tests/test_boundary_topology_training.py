@@ -9,11 +9,14 @@ from tools.train_boundary_tiles import (TileNetwork, exported_tiles, soft_skelet
                                        distance_gradient_loss, distance_error_loss)
 
 
-@pytest.mark.parametrize('include_expected_mask', [False, True])
+@pytest.mark.parametrize('include_expected_mask,include_previous_expected_mask',
+                         [(False, False), (True, False), (True, True)])
 @pytest.mark.parametrize('inference_dtype', ['float32', 'float64'])
-def test_dense_convolution_export_matches_actual_opencv_camera_inference(tmp_path, include_expected_mask, inference_dtype):
+def test_dense_convolution_export_matches_actual_opencv_camera_inference(tmp_path, include_expected_mask,
+        include_previous_expected_mask, inference_dtype):
     torch.manual_seed(7)
-    network = TileNetwork(include_expected_mask=include_expected_mask)
+    network = TileNetwork(include_expected_mask=include_expected_mask,
+                          include_previous_expected_mask=include_previous_expected_mask)
     path = tmp_path/'dense.npz'
     network.export(path, inference_dtype)
     model = BoundarySegmenter(path)
@@ -21,9 +24,12 @@ def test_dense_convolution_export_matches_actual_opencv_camera_inference(tmp_pat
     images = [rng.integers(0, 255, (24, 32, 3), dtype='uint8') for _ in range(2)]
     frames = [normalized_gray(image) for image in images]
     expected_mask = rng.integers(0, 2, (24, 32), dtype='uint8')
+    previous_mask = rng.integers(0, 2, (24, 32), dtype='uint8')
     if include_expected_mask:
         frames.append(expected_mask.astype('float32'))
-    model.prime_history(images[1])
+    if include_previous_expected_mask:
+        frames.append(previous_mask.astype('float32'))
+    model.prime_history(images[1], previous_mask)
     actual = model.signed_distance(images[0], expected_mask)
     assert actual.dtype == np.dtype(inference_dtype)
     if include_expected_mask:

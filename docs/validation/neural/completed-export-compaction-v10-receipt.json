@@ -1,0 +1,43 @@
+{
+  "status": "complete",
+  "created_at": "2026-11-03T08:26:10.428163+00:00",
+  "completed_rows": 864,
+  "removed_duplicate_files": 578,
+  "original_bytes": 21951676,
+  "original_allocated_bytes": 23056384,
+  "all_578_files_actually_restored_byte_identically": true,
+  "primary_results_manifests_audits_unchanged": true,
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/analytical/results",
+      "rows": 288,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/analytical/results/runs.jsonl": "f3e9826d1c962fae5b9ea6a8df81e07e915de6354c93ec1e7027889b11a5ba90",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/analytical/results/manifest.json": "a0b6d123d2db763e9089c4b95e1326fc06740e13943bed3f42c5a3991bf63cda",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/analytical/audit/audit.json": "e687662865738adf57aaea185687d02c3ab242771498b0cd56a6e15a059c3b12"
+      },
+      "receipt_sha256": "070ebe18cc318f0130749c6dc5123c47777600cfaae20481c8a50c90ffb420a1",
+      "files": 289,
+      "original_bytes": 4523945,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural/results",
+      "rows": 576,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural/results/runs.jsonl": "fd5296bb1e7e7d04955a48c3efc400570de279257da4a149d4e9b1ff9918152e",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural/results/manifest.json": "00ce5fa58cc9745df070c42f65d0b5ce0c9ac7a278ce29194fa56c7194e1637f",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural/audit/audit.json": "96faa6298c7ff18547d7c4a0e5c5897d7b9aaff698ef906a8eb270152fc6d83f"
+      },
+      "receipt_sha256": "1272fc656930129dc8bf4da04408b3191f84337fdb61563e540a83587814563e",
+      "files": 289,
+      "original_bytes": 17427731,
+      "all_files_actually_restored_and_verified": true
+    }
+  ],
+  "tool_sha256": "9ecdd362cd0b73521cf30260970cd8678ba30d3763d63ffcf3b0f401b7c0e6a1",
+  "storage_helper_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+  "storage_before_bytes": 99971203072,
+  "storage_after_bytes": 99948269568,
+  "limitation": "Only exactly reconstructible duplicate case journals and CSV exports of completed, audited runs are removed. Primary JSONL, manifests and audits remain unchanged. Every removed file was actually restored and verified before re-compaction. Other live jobs can change total storage during this operation."
+}

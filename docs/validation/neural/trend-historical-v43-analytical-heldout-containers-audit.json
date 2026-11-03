@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "source_sha256": "7e854d1a905fe2afbc55afe3ffe66efe57b78802a16b8f6aad6caff11ad51b66",
+  "analytical_only": true,
+  "checkpoints": {},
+  "runs_sha256": "bcbc74b12b064076bc2c7593cbd4930c62415813059725f7954144647a2f21c6",
+  "rows": 24,
+  "actual_agent_calls": 0,
+  "reused_reviews": 0,
+  "summary": [
+    {
+      "method": "contour_risk",
+      "split": "clean",
+      "n": 4,
+      "in_place": 4,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 136.87772525579203
+    },
+    {
+      "method": "contour_risk",
+      "split": "failure",
+      "n": 20,
+      "in_place": 8,
+      "scrapped": 11,
+      "defective_finished": 1,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 874.2058838995872
+    }
+  ],
+  "agent_decision_opportunities": 0,
+  "agent_review_status": "not_requested",
+  "stage": "development",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "26f36f7e142fa8b2e936d8355e5435a05e6e992beea3111e15c5b44e4d31b573",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}

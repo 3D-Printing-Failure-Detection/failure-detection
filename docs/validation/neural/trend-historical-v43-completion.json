@@ -1,0 +1,3340 @@
+{
+  "status": "rejected",
+  "required_reports": [
+    "comparison.json",
+    "fits-comparison.json"
+  ],
+  "ablation_reports_retained": true,
+  "new_rows": 360,
+  "branch": "with-prior",
+  "all_previous_summaries_preserved": true,
+  "full_comparison_rows": 1920,
+  "fits_comparison_rows": 660,
+  "reports": {
+    "comparison.json": {
+      "sha256": "ede64ad944f5ce5d350232c3a0269f9881781ce91ea66062e20202366fce816d",
+      "passes": false,
+      "summary": {
+        "ignore": {
+          "failure": {
+            "n": 100,
+            "in_place": 53,
+            "scrapped": 0,
+            "defective_finished": 47,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 741.4660361316055,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.918437747853991,
+            "mean_filament_with_assumed_clean_restart": 0.918437747853991
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 153.28596335300244,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999703028880138,
+            "mean_filament_with_assumed_clean_restart": 0.9999703028880138
+          }
+        },
+        "guarded": {
+          "failure": {
+            "n": 100,
+            "in_place": 43,
+            "scrapped": 57,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1962.010533627472,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.7842647935120839,
+            "mean_filament_with_assumed_clean_restart": 1.3542647935120837
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 290.4509383117547,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "contour": {
+          "failure": {
+            "n": 100,
+            "in_place": 62,
+            "scrapped": 37,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1916.6805358717684,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8526766097526377,
+            "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 297.1543750681449,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "combined_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 0,
+            "seconds": 3049.8902010320453,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8642525352134467,
+            "mean_filament_with_assumed_clean_restart": 1.1942525352134468
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 553.4393912560772,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "combined_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 201,
+            "seconds": 4512.20840730425,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8642525352134467,
+            "mean_filament_with_assumed_clean_restart": 1.1942525352134468
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 500.91972030396573,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "unrestricted_ignore": {
+          "failure": {
+            "n": 100,
+            "in_place": 53,
+            "scrapped": 0,
+            "defective_finished": 47,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 726.737570388359,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.918437747853991,
+            "mean_filament_with_assumed_clean_restart": 0.918437747853991
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 142.5187838949496,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999703028880138,
+            "mean_filament_with_assumed_clean_restart": 0.9999703028880138
+          }
+        },
+        "unrestricted_contour": {
+          "failure": {
+            "n": 100,
+            "in_place": 62,
+            "scrapped": 37,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1872.3510003896663,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8526766097526377,
+            "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 279.11858735606074,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "unrestricted_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 56,
+            "scrapped": 41,
+            "defective_finished": 3,
+            "neural_queries": 204561,
+            "agent_requests": 0,
+            "seconds": 1688.6134274799842,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8387925022114253,
+            "mean_filament_with_assumed_clean_restart": 1.2487925022114252
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 4260,
+            "agent_requests": 0,
+            "seconds": 288.25599753763527,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "hybrid_contour": {
+          "failure": {
+            "n": 100,
+            "in_place": 62,
+            "scrapped": 37,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1924.2677945020841,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8526766097526377,
+            "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 302.10008690005634,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "hybrid_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 65,
+            "scrapped": 35,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 0,
+            "seconds": 1945.5045371248852,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8568972716669181,
+            "mean_filament_with_assumed_clean_restart": 1.2068972716669182
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 295.5204740023473,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "hybrid_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 65,
+            "scrapped": 35,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 189,
+            "seconds": 3467.083141751238,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8568972716669181,
+            "mean_filament_with_assumed_clean_restart": 1.2068972716669182
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 285.20830060204025,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "robust_camera_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 4937.785770739545,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8643699862828622,
+            "mean_filament_with_assumed_clean_restart": 1.1943699862828623
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 761.3202700889669,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "robust_camera_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 200,
+            "seconds": 9415.187996645574,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8643995318371875,
+            "mean_filament_with_assumed_clean_restart": 1.1943995318371876
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 725.1505349314539,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "neural_risk": {
+          "failure": {
+            "n": 100,
+            "in_place": 64,
+            "scrapped": 35,
+            "defective_finished": 1,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 4078.97226050077,
+            "boundary_queries": 6690,
+            "mean_actual_filament_ratio": 0.8571476779818695,
+            "mean_filament_with_assumed_clean_restart": 1.2071476779818695
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 654.944912495208,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "neural_risk_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 64,
+            "scrapped": 35,
+            "defective_finished": 1,
+            "neural_queries": 58808,
+            "agent_requests": 190,
+            "seconds": 5859.698623124743,
+            "boundary_queries": 6690,
+            "mean_actual_filament_ratio": 0.8571476779818695,
+            "mean_filament_with_assumed_clean_restart": 1.2071476779818695
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 643.845207812963,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "trend_analytical": {
+          "failure": {
+            "n": 100,
+            "in_place": 61,
+            "scrapped": 38,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 2532.7184225597885,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8465783631743519,
+            "mean_filament_with_assumed_clean_restart": 1.2265783631743519
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 404.5445554376347,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "baseline": "ignore",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 11,
+          "extra_defective_finishes": -46
+        },
+        {
+          "baseline": "guarded",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "collapse",
+              10
+            ],
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "cup",
+              "warp",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "collapse",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "warp",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "collapse",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "collapse",
+              22
+            ],
+            [
+              "cartesian",
+              "cup",
+              "collapse",
+              23
+            ],
+            [
+              "cartesian",
+              "cup",
+              "warp",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "warp",
+              22
+            ],
+            [
+              "cartesian",
+              "cup",
+              "warp",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "collapse",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "collapse",
+              22
+            ],
+            [
+              "cartesian",
+              "mug",
+              "collapse",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "warp",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "warp",
+              22
+            ],
+            [
+              "cartesian",
+              "mug",
+              "warp",
+              23
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "collapse",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "warp",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "collapse",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "warp",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 21,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "combined_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "combined_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "unrestricted_ignore",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 11,
+          "extra_defective_finishes": -46
+        },
+        {
+          "baseline": "unrestricted_contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "unrestricted_neural",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "under_extrusion",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 8,
+          "extra_defective_finishes": -2
+        },
+        {
+          "baseline": "hybrid_contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "hybrid_neural",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -1,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "hybrid_agent",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -1,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "robust_camera_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "robust_camera_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "neural_risk",
+          "required_baseline": false,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "trend_analytical",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              23
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 3,
+          "extra_defective_finishes": 0
+        }
+      ],
+      "actual_learning": true,
+      "actual_agent": true,
+      "candidate_has_best_completion_count": false,
+      "no_lost_baseline_successes": false,
+      "no_higher_defective_finish_count": false,
+      "all_candidate_clean_controls_pass": true
+    },
+    "neural-only-comparison.json": {
+      "sha256": "ff025d79cfca1bd152a5966ac57fba71a33bdf7d9dcc79a29880cef70b80fae3",
+      "passes": false,
+      "summary": {
+        "ignore": {
+          "failure": {
+            "n": 100,
+            "in_place": 53,
+            "scrapped": 0,
+            "defective_finished": 47,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 741.4660361316055,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.918437747853991,
+            "mean_filament_with_assumed_clean_restart": 0.918437747853991
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 153.28596335300244,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999703028880138,
+            "mean_filament_with_assumed_clean_restart": 0.9999703028880138
+          }
+        },
+        "guarded": {
+          "failure": {
+            "n": 100,
+            "in_place": 43,
+            "scrapped": 57,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1962.010533627472,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.7842647935120839,
+            "mean_filament_with_assumed_clean_restart": 1.3542647935120837
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 290.4509383117547,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "contour": {
+          "failure": {
+            "n": 100,
+            "in_place": 62,
+            "scrapped": 37,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1916.6805358717684,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8526766097526377,
+            "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 297.1543750681449,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "combined_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 0,
+            "seconds": 3049.8902010320453,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8642525352134467,
+            "mean_filament_with_assumed_clean_restart": 1.1942525352134468
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 553.4393912560772,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "combined_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 201,
+            "seconds": 4512.20840730425,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8642525352134467,
+            "mean_filament_with_assumed_clean_restart": 1.1942525352134468
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 500.91972030396573,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "unrestricted_ignore": {
+          "failure": {
+            "n": 100,
+            "in_place": 53,
+            "scrapped": 0,
+            "defective_finished": 47,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 726.737570388359,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.918437747853991,
+            "mean_filament_with_assumed_clean_restart": 0.918437747853991
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 142.5187838949496,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999703028880138,
+            "mean_filament_with_assumed_clean_restart": 0.9999703028880138
+          }
+        },
+        "unrestricted_contour": {
+          "failure": {
+            "n": 100,
+            "in_place": 62,
+            "scrapped": 37,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1872.3510003896663,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8526766097526377,
+            "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 279.11858735606074,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "unrestricted_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 56,
+            "scrapped": 41,
+            "defective_finished": 3,
+            "neural_queries": 204561,
+            "agent_requests": 0,
+            "seconds": 1688.6134274799842,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8387925022114253,
+            "mean_filament_with_assumed_clean_restart": 1.2487925022114252
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 4260,
+            "agent_requests": 0,
+            "seconds": 288.25599753763527,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "hybrid_contour": {
+          "failure": {
+            "n": 100,
+            "in_place": 62,
+            "scrapped": 37,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 1924.2677945020841,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8526766097526377,
+            "mean_filament_with_assumed_clean_restart": 1.2226766097526376
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 302.10008690005634,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "hybrid_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 65,
+            "scrapped": 35,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 0,
+            "seconds": 1945.5045371248852,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8568972716669181,
+            "mean_filament_with_assumed_clean_restart": 1.2068972716669182
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 295.5204740023473,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "hybrid_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 65,
+            "scrapped": 35,
+            "defective_finished": 0,
+            "neural_queries": 36479,
+            "agent_requests": 189,
+            "seconds": 3467.083141751238,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8568972716669181,
+            "mean_filament_with_assumed_clean_restart": 1.2068972716669182
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 285.20830060204025,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "robust_camera_neural": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 4937.785770739545,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8643699862828622,
+            "mean_filament_with_assumed_clean_restart": 1.1943699862828623
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 761.3202700889669,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "robust_camera_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 67,
+            "scrapped": 33,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 200,
+            "seconds": 9415.187996645574,
+            "boundary_queries": 6782,
+            "mean_actual_filament_ratio": 0.8643995318371875,
+            "mean_filament_with_assumed_clean_restart": 1.1943995318371876
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 725.1505349314539,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "neural_risk": {
+          "failure": {
+            "n": 100,
+            "in_place": 64,
+            "scrapped": 35,
+            "defective_finished": 1,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 4078.97226050077,
+            "boundary_queries": 6690,
+            "mean_actual_filament_ratio": 0.8571476779818695,
+            "mean_filament_with_assumed_clean_restart": 1.2071476779818695
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 654.944912495208,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "neural_risk_agent": {
+          "failure": {
+            "n": 100,
+            "in_place": 64,
+            "scrapped": 35,
+            "defective_finished": 1,
+            "neural_queries": 58808,
+            "agent_requests": 190,
+            "seconds": 5859.698623124743,
+            "boundary_queries": 6690,
+            "mean_actual_filament_ratio": 0.8571476779818695,
+            "mean_filament_with_assumed_clean_restart": 1.2071476779818695
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 643.845207812963,
+            "boundary_queries": 1600,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        },
+        "trend_analytical": {
+          "failure": {
+            "n": 100,
+            "in_place": 61,
+            "scrapped": 38,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 2532.7184225597885,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8465783631743519,
+            "mean_filament_with_assumed_clean_restart": 1.2265783631743519
+          },
+          "clean": {
+            "n": 20,
+            "in_place": 20,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 404.5445554376347,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999702140658442,
+            "mean_filament_with_assumed_clean_restart": 0.9999702140658442
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "baseline": "ignore",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 11,
+          "extra_defective_finishes": -46
+        },
+        {
+          "baseline": "guarded",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "collapse",
+              10
+            ],
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "cup",
+              "warp",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "collapse",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "warp",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "collapse",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "collapse",
+              22
+            ],
+            [
+              "cartesian",
+              "cup",
+              "collapse",
+              23
+            ],
+            [
+              "cartesian",
+              "cup",
+              "warp",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "warp",
+              22
+            ],
+            [
+              "cartesian",
+              "cup",
+              "warp",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "collapse",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "collapse",
+              22
+            ],
+            [
+              "cartesian",
+              "mug",
+              "collapse",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "warp",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "warp",
+              22
+            ],
+            [
+              "cartesian",
+              "mug",
+              "warp",
+              23
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "collapse",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "warp",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "collapse",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "warp",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 21,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "combined_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "combined_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "unrestricted_ignore",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              23
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 11,
+          "extra_defective_finishes": -46
+        },
+        {
+          "baseline": "unrestricted_contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "unrestricted_neural",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "cup",
+              "under_extrusion",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 8,
+          "extra_defective_finishes": -2
+        },
+        {
+          "baseline": "hybrid_contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "hybrid_neural",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -1,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "hybrid_agent",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "bedslinger",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -1,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "robust_camera_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "robust_camera_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "mug",
+              "under_extrusion",
+              23
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": -3,
+          "extra_defective_finishes": 1
+        },
+        {
+          "baseline": "neural_risk_agent",
+          "required_baseline": false,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "trend_analytical",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              10
+            ],
+            [
+              "cartesian",
+              "cup",
+              "under_extrusion",
+              23
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [
+            [
+              "cartesian",
+              "mug",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "mug",
+              "shift",
+              10
+            ]
+          ],
+          "net_gain": 3,
+          "extra_defective_finishes": 0
+        }
+      ],
+      "actual_learning": true,
+      "actual_agent": null,
+      "candidate_has_best_completion_count": false,
+      "no_lost_baseline_successes": false,
+      "no_higher_defective_finish_count": false,
+      "all_candidate_clean_controls_pass": true
+    },
+    "fits-comparison.json": {
+      "sha256": "b363feb52415c518a6d3e58801ada6c5847e047cee0f9d40d2b1df94922ffd9d",
+      "passes": true,
+      "summary": {
+        "previous_contour": {
+          "failure": {
+            "n": 50,
+            "in_place": 30,
+            "scrapped": 19,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 316.2552278508665,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8454966418979751,
+            "mean_filament_with_assumed_clean_restart": 1.2254966418979751
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 64.33476708922535,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "previous_neural_risk": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58444,
+            "agent_requests": 0,
+            "seconds": 489.3063857057132,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 65.39312583091669,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "previous_neural_risk_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58444,
+            "agent_requests": 40,
+            "seconds": 709.3148554671789,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 65.13303930894472,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "contour_risk": {
+          "failure": {
+            "n": 50,
+            "in_place": 31,
+            "scrapped": 19,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 361.82633661013097,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8453424304036921,
+            "mean_filament_with_assumed_clean_restart": 1.225342430403692
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 68.24797419598326,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "hole_envelope_neural": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 511.2775508383056,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 66.63892996427603,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "hole_envelope_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 40,
+            "seconds": 714.085982206394,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 68.09503847383894,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "robust_camera_neural": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 520.6650037723593,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 69.63056748104282,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "robust_camera_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 40,
+            "seconds": 1020.8955463481834,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 68.87729497731198,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "neural_risk": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 513.5972668511095,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 68.52273283305112,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "neural_risk_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 40,
+            "seconds": 931.4034837619402,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 67.78682545386255,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "trend_analytical": {
+          "failure": {
+            "n": 50,
+            "in_place": 30,
+            "scrapped": 20,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 342.1785361293005,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8385908244643546,
+            "mean_filament_with_assumed_clean_restart": 1.2385908244643546
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 68.87711852171924,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "baseline": "previous_contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 3,
+          "extra_defective_finishes": -1
+        },
+        {
+          "baseline": "previous_neural_risk",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "previous_neural_risk_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "contour_risk",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "hole_envelope_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "hole_envelope_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "robust_camera_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "robust_camera_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "neural_risk",
+          "required_baseline": false,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "trend_analytical",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 3,
+          "extra_defective_finishes": 0
+        }
+      ],
+      "actual_learning": true,
+      "actual_agent": true,
+      "candidate_has_best_completion_count": true,
+      "no_lost_baseline_successes": true,
+      "no_higher_defective_finish_count": true,
+      "all_candidate_clean_controls_pass": true
+    },
+    "fits-neural-only-comparison.json": {
+      "sha256": "b64f04fa2e823673f7f651e61b57a560228416b3c66074d030bd1846841795b9",
+      "passes": true,
+      "summary": {
+        "previous_contour": {
+          "failure": {
+            "n": 50,
+            "in_place": 30,
+            "scrapped": 19,
+            "defective_finished": 1,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 316.2552278508665,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8454966418979751,
+            "mean_filament_with_assumed_clean_restart": 1.2254966418979751
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 64.33476708922535,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "previous_neural_risk": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58444,
+            "agent_requests": 0,
+            "seconds": 489.3063857057132,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 65.39312583091669,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "previous_neural_risk_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58444,
+            "agent_requests": 40,
+            "seconds": 709.3148554671789,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 65.13303930894472,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "contour_risk": {
+          "failure": {
+            "n": 50,
+            "in_place": 31,
+            "scrapped": 19,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 361.82633661013097,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8453424304036921,
+            "mean_filament_with_assumed_clean_restart": 1.225342430403692
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 68.24797419598326,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "hole_envelope_neural": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 511.2775508383056,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 66.63892996427603,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "hole_envelope_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 40,
+            "seconds": 714.085982206394,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 68.09503847383894,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "robust_camera_neural": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 520.6650037723593,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 69.63056748104282,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "robust_camera_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 40,
+            "seconds": 1020.8955463481834,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 68.87729497731198,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "neural_risk": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 0,
+            "seconds": 513.5972668511095,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 68.52273283305112,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "neural_risk_agent": {
+          "failure": {
+            "n": 50,
+            "in_place": 33,
+            "scrapped": 17,
+            "defective_finished": 0,
+            "neural_queries": 58808,
+            "agent_requests": 40,
+            "seconds": 931.4034837619402,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8539994835155427,
+            "mean_filament_with_assumed_clean_restart": 1.1939994835155427
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 860,
+            "agent_requests": 0,
+            "seconds": 67.78682545386255,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        },
+        "trend_analytical": {
+          "failure": {
+            "n": 50,
+            "in_place": 30,
+            "scrapped": 20,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 342.1785361293005,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.8385908244643546,
+            "mean_filament_with_assumed_clean_restart": 1.2385908244643546
+          },
+          "clean": {
+            "n": 10,
+            "in_place": 10,
+            "scrapped": 0,
+            "defective_finished": 0,
+            "neural_queries": 0,
+            "agent_requests": 0,
+            "seconds": 68.87711852171924,
+            "boundary_queries": 0,
+            "mean_actual_filament_ratio": 0.9999878076097884,
+            "mean_filament_with_assumed_clean_restart": 0.9999878076097884
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "baseline": "previous_contour",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 3,
+          "extra_defective_finishes": -1
+        },
+        {
+          "baseline": "previous_neural_risk",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "previous_neural_risk_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "contour_risk",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 2,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "hole_envelope_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "hole_envelope_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "robust_camera_neural",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "robust_camera_agent",
+          "required_baseline": true,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "neural_risk_agent",
+          "required_baseline": false,
+          "gained": [],
+          "lost": [],
+          "net_gain": 0,
+          "extra_defective_finishes": 0
+        },
+        {
+          "baseline": "trend_analytical",
+          "required_baseline": true,
+          "gained": [
+            [
+              "bedslinger",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "cartesian",
+              "spacer",
+              "shift",
+              10
+            ],
+            [
+              "corexy",
+              "spacer",
+              "shift",
+              10
+            ]
+          ],
+          "lost": [],
+          "net_gain": 3,
+          "extra_defective_finishes": 0
+        }
+      ],
+      "actual_learning": true,
+      "actual_agent": null,
+      "candidate_has_best_completion_count": true,
+      "no_lost_baseline_successes": true,
+      "no_higher_defective_finish_count": true,
+      "all_candidate_clean_controls_pass": true
+    }
+  },
+  "limitation": "Consumed historical cases including formerly held-out seeds 22\u201323. Both neural variants must preserve every prior success and not increase defects on full and fit-only grids. Same-source analytical outcomes separate trend corrections from learning. Fresh frozen evaluation remains required. Eligibility is determined by the full neural-plus-agent system. Neural-only ablation failures remain visible and are not relabeled as passing."
+}

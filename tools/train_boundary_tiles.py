@@ -83,11 +83,16 @@ def connectivity_losses(probability, truth, truth_skeleton, iterations):
 
 
 class TileNetwork(nn.Module):
-    def __init__(self, frames=2, hidden=(64, 32), scale=4, include_expected_mask=False):
+    def __init__(self, frames=2, hidden=(64, 32), scale=4, include_expected_mask=False,
+                 include_previous_expected_mask=False):
         super().__init__()
         self.frames, self.scale = frames, scale
         self.include_expected_mask = include_expected_mask
-        self.layers = nn.ModuleList([nn.Conv2d(frames+int(include_expected_mask), hidden[0], PATCH_SIZE),
+        self.include_previous_expected_mask = include_previous_expected_mask
+        if include_previous_expected_mask and (frames != 2 or not include_expected_mask):
+            raise ValueError('previous command requires two observed frames and the current command')
+        self.layers = nn.ModuleList([nn.Conv2d(frames+int(include_expected_mask)
+                                             +int(include_previous_expected_mask), hidden[0], PATCH_SIZE),
                                     nn.Conv2d(hidden[0], hidden[1], 1),
                                     nn.Conv2d(hidden[1], scale**2, 1)])
 
@@ -101,6 +106,8 @@ class TileNetwork(nn.Module):
                       input_frames=np.array(self.frames), input_scales=np.array([1]))
         if self.include_expected_mask:
             arrays['include_expected_mask'] = np.array(True)
+        if self.include_previous_expected_mask:
+            arrays['include_previous_expected_mask'] = np.array(True)
         if inference_dtype != 'float32':
             arrays['inference_dtype'] = np.array(inference_dtype)
         for i, layer in enumerate(self.layers):
@@ -163,6 +170,8 @@ def main():
                         help='probability mass assigned to audited thin-material training tiles')
     parser.add_argument('--include-expected-mask', action='store_true',
                         help='use the saved commanded layer mask as an additional known input')
+    parser.add_argument('--previous-command-masks', type=Path,
+                        help='verified sidecar of preceding captured command masks; requires --include-expected-mask')
     parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32',
                         help='exported accumulation precision; training and stored weights remain float32')
     args = parser.parse_args()
@@ -202,11 +211,24 @@ def main():
         raise ValueError('invalid camera inputs or distance targets')
     if args.include_expected_mask and not has_expected_mask:
         parser.error('dataset has no commanded layer mask')
+    if args.previous_command_masks and (not args.include_expected_mask or frames != 2):
+        parser.error('previous command masks require two observed images and --include-expected-mask')
     if has_expected_mask and not np.isin(x[:, frames], [0, 1]).all():
         raise ValueError('commanded layer masks must be binary')
     if not args.include_expected_mask:
         x = x[:, :frames]
     data_sha256 = hashlib.sha256(args.data.read_bytes()).hexdigest()
+    command_history = None
+    if args.previous_command_masks:
+        from tools.add_boundary_command_history import load_previous_commands
+        previous = load_previous_commands(args.previous_command_masks, groups, split,
+                                          (len(x), 1, size+8, size+8), data_sha256)
+        original = x
+        x = np.concatenate([x, previous.astype(x.dtype)], axis=1)
+        assert np.array_equal(x[:, :-1], original)
+        command_history = dict(path=str(args.previous_command_masks.resolve()),
+            sha256=hashlib.sha256(args.previous_command_masks.read_bytes()).hexdigest(),
+            parent_data_sha256=data_sha256, original_inputs_unchanged=True)
     sampling, sampling_metadata = None, None
     if args.sampling_audit:
         audit = json.loads(args.sampling_audit.read_text())
@@ -228,7 +250,8 @@ def main():
         for offset in range(0, len(x), args.batch_size):
             skeleton[offset:offset+args.batch_size] = soft_skeleton(truth[offset:offset+args.batch_size], args.skeleton_iterations)
     train_indices, val_indices = np.flatnonzero(~split), np.flatnonzero(split)
-    model = TileNetwork(frames, scale=scale, include_expected_mask=args.include_expected_mask)
+    model = TileNetwork(frames, scale=scale, include_expected_mask=args.include_expected_mask,
+                        include_previous_expected_mask=bool(args.previous_command_masks))
     initial_arrays = b''.join(t.detach().numpy().tobytes() for t in model.parameters())
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
 
@@ -302,10 +325,14 @@ def main():
             history=history, **verification)
         (args.out/'export-failure.json').write_text(json.dumps(failure, indent=2)+'\n')
         raise ValueError('exported NumPy model differs from trained convolution')
+    if command_history:
+        assert hashlib.sha256(args.previous_command_masks.read_bytes()).hexdigest() == command_history['sha256']
     manifest = dict(status='complete', architecture=f'{frames} observed images' +
         (' plus commanded mask' if args.include_expected_mask else '') +
+        (' plus preceding commanded mask' if args.previous_command_masks else '') +
         ' -> 9x9 conv64 -> 1x1 conv32 -> 16 tanh heads -> pixel shuffle4',
         input_frames=frames, include_expected_mask=args.include_expected_mask,
+        include_previous_expected_mask=bool(args.previous_command_masks), command_history=command_history,
         inference_dtype=args.inference_dtype,
         input_scales=[1], output_upsample=scale,
         args={key:str(value) if isinstance(value,Path) else value for key,value in vars(args).items()},

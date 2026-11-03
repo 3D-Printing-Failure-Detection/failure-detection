@@ -62,6 +62,8 @@ class BoundarySegmenter:
             self.input_scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
             self.input_frames = int(data['input_frames']) if 'input_frames' in data else 1
             self.include_expected_mask = bool(data['include_expected_mask']) if 'include_expected_mask' in data else False
+            self.include_previous_expected_mask = (bool(data['include_previous_expected_mask'])
+                if 'include_previous_expected_mask' in data else False)
             self.inference_dtype = str(data['inference_dtype']) if 'inference_dtype' in data else 'float32'
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
             refinement_keys = {'native_refinement_kernel', 'native_refinement_bias'}
@@ -87,10 +89,13 @@ class BoundarySegmenter:
                 self.query_weights = self.query_weights.astype('float64')
         if self.input_frames not in (1, 2):
             raise ValueError('boundary input frames must be one or two')
+        if self.include_previous_expected_mask and (self.input_frames != 2 or not self.include_expected_mask):
+            raise ValueError('previous command requires two observed frames and the current command')
         if self.distance_quantile is not None and not 0 < self.distance_quantile < 1:
             raise ValueError('invalid boundary distance quantile')
         subpixel_offsets(self.output_upsample)
-        width = PATCH_SIZE ** 2 * len(self.input_scales) * (self.input_frames + int(self.include_expected_mask))
+        width = PATCH_SIZE ** 2 * len(self.input_scales) * (self.input_frames
+            + int(self.include_expected_mask) + int(self.include_previous_expected_mask))
         for w, b in self.weights:
             if w.ndim != 2 or w.shape[1] != width or b.shape != (len(w),):
                 raise ValueError('invalid boundary network shape')
@@ -124,6 +129,7 @@ class BoundarySegmenter:
         self.upsample = upsample
         self._sampling_grid = None
         self._previous_gray = None
+        self._previous_expected_mask = None
         self.queries = 0
 
     @property
@@ -132,10 +138,21 @@ class BoundarySegmenter:
 
     def reset_history(self):
         self._previous_gray = None
+        self._previous_expected_mask = None
 
-    def prime_history(self, previous_image):
+    def prime_history(self, previous_image, previous_expected_mask=None):
         """Supply the actual preceding camera frame for a nonsequential replay."""
-        self._previous_gray = normalized_gray(previous_image)
+        gray = normalized_gray(previous_image)
+        previous = None
+        if self.include_previous_expected_mask:
+            if previous_expected_mask is None:
+                raise ValueError('priming this model requires the previous commanded layer mask')
+            mask = np.asarray(previous_expected_mask)
+            if mask.shape != gray.shape or not np.isfinite(mask).all():
+                raise ValueError('invalid previous commanded layer mask')
+            previous = (mask != 0).astype(self.inference_dtype)
+        self._previous_gray = gray
+        self._previous_expected_mask = previous
 
     def _distance_outputs(self, hidden, *, activate=True):
         weights, bias = self.weights[1]
@@ -198,6 +215,11 @@ class BoundarySegmenter:
             if expected_mask.shape != gray.shape or not np.isfinite(expected_mask).all():
                 raise ValueError('invalid commanded layer mask')
             frames.append((expected_mask != 0).astype(self.inference_dtype))
+        if self.include_previous_expected_mask:
+            previous = frames[-1] if self._previous_gray is None else self._previous_expected_mask
+            if previous is None or previous.shape != gray.shape:
+                raise ValueError('previous commanded layer mask is missing or has a different shape')
+            frames.append(previous)
         weights, bias = self.weights[0]
         channels = []
         for kernels, offset in zip(weights.reshape(len(weights), len(frames),
@@ -231,6 +253,8 @@ class BoundarySegmenter:
         distance = self.signed_distance(image, expected_mask)
         if self.input_frames == 2:
             self._previous_gray = normalized_gray(image)
+        if self.include_previous_expected_mask:
+            self._previous_expected_mask = (np.asarray(expected_mask) != 0).astype(self.inference_dtype)
         if self.upsample > self.output_upsample:
             factor = self.upsample // self.output_upsample
             height, width = distance.shape

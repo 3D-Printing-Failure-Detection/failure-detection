@@ -1,0 +1,213 @@
+{
+  "status": "rejected",
+  "frames": 22,
+  "consumed_frames": 16,
+  "selected_real_defect_frames": 6,
+  "all_ordinary_reference_features_reproduced": true,
+  "coordinate_checks": 24,
+  "no_false_fatal_geometry": false,
+  "local_support_passes": false,
+  "selected_true_defect_detections_preserved": true,
+  "local_support": [
+    {
+      "case": "cartesian-mug-1003",
+      "pairs": [
+        {
+          "layer": 45,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        },
+        {
+          "layer": 46,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 31.479823657182582,
+            "mean_eight": 42.94117313213329
+          }
+        },
+        {
+          "layer": 47,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "case": "corexy-mug-1003",
+      "pairs": [
+        {
+          "layer": 45,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        },
+        {
+          "layer": 46,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 31.368955500760755,
+            "mean_eight": 42.26850388883708
+          }
+        },
+        {
+          "layer": 47,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "pairs": [
+        {
+          "layer": 85,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        },
+        {
+          "layer": 86,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        },
+        {
+          "layer": 87,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "pairs": [
+        {
+          "layer": 85,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        },
+        {
+          "layer": 86,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        },
+        {
+          "layer": 87,
+          "excess_overhang_mm2": {
+            "actual": 0.0,
+            "ordinary": 0.0,
+            "mean_eight": 0.0
+          }
+        }
+      ]
+    }
+  ],
+  "false_fatal_frames": [
+    {
+      "case": "cartesian-mug-1003",
+      "layer": 45,
+      "features": {
+        "area_mm2": 429.67020462123253,
+        "components": 1,
+        "hole_area_mm2": 0,
+        "main_holes": 0,
+        "open_wall": true,
+        "connection_problem": false,
+        "soft_thin_excess": 0.0006622296257318139,
+        "soft_thin": false,
+        "hard_thin_excess": 0.0002842981242737741,
+        "hard_thin": false
+      }
+    },
+    {
+      "case": "corexy-mug-1003",
+      "layer": 45,
+      "features": {
+        "area_mm2": 429.69513150235167,
+        "components": 1,
+        "hole_area_mm2": 0,
+        "main_holes": 0,
+        "open_wall": true,
+        "connection_problem": false,
+        "soft_thin_excess": 0.0007299049096799459,
+        "soft_thin": false,
+        "hard_thin_excess": 0.0002922112244057029,
+        "hard_thin": false
+      }
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "layer": 85,
+      "features": {
+        "area_mm2": 266.2509962490131,
+        "components": 1,
+        "hole_area_mm2": 0,
+        "main_holes": 0,
+        "open_wall": true,
+        "soft_thin_excess": 0.022282484854338258,
+        "soft_thin": false,
+        "hard_thin_excess": 0.021292589241492688,
+        "hard_thin": false
+      }
+    },
+    {
+      "case": "cartesian-cup-1002",
+      "layer": 86,
+      "features": {
+        "area_mm2": 268.52943516234143,
+        "components": 1,
+        "hole_area_mm2": 0,
+        "main_holes": 0,
+        "open_wall": true,
+        "soft_thin_excess": 0.026676197717555028,
+        "soft_thin": false,
+        "hard_thin_excess": 0.026109319428900823,
+        "hard_thin": false
+      }
+    },
+    {
+      "case": "bedslinger-cup-1002",
+      "layer": 86,
+      "features": {
+        "area_mm2": 278.2607146670214,
+        "components": 1,
+        "hole_area_mm2": 0,
+        "main_holes": 0,
+        "open_wall": true,
+        "soft_thin_excess": 0.02550823865302776,
+        "soft_thin": false,
+        "hard_thin_excess": 0.025084906327807577,
+        "hard_thin": false
+      }
+    }
+  ],
+  "lost_true_detections": [],
+  "protocol_sha256": "01b35a73cb7effdfe952e9aeb08681888edd3530ffd18a8d7eb40ecdbe040a8d",
+  "frames_sha256": "a0c6567789d1f101469273b009173946f2801f846895590afcd2ea9da7613d70",
+  "new_recovery_trials": 0,
+  "limitation": "Selected development diagnostic, not full-frame-grid validation, full-print acceptance or closed-loop recovery. Truth is used only for scoring, never image inference. A pass only qualifies broader camera validation. Existing failures and model weights remain unchanged; no new training or fresh seeds are used."
+}
