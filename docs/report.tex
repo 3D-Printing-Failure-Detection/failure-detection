@@ -61,44 +61,42 @@ The project is a Python research prototype that measures each printed layer,
 estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
 policy separates inner and outer boundaries when predicting deformation. Trained
-models and a free local Qwen supervisor are implemented. The latest complete
-candidate exceeds the previous development success count but fails historical
-regression: 64/100 successes and one defect versus the preceding guard's 67/100
-and zero defects. Four development ignore successes also remain lost. The overall
-objective is still unmet; these regressions must be resolved before a new frozen test.
+models and a free local Qwen supervisor are implemented. The strongest validated
+historical result is 67/100 functional completions with zero defective finishes.
+Later changes have not established overall superiority: global trend damping
+loses historical recoveries, and newer camera replacements fail qualification.
+Two narrower controller fixes pass targeted preservation checks. The overall
+improvement goal remains open.
 
+\subsection*{What 67/100 means: fourteen additional successful prints}
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
-{\Large\bfseries\color{teal}142/240} & {\Large\bfseries 141/240} & {\Large\bfseries 133/240}\\
-Trend neural + Qwen & Prior guarded + Qwen & Matched analytical\\
+{\Large\bfseries 53/100} & {\Large\bfseries 62/100} & {\Large\bfseries\color{teal}67/100}\\
+No intervention & Analytical contour recovery & Neural hybrid recovery\\
 \bottomrule
 \end{tabular*}
 \end{center}
-These are functional completions on the same \emph{240 simulated fault cases
-across all four parts}. All three finish \textbf{one defective print} and pass
-48 clean controls. The latest policy preserves every active recovery baseline's
-success but still loses four ignore successes. Qwen makes 518 actual requests
-and matches neural-only. Genuine rescues remain 18 versus matched analytical's
-15. These are consumed development cases, not proof of fresh-test superiority.
+These are total functional completions on the same \emph{100 historical simulated
+fault cases}. Our system preserves all 53 prints that succeed without intervention
+and rescues \textbf{14 additional prints}: \textbf{five more successes than
+analytical contour recovery}. The other 33 are stopped; none finishes defective.
+Thus 67/100 is not 67 rescues: the added rescues are 14 of the 47 cases that fail
+when ignored. Qwen and neural-only both achieve 67/100, so these gains belong to
+the complete recovery system, without a demonstrated extra benefit from Qwen.
+The separate test below did not reproduce the earlier candidate's advantage;
+the historical gain is not proof of performance on new cases.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & Global trend damping is rejected by historical regression. A narrower continuation fallback passes all 58 targeted checks, retaining the three lost recoveries, the extra mug success and required earlier successes. Fresh-test superiority remains unproven.\\
+Latest checks & Continuation fallback passes 58 targeted runs. The wall-warning guard passes 54 more: it preserves 14/19 fault successes and all six clean controls per variant, reducing defective finishes from one to zero without adding a recovery.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
 \end{tabularx}
-
-\subsection*{What this report covers}
-The system and its functional contract (page 2); observation and prediction
-(page 3); recovery decisions and cost assumptions (page 4); implementation
-history and evaluation design (page 5); results (page 6); limitations and next
-work (page 7); code and operation (page 8); evidence and reproducibility (page 9);
-trained recovery and local supervision (from page 10).
 
 {\small\color{muted}Historical contour snapshot: \code{9770276}. Neural experiments
 retain separate frozen source hashes. Results describe simulated experiments,
