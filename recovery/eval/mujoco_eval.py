@@ -147,6 +147,7 @@ def run_case(job):
                         policy_options['dual_segmenter'] = learned_segmenter
                         policy_options['joint_camera'] = options.get('boundary_joint_forecast', False)
                         policy_options['robust_fallback'] = options.get('boundary_robust_fallback', False)
+                        policy_options['trend_continuation_fallback'] = options.get('boundary_trend_continuation_fallback', False)
                     policy = policies[method](part.spec, nominal, part.layer_h, **policy_options)
                 elif method in ("guarded", "contour", "contour_risk", "neural_camera"):
                     from ..loop.risk_neural import RiskAwareContourPolicy
@@ -199,6 +200,8 @@ def run_case(job):
                 neural_queries=getattr(getattr(policy, 'state', None), 'neural_queries', 0),
                 analytical_candidate_checks=getattr(policy, 'analytical_candidate_checks', 0),
                 joint_camera_checks=getattr(policy, 'joint_camera_checks', 0),
+                damped_continuation_checks=getattr(policy, 'damped_continuation_checks', 0),
+                damped_continuation_queries=getattr(policy, 'damped_continuation_queries', 0),
                 trend_shrinkage_queries=sum(getattr(getattr(owner, 'state', None), 'trend_shrinkage_queries', 0)
                     for owner in (policy, getattr(policy, 'alternative', None))),
                 has_fit_constraints=bool(part.spec.get('holes')),
@@ -334,6 +337,8 @@ def main(argv=None):
                         help='use classical measurements for specified solid base layers in the alternative camera history')
     parser.add_argument('--boundary-robust-fallback', action='store_true',
                         help='require the existing uncertainty envelope to pass for learned-camera corrections when no classical plan passes')
+    parser.add_argument('--boundary-trend-continuation-fallback', action='store_true',
+                        help='only after all original plans fail, try unchanged continuation with both camera trends damped')
     parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
     parser.add_argument('--supervisor-model', default='local-qwen3')
     parser.add_argument('--supervisor-timeout', type=float, default=120.)
@@ -359,6 +364,8 @@ def main(argv=None):
         parser.error('--boundary-classical-base requires --boundary-fallback')
     if args.boundary_robust_fallback and not args.boundary_fallback:
         parser.error('--boundary-robust-fallback requires --boundary-fallback')
+    if args.boundary_trend_continuation_fallback and (not args.boundary_fallback or args.contour_trend_shrinkage):
+        parser.error('trend continuation fallback requires --boundary-fallback and excludes --contour-trend-shrinkage')
     if args.neural_hole_envelope and not args.neural_joint_forecast:
         parser.error('--neural-hole-envelope requires --neural-joint-forecast')
     if args.boundary_fallback and (not args.boundary_checkpoint or args.boundary_scope != 'nonfits'
@@ -383,6 +390,7 @@ def main(argv=None):
                    boundary_joint_forecast=args.boundary_joint_forecast,
                    boundary_classical_base=args.boundary_classical_base,
                    boundary_robust_fallback=args.boundary_robust_fallback,
+                   boundary_trend_continuation_fallback=args.boundary_trend_continuation_fallback,
                    neural_calibrate_measurements=args.neural_calibrate_measurements,
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,

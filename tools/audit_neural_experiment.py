@@ -74,6 +74,34 @@ def validate_fallback_uncertainty(considered, enabled):
             assert passes or not candidate['ok'], 'uncertain fallback correction remains eligible'
 
 
+def validate_damped_continuation(row, enabled):
+    count = 0
+    for event in row['actions']:
+        candidates = [c for c in (event['considered'] or []) if 'name' in c]
+        damped = [c for c in candidates if c.get('damped_continuation')]
+        if not damped:
+            continue
+        assert enabled and not row['has_fit_constraints'], 'damped continuation outside declared domain'
+        assert len(damped) == 1, 'multiple damped continuations'
+        original = [c for c in candidates if not c.get('damped_continuation')]
+        assert original and not any(c['ok'] and c['executable'] for c in original), 'damping displaced a passing original plan'
+        candidate = damped[0]
+        assert candidate['name'] == 'continue' and candidate['command_change_fraction'] == 0, 'damping changed commands'
+        assert candidate['ok'] == candidate['both_camera_forecasts_pass'], 'damped views disagree'
+        if candidate['ok']:
+            assert candidate['executable'] and candidate['other_camera_executable'], 'damped continuation is not executable'
+            assert not candidate['other_camera_violations'] and event['action'] == 'continue', 'damped continuation bypassed checks'
+        else:
+            assert event['action'] == 'scrap', 'failed damped continuation remained eligible'
+        count += 1
+    for name in ('damped_continuation_checks', 'damped_continuation_queries'):
+        value = row.get(name, 0)
+        assert type(value) is int and value >= 0, 'invalid damped continuation counter'
+        if not count:
+            assert value == 0, 'unrecorded damped continuation'
+    assert row.get('damped_continuation_checks', 0) == 2*count, 'missing paired damped checks'
+
+
 def validate_model_provenance(manifest, rows, analytical_only=False):
     checkpoints = {}
     for kind in ('neural', 'boundary'):
@@ -131,6 +159,8 @@ def main():
     total_calls, reused = 0, 0
     for row in rows:
         assert row['frames'] == (0 if row['method'] == 'ignore' else row['layers_printed'])
+        validate_damped_continuation(row, bool(config.get('boundary_trend_continuation_fallback')
+            and config.get('boundary_fallback') and row['method'].startswith('neural')))
         joint_checks = row.get('analytical_candidate_checks', 0)
         assert type(joint_checks) is int and joint_checks >= 0
         joint_enabled = (config.get('neural_joint_forecast', False)

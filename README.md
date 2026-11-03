@@ -172,6 +172,12 @@ preceding guarded policy's 67/100 with zero defects. All 20 clean controls pass;
 three earlier mug recoveries are lost. Qwen makes 190 calls and ties neural-only.
 Fit-only remains 33/50 with zero defects. The next controller change must retain
 the original executable recovery plans instead of delaying their interventions.
+The opt-in `--boundary-trend-continuation-fallback` now preserves those original
+plans. Only when all original choices fail does it test unchanged continuation
+with damped trends, requiring both camera histories to pass the full spec.
+The source passes 212 tests; a paired simulation regression is running before
+any claim of improved outcomes. Fit forecasts and the physical specification
+remain unchanged.
 The final 7,200-row command matrix is prepared and passes all 300 argument checks,
 with identical frozen policy settings and model paths. It uses both existing Qwen
 workers and keeps fresh seeds untouched until development and historical gates

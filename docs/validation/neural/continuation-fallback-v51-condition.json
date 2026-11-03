@@ -1,0 +1,5 @@
+{
+  "status": "running_paired_regression",
+  "new_rows": 0,
+  "limitation": "Consumed targeted regression only; passing it does not establish full-grid, historical or untouched superiority. Four known camera failures remain separate. No fresh seeds or automatic broad evaluation."
+}

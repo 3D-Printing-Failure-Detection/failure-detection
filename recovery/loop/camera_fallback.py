@@ -6,22 +6,30 @@ Neither rewrites an earlier observation. The alternative is assessed against the
 same complete functional specification and the same remaining command plan.
 The optional joint check compares corrections only when continuation fails.
 """
+from copy import copy
 import math
 
 from ..types import Layer
 from ..geometry.spec import Verdict
+from ..geometry.adapt import Plan
 from .decide import DecisionContext
-from .contour import ContourPolicy
+from .contour import ContourObservationState, ContourPolicy
 from .neural import NeuralPolicy
 from .risk_neural import RiskAwareNeuralPolicy
 
 
 class CameraFallbackMixin:
-    def __init__(self, *args, dual_segmenter=None, joint_camera=False, robust_fallback=False, **kwargs):
+    def __init__(self, *args, dual_segmenter=None, joint_camera=False, robust_fallback=False,
+                 trend_continuation_fallback=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.dual_segmenter = dual_segmenter
         self.joint_camera = joint_camera
         self.robust_fallback = robust_fallback
+        if trend_continuation_fallback and self.shrink_trend:
+            raise ValueError('continuation fallback requires unchanged original contour trends')
+        self.trend_continuation_fallback = trend_continuation_fallback
+        self.damped_continuation_checks = 0
+        self.damped_continuation_queries = 0
         self.joint_camera_checks = 0
         self.alternative = (ContourPolicy(self.spec, self.nominal, self.h,
             allow_adapt=self.allow_adapt, use_fea=self.use_fea,
@@ -39,6 +47,46 @@ class CameraFallbackMixin:
         return estimate, detection
 
     def candidates(self, known, current_plan, context=None):
+        context = context or DecisionContext()
+        original = self._camera_candidates(known, current_plan, context)
+        # Preserve every previously executable recovery, including its timing
+        # and ranking. Damping may only reconsider an otherwise inevitable scrap.
+        if (not self.trend_continuation_fallback or self.alternative is None
+                or self.spec.get('holes') or self.forecast_source != 'analytical'
+                or any(c['verdict'].ok and c['executable'] for c in original)):
+            return original
+        assessments = []
+        plan = Plan('continue', current_plan[len(known):], 1.)
+        for owner, prefix in ((self, known), (self.alternative, self.alternative.state.observations)):
+            if type(owner.state) is not ContourObservationState:
+                raise ValueError('damped continuation requires an analytical contour history')
+            probe = ContourPolicy(self.spec, self.nominal, self.h,
+                allow_adapt=False, use_fea=self.use_fea,
+                max_correction_per_layer_mm=self.max_correction_per_layer_mm)
+            # Prediction reads the existing observations/residuals. Only the
+            # private clone's forecast flag and query counter may change.
+            probe.state = copy(owner.state)
+            probe.state.shrink_trend = True
+            probe.state.trend_shrinkage_queries = 0
+            assessments.append(probe._evaluate(prefix, plan, context, current_plan))
+            self.damped_continuation_checks += 1
+            self.damped_continuation_queries += probe.state.trend_shrinkage_queries
+        primary, alternative = assessments
+        candidate = dict(primary, damped_continuation=True,
+            observation_model='both camera histories with damped trends',
+            both_camera_forecasts_pass=all(c['verdict'].ok and c['executable'] for c in assessments),
+            other_camera_violations=alternative['verdict'].violations,
+            other_camera_executable=alternative['executable'])
+        if not candidate['both_camera_forecasts_pass']:
+            candidate['verdict'] = Verdict(False,
+                primary['verdict'].violations + alternative['verdict'].violations
+                or ['both damped camera continuations must be executable'], primary['verdict'].metrics)
+        else:
+            for metric in ('margin', 'robust_margin'):
+                candidate[metric] = min(c[metric] for c in assessments)
+        return original + [candidate]
+
+    def _camera_candidates(self, known, current_plan, context=None):
         context = context or DecisionContext()
         primary = [dict(c) for c in super().candidates(known, current_plan, context)]
         for candidate in primary:

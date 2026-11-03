@@ -597,6 +597,46 @@ restored and verified before removal, reclaiming 23.1 MB of allocated space.
 Primary results, manifests, audits and the original failed report record remain
 unchanged. The new study reserves 12 MB and keeps seeds 2001–2004 untouched.
 
+## Preserving executable plans before trying damped continuation
+
+`continuation-fallback-v51` tests the opt-in
+`--boundary-trend-continuation-fallback`. The global damping experiment lost
+three historical mug recoveries by changing the timing or availability of
+previously passing corrections. This revision evaluates and retains the original
+camera candidates first. If any original plan is executable and passes, its
+selection and ranking are unchanged. Only when all original choices fail may
+the new option evaluate an unchanged continuation under damped trends.
+
+Both camera histories must pass the complete original functional specification
+and execution validation. Each forecast uses a private state copy; measured
+prefixes, residuals, uncertainty and original forecast counters are unchanged.
+There are no damped adaptation proposals. The option applies only outside
+specified fit constraints, excludes global trend damping, and records separate
+paired-check and forecast-query counts. Audits reject displaced original plans,
+changed commands, disagreement between views and unrecorded checks.
+
+The complete repository suite passes 212 tests with three optional modules
+skipped. The 48 focused tests cover real geometric continuation, preservation
+of existing corrections, failing measured prefixes in either view, printer
+execution limits, incompatible configuration and corrupted audit evidence.
+
+The frozen tmux run `neural-recovery:continuation-v51` first executes 16 paired
+rows: the prior guard and the new option, each with and without Qwen, on three
+lost historical mug recoveries and the development mug-collapse gain. Controls
+must reproduce the retained actions, outcomes and measurement IoU. Historical
+recoveries must keep the same actions with zero damped checks, while the fourth
+mug must finish using actual damping. Strict camera fingerprints compare common
+input prefixes across configurations. Only if this gate passes does the runner
+execute all 42 earlier preservation checks, requiring ten fault successes, six
+clean controls, no additional defective case and actual trained-model/Qwen use.
+
+The source and unchanged simulation contract are frozen before launch. The
+existing local Qwen worker's command, model hash and health are rechecked. A
+12 MB artifact allowance plus 1 MB for supervisor logs fits the shared quota.
+This selected regression is running; it does not establish full-grid,
+historical or untouched superiority. The four known camera failures remain
+unresolved, and no broad or fresh comparison launches automatically.
+
 ## Preserving historical container rescues
 
 `joint-historical-gate-v23` compares the complete improved fit policy with
