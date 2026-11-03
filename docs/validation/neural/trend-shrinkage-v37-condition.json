@@ -1,6 +1,7 @@
 {
-  "status": "running_mug_candidate",
-  "new_rows": 2,
+  "status": "running_preservation_regression",
+  "new_rows": 4,
   "limitation": "Selected consumed regression gate only. The initial mug gain is not an overall improvement, and preserved selected successes do not replace a full-grid comparison, historical regression or untouched evaluation. The ongoing v33 and v35 jobs keep their own frozen sources.",
-  "default_control_reproduced": true
+  "default_control_reproduced": true,
+  "mug_gain": true
 }

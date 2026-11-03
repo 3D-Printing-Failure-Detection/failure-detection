@@ -407,7 +407,13 @@ targeted rows run. The complete gate then requires all ten earlier fault
 successes and six clean controls, the new mug success, at most the same single
 existing defective case, and actual neural/camera/agent inference. Fit rows
 must record zero shrinkage calls. There are 46 new rows if the first phase
-passes: two controls and 44 candidate rows. Broader comparisons remain required.
+passes: two controls and 44 candidate rows. The first four rows now complete and
+pass audit. Both default controls reproduce the earlier scrap and action sequence;
+both candidates finish successfully with zero adaptations or defective finishes.
+Each records 1,190 shrinkage queries; Qwen makes three actual candidate calls and
+ties neural-only. This preserves a print that ignore already finishes, rather
+than adding a genuine rescue. The full 42-row preservation regression is running.
+Broader comparisons remain required; no overall count is inferred from this case.
 
 All 164 repository tests pass with three optional modules skipped; 21 focused
 forecast/fallback tests pass. They check retained current deformation, suppression

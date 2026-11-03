@@ -146,8 +146,10 @@ This experiment does not change the guarded policy currently being benchmarked.
 A separate replay attributes a lost mug success to a false future connection
 prediction, while both complete camera histories pass. An opt-in
 `--contour-trend-shrinkage` discounts existing measurement uncertainty from
-analytical trend magnitudes. A matched mug test is running; only a successful
-gain permits the 42-run preservation regression. No new overall gain is claimed.
+analytical trend magnitudes. Both candidate variants finish the mug without
+adaptation, while both matched controls scrap it. Qwen makes three candidate
+calls and ties neural-only. The 42-run preservation regression is now running;
+this retained usable print does not establish a new overall gain.
 New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.
