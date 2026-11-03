@@ -57,7 +57,7 @@ def refinement_distance_loss(prediction, target, overprediction_weight=1.):
     return torch.where(prediction > target, loss*overprediction_weight, loss)
 
 
-def verify_base_training(checkpoint, data_sha256, groups, validation):
+def verify_base_training(checkpoint, data_sha256, groups, validation, extra_training=None):
     path = checkpoint.parent/'training.json'
     training = json.loads(path.read_text())
     expected = dict(checkpoint_sha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
@@ -66,6 +66,11 @@ def verify_base_training(checkpoint, data_sha256, groups, validation):
                     validation_groups=sorted(set(groups[validation].tolist())))
     if training.get('status') != 'complete' or any(training.get(key) != value for key, value in expected.items()):
         raise ValueError('base camera training provenance differs from the refinement split')
+    recorded_extra = training.get('extra_training')
+    keys = ('sha256', 'parent_data_sha256', 'rows', 'groups', 'extra_sampling_mass', 'samples_per_epoch')
+    if ((recorded_extra is None) != (extra_training is None)
+            or extra_training is not None and any(recorded_extra.get(k) != extra_training[k] for k in keys)):
+        raise ValueError('base camera extra training provenance differs from refinement data')
     return dict(path=str(path), sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
@@ -137,6 +142,14 @@ def main():
                         help='positive enables a nonlinear residual head; zero retains the linear control')
     parser.add_argument('--overprediction-weight', type=float, default=1.,
                         help='training cost multiplier when predicted signed distance exceeds its target')
+    parser.add_argument('--extra-training-data', type=Path,
+                        help='verified training-only augmentation with unchanged original validation')
+    parser.add_argument('--extra-training-fraction', type=float,
+                        help='sampling mass for augmentation; retains the original epoch sample count')
+    parser.add_argument('--critical-material-labels', type=Path,
+                        help='verified thin-material labels for training loss weights only')
+    parser.add_argument('--critical-pixel-mass', type=float,
+                        help='expected loss mass for critical pixels on the valid native-grid interior')
     parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32')
     parser.add_argument('--out', type=Path, required=True)
     args = parser.parse_args()
@@ -146,6 +159,10 @@ def main():
         parser.error('hidden channels must be nonnegative')
     if not np.isfinite(args.overprediction_weight) or args.overprediction_weight < 1:
         parser.error('overprediction weight must be finite and at least one')
+    if (args.extra_training_data is None) != (args.extra_training_fraction is None):
+        parser.error('extra training data and fraction must be supplied together')
+    if (args.critical_material_labels is None) != (args.critical_pixel_mass is None):
+        parser.error('critical material labels and pixel mass must be supplied together')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')) or args.out.exists():
         parser.error('output must be a new directory on the data volume')
     torch.set_num_threads(2)
@@ -167,10 +184,31 @@ def main():
     assert not set(groups[validation]) & set(groups[~validation])
     assert np.isfinite(x).all() and np.isfinite(y).all() and np.max(np.abs(y)) <= 1
     assert np.isin(x[:, 2], [0, 1]).all()
-    base_training = verify_base_training(args.base_checkpoint, data_hash, groups, validation)
     audit = json.loads(args.sampling_audit.read_text())
     probability, critical_count = training_sampling_probabilities(
         audit, groups, validation, data_hash, args.critical_tile_fraction)
+    samples_per_epoch = int((~validation).sum())
+    extra_training = None
+    if args.extra_training_data:
+        from tools.boundary_training_augmentation import load_extra_training
+        x, y, validation, groups, probability, extra_training = load_extra_training(
+            args.extra_training_data, x, y, validation, groups, data_hash,
+            probability, args.extra_training_fraction)
+    base_training = verify_base_training(args.base_checkpoint, data_hash, groups, validation, extra_training)
+    critical_masks, critical_training = None, None
+    if args.critical_material_labels:
+        from tools.boundary_critical_material import load_critical_material, critical_loss_factors
+        masks = load_critical_material(args.critical_material_labels, groups, validation, y, data_hash,
+            extra_data_sha256=extra_training['sha256'] if extra_training else None)
+        # The head uses valid 3x3 convolution. Weight only the same interior
+        # coordinates used by its training targets and unchanged validation.
+        masks = masks[:, :, 1:-1, 1:-1]
+        factors = critical_loss_factors(y[:, :, 1:-1, 1:-1], masks, validation,
+                                        probability, args.critical_pixel_mass)
+        critical_masks = torch.from_numpy(masks.copy())
+        critical_training = dict(**factors, path=str(args.critical_material_labels.resolve()),
+            sha256=digest(args.critical_material_labels), native_target_crop=1,
+            selection='unchanged unweighted valid-interior validation objective', labels_are_inputs=False)
     args.out.mkdir(parents=True)
     started = time.time()
     logits = frozen_tile_logits(args.base_checkpoint, torch.from_numpy(x.astype('float32')), args.batch_size)
@@ -190,9 +228,12 @@ def main():
     optimizer = torch.optim.AdamW(layer.parameters(), lr=.002, weight_decay=.0001)
     train_indices, val_indices = np.flatnonzero(~validation), np.flatnonzero(validation)
 
-    def objective(prediction, indices):
+    def objective(prediction, indices, *, training=False):
         actual = target[indices]
         weight = .25 + .75*(torch.abs(actual) < .5)
+        if training and critical_masks is not None:
+            weight = weight * torch.where(critical_masks[indices],
+                critical_training['critical_factor'], critical_training['ordinary_factor'])
         return (refinement_distance_loss(prediction, actual, args.overprediction_weight)*weight).mean()
 
     def evaluate(exported=None):
@@ -224,17 +265,17 @@ def main():
     history, best, best_state = [], float('inf'), None
     checkpoint = args.out/'boundary.npz'
     for epoch in range(args.epochs):
-        order = rng.choice(train_indices, size=len(train_indices), replace=True, p=probability)
+        order = rng.choice(train_indices, size=samples_per_epoch, replace=True, p=probability)
         total = 0.
         for start in range(0, len(order), args.batch_size):
             indices = order[start:start+args.batch_size]
-            loss = objective(torch.tanh(layer(logits[indices])), indices)
+            loss = objective(torch.tanh(layer(logits[indices])), indices, training=True)
             assert torch.isfinite(loss)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
             total += float(loss.detach())*len(indices)
-        row = dict(epoch=epoch+1, train_loss=total/len(train_indices), **evaluate())
+        row = dict(epoch=epoch+1, train_loss=total/len(order), **evaluate())
         history.append(row)
         if row['validation_selection_score'] < best:
             best = row['validation_selection_score']
@@ -246,6 +287,10 @@ def main():
     with np.load(args.base_checkpoint, allow_pickle=False) as old, np.load(checkpoint, allow_pickle=False) as new:
         assert all(np.array_equal(old[key], new[key]) for key in old.files if key != 'inference_dtype')
     assert digest(args.base_checkpoint) == base_hash and digest(args.data) == data_hash
+    if extra_training:
+        assert digest(args.extra_training_data) == extra_training['sha256']
+    if critical_training:
+        assert digest(args.critical_material_labels) == critical_training['sha256']
     export_passes = (verification['export_max_abs_error'] <= 1e-5
                      and abs(verification['validation_selection_score']-best) <= 1e-5)
     manifest = dict(status='complete' if export_passes else 'export_verification_failed',
@@ -256,6 +301,8 @@ def main():
         data_sha256=data_hash, checkpoint_sha256=digest(checkpoint), trainer_sha256=digest(Path(__file__)),
         training_groups=sorted(set(groups[~validation].tolist())), validation_groups=sorted(set(groups[validation].tolist())),
         train_rows=len(train_indices), validation_rows=len(val_indices),
+        samples_per_epoch=samples_per_epoch, extra_training=extra_training,
+        critical_material_training=critical_training,
         native_target_crop=1, initial_parameters=initial_parameters,
         distance_objective=dict(beta_mm=.05, overprediction_weight=args.overprediction_weight,
                                 underprediction_weight=1., calibrated_probability=False),

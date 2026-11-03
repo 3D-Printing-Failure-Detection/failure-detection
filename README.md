@@ -253,8 +253,16 @@ exactly, and its unweighted control reproduces the coverage checkpoint. Training
 finishes with rare-pixel validation recall at 59.1%, versus the original 35.2%,
 but more false-positive material and worse average error. The complete Cartesian
 mug check now passes; CoreXY closes its false gap but retains one false hard-thin
-layer. Diagnostics continue in tmux; the qualification gates remain unchanged.
-The latest implementation passes 231 repository tests and 39 Torch/training checks.
+layer. Both cups retain two false hard-thin layers. All 640 control feature
+records reproduce exactly; one of four complete checks passes, so the model
+is rejected before recovery evaluation.
+The latest experiment freezes this camera and trains small spatial refinement
+layers on the same augmented data. Both remove the remaining false hard-thin
+alarms on four sampled images, with unchanged thresholds and inputs. Both complete
+mug checks and the Cartesian cup pass; the last cup and real-defect detection
+checks remain in the tmux pipeline. Selected images
+do not establish a recovery improvement. The implementation passes 231
+repository tests and 41 Torch/training checks.
 
 ## The idea in physical terms
 

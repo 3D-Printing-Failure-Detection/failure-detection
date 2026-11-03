@@ -2091,10 +2091,70 @@ rare-material validation recall, versus the original 35.22\%, but increases
 background false positives from 3,971 to 4,706 and worsens average boundary error
 to 0.093091 mm. This local recall gain does not establish functional success.
 The full Cartesian mug check now passes. CoreXY closes the false gap but retains
-one false hard-thin layer, so replacement qualification is unmet. Inputs,
+one false hard-thin layer. Both cups retain two false hard-thin layers, so the
+one-of-four result rejects replacement qualification. Inputs,
 initialization, sampling, training budget, validation selection and full-print
-qualification remain matched. All 320 completed per-layer control feature
+qualification remain matched. All 640 per-layer control feature
 records and full-stack verdicts reproduce exactly. The latest source passes 231 repository
 tests and 39 Torch and training checks. No new recovery benefit is established.
+
+\clearpage
+\section{Learning spatial refinement after broader training}
+The combined coverage and weighting model closes the false gaps but leaves
+small extra cavities and false thin-wall alarms. On the CoreXY mug's affected
+layer, it predicts eight cavities where the actual geometry has one. The
+hard-thin excess is 0.03029, above the unchanged 0.03 threshold; the actual
+layer's excess is 0.00495. Both cup cases have similar false alarms.
+
+The next experiment freezes every weight of that camera and trains the existing
+native spatial refinement heads: a ten-parameter linear convolution and an
+89-parameter nonlinear residual layer. Both start as identity transformations
+and use the same augmented training data, critical-pixel weighting, 40 epochs,
+seed and 3,720 samples per epoch. No material is filled by a postprocessing rule.
+Inputs, thickness thresholds, physical simulation and functional requirements
+remain unchanged.
+
+\subsection*{Matched training and export checks}
+The convolution uses a valid 62-by-62 interior of each 64-by-64 tile. Loss weights
+are computed only on those interior training pixels; validation selection stays
+unweighted on the same 2,040 original validation tiles. Scores are compared with
+the frozen base at identical coordinates, not with its earlier whole-tile scores.
+Disabling the added training options reproduces the earlier linear refinement
+checkpoint exactly. Eight identity checks, covering both heads and all four
+retained onset images, reproduce the base distances and measured geometry exactly.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Camera & Interior boundary error (mm) & Sign accuracy\\
+\midrule
+Frozen base & 0.092894 & 73.50\%\\
+Linear refinement & 0.093104 & 74.46\%\\
+Nonlinear refinement & 0.089384 & 74.50\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Qualification remains separate from training}
+A fixed-checkpoint screen on the four retained onset images reproduces all base
+features. Both new heads remove the false hard-thin flags on these sampled
+images; the CoreXY mug now has one predicted cavity. Both complete 160-layer mug
+diagnostics and the Cartesian cup pass for both heads. The Bedslinger cup is still running.
+Selected images and average accuracy do not establish
+successful recovery.
+
+Each head must pass all four full-print functional checks before broader camera
+validation. On all 2,040 retained validation frames, it must preserve every true
+functional-defect detection made by the original camera and must not increase
+combined false negatives. Individual gap, thickness, base and connection errors
+remain reported. Known specified bases use the existing classical measurement;
+truth is used only for offline evaluation. All per-layer base-control features
+must reproduce exactly. Actual neural/Qwen recovery trials follow only after
+these gates pass.
+
+The implementation passes 231 repository tests, with three optional modules
+skipped, and 41 Torch/training checks. The frozen run and logs are retained in
+\code{neural-recovery:native-coverage-v58}. Fresh seeds 2001--2004 remain untouched.
+The experiment does not yet establish a new completed-print success rate.
 
 \end{document}

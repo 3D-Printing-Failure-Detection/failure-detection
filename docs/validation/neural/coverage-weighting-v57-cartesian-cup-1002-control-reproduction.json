@@ -1,0 +1,6 @@
+{
+  "status": "verified",
+  "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/cartesian-cup-1002/final.json",
+  "reference_sha256": "089a55a43a95eceab8743acb4d66ec3e9c9328a723f90a4a62b7d1b08b2356ad",
+  "current_final_sha256": "e60cbef34f96ba29d34c03e663ceb19b505b09827920c306975354f8f8e79ee3"
+}

@@ -149,3 +149,35 @@ def test_gap_sensitive_cost_preserves_control_and_penalizes_invented_material():
     for weight in [.5, float('nan'), float('inf')]:
         with pytest.raises(ValueError, match='overprediction weight'):
             refinement_distance_loss(prediction, target, weight)
+
+
+def test_refinement_binds_augmented_base_to_exact_extra_dataset_and_sampling(tmp_path):
+    checkpoint = tmp_path/'base.npz'
+    checkpoint.write_bytes(b'provenance only')
+    groups = np.array(['train', 'validation', 'extra'])
+    split = np.array([False, True, False])
+    extra = dict(sha256='extra-data', parent_data_sha256='parent', rows=1, groups=1,
+                 extra_sampling_mass=.5, samples_per_epoch=1)
+    manifest = dict(status='complete', checkpoint_sha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+                    data_sha256='parent', training_groups=['extra', 'train'], validation_groups=['validation'],
+                    extra_training=extra)
+    (tmp_path/'training.json').write_text(json.dumps(manifest))
+    verify_base_training(checkpoint, 'parent', groups, split, extra)
+    for changed in (None, dict(extra, sha256='other-data'), dict(extra, extra_sampling_mass=.2)):
+        with pytest.raises(ValueError, match='extra training provenance'):
+            verify_base_training(checkpoint, 'parent', groups, split, changed)
+
+
+def test_native_interior_loss_weights_exclude_crop_edges_and_validation():
+    from tools.boundary_critical_material import critical_loss_factors
+    target = np.zeros((3, 1, 4, 4), dtype='float32')
+    masks = np.zeros_like(target, dtype=bool)
+    target[:, :, 0, :] = .1; masks[:, :, 0, :] = True
+    target[:, :, 1, 1] = .1; masks[:, :, 1, 1] = True
+    validation = np.array([False, True, False])
+    weights = critical_loss_factors(target[:, :, 1:-1, 1:-1], masks[:, :, 1:-1, 1:-1],
+                                    validation, np.array([.5, .5]), .5)
+    assert weights['critical_training_pixels'] == 2
+    masks[validation] = False
+    assert weights == critical_loss_factors(target[:, :, 1:-1, 1:-1], masks[:, :, 1:-1, 1:-1],
+                                             validation, np.array([.5, .5]), .5)

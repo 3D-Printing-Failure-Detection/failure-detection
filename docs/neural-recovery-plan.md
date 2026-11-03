@@ -794,21 +794,59 @@ alone's 29.73% and coverage alone's 8.02%. Training recall is 95.75%. Validation
 background false positives increase to 4,706 versus the original 3,971. Thus
 broader coverage and weighting together improve this local recall measure while
 trading away other accuracy; a functional benefit is not established. All three
-earlier model audits reproduce exactly. Full-print diagnostics run in
-`neural-recovery:coverage-weighting-v57`.
+earlier model audits reproduce exactly. All four full-print diagnostics are complete.
 The Cartesian mug's complete 160-layer check now passes using learned walls and
 the specified classical bases: no false gap, zero apparent overhang and no
 functional violations. CoreXY also closes the false gap and has zero apparent
 overhang, but retains one false hard-thin layer at onset, so it fails qualification.
-A separate audit exactly reproduces all 320 completed per-layer control features,
+A separate audit exactly reproduces all 640 per-layer control features,
 IoU and boundary-distance measurements, as well as the final full-stack verdicts.
 It does not claim byte-identical RGB or measured geometry, which these diagnostic
-records do not retain. Each subsequent full-print diagnostic must also reproduce
-the prior coverage model's final verdict and metrics. The unchanged camera qualification gates still
-apply. The source passes 231 repository tests and 39 Torch and training checks.
+records do not retain. Both cup checks retain two false hard-thin layers despite
+closing their false gaps and eliminating apparent overhang. The result is one
+passing case out of four; the unchanged gate rejects the camera before broader
+validation or recovery. The source passes 231 repository tests and 39 Torch and training checks.
 Its 8 MB allowance reserves the concurrent coverage experiment's remaining
 space. Packing 864 completed result rows and actually restoring their bytes
 reclaims a further 10.6 MB without changing any primary result or audit.
+
+`native-coverage-v58` freezes this latest camera and trains the existing native
+spatial refinement heads on the same augmented examples and pixel weights. The
+linear head has ten parameters; the nonlinear residual head has 89. Both retain
+the 40-epoch schedule and 3,720 samples per epoch. Labels and weights use only the
+valid 62-by-62 interior needed by the head's 3-by-3 convolution. Validation remains
+unweighted on the same original 2,040 tiles, at identical interior coordinates.
+The new options disabled reproduce the earlier `41bebe51` refinement checkpoint
+exactly. Both identity exports reproduce the base distances and measured geometry
+exactly on all four retained onset images. There is no runtime hole filling or
+change to thickness thresholds, camera inputs, physics or functional specifications.
+
+The new checkpoints are linear `fb422245` and nonlinear `75226995`. The base's
+interior boundary error is 0.092894 mm, versus 0.093104 and 0.089384 mm;
+near-boundary sign accuracy rises from 73.50% to 74.46% and 74.50%. These cropped
+scores should not be compared directly with the preceding whole-tile scores.
+A retrospective onset screen reproduces all base features and finds that both
+heads remove the false hard-thin alarms on the four sampled images. The CoreXY
+mug prediction falls from eight cavities to the single actual cavity. This is
+selected-frame evidence, not full-print qualification or improved recovery.
+Both complete 160-layer mug checks and the Cartesian cup pass for both heads;
+the Bedslinger cup is running. All 480 completed base-control records reproduce exactly.
+The frozen tmux run `neural-recovery:native-coverage-v58` checks all four complete
+prints, then advances qualifying heads to all 2,040 retained validation frames.
+Every original true functional-defect detection must remain detected, combined
+false negatives must not increase, and all component error counts are reported.
+The implementation passes 231 repository tests and 41 Torch/training checks.
+Fresh seeds remain untouched and no new recovery result is claimed.
+
+A follow-up runner is prepared but has not launched. It requires successful
+completion of these camera gates before comparing qualified heads with the
+existing continuation-fallback controller and successful ignore controls on the
+four target cases. Passing heads then have to preserve all 50 retained v51
+candidate/preservation rows: each variant's 14 fault successes and six clean
+controls, with no new defective case. All reference rows and their camera traces
+have been verified. The same runtime and functional specifications are used;
+the existing classical-base option is enabled for the new cameras. This planned
+comparison does not establish a result.
 
 ## Preserving historical container rescues
 
