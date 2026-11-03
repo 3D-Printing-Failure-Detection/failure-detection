@@ -90,6 +90,39 @@ def test_distinct_frozen_versions_compare_without_claiming_a_gain(comparison, mo
     assert set(report['configurations']['configurations']) == {'previous', 'candidate'}
 
 
+@pytest.mark.parametrize('different_pixels', [False, True])
+def test_camera_consistency_spans_separately_audited_inputs(comparison, monkeypatch, different_pixels):
+    import numpy as np
+    from recovery.eval.camera_trace import camera_frame_digest, encode_camera_prefix
+    for index, directory in enumerate(comparison[2]):
+        rows = [json.loads(line) for line in (directory/'runs.jsonl').read_text().splitlines()]
+        pixel = int(different_pixels and index == 1)
+        fingerprint = camera_frame_digest(np.full((8, 8, 3), pixel, dtype=np.uint8))
+        for row in rows:
+            row.update(frames=160, actions=[], camera_prefix=encode_camera_prefix([fingerprint]*160))
+        (directory/'runs.jsonl').write_text('\n'.join(json.dumps(row) for row in rows)+'\n')
+        manifest = json.loads((directory/'manifest.json').read_text())
+        manifest['camera_trace_version'] = 1
+        write_json(directory/'manifest.json', manifest)
+        audit_path = directory.parent/'audit/audit.json'
+        audit = json.loads(audit_path.read_text())
+        audit['runs_sha256'] = file_digest(directory/'runs.jsonl')
+        write_json(audit_path, audit)
+    if different_pixels:
+        with pytest.raises(AssertionError, match='camera inputs differ before adaptation'):
+            run_comparison(monkeypatch, comparison, ['--require-camera-traces'])
+    else:
+        report = run_comparison(monkeypatch, comparison, ['--require-camera-traces'])
+        assert report['camera_input_consistency']['paired_cases'] == 2
+        assert report['camera_input_consistency']['compared_frames'] == 320
+        assert report['camera_input_consistency']['unchecked_legacy_rows'] == 0
+
+
+def test_required_camera_evidence_rejects_legacy_comparison(comparison, monkeypatch):
+    with pytest.raises(AssertionError, match='declaration is missing'):
+        run_comparison(monkeypatch, comparison, ['--require-camera-traces'])
+
+
 @pytest.mark.parametrize('field, value, message', [
     ('source_sha256', 'different', 'different source'),
     ('neural_checkpoint_sha256', 'different', 'different model'),

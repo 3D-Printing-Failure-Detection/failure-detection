@@ -7,6 +7,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from tools.experiment_provenance import load_configurations, verify_configuration
+from recovery.eval.camera_trace import validate_camera_manifest, validate_camera_prefixes
 
 
 def digest(path):
@@ -26,6 +27,8 @@ def main():
     parser.add_argument('--baselines', nargs='+', default=['contour'])
     parser.add_argument('--failure-cases', type=int, required=True)
     parser.add_argument('--test-seeds', type=int, nargs='+', help='require exactly these seeds, disjoint from training/validation')
+    parser.add_argument('--require-camera-traces', action='store_true',
+                        help='require camera-input consistency evidence from every compared configuration')
     parser.add_argument('--out', type=Path, required=True)
     args = parser.parse_args()
     configurations, training, boundary_training, training_manifests = None, None, None, []
@@ -60,6 +63,7 @@ def main():
             boundaries.add(manifest['boundary_checkpoint_sha256'])
         batch = [json.loads(line) for line in (directory/'runs.jsonl').read_text().splitlines()]
         assert len(batch) == audit['rows']
+        validate_camera_manifest(manifest, batch, args.require_camera_traces)
         names = labels.get(str(directory.resolve()), {})
         assert set(names) <= set(manifest['arguments']['methods']), 'label references an absent policy'
         assert all(isinstance(name, str) and name for name in names.values())
@@ -81,6 +85,7 @@ def main():
         rows.extend((names.get(row['method'], row['method']), row) for row in batch)
         inputs.append(dict(directory=str(directory.resolve()), manifest_sha256=manifest_hash,
                            audit_sha256=digest(audit_path), runs_sha256=audit['runs_sha256'], labels=names))
+    camera_consistency = validate_camera_prefixes([row for _, row in rows], args.require_camera_traces)
     if configurations:
         assert used_configurations == set(configurations['configurations']), 'pinned configuration has no results'
         expected_shards = {(label, key) for label, config in configurations['configurations'].items()
@@ -151,6 +156,7 @@ def main():
     assert len(required) == len(set(args.baselines)) > 0
     best = max(value['failure']['in_place'] for value in summary.values())
     report = dict(inputs=inputs, source_sha256=next(iter(sources)) if len(sources) == 1 else None,
+        camera_input_consistency=camera_consistency,
         comparator_sha256=digest(Path(__file__)),
         provenance_verifier_sha256=digest(Path(__file__).with_name('experiment_provenance.py')),
         checkpoint_sha256=next(iter(checkpoints)) if len(checkpoints) == 1 else None,

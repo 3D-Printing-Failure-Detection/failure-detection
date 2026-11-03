@@ -31,6 +31,7 @@ from ..models.classical import ClassicalDetector, ClassicalSegmenter, boundary_d
 from ..parts import PART_NAMES, get_part
 from ..printer.profiles import PROFILES
 from .run_eval import METHODS, ScrapPolicy
+from .camera_trace import TRACE_VERSION, camera_frame_digest, encode_camera_prefix
 
 EXPERIMENT_METHODS = METHODS + ["measured", "predictive", "functional", "guarded", "contour", "contour_risk", "neural", "neural_agent", "neural_camera", "neural_camera_agent", "neural_risk", "neural_risk_agent"]
 
@@ -43,8 +44,11 @@ class ObservedSegmenter(ClassicalSegmenter):
         self.ious = []
         self.policy = None
         self.forecast_scores = []
+        self.camera_prefix = []
 
     def measure(self, image, expected_mask=None):
+        if not getattr(self.printer, 'replacements', []):
+            self.camera_prefix.append(camera_frame_digest(image))
         measured = (self.segmenter.measure(image, expected_mask) if self.segmenter is not None
                     else super().measure(image, expected_mask))
         self.ious.append(iou(measured, self.printer.printed[-1].region))
@@ -182,6 +186,7 @@ def run_case(job):
                 filament_ratio=used / full,
                 filament_with_assumed_clean_restart=(used + (full if pr.cancelled else 0)) / full,
                 n_layers=len(nominal), layers_printed=pr.n_done, frames=pr.camera_frames,
+                camera_prefix=encode_camera_prefix(seg.camera_prefix),
                 n_events=len(events), pre_failure_alarms=sum(e.layer < k0 for e in events),
                 alarm_delay=post_failure[0].layer-k0 if post_failure else -1,
                 first_label=events[0].label if events else "",
@@ -397,7 +402,7 @@ def main(argv=None):
             for p in args.profiles for part in args.parts for kind in args.kinds
             for seed in range(args.seed, args.seed + args.n)]
     manifest = dict(arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
-                    instrumentation_version=4,
+                    instrumentation_version=4, camera_trace_version=TRACE_VERSION,
                     profiles={k: asdict(PROFILES[k]) for k in args.profiles},
                     python=platform.python_version(),
                     packages={p: importlib.metadata.version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},

@@ -1765,4 +1765,32 @@ reproduced, and its cause remains unresolved. Its benchmark row remains a
 failure; the replay neither replaces it nor earns an extra recovery. The apparent
 one-case agent advantage is not established as a Qwen benefit.
 
+\subsection*{Record and compare actual camera inputs}
+Future evaluations now record a compact 128-bit SHA-256 fingerprint of every
+camera image through the first adaptation, including its triggering frame.
+Capture occurs before segmentation; these fingerprints never enter a detector,
+estimator, policy or supervisor. The trace records its algorithm, version and
+exact frame count. Audits reject malformed or truncated traces and unequal
+common prefixes. The comparator also checks separately audited inputs, so a
+failed short print can be compared with a longer successful print before their
+commands diverge.
+
+The \texttt{--require-camera-traces} option requires this evidence from every
+compared configuration. Legacy records remain readable but explicitly unverified
+for camera-input consistency. All 176 repository tests pass, with three optional
+modules skipped. Tests cover different prefix lengths, actual interventions,
+cross-directory comparisons, invalid evidence and capture before segmentation.
+The simulation contract remains unchanged.
+
+The frozen \texttt{camera-trace-v41} check replays the anomalous cup and a
+historical cup recovery with and without Qwen. Its four rows must preserve
+the retained control outcomes, action sequences and measurement IoU while
+passing the new camera checks. All four complete and pass strict audits and
+the cross-directory comparator. The 536 recorded prefix frames supply 268
+matching paired frames: 160 for the unadapted cup and 108 through the historical
+recovery's triggering frame. Both methods reproduce the control outcomes,
+action sequences and mean measurement IoU exactly; Qwen makes four actual calls.
+This validates instrumentation without claiming new recovery or replacing the
+original benchmark results.
+
 \end{document}

@@ -125,7 +125,7 @@ supported only by the learned camera despite failed uncertainty checks. An
 opt-in guard now rejects such corrections. Its complete 42-row regression passes:
 both variants retain all ten required fault successes and six clean controls,
 stop the four extra defective prints, and retain the one pre-existing defect.
-Qwen makes 60 calls and ties neural-only. All 164 repository tests pass. The
+Qwen makes 60 calls and ties neural-only. All 176 repository tests pass. The
 complete 576-row guarded rerun now records **141/240 successes and one defective
 finish with Qwen**, retaining all 48 clean controls. Its 6,336-row comparison
 preserves all 20 earlier configuration summaries. Qwen makes 523 actual calls.
@@ -136,6 +136,13 @@ diagnostic reproduces identical early frames and both variants succeed on full
 replay; the original failure is retained and its cause remains unresolved. The complete
 historical regression has started. Five ignore successes remain lost, and
 untouched-test superiority is unproven.
+Future evaluations record compact fingerprints of every camera image through
+the first adaptation. Audits compare these prefixes across policies, including
+separate result directories; final comparisons can require this evidence from
+every configuration. Legacy results remain explicitly unverified for camera
+input consistency. All four instrumentation checks pass on the anomalous cup
+and a historical recovery: 268 paired frames match, with unchanged outcomes,
+action sequences, physics and policy options.
 Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup

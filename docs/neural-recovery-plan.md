@@ -559,6 +559,34 @@ Qwen makes three actual calls. The original anomalous observation is not reprodu
 Its cause remains unresolved; no replay replaces the original benchmark row or
 establishes an agent benefit.
 
+New evaluation instrumentation records a 128-bit SHA-256 fingerprint of every
+actual camera input through the first adaptation, including the frame that
+triggers that adaptation. Fingerprints are collected before segmentation and
+never passed to an estimator, detector, policy or supervisor. The compact trace
+includes its algorithm, version and exact frame count. The auditor rejects
+malformed or truncated traces and mismatched common prefixes; the comparator
+also checks across separately audited input directories. Both tools accept
+`--require-camera-traces` to prohibit legacy records without this evidence.
+Older results remain readable and explicitly counted as unverified, rather than
+being retroactively certified.
+
+All 176 repository tests pass with three optional modules skipped. Tests include
+a failed four-layer prefix versus a successful longer print, checks across
+separate audited inputs, stopping at the first adaptation, capturing pixels
+before segmentation, malformed evidence and strict rejection of missing traces.
+The simulation contract remains byte-identical. `camera-trace-v41` freezes this
+instrumentation and replays the previously anomalous cup and the historical cup
+under-extrusion rescue, both neural-only and Qwen. It requires matching camera
+inputs and unchanged outcomes, action sequences and measurement IoU relative to
+the retained same-option controls. All four rows complete and pass strict audits
+and the cross-directory comparator in `neural-recovery:camera-trace-v41`.
+The 536 recorded prefix frames supply 268 matching paired frames: 160 through
+the entire unadapted cup, and 108 through the frame that triggers the historical
+cup correction. Both methods reproduce their reference outcomes, action sequences
+and mean measurement IoU exactly. Qwen makes four actual calls across the two
+cases. These are instrumentation checks, not new policy gains. Existing full
+and trend runs retain their frozen sources.
+
 `robust-historical-v34` has started after that full comparison. Before starting, the
 candidate must have the best completion count, no higher defect count, all clean
 controls passing and no lost active-recovery baseline successes. Any remaining
@@ -758,6 +786,14 @@ The original raw results, manifests, audits and successful exit records keep
 their hashes. The [receipt](validation/neural/completed-report-archive-v5-receipt.json)
 and [restore check](validation/neural/completed-report-archive-v5-restore-check.json)
 retain the details; no active experiment output is archived.
+
+The [v6 archive](validation/neural/completed-report-archive-v6-summary.json)
+preserves 289 duplicate reports from the completed guarded grid: 17.71 MB
+compressed to 1.19 MB. Every journal row equals its retained raw result, every
+archive member is verified, and an actual sample restore passes. Replaying the
+entire 6,336-row comparison after archival reproduces its original bytes and
+SHA-256 exactly. The original anomalous failure, all raw outcomes and all audit
+and comparison hashes are preserved.
 
 ## Comparing actual earlier implementations
 

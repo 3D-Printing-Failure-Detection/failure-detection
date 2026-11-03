@@ -6,6 +6,10 @@ import itertools
 import json
 import math
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from recovery.eval.camera_trace import validate_camera_manifest
 
 
 def validate_outcomes(rows, clear_failure_on_adapt=False):
@@ -104,6 +108,8 @@ def main():
                         help='audit a shard with no eligible agent decision; never counts it as actual supervision')
     parser.add_argument('--analytical-only', action='store_true',
                         help='require a model-free analytical control with zero neural, boundary and agent calls')
+    parser.add_argument('--require-camera-traces', action='store_true',
+                        help='reject legacy runs without camera-input consistency evidence')
     args = parser.parse_args()
     manifest = json.loads((args.directory / 'manifest.json').read_text())
     rows = [json.loads(line) for line in (args.directory / 'runs.jsonl').read_text().splitlines()]
@@ -119,6 +125,7 @@ def main():
     assert len(rows) == len(set(identities)) == manifest['completed_runs'] == manifest['expected_runs']
     assert set(identities) == expected
     validate_outcomes(rows, config['clear_failure_on_adapt'])
+    camera_consistency = validate_camera_manifest(manifest, rows, args.require_camera_traces)
     total_calls, reused = 0, 0
     for row in rows:
         assert row['frames'] == (0 if row['method'] == 'ignore' else row['layers_printed'])
@@ -222,6 +229,7 @@ def main():
     raw_sha = hashlib.sha256((args.directory / 'runs.jsonl').read_bytes()).hexdigest()
     report = dict(status='passed', source_sha256=manifest['source_sha256'],
         analytical_only=args.analytical_only,
+        camera_input_consistency=camera_consistency,
         checkpoints=checkpoints, runs_sha256=raw_sha,
         rows=len(rows), actual_agent_calls=total_calls, reused_reviews=reused, summary=summary,
         agent_decision_opportunities=opportunities,

@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "restored_path": "neural-robust-full-v33/full/results/cases/6ff5845887b8284f.jsonl",
+  "restored_sha256": "648ad10debe0442d35c0a2fed5f1e4992666aff917bc6b19c40a14e30dea9fcc",
+  "sample_restore_removed_after_verification": true,
+  "all_retained_raw_result_manifest_audit_and_comparison_pins_unchanged": true,
+  "replayed_comparison_rows": 6336,
+  "replayed_comparison_byte_identical": true,
+  "comparison_sha256": "97cb0218e1c578ef1fd0a7e23c0e863efdbd30f6a6a7092091b2a61ebaed55db"
+}
