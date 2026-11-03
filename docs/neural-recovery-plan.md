@@ -829,8 +829,9 @@ A retrospective onset screen reproduces all base features and finds that both
 heads remove the false hard-thin alarms on the four sampled images. The CoreXY
 mug prediction falls from eight cavities to the single actual cavity. This is
 selected-frame evidence, not full-print qualification or improved recovery.
-Both complete 160-layer mug checks and the Cartesian cup pass for both heads;
-the Bedslinger cup is running. All 480 completed base-control records reproduce exactly.
+Both heads pass all four complete 160-layer checks, including both mugs and both
+cups. All 640 base-control records reproduce exactly. Every predicted stack has
+zero apparent overhang and no functional violations under the unchanged specification.
 The frozen tmux run `neural-recovery:native-coverage-v58` checks all four complete
 prints, then advances qualifying heads to all 2,040 retained validation frames.
 Every original true functional-defect detection must remain detected, combined
@@ -838,7 +839,8 @@ false negatives must not increase, and all component error counts are reported.
 The implementation passes 231 repository tests and 41 Torch/training checks.
 Fresh seeds remain untouched and no new recovery result is claimed.
 
-A follow-up runner is prepared but has not launched. It requires successful
+A follow-up launcher waits in `neural-recovery:next-recovery-v59`; no recovery
+trial has started yet. It requires successful
 completion of these camera gates before comparing qualified heads with the
 existing continuation-fallback controller and successful ignore controls on the
 four target cases. Passing heads then have to preserve all 50 retained v51
@@ -846,7 +848,10 @@ candidate/preservation rows: each variant's 14 fault successes and six clean
 controls, with no new defective case. All reference rows and their camera traces
 have been verified. The same runtime and functional specifications are used;
 the existing classical-base option is enabled for the new cameras. This planned
-comparison does not establish a result.
+comparison does not establish a result. The launcher watches the original camera
+process identity, never restarts it, and checks the completed validation manifest,
+exact qualified checkpoint hashes, local Qwen process and storage quota before
+starting. A rejected camera result skips the follow-up.
 
 ## Preserving historical container rescues
 

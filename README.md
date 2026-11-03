@@ -258,10 +258,10 @@ records reproduce exactly; one of four complete checks passes, so the model
 is rejected before recovery evaluation.
 The latest experiment freezes this camera and trains small spatial refinement
 layers on the same augmented data. Both remove the remaining false hard-thin
-alarms on four sampled images, with unchanged thresholds and inputs. Both complete
-mug checks and the Cartesian cup pass; the last cup and real-defect detection
-checks remain in the tmux pipeline. Selected images
-do not establish a recovery improvement. The implementation passes 231
+alarms on four sampled images, with unchanged thresholds and inputs. Both heads
+now pass all four complete-print checks across 640 frames. The broader real-defect
+detection check runs in tmux, with a recovery comparison queued only if that gate
+passes. Camera qualification does not establish a recovery improvement. The implementation passes 231
 repository tests and 41 Torch/training checks.
 
 ## The idea in physical terms

@@ -9,6 +9,18 @@ assert (camera/'run.exit').read_text().strip()=='0'
 gate=read(camera/'condition.json');assert gate['status']=='camera_gates_passed'
 heads=[name for name in ['linear','nonlinear'] if gate['geometry_gate'].get(name,False)]
 assert heads
+launch_record=read(camera/'launch.json')
+assert digest(camera/'protocol.json')==launch_record['protocol_sha256']
+assert digest(camera/'run.py')==launch_record['runner_sha256']
+geometry=read(camera/'geometry-validation/manifest.json')
+assert geometry['status']=='complete' and geometry['frames']==2040
+qualified_models={name:(path,sha) for name,path,sha in geometry['checkpoints']}
+diagnostics=read(camera/'diagnostic-results.json');assert len(diagnostics)==4
+for name in heads:
+    path=camera/name/'boundary.npz';sha=digest(path)
+    assert qualified_models[name]==(str(path),sha)
+    assert read(path.parent/'training.json')['checkpoint_sha256']==sha
+    assert all(row['passes'][name] for row in diagnostics)
 size=lambda path:int(subprocess.check_output(['du','-sx','-B1',str(path)]).split()[0])
 used=size('/mnt/data/ishaan');assert used+19_000_000<99_990_000_000,used
 old=read(previous/'protocol.json');source=Path(read(camera/'protocol.json')['source'])
@@ -53,7 +65,8 @@ for name in heads:
         command+=['--boundary-classical-base']
         preservation_jobs.append(dict(name=label,model=name,command=command,expected_rows=job['expected_rows']))
 pins=[root/'run.py',root/'supervisor-runtime.json',supervisor_path,camera/'condition.json',camera/'protocol.json',
-    camera/'run.exit',previous/'condition.json',previous/'comparison.json',
+    camera/'run.exit',camera/'diagnostic-results.json',camera/'geometry-validation/manifest.json',
+    previous/'condition.json',previous/'comparison.json',
     base/'neural-equivariant-v1/classical/temporal.npz',base/'neural-equivariant-v1/classical/training.json']
 for value in models.values():pins += [Path(value['path']),Path(value['path']).parent/'training.json']
 for directory in map(Path,reference_directories):

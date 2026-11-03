@@ -1,5 +1,9 @@
 {
-  "status": "complete_print_camera_diagnostics",
+  "status": "broad_camera_validation",
+  "qualified": [
+    "linear",
+    "nonlinear"
+  ],
   "new_recovery_trials": 0,
-  "identity_checks": 8
+  "diagnostic_frames": 640
 }

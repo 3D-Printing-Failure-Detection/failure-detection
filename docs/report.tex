@@ -2138,19 +2138,22 @@ Nonlinear refinement & 0.089384 & 74.50\%\\
 \subsection*{Qualification remains separate from training}
 A fixed-checkpoint screen on the four retained onset images reproduces all base
 features. Both new heads remove the false hard-thin flags on these sampled
-images; the CoreXY mug now has one predicted cavity. Both complete 160-layer mug
-diagnostics and the Cartesian cup pass for both heads. The Bedslinger cup is still running.
-Selected images and average accuracy do not establish
-successful recovery.
+images; the CoreXY mug now has one predicted cavity. Both new heads then pass all
+four complete 160-layer diagnostics, covering both mugs and both cups. Every
+predicted stack has zero apparent overhang and no functional violations. All
+640 per-layer base-control feature records reproduce exactly. This is camera
+qualification evidence, not a new completed-print recovery rate.
 
-Each head must pass all four full-print functional checks before broader camera
-validation. On all 2,040 retained validation frames, it must preserve every true
+The broader camera validation is now running. On all 2,040 retained validation
+frames, each head must preserve every true
 functional-defect detection made by the original camera and must not increase
 combined false negatives. Individual gap, thickness, base and connection errors
 remain reported. Known specified bases use the existing classical measurement;
 truth is used only for offline evaluation. All per-layer base-control features
-must reproduce exactly. Actual neural/Qwen recovery trials follow only after
-these gates pass.
+must reproduce exactly. Actual neural/Qwen recovery trials are queued in tmux
+only after these gates pass, with exact checkpoint and storage checks. They must
+first complete all four target cases, then preserve the previous controller's
+50 targeted candidate and regression results without new defects or lost successes.
 
 The implementation passes 231 repository tests, with three optional modules
 skipped, and 41 Torch/training checks. The frozen run and logs are retained in
