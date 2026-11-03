@@ -195,10 +195,50 @@ def test_watch_runs_end_to_end_without_commanding(tmp_path, monkeypatch):
     f = tmp_path / "p.gcode.3mf"
     with zipfile.ZipFile(f, "w") as z:
         z.writestr("Metadata/plate_1.gcode", _bambu_file(3))
-    run = live.run_watch(None, str(f), "ip", "serial", "code", "calib.npz", out=str(tmp_path / "w"),
+    calib = tmp_path / "calib.npz"
+    calib.write_bytes(b"")                            # BedCamera.load is patched; the file must exist
+    run = live.run_watch(None, str(f), "ip", "serial", "code", str(calib), out=str(tmp_path / "w"),
                          log=lambda *a: None)
     rows = [json.loads(l) for l in (run / "layers.jsonl").read_text().splitlines()]
     assert [r["layer"] for r in rows] == [0, 1, 2] and all("label" in r for r in rows)
     assert len(list((run / "frames").glob("*_raw.jpg"))) == 3
     meta = json.loads((run / "meta.json").read_text())
     assert meta["layers_observed"] == 3 and meta["printer_total_layer_num"] == 3
+
+
+def test_watch_without_calibration_saves_raw_frames_only(tmp_path, monkeypatch):
+    import json
+    from recovery import live
+
+    class FakeCam:
+        def grab(self, newer_than=None, timeout=10):
+            return np.zeros((72, 128, 3), np.uint8)
+
+    class FakeBambu:
+        def __init__(self, ip, serial, code, planned, layer_h, bed_camera, observe_only=False, **kw):
+            assert observe_only and bed_camera is None
+            self.plan, self.printed, self.skipped_layers, self._layer_done_t = list(planned), [], 0, 0.0
+            self.link, self.cam = FakeLink(gcode_state="RUNNING", total_layer_num=len(planned)), FakeCam()
+
+        n_done = property(lambda self: len(self.printed))
+        n_total = property(lambda self: len(self.plan))
+
+        def print_layer(self):
+            self.printed.append(self.plan[len(self.printed)])
+
+        def expected_layer(self):
+            return self.plan[len(self.printed) - 1]
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(live, "BambuPrinter", FakeBambu)
+    f = tmp_path / "p.gcode.3mf"
+    with zipfile.ZipFile(f, "w") as z:
+        z.writestr("Metadata/plate_1.gcode", _bambu_file(2))
+    run = live.run_watch(None, str(f), "ip", "serial", "code", str(tmp_path / "missing.npz"),
+                         out=str(tmp_path / "w"), log=lambda *a: None)
+    rows = [json.loads(l) for l in (run / "layers.jsonl").read_text().splitlines()]
+    assert [r["label"] for r in rows] == ["unmeasured"] * 2
+    assert len(list((run / "frames").glob("*_raw.jpg"))) == 2
+    assert json.loads((run / "meta.json").read_text())["calibrated"] is False

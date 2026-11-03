@@ -129,24 +129,30 @@ def run_watch(part_path, gcode_path, ip, serial, code, calib_path, models="class
     layer: grab a fresh frame, measure, detect, and (on an alarm) ask the policy what it WOULD
     do. Nothing is sent to the printer. Saves raw + top-down frames, the expected mask and one
     JSON line per layer under <out>/<timestamp>/: real images for the dataset and evidence for
-    tuning thresholds before `live` is allowed to act."""
+    tuning thresholds before `live` is allowed to act. Without a calibration file only the raw
+    frames and the layer log are saved (still useful as real data); nothing is measured."""
     part = _load_watch_part(part_path, gcode_path, plate)
+    calibrated = bool(calib_path) and Path(calib_path).exists()
     nom = part.layers()
     run = Path(out) / time.strftime("%Y%m%d-%H%M%S")
     frames = run / "frames"
     frames.mkdir(parents=True, exist_ok=True)
-    printer = BambuPrinter(ip, serial, code, nom, part.layer_h, BedCamera.load(calib_path),
+    printer = BambuPrinter(ip, serial, code, nom, part.layer_h,
+                           BedCamera.load(calib_path) if calibrated else None,
                            origin=part.origin, original_gcode=part.gcode_text, observe_only=True)
     seg, det = make_models(models)
     pol = RulePolicy(part.spec, nom, part.layer_h) if decide else None
     meta = dict(part=part.name, n_layers=len(nom), layer_h=part.layer_h, origin=list(part.origin),
-                dropped_layers=part.dropped_layers, models=models, decide=decide, started=time.time())
+                dropped_layers=part.dropped_layers, models=models, decide=decide, calibrated=calibrated,
+                started=time.time())
     t0 = time.time()
     while time.time() - t0 < 15 and printer.link.get("total_layer_num") is None:
         time.sleep(0.5)
     meta["printer_total_layer_num"] = printer.link.get("total_layer_num")
     log(f"watching {len(nom)} parsed layers (printer reports total_layer_num="
         f"{meta['printer_total_layer_num']}); writing to {run}")
+    if not calibrated:
+        log(f"no calibration file ({calib_path}): saving raw frames and layer timing only, no measurement")
     if part.dropped_layers:
         log(f"WARNING: {part.dropped_layers} empty layers were dropped while parsing, so layer "
             "indices may not match the printer's layer numbers")
@@ -158,6 +164,17 @@ def run_watch(part_path, gcode_path, ip, serial, code, calib_path, models="class
             while printer.n_done < printer.n_total:
                 printer.print_layer()
                 i = printer.n_done - 1
+                if not calibrated:
+                    frame = printer.cam.grab(newer_than=printer._layer_done_t)
+                    cv2.imwrite(str(frames / f"{i:04d}_raw.jpg"), frame)
+                    rec = dict(layer=i, z=printer.expected_layer().z, t=time.time(),
+                               printer_layer_num=printer.link.get("layer_num"),
+                               state=printer.link.get("gcode_state"), label="unmeasured",
+                               skipped_so_far=printer.skipped_layers)
+                    f.write(json.dumps(rec, default=float) + "\n")
+                    f.flush()
+                    log(f"layer {i:4d} z={rec['z']:6.2f}  frame saved (uncalibrated)")
+                    continue
                 img, exp = printer.camera_image(), printer.expected_layer()
                 mask = camera.expected_mask(exp)
                 meas = seg.measure(img, mask)

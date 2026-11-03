@@ -166,6 +166,8 @@ python -m recovery.cli watch --gcode parts/mypart.gcode.3mf \
   and on an alarm `would_action`/`would_reason`), `meta.json`, and `frames/` (raw camera frame,
   top-down view and expected mask per layer). These are our first real images; keep them.
   Ctrl-C stops watching without affecting the print. A long print can run inside `tmux`.
+- No checkerboard yet? Run `watch` without a `calib.npz`: it then saves only the raw frames
+  and layer timing (label `unmeasured`), which is still useful real data.
 - On a clean print every layer should be `ok`. Alarms on a clean print are false alarms:
   tune thresholds and calibration before letting `live` act.
 
