@@ -166,3 +166,97 @@ def test_every_pin_and_every_input_label_must_be_present(comparison, monkeypatch
     write_json(pins, document)
     with pytest.raises(AssertionError, match='no results'):
         run_comparison(monkeypatch, comparison)
+
+
+@pytest.fixture
+def worker_comparison(comparison):
+    pins, configs, directories = comparison
+    original = directories[0]
+    manifest = json.loads((original/'manifest.json').read_text())
+    rows = [json.loads(line) for line in (original/'runs.jsonl').read_text().splitlines()]
+    core = dict(model='test/qwen', revision='pinned', runtime='test-runtime',
+                assets=[dict(name='model.gguf', sha256='a'*64, bytes=4)])
+    workers, shards, new_directories = [], {}, []
+    for index, row in enumerate(rows):
+        endpoint = f'http://127.0.0.1:{8089+index}'
+        command = ['/runtime/server', '-m', '/models/model.gguf', '--host', '127.0.0.1',
+                   '--port', str(8089+index), '--ctx-size', '4096', '--chat-template-kwargs',
+                   '{"enable_thinking":false}' if index == 0 else '{"enable_thinking": false}']
+        supervisor = deepcopy(core)
+        if index:
+            supervisor.update(endpoint=endpoint, server_command=command,
+                              verified_model_sha256='a'*64)
+        workers.append(dict(endpoint=endpoint, command=command, health={'status': 'ok'}))
+        directory = original.parent/f'worker-{index}'/'results'
+        directory.mkdir(parents=True)
+        (directory/'runs.jsonl').write_text(json.dumps(row)+'\n')
+        current = deepcopy(manifest)
+        current.update(supervisor=supervisor, completed_runs=1, expected_runs=1)
+        current['arguments'].update(kinds=[row['kind']], supervisor_endpoint=endpoint)
+        write_json(directory/'manifest.json', current)
+        write_json(directory.parent/'audit/audit.json', dict(status='passed', rows=1,
+            source_sha256=current['source_sha256'], runs_sha256=file_digest(directory/'runs.jsonl')))
+        shards[file_digest(directory/'manifest.json')] = dict(endpoint=endpoint, supervisor=supervisor)
+        new_directories.append(directory)
+    evidence = pins.parent/'runtime-evidence.json'
+    write_json(evidence, dict(status='passed', model_sha256='a'*64, model_bytes=4, workers=workers))
+    configs['previous'].update(supervisor=core, supervisor_shards=shards,
+        supervisor_runtime_check=dict(path=str(evidence), sha256=file_digest(evidence)))
+    document = json.loads(pins.read_text())
+    document['configurations'] = configs
+    write_json(pins, document)
+    directories[:] = new_directories + directories[1:]
+    return comparison
+
+
+def test_explicit_worker_attestations_preserve_a_complete_paired_grid(worker_comparison, monkeypatch):
+    report = run_comparison(monkeypatch, worker_comparison)
+    assert report['failure_cases'] == report['clean_cases'] == 1
+    assert len(report['inputs']) == 3
+    assert len(report['configurations']['configurations']['previous']['supervisor_shards']) == 2
+    assert not report['strictly_more_completions_than_every_baseline']
+
+
+@pytest.mark.parametrize('changed', ['model', 'settings', 'evidence'])
+def test_worker_provenance_rejects_changed_models_settings_or_records(worker_comparison, changed):
+    pins, _, _ = worker_comparison
+    document = json.loads(pins.read_text())
+    config = document['configurations']['previous']
+    path = Path(config['supervisor_runtime_check']['path'])
+    record = json.loads(path.read_text())
+    if changed == 'model':
+        next(iter(config['supervisor_shards'].values()))['supervisor']['assets'][0]['sha256'] = 'b'*64
+        message = 'supervisor assets differ'
+    elif changed == 'settings':
+        record['workers'][1]['command'][record['workers'][1]['command'].index('--ctx-size')+1] = '8192'
+        write_json(path, record)
+        config['supervisor_runtime_check']['sha256'] = file_digest(path)
+        message = 'inference settings differ'
+    else:
+        path.write_text('{}')
+        message = 'runtime evidence changed'
+    write_json(pins, document)
+    with pytest.raises(AssertionError, match=message):
+        load_configurations(pins)
+
+
+def test_worker_provenance_requires_exact_manifest_and_attestation(worker_comparison):
+    _, configs, directories = worker_comparison
+    config = configs['previous']
+    path = directories[0]/'manifest.json'
+    manifest = json.loads(path.read_text())
+    with pytest.raises(AssertionError, match='unpinned supervisor shard'):
+        verify_configuration(config, 'previous', manifest, manifest_sha256='f'*64)
+    manifest['supervisor']['unexpected'] = 'changed'
+    with pytest.raises(AssertionError, match='supervisor provenance changed'):
+        verify_configuration(config, 'previous', manifest, manifest_sha256=file_digest(path))
+
+
+def test_worker_provenance_rejects_unused_shard_pins(worker_comparison, monkeypatch):
+    pins, _, _ = worker_comparison
+    document = json.loads(pins.read_text())
+    shards = document['configurations']['previous']['supervisor_shards']
+    shards['f'*64] = deepcopy(next(iter(shards.values())))
+    write_json(pins, document)
+    with pytest.raises(AssertionError, match='pinned supervisor shard has no results'):
+        run_comparison(monkeypatch, worker_comparison)

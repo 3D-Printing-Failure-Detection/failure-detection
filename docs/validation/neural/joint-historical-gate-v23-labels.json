@@ -1,0 +1,12 @@
+{
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/analytical-cup/results": {
+    "neural_risk": "analytical_containers_neural",
+    "neural_risk_agent": "analytical_containers_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/analytical-mug/results": {
+    "neural_risk": "analytical_containers_neural",
+    "neural_risk_agent": "analytical_containers_agent"
+  },
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/joint-cup/results": {},
+  "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/joint-mug/results": {}
+}

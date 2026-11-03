@@ -1,0 +1,198 @@
+{
+  "status": "complete",
+  "comparison": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/baseline-replay.json",
+  "comparison_sha256": "8e96d0a5b4d1c843e106e27e4482de4c6129225ed832a798c269f3c6f59e58eb",
+  "script_sha256": "8f0227caaef7358314c852bf8c6b550ec97b46fd9d9a785105253b6847d53bc4",
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/matrix/results",
+      "runs_sha256": "ffb70af63655f68ada7f21fb1df758d07d33f0e54d1745e81da03797f0984340"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-a/results",
+      "runs_sha256": "1636d8c00f00095d0c52b0e9bcfc1149ddbe18ca9ec394dd4af8496ce7237e0d"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/agent-b/results",
+      "runs_sha256": "45a9749f206c3f61c7b528deb1a893741d59b44392fbb98d921b90a5a3a5722e"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/camera/results",
+      "runs_sha256": "9147e71fa0567fdf308d6a452b60b9105299665255e7abe852ef93f0825332bb"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/classical/results",
+      "runs_sha256": "a9140acf28a34c43cfacd3ad6c82a026bbd14aa1b103d3250954bb965ef80c3d"
+    }
+  ],
+  "verified_completed_unadapted_rows": 2102,
+  "unadapted_counterfactual_mismatches": 0,
+  "summary": {
+    "ignore": {
+      "functional_without_adaptation": 128,
+      "functional_after_adaptation": 0,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 0,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 112,
+      "lost_ignore_successes_without_adaptation": 0,
+      "adaptations_total": 0
+    },
+    "scrap": {
+      "functional_without_adaptation": 12,
+      "functional_after_adaptation": 0,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 116,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 5,
+      "lost_ignore_successes_without_adaptation": 116,
+      "adaptations_total": 0
+    },
+    "alert": {
+      "functional_without_adaptation": 58,
+      "functional_after_adaptation": 0,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 70,
+      "adapted_successful_ignore_cases": 0,
+      "adapted_defective_finishes": 0,
+      "unadapted_defective_finishes": 5,
+      "lost_ignore_successes_without_adaptation": 70,
+      "adaptations_total": 0
+    },
+    "ours": {
+      "functional_without_adaptation": 58,
+      "functional_after_adaptation": 8,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 62,
+      "adapted_successful_ignore_cases": 8,
+      "adapted_defective_finishes": 1,
+      "unadapted_defective_finishes": 5,
+      "lost_ignore_successes_without_adaptation": 11,
+      "adaptations_total": 184
+    },
+    "measured": {
+      "functional_without_adaptation": 63,
+      "functional_after_adaptation": 8,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 57,
+      "adapted_successful_ignore_cases": 8,
+      "adapted_defective_finishes": 1,
+      "unadapted_defective_finishes": 1,
+      "lost_ignore_successes_without_adaptation": 4,
+      "adaptations_total": 187
+    },
+    "predictive": {
+      "functional_without_adaptation": 70,
+      "functional_after_adaptation": 9,
+      "rescued_vs_ignore": 8,
+      "lost_ignore_successes": 57,
+      "adapted_successful_ignore_cases": 1,
+      "adapted_defective_finishes": 6,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 32,
+      "adaptations_total": 70
+    },
+    "functional": {
+      "functional_without_adaptation": 19,
+      "functional_after_adaptation": 3,
+      "rescued_vs_ignore": 0,
+      "lost_ignore_successes": 106,
+      "adapted_successful_ignore_cases": 3,
+      "adapted_defective_finishes": 3,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 30,
+      "adaptations_total": 245
+    },
+    "guarded": {
+      "functional_without_adaptation": 70,
+      "functional_after_adaptation": 16,
+      "rescued_vs_ignore": 12,
+      "lost_ignore_successes": 54,
+      "adapted_successful_ignore_cases": 4,
+      "adapted_defective_finishes": 5,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 32,
+      "adaptations_total": 67
+    },
+    "contour": {
+      "functional_without_adaptation": 114,
+      "functional_after_adaptation": 14,
+      "rescued_vs_ignore": 11,
+      "lost_ignore_successes": 11,
+      "adapted_successful_ignore_cases": 3,
+      "adapted_defective_finishes": 6,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 10,
+      "adaptations_total": 32
+    },
+    "contour_risk": {
+      "functional_without_adaptation": 112,
+      "functional_after_adaptation": 21,
+      "rescued_vs_ignore": 15,
+      "lost_ignore_successes": 10,
+      "adapted_successful_ignore_cases": 6,
+      "adapted_defective_finishes": 3,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 9,
+      "adaptations_total": 31
+    },
+    "neural": {
+      "functional_without_adaptation": 111,
+      "functional_after_adaptation": 11,
+      "rescued_vs_ignore": 8,
+      "lost_ignore_successes": 14,
+      "adapted_successful_ignore_cases": 3,
+      "adapted_defective_finishes": 5,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 10,
+      "adaptations_total": 50
+    },
+    "previous_combined_neural": {
+      "functional_without_adaptation": 108,
+      "functional_after_adaptation": 21,
+      "rescued_vs_ignore": 15,
+      "lost_ignore_successes": 14,
+      "adapted_successful_ignore_cases": 6,
+      "adapted_defective_finishes": 4,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 10,
+      "adaptations_total": 44
+    },
+    "previous_combined_agent": {
+      "functional_without_adaptation": 108,
+      "functional_after_adaptation": 18,
+      "rescued_vs_ignore": 12,
+      "lost_ignore_successes": 14,
+      "adapted_successful_ignore_cases": 6,
+      "adapted_defective_finishes": 5,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 10,
+      "adaptations_total": 45
+    },
+    "neural_camera": {
+      "functional_without_adaptation": 112,
+      "functional_after_adaptation": 17,
+      "rescued_vs_ignore": 14,
+      "lost_ignore_successes": 13,
+      "adapted_successful_ignore_cases": 3,
+      "adapted_defective_finishes": 5,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 10,
+      "adaptations_total": 42
+    },
+    "previous_classical_camera_neural": {
+      "functional_without_adaptation": 111,
+      "functional_after_adaptation": 20,
+      "rescued_vs_ignore": 15,
+      "lost_ignore_successes": 12,
+      "adapted_successful_ignore_cases": 5,
+      "adapted_defective_finishes": 3,
+      "unadapted_defective_finishes": 0,
+      "lost_ignore_successes_without_adaptation": 9,
+      "adaptations_total": 36
+    }
+  },
+  "limitation": "Retrospective simulation attribution on paired seeds. A successful completion is only counted as a rescue when the matched ignore print fails. This does not establish fresh-test superiority or physical reliability."
+}

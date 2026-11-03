@@ -41,9 +41,10 @@ def main():
     labels = json.loads(args.labels.read_text()) if args.labels else {}
     assert set(labels) <= {str(path.resolve()) for path in args.directories}, 'label references an absent input'
     rows, inputs, sources, checkpoints, boundaries, stages = [], [], set(), set(), set(), set()
-    environments, profiles, used_configurations = [], {}, set()
+    environments, profiles, used_configurations, used_supervisor_shards = [], {}, set(), set()
     for directory in args.directories:
         manifest = json.loads((directory/'manifest.json').read_text())
+        manifest_hash = digest(directory/'manifest.json')
         audit_path = directory.parent/'audit/audit.json'
         audit = json.loads(audit_path.read_text())
         assert manifest['status'] == 'complete' and audit['status'] == 'passed'
@@ -72,13 +73,19 @@ def main():
             for method in manifest['arguments']['methods']:
                 label = names.get(method, method)
                 assert label in configurations['configurations'], 'missing configuration pin'
-                verify_configuration(configurations['configurations'][label], method, manifest)
+                config = configurations['configurations'][label]
+                verify_configuration(config, method, manifest, manifest_sha256=manifest_hash)
+                if 'supervisor_shards' in config:
+                    used_supervisor_shards.add((label, manifest_hash))
                 used_configurations.add(label)
         rows.extend((names.get(row['method'], row['method']), row) for row in batch)
-        inputs.append(dict(directory=str(directory.resolve()), manifest_sha256=digest(directory/'manifest.json'),
+        inputs.append(dict(directory=str(directory.resolve()), manifest_sha256=manifest_hash,
                            audit_sha256=digest(audit_path), runs_sha256=audit['runs_sha256'], labels=names))
     if configurations:
         assert used_configurations == set(configurations['configurations']), 'pinned configuration has no results'
+        expected_shards = {(label, key) for label, config in configurations['configurations'].items()
+                           for key in config.get('supervisor_shards', {})}
+        assert used_supervisor_shards == expected_shards, 'pinned supervisor shard has no results'
     else:
         assert len(sources) == len(checkpoints) == 1, 'do not pool differently tuned implementations/checkpoints'
         assert checkpoints == {training['checkpoint_sha256']}

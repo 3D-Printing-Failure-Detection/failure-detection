@@ -103,7 +103,12 @@ actual recovery trial using classical bases with learned walls scores 2/4 versus
 the previous camera policy's 3/4, so both changes are rejected. The next full-grid
 trial combines the improved learned fit forecast with analytical containers:
 576 new runs with and without Qwen, currently in progress. Its overall outcome
-is not yet known. New untouched seeds are reserved for another final test;
+is not yet known. A separate 24-run historical check shows that analytical
+containers lose two earlier rescues; using the original learned camera as a
+joint-forecast alternative retains both, with no defective finishes and all
+clean controls passed. Qwen makes 11 calls and ties neural-only. That variant's
+full-grid follow-up is queued after the first run. New untouched seeds are
+reserved for another final test;
 these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a

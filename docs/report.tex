@@ -86,7 +86,7 @@ earlier combined model's 67/100 historical result is detailed later.
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & Fit checks preserve 33/50 and 13/20. Camera training and the base/wall split fail. A full comparison of improved neural fit recovery with analytical containers is running; no overall gain is established.\\
+Latest checks & Fit checks preserve 33/50 and 13/20. The earlier camera used as a second opinion retains two historical container rescues lost by analytical containers. Full comparisons remain unfinished; no overall gain is established.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1318,8 +1318,71 @@ added together as a new result. This development study is running. Comparison,
 historical regression and a new frozen test remain required; fresh seeds
 2001--2004 are untouched.
 
-The project suite passes 141 tests with two optional modules skipped. Focused
+The camera-change checkpoint passes 141 tests with two optional modules skipped. Focused
 checks verify the training loss, both camera histories and full/partial base
 frame accounting. Logs, failed experiments and source snapshots are retained.
+
+\clearpage
+\section{Retaining actual rescues in the full policy}
+
+\subsection*{A successful print is not always a recovery}
+Many fault-injected prints still meet their specification without a correction.
+The comparison therefore separates functional completions from actual rescues:
+a rescue finishes successfully when the matched \code{ignore} run fails. A
+retrospective accounting of the original 4,320 rows gives the following results
+on 240 fault cases per policy.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Original policy & Completions & Rescues & Lost ignore passes & Defective finishes \\
+\midrule
+Analytical preventive & 133 & 15 & 10 & 3 \\
+Combined neural & 129 & 15 & 14 & 4 \\
+Combined neural + Qwen & 126 & 12 & 14 & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every completed print with zero adaptations matches its ignore counterfactual.
+This supports attributing the observed rescues to changed commands in this
+simulator. It does not prove real-printer causality or generalization. The new
+full runs must improve completed outcomes while retaining prior successes and
+controlling defective finishes; model calls alone earn no recovery credit.
+
+\subsection*{Preserve earlier container rescues}
+The \texttt{joint-historical-gate-v23} study checks the complete improved fit
+policy with analytical containers against the same policy retaining the earlier
+trained camera as an independent second opinion. It uses the existing joint
+forecast checks and the original camera checkpoint, not a rejected replacement.
+Both variants run with and without actual Qwen on two known bedslinger cases:
+cup under-extrusion and mug shift, seed 10, plus two clean controls. Contour and
+ignore are rerun under the same frozen source as paired controls.
+
+All 24 rows finish and pass audit. Analytical containers and contour complete
+0/2 fault cases; ignore finishes both defective. Both joint-camera variants
+complete 2/2, with zero defective finishes and both clean controls passed. The
+cup uses one adaptation and the mug three. Qwen makes 11 actual requests and
+matches neural-only outcomes. These are preserved historical rescues, not new
+untouched successes or proof of the best overall policy.
+
+The gate passes. A predeclared 576-row full-grid follow-up is queued behind the
+ongoing analytical-container run. Each uses one frozen policy on every part,
+with separate raw results and matched neural-only/Qwen outcomes. Historical
+regression and a new untouched comparison remain required before acceptance.
+
+\subsection*{Verify earlier workers without rewriting their records}
+The original Qwen workers recorded an asset-only attestation and a richer server
+attestation. The comparison now pins each exact input manifest and retains both
+records. A separately pinned runtime check verifies matching model assets and
+inference command settings; only server addresses and JSON whitespace are
+normalized. Changed models, settings, evidence or unused shard pins fail checks.
+All 23 focused provenance tests pass. Replaying the full original comparison
+reproduces all 15 policies' outcome and inference counts, paired gains and losses,
+and defective-finish differences across the unchanged 4,320 rows.
+
+The new studies run in tmux session \texttt{neural-recovery}. Complete audits,
+source snapshots, checkpoint hashes and actual model requests remain available.
+Fresh seeds 2001--2004 remain untouched, and the overall objective is unmet.
 
 \end{document}

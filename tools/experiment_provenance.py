@@ -61,6 +61,66 @@ def policy_arguments(arguments):
     return {key: value for key, value in arguments.items() if key not in EXECUTION_ARGUMENTS}
 
 
+def supervisor_command_identity(command):
+    """Ignore server addresses, retaining every inference-affecting argument."""
+    assert isinstance(command, list) and command and all(isinstance(x, str) for x in command)
+    identity, index = [], 0
+    while index < len(command):
+        value = command[index]
+        if value in ('--host', '--port'):
+            assert index+1 < len(command), 'incomplete supervisor address'
+            index += 2
+            continue
+        identity.append(value)
+        if value == '--chat-template-kwargs':
+            assert index+1 < len(command), 'missing supervisor template arguments'
+            identity.append(json.dumps(json.loads(command[index+1]), sort_keys=True))
+            index += 2
+        else:
+            index += 1
+    return identity
+
+
+def validate_supervisor_shards(config):
+    """Pin legacy worker attestations without discarding their differences.
+
+    Some completed grids used an asset-only attestation for one worker and a
+    richer command attestation for another. Accept these only with exact input
+    manifest hashes and retained evidence of matching inference commands. This
+    checks historical records; it does not re-observe the historical processes.
+    """
+    shards = config.get('supervisor_shards')
+    if shards is None:
+        return
+    assert len(shards) >= 2, 'worker provenance requires multiple pinned shards'
+    evidence = config['supervisor_runtime_check']
+    path = Path(evidence['path'])
+    assert path.is_absolute() and file_digest(path) == evidence['sha256'], 'supervisor runtime evidence changed'
+    record = json.loads(path.read_text())
+    assert record['status'] == 'passed' and record['workers'], 'supervisor runtime check did not pass'
+    workers = {worker['endpoint']: worker for worker in record['workers']}
+    assert len(workers) == len(record['workers']), 'duplicate supervisor endpoint'
+    commands = [supervisor_command_identity(worker['command']) for worker in workers.values()]
+    assert all(command == commands[0] for command in commands), 'supervisor inference settings differ'
+    core_keys = ('model', 'revision', 'runtime', 'assets')
+    core = {key: config['supervisor'][key] for key in core_keys}
+    models = [asset for asset in core['assets'] if asset['name'].endswith('.gguf')]
+    assert len(models) == 1 and models[0]['sha256'] == record['model_sha256'], 'supervisor model differs'
+    assert models[0]['bytes'] == record['model_bytes'], 'supervisor model size differs'
+    for manifest_hash, shard in shards.items():
+        assert len(manifest_hash) == 64 and all(c in '0123456789abcdef' for c in manifest_hash)
+        supervisor = shard['supervisor']
+        assert {key: supervisor[key] for key in core_keys} == core, 'supervisor assets differ'
+        worker = workers[shard['endpoint']]
+        assert worker['health']['status'] == 'ok', 'supervisor worker was not healthy'
+        if 'endpoint' in supervisor:
+            assert supervisor['endpoint'] == shard['endpoint'], 'supervisor endpoint differs'
+        if 'server_command' in supervisor:
+            assert supervisor_command_identity(supervisor['server_command']) == commands[0], 'supervisor command differs'
+        if 'verified_model_sha256' in supervisor:
+            assert supervisor['verified_model_sha256'] == record['model_sha256'], 'supervisor verified model differs'
+
+
 def load_configurations(path):
     document = json.loads(Path(path).read_text())
     assert document['version'] == 1
@@ -78,6 +138,7 @@ def load_configurations(path):
         assert contract['sha256'] == document['simulation_contract_sha256'], 'simulation contract differs'
         assert config['raw_method'] and isinstance(config['policy_arguments'], dict)
         assert config['policy_arguments'].get('clear_failure_on_adapt') is False
+        validate_supervisor_shards(config)
         assert set(config['models']) <= {'neural', 'boundary'}
         for model in config['models'].values():
             assert file_digest(model['checkpoint']) == model['checkpoint_sha256'], 'pinned model changed'
@@ -90,7 +151,7 @@ def load_configurations(path):
     return document, list(training_manifests.values())
 
 
-def verify_configuration(config, method, manifest):
+def verify_configuration(config, method, manifest, *, manifest_sha256=None):
     assert method == config['raw_method'], 'raw method differs from pinned configuration'
     assert manifest['source_sha256'] == config['source_sha256'], 'different source pooled under one label'
     assert policy_arguments(manifest['arguments']) == config['policy_arguments'], 'policy arguments changed'
@@ -98,4 +159,11 @@ def verify_configuration(config, method, manifest):
               if kind+'_checkpoint_sha256' in manifest}
     expected = {kind: model['checkpoint_sha256'] for kind, model in config['models'].items()}
     assert actual == expected, 'different model pooled under one label'
-    assert manifest.get('supervisor') == config['supervisor'], 'supervisor provenance changed'
+    if 'supervisor_shards' in config:
+        assert manifest_sha256 in config['supervisor_shards'], 'unpinned supervisor shard'
+        shard = config['supervisor_shards'][manifest_sha256]
+        assert manifest['arguments']['supervisor_endpoint'] == shard['endpoint'], 'supervisor shard endpoint changed'
+        supervisor = shard['supervisor']
+    else:
+        supervisor = config['supervisor']
+    assert manifest.get('supervisor') == supervisor, 'supervisor provenance changed'

@@ -27,6 +27,9 @@ reintroduces one gap and is also rejected. Fresh seeds 2001–2004 are untouched
 Spatial-gradient training and the subsequent base/wall camera split also fail.
 The next full-grid trial retains analytical containers and the improved learned
 fit forecast; it is running, with no overall gain claimed yet.
+An actual historical check confirms that this simpler variant loses two earlier
+container rescues. Keeping the earlier learned camera as a joint-forecast
+alternative restores both; its full-grid follow-up is queued behind the first run.
 
 ## Current camera cross-check and context experiments
 
@@ -169,6 +172,47 @@ Evaluation and audit run in tmux window `neural-recovery:hybrid-all-v22`, with
 logs and exit status on the data volume. The study is running; comparison,
 historical regression and a new untouched test remain required. No result from
 this consumed grid can establish fresh-test superiority.
+
+The comparison verifier now preserves the exact manifest hash and original
+supervisor attestation for each old worker. A pinned runtime check must show the
+same model assets and inference command settings. Only host/port values and JSON
+whitespace are normalized; changed weights, inference settings, records and
+unused shard pins are rejected. All 23 focused provenance tests pass. Replaying
+the complete original comparison reproduces all 15 policies' outcome/call counts
+and every paired gain, loss and defect difference across 4,320 unchanged rows.
+
+A separate retrospective attribution distinguishes completed prints from actual
+rescues. The analytical preventive policy's 133 completions include 15 cases
+where ignore fails, while losing ten cases that ignore passes. The old combined
+neural policy has 15 rescues but loses 14 ignore successes; its Qwen variant has
+12 rescues and loses 14. Every completed print with zero adaptations matches its
+ignore counterfactual. The new full run will be assessed by these same outcomes;
+ordinary successful continuations are not credited as recoveries.
+
+## Preserving historical container rescues
+
+`joint-historical-gate-v23` compares the complete improved fit policy with
+analytical containers against the same policy using the earlier trained camera
+as an independent alternative (`--boundary-fallback --boundary-joint-forecast`).
+It uses the earlier camera checkpoint, not a rejected replacement. Both neural-only
+and actual Qwen variants run on bedslinger cup under-extrusion and mug shift at
+seed 10, plus both clean controls. Contour and ignore are rerun as paired controls
+under the same frozen source. These are selected historical cases, not fresh data.
+
+All 24 rows are complete and audited. Both analytical-container variants and
+contour complete **0/2** faults; ignore finishes both defective. Both joint-camera
+variants complete **2/2**, with zero defective finishes and both clean controls
+passing. The cup uses one adaptation and the mug three. Qwen makes 11 actual
+requests and matches neural-only. This preserves two earlier rescues that the
+simpler variant loses; it does not establish a new overall best result.
+
+The predeclared gate passes. A 576-row full-grid follow-up will start after v22
+finishes successfully, using one frozen configuration over every part, profile
+and fault. Its tmux window is `neural-recovery:joint-history-v23`. Source and model
+pins, complete gate audits and original failed outcomes are retained. Both full
+comparisons, historical regression and an untouched test remain outstanding.
+
+## Earlier joint-camera and measurement studies
 
 The optional `--boundary-joint-forecast` extends `--boundary-fallback`. When the
 classical-camera continuation fails but a correction is feasible, both camera

@@ -1,0 +1,31 @@
+{
+  "status": "waiting_for_main_run",
+  "gate_passes": true,
+  "candidate": {
+    "failure": {
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 0,
+      "agent_requests": 11,
+      "seconds": 292.2113976550754,
+      "boundary_queries": 320,
+      "mean_actual_filament_ratio": 1.0095161196753242,
+      "mean_filament_with_assumed_clean_restart": 1.0095161196753242
+    },
+    "clean": {
+      "n": 2,
+      "in_place": 2,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "neural_queries": 0,
+      "agent_requests": 0,
+      "seconds": 96.4711645549396,
+      "boundary_queries": 320,
+      "mean_actual_filament_ratio": 0.9999440344205105,
+      "mean_filament_with_assumed_clean_restart": 0.9999440344205105
+    }
+  },
+  "reason": "Both historical rescues and clean controls pass with actual models; wait for the active main job before expanding"
+}
