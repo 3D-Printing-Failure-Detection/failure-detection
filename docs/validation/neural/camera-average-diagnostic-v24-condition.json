@@ -1,0 +1,56 @@
+{
+  "status": "rejected",
+  "gate_passes": false,
+  "member_controls_and_truth_reproduced_exactly": true,
+  "frames": 160,
+  "member_queries": {
+    "short": 160,
+    "long": 160
+  },
+  "false_alarm_frames": {
+    "classical": {
+      "open_wall": 2,
+      "base_problem": 0,
+      "hard_thin": 0,
+      "soft_thin": 0
+    },
+    "short": {
+      "open_wall": 0,
+      "base_problem": 2,
+      "hard_thin": 1,
+      "soft_thin": 2
+    },
+    "long": {
+      "open_wall": 1,
+      "base_problem": 2,
+      "hard_thin": 1,
+      "soft_thin": 1
+    },
+    "mean": {
+      "open_wall": 1,
+      "base_problem": 2,
+      "hard_thin": 1,
+      "soft_thin": 1
+    },
+    "hybrid_short": {
+      "open_wall": 0,
+      "base_problem": 0,
+      "hard_thin": 1,
+      "soft_thin": 2
+    },
+    "hybrid_long": {
+      "open_wall": 1,
+      "base_problem": 0,
+      "hard_thin": 1,
+      "soft_thin": 1
+    },
+    "hybrid_mean": {
+      "open_wall": 1,
+      "base_problem": 0,
+      "hard_thin": 1,
+      "soft_thin": 1
+    }
+  },
+  "recovery_trials": 0,
+  "limitation": "Previously inspected diagnostic case; no new recovery or fresh-test evidence. Weights are fixed before evaluation and are not selected using this outcome. No geometry repair, changed functional threshold, skipped frame or simulator truth input."
+}

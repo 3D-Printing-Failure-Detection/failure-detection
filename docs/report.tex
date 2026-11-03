@@ -61,32 +61,32 @@ The project is a Python research prototype that measures each printed layer,
 estimates how commands turn into deposited material, and chooses whether to
 continue, replace the remaining layer plan, or stop. The established \code{contour}
 policy separates inner and outer boundaries when predicting deformation. Trained
-models and a free local Qwen supervisor are implemented. The latest fit policy
-improves the development comparison below, but container perception remains
-unresolved. An earlier all-part candidate failed its fresh test. The overall
-objective is still unmet; further development and a new frozen test are required.
+models and a free local Qwen supervisor are implemented. The latest complete
+policy improves the development comparison below, but some earlier successes
+remain lost. An earlier candidate failed its fresh test. The overall objective
+is still unmet; historical regression and a new frozen test are required.
 
 \begin{center}
 \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lll@{}}
 \toprule
-{\Large\bfseries\color{teal}79/120} & {\Large\bfseries 76/120} & {\Large\bfseries 78/120}\\
-Latest neural + Qwen & Analytical preventive policy & Previous neural policy\\
+{\Large\bfseries\color{teal}136/240} & {\Large\bfseries 133/240} & {\Large\bfseries 126/240}\\
+Latest neural + Qwen & Earlier best analytical & Earlier neural + Qwen\\
 \bottomrule
 \end{tabular*}
 \end{center}
-These are functional completions on the same \emph{120 simulated bracket and
-spacer failure cases}. The latest policy preserves every analytical and
-previous-neural success, with zero defective finishes and all 24 clean controls
-passed. Qwen makes 161 actual requests and matches neural-only outcomes. These
-are consumed development cases, not fresh all-part acceptance evidence. The
-earlier combined model's 67/100 historical result is detailed later.
+These are functional completions on the same \emph{240 simulated fault cases
+across all four parts}. The latest policy preserves every success of the earlier
+best analytical policy, with one defective finish versus three and all 48 clean
+controls passed. Qwen makes 499 actual requests and matches neural-only outcomes.
+These are consumed development cases. A current-code analytical control is
+running to separate learned recovery gains from accompanying measurement fixes.
 
 \subsection*{Where the project stands}
 \begin{tabularx}{\linewidth}{@{}p{1.45in}Y@{}}
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & Fit checks preserve 33/50 and 13/20. The earlier camera used as a second opinion retains two historical container rescues lost by analytical containers. Full comparisons remain unfinished; no overall gain is established.\\
+Latest checks & The 4,896-row development comparison completes at 136/240. Other prior successes remain lost. A second camera variant and matched analytical control are running; fresh-test superiority is unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1311,12 +1311,12 @@ the shifted cup loses a previous success after one adaptation. The hybrid is
 rejected and the broader follow-up is skipped.
 
 The next full-grid trial retains analytical container measurements and forecasts,
-with the improved learned forecast for specification-defined fit parts. It runs
+with the improved learned forecast for specification-defined fit parts. It completes
 576 new cases with and without Qwen, against the original 4,320 baseline rows.
 One frozen policy is rerun on every part; old fit and container counts are not
-added together as a new result. This development study is running. Comparison,
-historical regression and a new frozen test remain required; fresh seeds
-2001--2004 are untouched.
+added together as a new result. The complete development comparison reaches
+136/240, detailed on page 23. Historical regression and a new frozen test remain
+required; fresh seeds 2001--2004 are untouched.
 
 The camera-change checkpoint passes 141 tests with two optional modules skipped. Focused
 checks verify the training loss, both camera histories and full/partial base
@@ -1366,8 +1366,8 @@ cup uses one adaptation and the mug three. Qwen makes 11 actual requests and
 matches neural-only outcomes. These are preserved historical rescues, not new
 untouched successes or proof of the best overall policy.
 
-The gate passes. A predeclared 576-row full-grid follow-up is queued behind the
-ongoing analytical-container run. Each uses one frozen policy on every part,
+The gate passes. Its predeclared 576-row full-grid follow-up is now running after
+the analytical-container run completed. Each uses one frozen policy on every part,
 with separate raw results and matched neural-only/Qwen outcomes. Historical
 regression and a new untouched comparison remain required before acceptance.
 
@@ -1384,5 +1384,66 @@ and defective-finish differences across the unchanged 4,320 rows.
 The new studies run in tmux session \texttt{neural-recovery}. Complete audits,
 source snapshots, checkpoint hashes and actual model requests remain available.
 Fresh seeds 2001--2004 remain untouched, and the overall objective is unmet.
+
+\clearpage
+\section{A modest gain on the complete development grid}
+
+\subsection*{Complete comparisons, with the remaining losses visible}
+The \texttt{fit-analytical-containers-v22} run finishes and passes audit: 576 new
+rows plus all 4,320 original rows, covering 17 separate configurations. One
+frozen policy uses classical camera measurements throughout, learned forecasts
+and shared-hole recovery proposals for specified fits, and analytical container
+forecasts. All three profiles, four parts, five faults and clean controls are
+included on consumed seeds 1001--1004.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Policy & Completions & Rescues & Defective & Clean \\
+\midrule
+Earlier analytical preventive & 133/240 & 15 & 3 & 48/48 \\
+Latest neural & 136/240 & 18 & 1 & 48/48 \\
+Latest neural + Qwen & 136/240 & 18 & 1 & 48/48 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every earlier analytical success is retained. The three gains are spacer shifts
+at seed 1002, one per profile. The latest policy completes 109 fault cases without
+adaptation and 27 after adaptation; 18 are rescues that the matched ignore policy
+fails. It still loses ten ignore successes, as does the earlier analytical policy.
+It also loses successes of other earlier policies and the two historical camera
+rescues discussed on the preceding page. Its one defective finish is bedslinger
+mug under-extrusion at seed 1004. Qwen makes 499 actual requests and adds no
+completions over neural-only. The neural forecast makes 236,556 calls on fault
+cases and 2,064 on clean controls.
+
+\subsection*{Separate learning from accompanying measurement changes}
+The earlier analytical baseline used an older contour-conversion implementation.
+\texttt{matched-analytical-v26} therefore runs the complete 288-case analytical
+control with the exact current source and classical camera used above. It makes
+no neural or agent calls and retains a separate comparison label. Its result is
+pending. The difference includes learned forecasting and associated recovery
+proposals; it is not a pure forecast-only ablation. The second camera variant's
+full comparison is also running. Neither partial result nor a consumed grid can
+establish fresh-test superiority.
+
+\subsection*{Two additional camera ideas fail their gates}
+Fixed equal averaging of the short- and long-trained signed-distance outputs
+retains one false wall gap, two false base layers and one false hard-thin layer
+on the complete known cup trajectory. Both member controls reproduce exactly.
+Classical bases remove only the base alarms; averaging is rejected.
+
+Tripling the training cost of underpredicted signed distance also fails. Its
+unit-weight control exactly reproduces the earlier checkpoint, and both exports
+pass. Validation boundary error worsens from 0.07876 to 0.09269 mm and sign
+accuracy from 78.11\% to 74.20\%. The candidate retains one false gap, two false
+base layers and two false hard-thin layers. The wider follow-up is skipped and
+no recovery credit is claimed. This asymmetric loss is not a calibrated
+confidence bound. Eight focused Torch tests pass; the default loss is unchanged.
+
+Full raw results, pinned sources and rejected models remain on the data volume;
+compact evidence is retained in the repository. The report does not claim a
+physical-printer result or an accepted overall winner.
 
 \end{document}

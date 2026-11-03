@@ -57,6 +57,8 @@ def main():
     parser.add_argument('--kind', choices=['clean', *KINDS], required=True)
     parser.add_argument('--seed', type=int, required=True)
     parser.add_argument('--checkpoint', action='append', default=[], metavar='LABEL=PATH')
+    parser.add_argument('--include-classical-base-hybrids', action='store_true',
+                        help='also score classical specified solid bases with each learned wall estimate')
     parser.add_argument('--snapshot-layers', nargs='*', type=int, default=[])
     parser.add_argument('--out', type=Path, required=True)
     args = parser.parse_args()
@@ -74,6 +76,14 @@ def main():
         checkpoint_paths[label] = str(Path(path).resolve())
     part = get_part(args.part)
     nominal = part.layers()
+    hybrid_labels = ({name: name+':classical-base' for name in checkpoint_paths}
+                     if args.include_classical_base_hybrids else {})
+    if args.include_classical_base_hybrids and not part.spec.get('container'):
+        parser.error('classical base hybrids require a container specification')
+    if set(hybrid_labels.values()) & set(segmenters):
+        parser.error('checkpoint label collides with a generated hybrid label')
+    base_indices = {i for i, layer in enumerate(nominal)
+                    if hybrid_labels and layer.z <= part.spec['container']['base_h']}
     if any(i < 0 or i >= len(nominal) for i in args.snapshot_layers):
         parser.error('snapshot index is outside the print')
     failure = None if args.kind == 'clean' else random_failure(nominal, np.random.default_rng(args.seed), kind=args.kind)
@@ -83,11 +93,12 @@ def main():
         arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
         checkpoint_paths=checkpoint_paths,
         checkpoint_sha256={name: segmenters[name].sha256 for name in checkpoint_paths},
+        hybrid_classical_base_layers=sorted(base_indices), hybrid_labels=hybrid_labels,
         follows_nominal_commands=True, recovery_actions=0,
         limitation='diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence')
     manifest_path = args.out / 'manifest.json'
     manifest_path.write_text(json.dumps(manifest, indent=2))
-    histories = {name: [] for name in segmenters}
+    histories = {name: [] for name in [*segmenters, *hybrid_labels.values()]}
     rows = []
     with MujocoPrinter(nominal, failure, args.seed, args.profile, False) as printer:
         for index, command in enumerate(nominal):
@@ -101,6 +112,12 @@ def main():
                 histories[name].append(measured)
                 row['measured'][name] = dict(layer_features(measured, command, part.spec),
                     iou=iou(region, actual.region), boundary_error_mm=boundary_deviation(region, actual.region))
+            for name, hybrid in hybrid_labels.items():
+                # Both camera models have already processed this actual frame.
+                # Share its classical base measurement without editing history.
+                selected = 'classical' if index in base_indices else name
+                histories[hybrid].append(histories[selected][-1])
+                row['measured'][hybrid] = dict(row['measured'][selected])
             rows.append(row)
             if index in args.snapshot_layers:
                 if not cv2.imwrite(str(args.out / f'camera-{index:03d}.png'), image):
@@ -114,7 +131,9 @@ def main():
             measured={name: asdict(check(history, nominal, part.spec, part.layer_h))
                       for name, history in histories.items()})
         manifest.update(status='complete', frames=printer.camera_frames,
-                        layers_printed=printer.n_done, final_source_sha256=source_digest())
+                        layers_printed=printer.n_done, final_source_sha256=source_digest(),
+                        checkpoint_queries={name: segmenters[name].queries for name in checkpoint_paths},
+                        observation_counts={name: len(history) for name, history in histories.items()})
     (args.out / 'layers.json').write_text(json.dumps(rows, indent=2))
     (args.out / 'final.json').write_text(json.dumps(final, indent=2))
     manifest_path.write_text(json.dumps(manifest, indent=2))

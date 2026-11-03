@@ -1,0 +1,47 @@
+{
+  "created_at": "2026-11-03T03:20:54.956340+00:00",
+  "stage": "development-diagnostic",
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/source",
+  "source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "models": {
+    "short": {
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/boundary.npz",
+      "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "training": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/training.json",
+      "training_sha256": "eeb578552c355b4c4f6b96f848da44754cf95d717d1b5925a9471816de698dab",
+      "reference": "/home/ishaan/failure-detection/docs/validation/neural/command-camera-v15-diagnostic-final.json",
+      "reference_sha256": "860cd41d57fa04e78598c41aac7a074385a15f919618fa6e294f6d670491f715",
+      "reference_label": "command"
+    },
+    "long": {
+      "checkpoint": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/boundary.npz",
+      "checkpoint_sha256": "9ff615cde22c36db6cd8f2aaec0964aa874372a50e524200bb2c4ee5747f454e",
+      "training": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/training.json",
+      "training_sha256": "8e61ababb352b1986ba01974f3eb3f2c6c04c395b26c4d5c89c1ff57422e0d5e",
+      "reference": "/home/ishaan/failure-detection/docs/validation/neural/command-precise-camera-v17-diagnostic-final.json",
+      "reference_sha256": "5a3cdead351d86fe4689a7e2c5e7c5b2d1d35a77b02105bf46eb1b31b5e726fd",
+      "reference_label": "command"
+    }
+  },
+  "profile": "cartesian",
+  "part": "cup",
+  "kind": "under_extrusion",
+  "seed": 1002,
+  "weights": {
+    "short": 0.5,
+    "long": 0.5
+  },
+  "combination": "Arithmetic mean of native-grid signed-distance predictions in float64 before zero-contour extraction; each member retains its declared inference precision and observes every actual frame once",
+  "base_rule": "Also score an alternative history using classical geometry at original specification-defined solid-base layers, with mean-distance geometry on walls",
+  "expected_frames": 160,
+  "snapshot_layers": [
+    85,
+    86
+  ],
+  "storage_bytes_at_launch": 99914457088,
+  "maximum_new_artifact_bytes": 5000000,
+  "other_live_job_reserve_bytes": 40000000,
+  "gate": "The complete fixed nominal-command hybrid history must pass the unchanged functional specification before any recovery trial is considered. Member controls must reproduce the earlier diagnostic verdicts.",
+  "limitation": "Previously inspected diagnostic case; no new recovery or fresh-test evidence. Weights are fixed before evaluation and are not selected using this outcome. No geometry repair, changed functional threshold, skipped frame or simulator truth input.",
+  "script_sha256": "9c5484d05750ae00bc3484e212e107f6af3946032c1880d141fee23aa1c85109"
+}

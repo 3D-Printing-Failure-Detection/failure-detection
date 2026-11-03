@@ -21,6 +21,20 @@ from recovery.models.boundary import BoundarySegmenter, PATCH_SIZE
 from recovery import camera
 
 
+def distance_error_loss(prediction, target, underprediction_weight=1.):
+    """Elementwise distance error with an explicit cost for underprediction.
+
+    This is asymmetric regression, not a calibrated confidence bound. Missing
+    real gaps must still be measured separately before accepting a checkpoint.
+    """
+    if not np.isfinite(underprediction_weight) or underprediction_weight < 1:
+        raise ValueError('underprediction weight must be finite and at least one')
+    loss = F.smooth_l1_loss(prediction, target, beta=.05, reduction='none')
+    if underprediction_weight == 1:
+        return loss
+    return torch.where(prediction < target, loss*underprediction_weight, loss)
+
+
 def distance_gradient_loss(prediction, target, spacing_mm):
     """Match adjacent native-grid distance changes, including pixel-block seams.
 
@@ -139,6 +153,8 @@ def main():
     parser.add_argument('--topology-weight', type=float, default=0.)
     parser.add_argument('--gradient-weight', type=float, default=0.,
                         help='supervise adjacent signed-distance gradients on the native output grid')
+    parser.add_argument('--underprediction-weight', type=float, default=1.,
+                        help='training cost multiplier when predicted signed distance is below its target')
     parser.add_argument('--skeleton-iterations', type=int, default=20)
     parser.add_argument('--temperature-mm', type=float, default=.1)
     parser.add_argument('--sampling-audit', type=Path,
@@ -154,6 +170,8 @@ def main():
         parser.error('topology weight must be finite and nonnegative')
     if not np.isfinite(args.gradient_weight) or args.gradient_weight < 0:
         parser.error('gradient weight must be finite and nonnegative')
+    if not np.isfinite(args.underprediction_weight) or args.underprediction_weight < 1:
+        parser.error('underprediction weight must be finite and at least one')
     if not np.isfinite(args.temperature_mm) or args.temperature_mm <= 0:
         parser.error('temperature must be finite and positive')
     if min(args.epochs, args.batch_size, args.skeleton_iterations) < 1:
@@ -217,7 +235,7 @@ def main():
     def objective(prediction, indices):
         actual = target[indices]
         weight = .25 + .75*(torch.abs(actual) < .5)
-        loss = (F.smooth_l1_loss(prediction, actual, beta=.05, reduction='none')*weight).mean()
+        loss = (distance_error_loss(prediction, actual, args.underprediction_weight)*weight).mean()
         if args.gradient_weight:
             loss = loss + args.gradient_weight * distance_gradient_loss(
                 prediction, actual, 1/(camera.CAM.px_per_mm*scale))
@@ -296,7 +314,9 @@ def main():
         seconds=time.time()-started, data_sha256=data_sha256, sampling=sampling_metadata,
         checkpoint_sha256=exported.sha256, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         initialization_sha256=hashlib.sha256(initial_arrays).hexdigest(), history=history, **verification,
-        selection_metric='weighted smooth-L1 plus optional native distance-gradient and equal-weight Dice/clDice losses',
+        selection_metric='optionally asymmetric weighted smooth-L1 plus native distance-gradient and equal-weight Dice/clDice losses',
+        distance_objective=dict(beta_mm=.05, underprediction_weight=args.underprediction_weight,
+                                overprediction_weight=1., calibrated_probability=False),
         topology_reference='https://arxiv.org/abs/2003.07311',
         limitation='Dense tile validation is not whole-image topology or closed-loop recovery evidence; no runtime repair')
     (args.out/'training.json').write_text(json.dumps(manifest, indent=2)+'\n')

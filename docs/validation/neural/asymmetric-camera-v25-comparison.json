@@ -1,0 +1,30 @@
+{
+  "control_checkpoint_reproduced_exactly": true,
+  "matched_initialization_data_groups_sampling": true,
+  "models": {
+    "control": {
+      "checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+      "validation_boundary_mae_mm": 0.07876487318073729,
+      "near_boundary_sign_accuracy": 0.7811275772873504,
+      "export_max_abs_error": 6.794929504394531e-06,
+      "distance_objective": {
+        "beta_mm": 0.05,
+        "underprediction_weight": 1.0,
+        "overprediction_weight": 1.0,
+        "calibrated_probability": false
+      }
+    },
+    "asymmetric": {
+      "checkpoint_sha256": "0ce771903ee2b69a6eec41f794bba0e3780f27cf50852ad003d08f0a1da6d80c",
+      "validation_boundary_mae_mm": 0.09269262460897003,
+      "near_boundary_sign_accuracy": 0.7419548108530002,
+      "export_max_abs_error": 6.540674033637256e-06,
+      "distance_objective": {
+        "beta_mm": 0.05,
+        "underprediction_weight": 3.0,
+        "overprediction_weight": 1.0,
+        "calibrated_probability": false
+      }
+    }
+  }
+}

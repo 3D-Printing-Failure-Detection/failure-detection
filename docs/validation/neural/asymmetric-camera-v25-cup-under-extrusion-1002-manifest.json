@@ -1,0 +1,57 @@
+{
+  "status": "complete",
+  "source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "script_sha256": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+  "arguments": {
+    "profile": "cartesian",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "control=/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/control/boundary.npz",
+      "asymmetric=/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/boundary.npz"
+    ],
+    "include_classical_base_hybrids": true,
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/cup-under-extrusion-1002"
+  },
+  "checkpoint_paths": {
+    "control": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/control/boundary.npz",
+    "asymmetric": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "control": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "asymmetric": "0ce771903ee2b69a6eec41f794bba0e3780f27cf50852ad003d08f0a1da6d80c"
+  },
+  "hybrid_classical_base_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hybrid_labels": {
+    "control": "control:classical-base",
+    "asymmetric": "asymmetric:classical-base"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "checkpoint_queries": {
+    "control": 160,
+    "asymmetric": 160
+  },
+  "observation_counts": {
+    "classical": 160,
+    "control": 160,
+    "asymmetric": 160,
+    "control:classical-base": 160,
+    "asymmetric:classical-base": 160
+  }
+}

@@ -100,15 +100,22 @@ false hard-thin layer; this model still fails. Longer training, verified through
 higher-precision inference, reintroduces one gap and retains those extra alarms.
 It is also rejected. Spatial-gradient training reintroduces two gaps, and an
 actual recovery trial using classical bases with learned walls scores 2/4 versus
-the previous camera policy's 3/4, so both changes are rejected. The next full-grid
-trial combines the improved learned fit forecast with analytical containers:
-576 new runs with and without Qwen, currently in progress. Its overall outcome
-is not yet known. A separate 24-run historical check shows that analytical
+the previous camera policy's 3/4, so both changes are rejected. The completed
+full-grid trial combines the improved learned fit forecast with analytical
+containers: **136/240 functional completions**, with and without Qwen, versus
+the earlier best analytical policy's **133/240**. All of that baseline's successes
+are retained, defective finishes fall from three to one, and all 48 clean controls
+pass. The 576 new rows and original 4,320 rows are audited. Qwen makes 499 actual
+requests and adds no completions. These are consumed development cases; some
+successes from other earlier policies are still lost. A current-code analytical
+control is running to distinguish the learned policy's benefit from measurement
+fixes. A separate 24-run historical check shows that analytical
 containers lose two earlier rescues; using the original learned camera as a
 joint-forecast alternative retains both, with no defective finishes and all
 clean controls passed. Qwen makes 11 calls and ties neural-only. That variant's
-full-grid follow-up is queued after the first run. New untouched seeds are
-reserved for another final test;
+full-grid follow-up is now running. Fixed averaging and asymmetric camera
+training both fail their geometry gates and are rejected. New untouched seeds
+are reserved for another final test;
 these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a

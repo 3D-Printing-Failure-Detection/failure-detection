@@ -1,0 +1,33 @@
+{
+  "status": "rejected",
+  "diagnostic_passes": false,
+  "control_checkpoint_and_full_diagnostic_reproduced_exactly": true,
+  "hybrid_candidate": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 1 layers (leaks)",
+      "wall far below 1.4 mm in 2 layers"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64212.036226141354,
+      "thin_layers": 2
+    }
+  },
+  "raw_candidate": {
+    "ok": false,
+    "violations": [
+      "walls not closed in 1 layers (leaks)",
+      "base not flat/solid in 2 layers",
+      "wall far below 1.4 mm in 2 layers"
+    ],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64212.036226141354,
+      "thin_layers": 2
+    }
+  },
+  "geometry_status": "skipped",
+  "recovery_trials": 0,
+  "limitation": "Asymmetric regression is not calibrated confidence. This consumed diagnostic and camera validation do not establish completed recovery or fresh-test superiority; actual recovery and full-grid trials remain required."
+}

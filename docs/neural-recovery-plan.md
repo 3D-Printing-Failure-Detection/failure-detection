@@ -4,8 +4,16 @@ The objective is more functional completed prints and genuine recovery from
 failures, compared on identical cases with every earlier policy. A trained model
 or a successful language-model request alone does not satisfy that objective.
 
-Current verdict: modest fit gains; not yet accepted as better overall. The latest
-shared-hole proposal completes **79/120 fit failures**, versus analytical
+Current verdict: a modest full-grid development gain; not yet accepted as better
+overall. The complete analytical-container/learned-fit policy finishes **136/240
+fault cases**, versus the earlier best analytical policy's **133/240**, retaining
+all of that baseline's successes. Defective finishes fall from three to one and
+all 48 clean controls pass. Qwen makes 499 actual calls and ties neural-only.
+Some other baseline and historical successes remain lost; a matched analytical
+control using the current measurement code is running. These counts do not yet
+isolate the model's contribution or establish fresh-test superiority.
+
+The latest shared-hole proposal completes **79/120 fit failures**, versus analytical
 preventive recovery's **76/120** and the preceding neural policy's **78/120**.
 Both neural-only and Qwen variants preserve every success from those methods,
 finish zero defective prints, and pass all 24 clean controls. Qwen makes 161
@@ -25,11 +33,11 @@ as well. Commanded-mask conditioning removes both gaps but still has false base
 and thinning alarms. Longer training, verified with higher-precision inference,
 reintroduces one gap and is also rejected. Fresh seeds 2001–2004 are untouched.
 Spatial-gradient training and the subsequent base/wall camera split also fail.
-The next full-grid trial retains analytical containers and the improved learned
-fit forecast; it is running, with no overall gain claimed yet.
+The completed full-grid trial retains analytical containers and the improved
+learned fit forecast; its result is the 136/240 development count above.
 An actual historical check confirms that this simpler variant loses two earlier
 container rescues. Keeping the earlier learned camera as a joint-forecast
-alternative restores both; its full-grid follow-up is queued behind the first run.
+alternative restores both; its full-grid follow-up is now running.
 
 ## Current camera cross-check and context experiments
 
@@ -162,16 +170,22 @@ local Qwen. The earlier 79/120 fit result motivates this test; it is not added
 arithmetically to old container results or credited to this new run.
 
 The protocol fixes all three printer profiles, all four parts, all five failure
-kinds plus clean, and consumed seeds 1001–1004: 576 new rows. The comparison will
-retain the original 4,320 raw rows across all 15 full-grid configurations, with
+kinds plus clean, and consumed seeds 1001–1004: 576 new rows. The comparison
+retains the original 4,320 raw rows across all 15 full-grid configurations, with
 their original sources and model provenance. Both lost baseline successes and
 defective finishes must remain visible. The old agent shards have an asset-only
 attestation and a richer server attestation for the same Qwen/runtime assets;
 their original records must be preserved when verifying cross-version results.
 Evaluation and audit run in tmux window `neural-recovery:hybrid-all-v22`, with
-logs and exit status on the data volume. The study is running; comparison,
-historical regression and a new untouched test remain required. No result from
-this consumed grid can establish fresh-test superiority.
+logs and exit status on the data volume. Evaluation, audit and the complete
+4,896-row comparison pass. Both neural variants complete 136/240 fault cases,
+versus analytical preventive recovery's 133/240. They retain all of that baseline's
+successes and gain spacer shift at seed 1002 on all three profiles. Defective
+finishes fall from three to one; all 48 clean controls pass. Qwen makes 499
+actual requests and ties neural-only. Other baseline successes remain lost,
+including ten cases that ignore finishes successfully. Historical regression
+and a new untouched test remain required. No result from this consumed grid
+can establish fresh-test superiority.
 
 The comparison verifier now preserves the exact manifest hash and original
 supervisor attestation for each old worker. A pinned runtime check must show the
@@ -186,8 +200,33 @@ rescues. The analytical preventive policy's 133 completions include 15 cases
 where ignore fails, while losing ten cases that ignore passes. The old combined
 neural policy has 15 rescues but loses 14 ignore successes; its Qwen variant has
 12 rescues and loses 14. Every completed print with zero adaptations matches its
-ignore counterfactual. The new full run will be assessed by these same outcomes;
-ordinary successful continuations are not credited as recoveries.
+ignore counterfactual. The new full run has 18 genuine rescues, versus the earlier
+analytical policy's 15, while still losing ten ignore successes. Its 136 completed
+prints include 109 without adaptation and 27 after adaptation. Ordinary
+successful continuations are not credited as recoveries.
+
+`matched-analytical-v26` reruns analytical preventive recovery using the exact
+current source and classical camera used by v22. This separates accompanying
+measurement fixes from the learned policy and its associated recovery proposals.
+The complete 288-row grid uses no neural or agent calls; it will join all 17
+existing configurations under a separate label, preserving their raw inputs.
+The run is in tmux window `neural-recovery:matched-analytical-v26`. Its result is
+pending; a fair comparison cannot attribute the full three-print gain to learning
+until this control completes.
+
+Two further camera diagnostics are rejected. `camera-average-diagnostic-v24`
+averages the short- and long-trained models' signed distances with fixed equal
+weights, before contour conversion. Both member controls reproduce exactly, but
+the mean retains one false wall gap, two false base layers and one false hard-thin
+layer. Classical bases remove only the base alarms. `asymmetric-camera-v25`
+triples the training cost of underpredicted signed distance, retaining the same
+data, initialization, sampling and 40 epochs. Its unit-weight control reproduces
+the original checkpoint exactly. The asymmetric model worsens validation boundary
+error from 0.07876 to 0.09269 mm and sign accuracy from 78.11% to 74.20%; its full
+cup diagnostic has one false gap, two false base layers and two false hard-thin
+layers. Both exports pass. These are not calibrated confidence bounds. Neither
+trial receives recovery credit; broader follow-ups are skipped. Eight focused
+Torch tests pass, including the unchanged default loss and asymmetric gradients.
 
 ## Preserving historical container rescues
 
@@ -206,11 +245,11 @@ passing. The cup uses one adaptation and the mug three. Qwen makes 11 actual
 requests and matches neural-only. This preserves two earlier rescues that the
 simpler variant loses; it does not establish a new overall best result.
 
-The predeclared gate passes. A 576-row full-grid follow-up will start after v22
-finishes successfully, using one frozen configuration over every part, profile
+The predeclared gate passes. Its 576-row full-grid follow-up is running after v22
+finished successfully, using one frozen configuration over every part, profile
 and fault. Its tmux window is `neural-recovery:joint-history-v23`. Source and model
-pins, complete gate audits and original failed outcomes are retained. Both full
-comparisons, historical regression and an untouched test remain outstanding.
+pins, complete gate audits and original failed outcomes are retained. This full
+comparison, historical regression and an untouched test remain outstanding.
 
 ## Earlier joint-camera and measurement studies
 

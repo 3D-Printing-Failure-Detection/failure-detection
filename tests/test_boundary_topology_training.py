@@ -6,7 +6,7 @@ from recovery.models.boundary import BoundarySegmenter, normalized_gray
 from tools.boundary_tiles import tile_inputs
 from tools.train_boundary_tiles import (TileNetwork, exported_tiles, soft_skeleton,
                                        connectivity_losses, training_sampling_probabilities,
-                                       distance_gradient_loss)
+                                       distance_gradient_loss, distance_error_loss)
 
 
 @pytest.mark.parametrize('include_expected_mask', [False, True])
@@ -96,3 +96,18 @@ def test_gradient_supervision_penalizes_invented_holes_but_preserves_real_edges(
     assert float(distance_gradient_loss(edge, edge, .0625)) == 0
     with pytest.raises(ValueError, match='spacing'):
         distance_gradient_loss(target, target, 0.)
+
+
+def test_asymmetric_distance_cost_preserves_control_and_still_penalizes_filled_gaps():
+    prediction = torch.tensor([-.1, .1], requires_grad=True)
+    target = torch.tensor([.1, -.1])  # Missed material, then invented material.
+    control = torch.nn.functional.smooth_l1_loss(prediction, target, beta=.05, reduction='none')
+    assert torch.equal(distance_error_loss(prediction, target), control)
+    weighted = distance_error_loss(prediction, target, 3.)
+    assert torch.equal(weighted, control*torch.tensor([3., 1.]))
+    weighted.sum().backward()
+    assert torch.equal(prediction.grad, torch.tensor([-3., 1.]))
+    assert float(distance_error_loss(target, target, 3.).sum()) == 0
+    for invalid in [.5, float('nan'), float('inf')]:
+        with pytest.raises(ValueError, match='underprediction weight'):
+            distance_error_loss(prediction, target, invalid)
