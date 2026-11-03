@@ -86,7 +86,7 @@ cases. The higher completion count does not waive the defect regression.
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The 5,760-row comparison finds 141/240 completions but five defects, versus matched analytical 133/240 and one defect. A correction guard passes its 42-row gate; the full rerun is running. Fresh-test superiority is unproven.\\
+Latest checks & The completed guard comparison records 141/240 successes and one defect with Qwen, versus matched analytical 133/240 and one defect. Historical regression is running. A neural-only input discrepancy is under investigation; fresh-test superiority is unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1602,16 +1602,17 @@ the completed 576-row comparison preserves every prior field except the auditor
 digest, including all 527 Qwen calls. Full historical regression and untouched
 seeds 2001--2004 remain outstanding. No physical-printer reliability is claimed.
 
-The conditional \texttt{robust-full-v33} run starts after all 42 targeted rows
-pass. It evaluates 576 rows with twelve workers and compares all 22
-configurations across 6,336 rows. The unchanged models and policy options match
-the targeted run exactly. The queued \texttt{robust-historical-v34} follow-up
-requires a best full-grid completion count, no higher defects, all clean controls
-and retained active-recovery successes. It then tests all 100 historical faults
-and 20 clean cases against eleven earlier full-domain configurations, with a
-separate fit-only comparison retaining six earlier configurations. Both jobs
-check storage before execution. Remaining ignore losses stay visible; these
-conditional stages do not establish fresh-test superiority.
+The completed \texttt{robust-full-v33} run adds 576 rows and compares all 22
+configurations across 6,336 rows. All 20 earlier summaries remain identical.
+The guarded Qwen variant retains 141/240 successes, reduces defects from five
+to one, and passes all 48 clean controls, with 523 actual agent calls.
+Neural-only records 140/240 and one defect; its extra loss has an anomalous
+pre-fault camera/measurement trace, so the agent's apparent advantage needs
+investigation. Both retain 18 genuine rescues. The complete
+\texttt{robust-historical-v34} follow-up has started on 100 historical faults
+and 20 clean cases, retaining eleven earlier full-domain configurations and
+six prior fit-only configurations. Five ignore losses remain, and untouched
+evaluation is still required.
 
 \clearpage
 \section{A nonlinear camera refinement experiment}
@@ -1734,5 +1735,34 @@ preflight passes; no new simulation rows have run. Three commands with four
 workers each start only after the full comparison finishes and the 24 MB
 artifact allowance fits. Historical success still cannot establish an untouched
 test result.
+
+\clearpage
+\section{Checking a pre-fault measurement discrepancy}
+
+The full guarded comparison exposes one unexpected difference: neural-only
+scraps cartesian cup warp/1003 after four layers, while the Qwen variant completes
+the print without adaptation. Both older variants also complete it. The injected
+fault starts at layer 45, and the successful agent run first consults Qwen at
+layer 46. The failed run already reports a false warp alarm on layer zero and
+an uncertainty of 45.959 mm on layer three. Its measured geometry has mean IoU
+0.318 over those four layers, despite nearly identical physical motion tracking.
+These observations do not establish an agent rescue or a policy-caused loss.
+
+The \texttt{camera-repeatability-v40} diagnostic retains the original paired
+rows unchanged and uses the same frozen source and simulation contract. It
+repeats the first four layers eight times across four independent processes,
+then runs a separate full neural/Qwen replay with the original options.
+The prefix test compares raw image bytes, rectified image bytes, measured
+geometry and actual deposited geometry. Truth is used only for offline scoring;
+it is never supplied to a policy or estimator.
+
+All 32 prefix frames match exactly at each layer for all four recorded hashes.
+Every detection is \texttt{ok}, with minimum measured IoU 0.988. The full paired
+replay completes and passes audit: both variants finish all 160 layers without
+adaptation, defective finish or pre-fault alarm. Their mean measurement IoU is
+identical at 0.885466; Qwen makes three actual calls. The original anomaly is not
+reproduced, and its cause remains unresolved. Its benchmark row remains a
+failure; the replay neither replaces it nor earns an extra recovery. The apparent
+one-case agent advantage is not established as a Qwen benefit.
 
 \end{document}

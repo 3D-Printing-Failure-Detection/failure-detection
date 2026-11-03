@@ -4,17 +4,17 @@ The objective is more functional completed prints and genuine recovery from
 failures, compared on identical cases with every earlier policy. A trained model
 or a successful language-model request alone does not satisfy that objective.
 
-Current verdict: higher completion counts, but no accepted overall improvement.
-The complete joint-camera policy finishes **141/240 fault cases with five
-defective finishes**, versus the preceding candidate's 136 successes and one
-defect. All active recovery baselines' successes are retained, but five ignore
-successes remain lost. Qwen makes 527 calls and ties neural-only. The complete
-matched comparison covers 5,760 rows across 20 configurations. A new guard on
-uncertain, unsupported camera corrections passes its complete 42-row regression:
-all ten required fault successes and six clean controls are retained, four extra
-defective finishes become scraps, and the prior defective finish remains. Qwen
-makes 60 actual calls. The guarded full-grid comparison is now running; its
-overall result is not yet established.
+Current verdict: the complete guarded policy with Qwen records **141/240 fault
+successes and one defective finish**, versus matched analytical 133/240 and one
+defect. It retains the preceding joint-camera policy's 141 successes while
+reducing its five defective finishes to one. All 48 clean controls pass, all
+active recovery baselines' successes are retained, and five ignore successes
+remain lost. The 6,336-row comparison preserves all 20 previous configuration
+summaries. Qwen makes 523 actual calls. Neural-only records 140/240 with one
+defect; the additional loss has an anomalous pre-fault measurement trace before
+any agent decision. A separate repeatability diagnostic is investigating that
+discrepancy, with the original row retained. Historical regression has started;
+agent causality and untouched-test superiority remain unproven.
 
 The complete analytical-container/learned-fit policy finishes **136/240
 fault cases**, versus the matched current analytical policy's **133/240**,
@@ -532,11 +532,34 @@ and seeds 1001–1004. The same frozen source, model weights and policy options
 are retained; twelve workers replace the prior six after checking CPU and memory
 availability. Its 6,336-row comparison retains all 20 earlier configurations
 under their own labels and adds the two guarded variants. All earlier summary
-values must remain identical. It is running in tmux window
-`neural-recovery:robust-full-v33`, with a 35 MB artifact allowance checked again
-before execution. A failed targeted gate skips it with zero new rows.
+values must remain identical. It completes successfully in tmux window
+`neural-recovery:robust-full-v33`. The agent variant finishes 141/240 faults with
+one defective finish and all 48 clean controls, retaining the prior count while
+removing the four extra defects. Neural-only finishes 140/240 with one defect
+and all 48 clean controls. Both retain 18 genuine rescues versus ignore; the
+agent makes 523 actual calls. All 20 previous summaries reproduce exactly.
+The agent retains every active recovery baseline success; its five lost ignore
+successes remain unchanged. The historical prerequisite passes, but strict count
+superiority over every earlier attempt does not: the preceding joint-camera
+variant also has 141 completions, with more defects.
 
-`robust-historical-v34` waits for that full comparison. Before starting, the
+The neural-only extra loss is cartesian cup warp/1003: it scraps at layer 3,
+before the injected onset at 45, with measurement IoU 0.318 and uncertainty
+45.959 mm. The paired agent run and both older variants finish without adaptation,
+and the agent's first decision is at layer 46. This does not establish a Qwen
+rescue or prove that the guard caused the difference. `camera-repeatability-v40`
+preserves the original paired rows and checks eight four-layer prefixes across
+four processes, followed by a separate same-source full paired replay. All 32
+prefix frames have identical raw pixels, rectified pixels, measured geometry and
+actual geometry at each layer; every detection is `ok`, with minimum IoU 0.988.
+The full replay completes and passes audit in `neural-recovery:camera-repeat-v40`:
+both variants finish all 160 layers successfully, with no adaptation, defective
+finish or pre-fault alarm. Their mean measurement IoU is identical at 0.885466;
+Qwen makes three actual calls. The original anomalous observation is not reproduced.
+Its cause remains unresolved; no replay replaces the original benchmark row or
+establishes an agent benefit.
+
+`robust-historical-v34` has started after that full comparison. Before starting, the
 candidate must have the best completion count, no higher defect count, all clean
 controls passing and no lost active-recovery baseline successes. Any remaining
 ignore losses stay visible and do not count as acceptance. A separate storage

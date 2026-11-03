@@ -1,6 +1,5 @@
 {
-  "status": "running",
+  "status": "evaluation_audit_and_comparison_complete",
   "gate_comparison_sha256": "e804449bd5a8a6424e966b9c088e696913156ce88093e4c6680afec2da2eb089",
-  "gate_rows_verified": 42,
-  "storage_bytes_at_launch": 99944706048
+  "new_rows": 576
 }

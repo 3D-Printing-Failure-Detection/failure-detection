@@ -1,0 +1,67 @@
+{
+  "status": "complete",
+  "prefix_comparison": {
+    "frames": 32,
+    "repetitions": 8,
+    "processes": 4,
+    "per_layer_unique_values": {
+      "0": {
+        "raw_image_sha256": 1,
+        "rectified_image_sha256": 1,
+        "measured_geometry_sha256": 1,
+        "actual_geometry_sha256": 1
+      },
+      "1": {
+        "raw_image_sha256": 1,
+        "rectified_image_sha256": 1,
+        "measured_geometry_sha256": 1,
+        "actual_geometry_sha256": 1
+      },
+      "2": {
+        "raw_image_sha256": 1,
+        "rectified_image_sha256": 1,
+        "measured_geometry_sha256": 1,
+        "actual_geometry_sha256": 1
+      },
+      "3": {
+        "raw_image_sha256": 1,
+        "rectified_image_sha256": 1,
+        "measured_geometry_sha256": 1,
+        "actual_geometry_sha256": 1
+      }
+    },
+    "minimum_iou": 0.9877630606357162,
+    "detections": [
+      "ok"
+    ]
+  },
+  "replay": [
+    {
+      "method": "neural_risk",
+      "in_place": true,
+      "defective_finished": false,
+      "layers_printed": 160,
+      "adaptations": 0,
+      "pre_failure_alarms": 0,
+      "agent_requests": 0,
+      "measurement_iou": 0.8854660392035643
+    },
+    {
+      "method": "neural_risk_agent",
+      "in_place": true,
+      "defective_finished": false,
+      "layers_printed": 160,
+      "adaptations": 0,
+      "pre_failure_alarms": 0,
+      "agent_requests": 3,
+      "measurement_iou": 0.8854660392035643
+    }
+  ],
+  "input_pins": {
+    "manifest_sha256": "fa081e70d431c0f87abc63f8ae084ce0af865475ec8f96f34e41fd641ceab0fa",
+    "runs_sha256": "b5d87e002441790c618a86aa2b5e6f81e93104fd0ec87581a917ddbac57f1ef5",
+    "audit_sha256": "035f46e47108255f9ba48e8d77685d100552d57a78158d349be63e3bfa4ec3ef"
+  },
+  "original_anomalous_observation_reproduced": false,
+  "limitation": "Diagnostic repetitions of a consumed case only. All original broad-grid rows remain unchanged; no replay replaces a failed row or earns a new policy gain. Matching repeats do not establish the cause of the original anomaly. Truth geometry is recorded only for offline measurement scoring, never supplied to the controller. Fresh seeds remain untouched."
+}

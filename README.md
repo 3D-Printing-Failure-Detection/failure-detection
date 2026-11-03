@@ -126,8 +126,16 @@ opt-in guard now rejects such corrections. Its complete 42-row regression passes
 both variants retain all ten required fault successes and six clean controls,
 stop the four extra defective prints, and retain the one pre-existing defect.
 Qwen makes 60 calls and ties neural-only. All 164 repository tests pass. The
-576-row full rerun is now running with twelve workers, with complete historical
-regression queued afterward. The targeted result does not establish a full-grid win.
+complete 576-row guarded rerun now records **141/240 successes and one defective
+finish with Qwen**, retaining all 48 clean controls. Its 6,336-row comparison
+preserves all 20 earlier configuration summaries. Qwen makes 523 actual calls.
+Neural-only records 140/240 with one defect: its extra loss has an anomalous
+camera/measurement trace before the fault and before any Qwen decision, so the
+one-case difference is not an established agent benefit. The separate repeatability
+diagnostic reproduces identical early frames and both variants succeed on full
+replay; the original failure is retained and its cause remains unresolved. The complete
+historical regression has started. Five ignore successes remain lost, and
+untouched-test superiority is unproven.
 Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup
