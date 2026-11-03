@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tools.experiment_provenance import load_configurations, verify_configuration
+from tools.experiment_provenance import load_configurations, training_seed_ids, verify_configuration
 from tools.result_storage import load_run_bytes, verifier_digest
 from recovery.eval.camera_trace import validate_camera_manifest, validate_camera_prefixes
 
@@ -121,9 +121,9 @@ def main():
     if args.test_seeds:
         assert stages == {'frozen-test'}, 'test-seed comparisons must be declared frozen tests'
         seen = {key[3] for key in candidate}
-        fitting = {int(group.rsplit('-', 1)[1]) for model in training_manifests
-                   for key in ('training_groups', 'validation_groups') for group in model[key]}
-        assert seen == set(args.test_seeds) and seen.isdisjoint(fitting)
+        fitting = {seed for model in training_manifests for seed in training_seed_ids(model)}
+        assert seen == set(args.test_seeds), 'test grid seeds differ from the requested holdout'
+        assert seen.isdisjoint(fitting), 'test seeds overlap model training or validation'
     summary = {}
     for method, method_rows in by_method.items():
         summary[method] = {}

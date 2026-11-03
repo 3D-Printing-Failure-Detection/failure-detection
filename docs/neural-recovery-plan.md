@@ -1085,6 +1085,23 @@ reserves 60 MB for results and 6 MB for existing supervisor-log growth; complete
 shards are audited, their duplicate exports compacted and primary rows packed
 losslessly. Existing development regressions cannot be ignored to spend the holdout.
 
+The saved v47 plan predates the augmented training groups and must be regenerated
+for a new candidate. Its old seed parsing assumes the last group field is a seed;
+augmentation appends severity after the seed. The current comparison audit now
+extracts both formats explicitly, includes augmentation parent seeds, and rejects
+unknown augmented formats. End-to-end fixtures reject overlap through training,
+validation or parent data. All 25 retained configurations' legacy seed sets remain
+unchanged, and both new refinement manifests are disjoint from seeds 2001–2004.
+The updated repository passes 238 tests, with three optional modules skipped.
+This checks training provenance and does not consume or validate the fresh test.
+
+Verified lossless packing of 1,176 completed rows from v33, v34 and v43 reclaims
+15.36 MB. All 13 packed directories are actually restored to disk and compared
+byte for byte; their manifests and audits remain unchanged. Compatible readers
+use `load_run_bytes`; legacy scripts that directly open `runs.jsonl` require the
+documented restoration first. Active runs, checkpoints and training data are
+untouched. Receipts are retained in `primary-packing-v13.json`.
+
 The completed historical run's 124 duplicate journals/CSV exports are archived
 from 6,384,738 bytes to 424,298 bytes in `completed-report-archive-v7`. Every member
 is verified before unlinking, and actual sample restores from all four shards

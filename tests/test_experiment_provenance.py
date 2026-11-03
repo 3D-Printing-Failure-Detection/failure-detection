@@ -8,7 +8,7 @@ import pytest
 from tools.compare_neural_experiments import main
 from tools.experiment_provenance import (
     file_digest, load_configurations, policy_arguments, runtime_digest,
-    simulation_contract, verify_configuration,
+    simulation_contract, training_seed_ids, verify_configuration,
 )
 
 
@@ -236,6 +236,40 @@ def test_test_seed_cannot_overlap_any_previous_models_training(comparison, monke
     write_json(pins, document)
     with pytest.raises(AssertionError):
         run_comparison(monkeypatch, comparison)
+
+
+@pytest.mark.parametrize('overlap', [None, 'training', 'validation', 'parent'])
+def test_holdout_comparison_accounts_for_augmented_and_parent_seeds(comparison, monkeypatch, overlap):
+    pins, _, _ = comparison
+    document = json.loads(pins.read_text())
+    model = document['configurations']['previous']['models']['neural']
+    path = Path(model['training_manifest'])
+    training = json.loads(path.read_text())
+    training['training_groups'].append(
+        f"augmented-cup-under_extrusion-{2001 if overlap == 'training' else 500}-1.05")
+    if overlap == 'validation':
+        training['validation_groups'].append('augmented-mug-under_extrusion-2001-0.90')
+    training['extra_training'] = dict(parent_groups=[
+        f"cartesian-cup-clean-{2001 if overlap == 'parent' else 61}"])
+    write_json(path, training)
+    model['training_manifest_sha256'] = file_digest(path)
+    write_json(pins, document)
+    if overlap:
+        with pytest.raises(AssertionError, match='test seeds overlap'):
+            run_comparison(monkeypatch, comparison)
+    else:
+        assert training_seed_ids(training) == {60, 61, 70, 500}
+        assert run_comparison(monkeypatch, comparison)['failure_cases'] == 1
+
+
+@pytest.mark.parametrize('group', [
+    'augmented-cup-under_extrusion-500',
+    'augmented-cup-under_extrusion-500-nan',
+    'augmented-cup-under_extrusion-missing-1.05',
+])
+def test_unknown_augmentation_group_cannot_bypass_holdout_audit(group):
+    with pytest.raises(ValueError):
+        training_seed_ids(dict(training_groups=[group], validation_groups=[]))
 
 
 def test_rejects_environment_changes_even_when_policy_pins_match(comparison, monkeypatch):

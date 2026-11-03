@@ -2,6 +2,7 @@
 import ast
 import hashlib
 import json
+import math
 from pathlib import Path
 
 
@@ -59,6 +60,37 @@ def simulation_contract(root):
 
 def policy_arguments(arguments):
     return {key: value for key, value in arguments.items() if key not in EXECUTION_ARGUMENTS}
+
+
+def training_seed_ids(training):
+    """Include original, augmented and parent seeds in holdout separation.
+
+    Original trajectory names end in their seed. Augmented under-extrusion
+    names append a severity after the seed; that value is not a seed.
+    Reject unknown augmented formats rather than silently omitting them.
+    """
+    extra = training.get('extra_training') or {}
+    groups = [*training['training_groups'], *training['validation_groups'],
+              *extra.get('parent_groups', [])]
+    seeds = set()
+    for group in groups:
+        if group.startswith('augmented-'):
+            fields = group.split('-')
+            if (len(fields) != 5 or fields[1] not in ('cup', 'mug')
+                    or fields[2] != 'under_extrusion'):
+                raise ValueError(f'unrecognized augmented training group: {group}')
+            severity = float(fields[4])
+            if not math.isfinite(severity) or severity <= 0:
+                raise ValueError(f'invalid augmented training severity: {group}')
+            seed = fields[3]
+        else:
+            prefix, separator, seed = group.rpartition('-')
+            if not separator or not prefix or prefix.endswith('-'):
+                raise ValueError(f'unrecognized training group: {group}')
+        if not seed.isdecimal():
+            raise ValueError(f'invalid training seed: {group}')
+        seeds.add(int(seed))
+    return seeds
 
 
 def supervisor_command_identity(command):

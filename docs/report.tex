@@ -2155,9 +2155,20 @@ only after these gates pass, with exact checkpoint and storage checks. They must
 first complete all four target cases, then preserve the previous controller's
 50 targeted candidate and regression results without new defects or lost successes.
 
-The implementation passes 231 repository tests, with three optional modules
+The implementation passes 238 repository tests, with three optional modules
 skipped, and 41 Torch/training checks. The frozen run and logs are retained in
 \code{neural-recovery:native-coverage-v58}. Fresh seeds 2001--2004 remain untouched.
 The experiment does not yet establish a new completed-print success rate.
+
+The final comparison's training/test separation audit now reads augmented seeds
+separately from severity and includes their parent data. All 25 retained
+configurations preserve their original seed sets, and both new camera manifests
+remain disjoint from the reserved test seeds. Unknown augmentation formats and
+overlap through training, validation or parent data are rejected. The older
+final-run plan must be regenerated with this audit before launch.
+
+Lossless packing of 1,176 completed result rows reclaims 15.36 MB. Actual disk
+restoration verifies every original byte in all 13 directories; manifests and
+audits remain unchanged. No active run, checkpoint or training dataset is removed.
 
 \end{document}

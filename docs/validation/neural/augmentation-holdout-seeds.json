@@ -1,0 +1,151 @@
+{
+  "status": "verified",
+  "configurations": 25,
+  "unique_previous_training_manifests": 4,
+  "new_refinement_training_manifests": 2,
+  "reserved_fresh_seeds": [
+    2001,
+    2002,
+    2003,
+    2004
+  ],
+  "all_model_training_and_validation_seeds_disjoint": true,
+  "all_legacy_seed_sets_unchanged": true,
+  "provenance_verifier_sha256": "3cbf4ffd0d28883324618f3c8fc295827dd6e69fdc695dda353622b187cfe513",
+  "comparator_sha256": "7e7dfe74687d39b026fb8b9f61f7a2bb1b9d9843dd4edd43bcd57fddf8d88a12",
+  "configurations_sha256": "8465b0258624b5ca4c7a23104d5444946afdb4fce78344bc7e4748da58225b7e",
+  "models": [
+    {
+      "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/training.json",
+      "sha256": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d",
+      "seeds": [
+        60,
+        61,
+        62,
+        63,
+        70,
+        71
+      ],
+      "legacy_seed_extraction_identical": true
+    },
+    {
+      "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-equivariant-v1/classical/training.json",
+      "sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+      "seeds": [
+        60,
+        61,
+        62,
+        63,
+        70,
+        71
+      ],
+      "legacy_seed_extraction_identical": true
+    },
+    {
+      "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/boundary-training.json",
+      "sha256": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d",
+      "seeds": [
+        60,
+        61,
+        62,
+        63,
+        70,
+        71
+      ],
+      "legacy_seed_extraction_identical": true
+    },
+    {
+      "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/temporal-training.json",
+      "sha256": "9044ad9e88ad323dcd7c4607fa987a2b136afa6841adf94455fbaebfcb01a2f3",
+      "seeds": [
+        60,
+        61,
+        62,
+        63,
+        70,
+        71
+      ],
+      "legacy_seed_extraction_identical": true
+    },
+    {
+      "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/linear/training.json",
+      "sha256": "94c3d265588e942f8ddbdfd1901515e3d973c39ff8d7e061160d45c911baa9ba",
+      "seeds": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        70,
+        71,
+        72,
+        73,
+        313,
+        335,
+        344,
+        355,
+        379,
+        400,
+        410,
+        417,
+        420,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507
+      ],
+      "augmented_and_parent_seeds_included": true
+    },
+    {
+      "training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/nonlinear/training.json",
+      "sha256": "2d57ce2db9243c2aeee75a78cb110c7d65cce640447daebaea612606c33c09ad",
+      "seeds": [
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        70,
+        71,
+        72,
+        73,
+        313,
+        335,
+        344,
+        355,
+        379,
+        400,
+        410,
+        417,
+        420,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507
+      ],
+      "augmented_and_parent_seeds_included": true
+    }
+  ],
+  "limitation": "Read-only training-provenance audit, not a new evaluation, a scan of all past evaluation cases, or a recovery outcome. Synthetic unit-test fixtures are not printing evidence.",
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MUJOCO_GL=egl .venv/bin/python -m pytest -q",
+    "passed": 238,
+    "skipped": 3,
+    "seconds": 29.5,
+    "test_source_sha256": "04cdbb89872778c8da6701899c0d1a9db88e1a3c7d8be10d40f06ccb94bdd397"
+  }
+}
