@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "base_training_manifest": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/training.json",
+  "base_training_manifest_sha256": "eeb578552c355b4c4f6b96f848da44754cf95d717d1b5925a9471816de698dab",
+  "refinement_training_manifest_sha256": "a3aead833d977f803e23e7e7f583598f7f71e3211fa6c3ec682faabdb1aa8d6d",
+  "same_dataset_training_and_validation_groups": true,
+  "base_checkpoint_sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+  "training_groups": 66,
+  "validation_groups": 36,
+  "limitation": "Checks the inherited base training split, not fresh-test generalization."
+}

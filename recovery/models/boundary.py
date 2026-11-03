@@ -64,6 +64,12 @@ class BoundarySegmenter:
             self.include_expected_mask = bool(data['include_expected_mask']) if 'include_expected_mask' in data else False
             self.inference_dtype = str(data['inference_dtype']) if 'inference_dtype' in data else 'float32'
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
+            refinement_keys = {'native_refinement_kernel', 'native_refinement_bias'}
+            if refinement_keys & set(data.files) and not refinement_keys <= set(data.files):
+                raise ValueError('incomplete native refinement weights')
+            self.native_refinement = None
+            if refinement_keys <= set(data.files):
+                self.native_refinement = (data['native_refinement_kernel'], data['native_refinement_bias'])
         if self.inference_dtype not in ('float32', 'float64'):
             raise ValueError('unsupported boundary inference dtype')
         if self.inference_dtype == 'float64':
@@ -86,6 +92,13 @@ class BoundarySegmenter:
             if (self.query_weights.shape != (len(self.weights[1][1]), 2)
                     or not np.isfinite(self.query_weights).all() or self.output_upsample == 1):
                 raise ValueError('invalid subpixel query weights')
+        if self.native_refinement is not None:
+            kernel, bias = self.native_refinement
+            if (kernel.shape != (3, 3) or bias.shape != () or self.output_upsample == 1
+                    or not np.isfinite(kernel).all() or not np.isfinite(bias)):
+                raise ValueError('invalid native refinement weights')
+            self.native_refinement = (kernel.astype(self.inference_dtype),
+                                      bias.astype(self.inference_dtype))
         outputs = 1 if self.query_weights is not None else self.output_upsample**2
         if (width != outputs or upsample < self.output_upsample
                 or upsample % self.output_upsample):
@@ -102,7 +115,7 @@ class BoundarySegmenter:
         """Supply the actual preceding camera frame for a nonsequential replay."""
         self._previous_gray = normalized_gray(previous_image)
 
-    def _distance_outputs(self, hidden):
+    def _distance_outputs(self, hidden, *, activate=True):
         weights, bias = self.weights[1]
         hidden = hidden @ weights.T + bias
         weights, bias = self.weights[2]
@@ -110,16 +123,36 @@ class BoundarySegmenter:
             # All subpixel locations share one distance decoder. Conditioning
             # the hidden activations on XY represents a continuous function
             # inside each pixel instead of sixteen unrelated output heads.
-            values = [np.tanh(np.maximum(hidden + self.query_weights @ offset, 0)
-                              @ weights.T + bias)[..., 0]
-                      for offset in subpixel_offsets(self.output_upsample)]
+            values = []
+            for offset in subpixel_offsets(self.output_upsample):
+                value = np.maximum(hidden + self.query_weights @ offset, 0) @ weights.T + bias
+                values.append((np.tanh(value) if activate else value)[..., 0])
             return np.stack(values, axis=-1)
-        return np.tanh(np.maximum(hidden, 0) @ weights.T + bias)
+        value = np.maximum(hidden, 0) @ weights.T + bias
+        return np.tanh(value) if activate else value
 
     def predict_patches(self, patches):
         """Export verification on normalized patches, without camera state."""
+        if self.native_refinement is not None:
+            raise ValueError('native refinement requires a spatial distance grid')
         weights, bias = self.weights[0]
         return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0))
+
+    def predict_patch_logits(self, patches):
+        """Unrefined logits for independent spatial export verification."""
+        weights, bias = self.weights[0]
+        return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0), activate=False)
+
+    def refine_native_logits(self, logits):
+        """Apply the checkpoint's learned spatial layer before its tanh output."""
+        logits = np.asarray(logits, dtype=self.inference_dtype)
+        if logits.ndim != 2:
+            raise ValueError('native refinement requires a two-dimensional grid')
+        if self.native_refinement is None:
+            return logits
+        kernel, bias = self.native_refinement
+        depth = cv2.CV_64F if self.inference_dtype == 'float64' else cv2.CV_32F
+        return cv2.filter2D(logits, depth, kernel, borderType=cv2.BORDER_REFLECT_101) + bias
 
     def signed_distance(self, image, expected_mask=None):
         gray = normalized_gray(image).astype(self.inference_dtype, copy=False)
@@ -152,14 +185,17 @@ class BoundarySegmenter:
             channels.append(channel)
         hidden = np.stack(channels, axis=-1)
         hidden = np.maximum(hidden, 0)
-        distance = self._distance_outputs(hidden)
+        distance = self._distance_outputs(hidden, activate=self.native_refinement is None)
         scale = self.output_upsample
         height, width = gray.shape
         # Each output distance represents its own position within a camera pixel.
         # Interpolating a single value per pixel cannot represent a narrow
         # positive region when every surrounding pixel centre lies outside it.
-        return distance.reshape(height, width, scale, scale).transpose(
+        distance = distance.reshape(height, width, scale, scale).transpose(
             0, 2, 1, 3).reshape(height*scale, width*scale)
+        if self.native_refinement is not None:
+            distance = np.tanh(self.refine_native_logits(distance))
+        return distance
 
     def measure(self, image, expected_mask=None):
         self.queries += 1

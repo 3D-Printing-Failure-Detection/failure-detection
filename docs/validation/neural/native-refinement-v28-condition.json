@@ -1,0 +1,26 @@
+{
+  "status": "running_geometry_validation",
+  "diagnostic_passes": true,
+  "base_weights_and_full_identity_control_verified": true,
+  "hybrid_candidate": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64798.96928263503,
+      "thin_layers": 0
+    }
+  },
+  "raw_candidate": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 64798.96928263503,
+      "thin_layers": 0
+    }
+  },
+  "geometry_status": "running",
+  "recovery_trials": 0,
+  "limitation": "This is a learned output layer, not calibrated confidence or preset contour repair. Consumed diagnostic and geometry validation cannot establish completed recovery or fresh-test superiority; closed-loop paired comparisons remain required."
+}

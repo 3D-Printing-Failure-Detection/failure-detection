@@ -114,7 +114,11 @@ containers lose two earlier rescues; using the original learned camera as a
 joint-forecast alternative retains both, with no defective finishes and all
 clean controls passed. Qwen makes 11 calls and ties neural-only. That variant's
 full-grid follow-up is now running. Fixed averaging and asymmetric camera
-training both fail their geometry gates and are rejected. New untouched seeds
+training both fail their geometry gates and are rejected. A learned spatial
+output layer on the frozen camera now passes the complete known 160-layer cup
+diagnostic, removing its false gap/base/thickness alarms. Its broader 2,040-frame
+validation containing real gaps is running; no new recovery gain is claimed.
+New untouched seeds
 are reserved for another final test;
 these policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only

@@ -1,0 +1,44 @@
+{
+  "classical": {
+    "open_wall": 2,
+    "base_problem": 0,
+    "hard_thin": 0,
+    "soft_thin": 0
+  },
+  "control": {
+    "open_wall": 0,
+    "base_problem": 2,
+    "hard_thin": 1,
+    "soft_thin": 2
+  },
+  "identity": {
+    "open_wall": 0,
+    "base_problem": 2,
+    "hard_thin": 1,
+    "soft_thin": 2
+  },
+  "refined": {
+    "open_wall": 0,
+    "base_problem": 0,
+    "hard_thin": 0,
+    "soft_thin": 0
+  },
+  "control:classical-base": {
+    "open_wall": 0,
+    "base_problem": 0,
+    "hard_thin": 1,
+    "soft_thin": 2
+  },
+  "identity:classical-base": {
+    "open_wall": 0,
+    "base_problem": 0,
+    "hard_thin": 1,
+    "soft_thin": 2
+  },
+  "refined:classical-base": {
+    "open_wall": 0,
+    "base_problem": 0,
+    "hard_thin": 0,
+    "soft_thin": 0
+  }
+}

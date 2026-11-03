@@ -1,0 +1,258 @@
+{
+  "status": "complete",
+  "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/source",
+  "source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+  "script_sha256": "9c9552346feae0aedd2a7bd14ce52a82c9009e577e556456ba474dc5664b2b26",
+  "inputs": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-average-diagnostic-v24/geometry-085.json": "2c082435f44166c701a68fcd19a7649288a10f4a2a8911e4d85f34a79e7f22ef",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-average-diagnostic-v24/camera-085.png": "7b2b56ea02c0ae12c00c21bc694df3cddd79ec31e9d13b8a13fe34c98794a5ca",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-average-diagnostic-v24/geometry-086.json": "2b112f2556ad632c371c40e9de321fc22baae5709cf873839206ab4a0ba63ba2",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-average-diagnostic-v24/camera-086.png": "af342bcd16de0959caff83bd374eb11e453983426b8456046278a85db890b702",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-average-diagnostic-v24/protocol.json": "4bfcc1f653d0a6f108d9751ca397bf42ef5f669e045ac456c883eb3fcf457893",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-camera-v15/command/boundary.npz": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-command-precise-camera-v17/command/boundary.npz": "9ff615cde22c36db6cd8f2aaec0964aa874372a50e524200bb2c4ee5747f454e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-asymmetric-camera-v25/asymmetric/boundary.npz": "0ce771903ee2b69a6eec41f794bba0e3780f27cf50852ad003d08f0a1da6d80c"
+  },
+  "hard_thickness_mm": 0.84,
+  "unchanged_excess_limit": 0.03,
+  "partition_verified": true,
+  "short_long_saved_geometry_reproduced_exactly": true,
+  "layers": {
+    "85": {
+      "truth": {
+        "hard_thin_excess": 0.024402247275938094,
+        "material_mm2": 276.6995738175874,
+        "thin_area_mm2": 6.752926199142588,
+        "opened_outside_material_mm2": 0.0006069121497451268,
+        "missing_actual_material_mm2": 0.0,
+        "extra_material_mm2": 0.0,
+        "thin_inside_actual_thin_mm2": 6.752926199142606,
+        "thin_inside_actual_thick_mm2": 0.0,
+        "thin_invented_material_mm2": 0.0
+      },
+      "models": {
+        "classical": {
+          "hard_thin_excess": 0.0013843766831325279,
+          "material_mm2": 272.3472597951218,
+          "thin_area_mm2": 0.4206572245845705,
+          "opened_outside_material_mm2": 0.043401747044647665,
+          "missing_actual_material_mm2": 26.132791544939572,
+          "extra_material_mm2": 21.780477522471884,
+          "thin_inside_actual_thin_mm2": 0.03584679772544063,
+          "thin_inside_actual_thick_mm2": 0.13061565753139093,
+          "thin_invented_material_mm2": 0.25419476932773905
+        },
+        "short": {
+          "hard_thin_excess": 0.02975226739547244,
+          "material_mm2": 271.7301225429185,
+          "thin_area_mm2": 8.132832414281971,
+          "opened_outside_material_mm2": 0.048021375836270794,
+          "missing_actual_material_mm2": 16.987724745566272,
+          "extra_material_mm2": 12.018273470894696,
+          "thin_inside_actual_thin_mm2": 5.837218580220859,
+          "thin_inside_actual_thick_mm2": 0.43073529048150794,
+          "thin_invented_material_mm2": 1.8648785435796156
+        },
+        "long": {
+          "hard_thin_excess": 0.03743883202316076,
+          "material_mm2": 267.1785399796313,
+          "thin_area_mm2": 10.042188046599207,
+          "opened_outside_material_mm2": 0.03911554324914914,
+          "missing_actual_material_mm2": 17.37475629313671,
+          "extra_material_mm2": 7.853722455182271,
+          "thin_inside_actual_thin_mm2": 6.452732666319891,
+          "thin_inside_actual_thick_mm2": 0.5681758371164497,
+          "thin_invented_material_mm2": 3.0212795431628576
+        },
+        "mean": {
+          "hard_thin_excess": 0.03333249958252762,
+          "material_mm2": 270.9092302882709,
+          "thin_area_mm2": 9.06359871692165,
+          "opened_outside_material_mm2": 0.033293814305691886,
+          "missing_actual_material_mm2": 15.854117576590864,
+          "extra_material_mm2": 10.063774047270076,
+          "thin_inside_actual_thin_mm2": 6.31616603615017,
+          "thin_inside_actual_thick_mm2": 0.40259849302631545,
+          "thin_invented_material_mm2": 2.344834187745172
+        }
+      }
+    },
+    "86": {
+      "truth": {
+        "hard_thin_excess": 0.02440515168404799,
+        "material_mm2": 277.1358911385182,
+        "thin_area_mm2": 6.764325861630972,
+        "opened_outside_material_mm2": 0.0005545294548898092,
+        "missing_actual_material_mm2": 0.0,
+        "extra_material_mm2": 0.0,
+        "thin_inside_actual_thin_mm2": 6.764325861630979,
+        "thin_inside_actual_thick_mm2": 0.0,
+        "thin_invented_material_mm2": 0.0
+      },
+      "models": {
+        "classical": {
+          "hard_thin_excess": 0.001157625611407759,
+          "material_mm2": 270.6505620496979,
+          "thin_area_mm2": 0.3559804373655581,
+          "opened_outside_material_mm2": 0.04244587563655746,
+          "missing_actual_material_mm2": 26.73891908800648,
+          "extra_material_mm2": 20.25358999918423,
+          "thin_inside_actual_thin_mm2": 0.012041848412675457,
+          "thin_inside_actual_thick_mm2": 0.11356687704578859,
+          "thin_invented_material_mm2": 0.23037171190709488
+        },
+        "short": {
+          "hard_thin_excess": 0.0307452044571074,
+          "material_mm2": 273.3386089661831,
+          "thin_area_mm2": 8.446521598978252,
+          "opened_outside_material_mm2": 0.04244543071713567,
+          "missing_actual_material_mm2": 15.82685443219523,
+          "extra_material_mm2": 12.029572259857103,
+          "thin_inside_actual_thin_mm2": 6.163290784069356,
+          "thin_inside_actual_thick_mm2": 0.24313928286396044,
+          "thin_invented_material_mm2": 2.040091532044964
+        },
+        "long": {
+          "hard_thin_excess": 0.022699999170436858,
+          "material_mm2": 263.9816441589832,
+          "thin_area_mm2": 6.031710974992061,
+          "opened_outside_material_mm2": 0.03911081565640025,
+          "missing_actual_material_mm2": 18.23063085173531,
+          "extra_material_mm2": 5.076383872201415,
+          "thin_inside_actual_thin_mm2": 4.9859471084695155,
+          "thin_inside_actual_thick_mm2": 0.3303457725754252,
+          "thin_invented_material_mm2": 0.7154180939471111
+        },
+        "mean": {
+          "hard_thin_excess": 0.026515456548317693,
+          "material_mm2": 268.75021743009023,
+          "thin_area_mm2": 7.155110610272322,
+          "opened_outside_material_mm2": 0.028854920832301383,
+          "missing_actual_material_mm2": 16.2064848199935,
+          "extra_material_mm2": 7.820811111564491,
+          "thin_inside_actual_thin_mm2": 5.798407384362581,
+          "thin_inside_actual_thick_mm2": 0.20843641093618273,
+          "thin_invented_material_mm2": 1.1482668149735409
+        }
+      }
+    }
+  },
+  "simplification_replay_layer86": {
+    "short": {
+      "normal": {
+        "hard_thin_excess": 0.0307452044571074,
+        "material_mm2": 273.3386089661831,
+        "thin_area_mm2": 8.446521598978252,
+        "opened_outside_material_mm2": 0.04244543071713567,
+        "missing_actual_material_mm2": 15.82685443219523,
+        "extra_material_mm2": 12.029572259857103,
+        "thin_inside_actual_thin_mm2": 6.163290784069356,
+        "thin_inside_actual_thick_mm2": 0.24313928286396044,
+        "thin_invented_material_mm2": 2.040091532044964,
+        "hole_area_mm2": 1721.1185285327335
+      },
+      "before_observation_simplify": {
+        "hard_thin_excess": 0.034746002095938165,
+        "material_mm2": 272.91404021097946,
+        "thin_area_mm2": 9.631856580244579,
+        "opened_outside_material_mm2": 0.14896036658529316,
+        "missing_actual_material_mm2": 15.627323018927125,
+        "extra_material_mm2": 11.405472091380547,
+        "thin_inside_actual_thin_mm2": 6.135279897803891,
+        "thin_inside_actual_thick_mm2": 0.7360593389501948,
+        "thin_invented_material_mm2": 2.760517343490404,
+        "hole_area_mm2": 1721.0025682003716
+      },
+      "before_all_simplify": {
+        "hard_thin_excess": 0.03724113816711076,
+        "material_mm2": 273.26114047004853,
+        "thin_area_mm2": 10.366310819823747,
+        "opened_outside_material_mm2": 0.1895302459995116,
+        "missing_actual_material_mm2": 15.471808944255429,
+        "extra_material_mm2": 11.597058275782846,
+        "thin_inside_actual_thin_mm2": 6.124978755589416,
+        "thin_inside_actual_thick_mm2": 0.9748858986993476,
+        "thin_invented_material_mm2": 3.266446165534841,
+        "hole_area_mm2": 1720.8309759165386
+      }
+    },
+    "long": {
+      "normal": {
+        "hard_thin_excess": 0.022699999170436858,
+        "material_mm2": 263.9816441589832,
+        "thin_area_mm2": 6.031710974992061,
+        "opened_outside_material_mm2": 0.03911081565640025,
+        "missing_actual_material_mm2": 18.23063085173531,
+        "extra_material_mm2": 5.076383872201415,
+        "thin_inside_actual_thin_mm2": 4.9859471084695155,
+        "thin_inside_actual_thick_mm2": 0.3303457725754252,
+        "thin_invented_material_mm2": 0.7154180939471111,
+        "hole_area_mm2": 0
+      },
+      "before_observation_simplify": {
+        "hard_thin_excess": 0.027611856569110624,
+        "material_mm2": 264.0346635410162,
+        "thin_area_mm2": 7.44520083702053,
+        "opened_outside_material_mm2": 0.15449647854183923,
+        "missing_actual_material_mm2": 17.709404149904824,
+        "extra_material_mm2": 4.60817655240047,
+        "thin_inside_actual_thin_mm2": 5.055084249143425,
+        "thin_inside_actual_thick_mm2": 1.0558016321412969,
+        "thin_invented_material_mm2": 1.3343149557357903,
+        "hole_area_mm2": 0
+      },
+      "before_all_simplify": {
+        "hard_thin_excess": 0.031022643862935326,
+        "material_mm2": 264.40910436164154,
+        "thin_area_mm2": 8.40183706220224,
+        "opened_outside_material_mm2": 0.19895017608284318,
+        "missing_actual_material_mm2": 17.487662281113217,
+        "extra_material_mm2": 4.760875504240264,
+        "thin_inside_actual_thin_mm2": 5.086125110246422,
+        "thin_inside_actual_thick_mm2": 1.527271955095087,
+        "thin_invented_material_mm2": 1.7884399968607336,
+        "hole_area_mm2": 0
+      }
+    },
+    "asymmetric": {
+      "normal": {
+        "hard_thin_excess": 0.033060990805074235,
+        "material_mm2": 277.47751839335905,
+        "thin_area_mm2": 9.218857286092355,
+        "opened_outside_material_mm2": 0.0449474491288192,
+        "missing_actual_material_mm2": 14.12644754640261,
+        "extra_material_mm2": 14.46807480124387,
+        "thin_inside_actual_thin_mm2": 5.938754623746753,
+        "thin_inside_actual_thick_mm2": 0.22894777439978792,
+        "thin_invented_material_mm2": 3.0511548879458297,
+        "hole_area_mm2": 0.0006702065439601688
+      },
+      "before_observation_simplify": {
+        "hard_thin_excess": 0.038351785325897406,
+        "material_mm2": 276.9584285168118,
+        "thin_area_mm2": 10.777576396849396,
+        "opened_outside_material_mm2": 0.15549847624462157,
+        "missing_actual_material_mm2": 13.939242388465688,
+        "extra_material_mm2": 13.76177976675723,
+        "thin_inside_actual_thin_mm2": 5.942136026259359,
+        "thin_inside_actual_thick_mm2": 0.8888024888346249,
+        "thin_invented_material_mm2": 3.946637881755371,
+        "hole_area_mm2": 0.0006702065439601688
+      },
+      "before_all_simplify": {
+        "hard_thin_excess": 0.040988886629378406,
+        "material_mm2": 277.22111187045266,
+        "thin_area_mm2": 11.567625622280614,
+        "opened_outside_material_mm2": 0.20441295463388603,
+        "missing_actual_material_mm2": 13.81798591798502,
+        "extra_material_mm2": 13.903206649914944,
+        "thin_inside_actual_thin_mm2": 5.961315554875975,
+        "thin_inside_actual_thick_mm2": 1.212152637879308,
+        "thin_invented_material_mm2": 4.394157429525187,
+        "hole_area_mm2": 0.0013404130879203376
+      }
+    }
+  },
+  "recovery_trials": 0,
+  "limitation": "Retrospective attribution on two consumed diagnostic frames. Truth is used only to score geometry, not to alter runtime measurements. Spatial partitions describe the metric and do not prove a new model will improve recovery."
+}

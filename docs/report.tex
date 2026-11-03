@@ -1446,4 +1446,74 @@ Full raw results, pinned sources and rejected models remain on the data volume;
 compact evidence is retained in the repository. The report does not claim a
 physical-printer result or an accepted overall winner.
 
+\clearpage
+\section{What the false thickness alarm measures}
+
+\subsection*{Invented material can make a measured wall look too thin}
+The minimum-wall check uses the fraction of material removed by a morphological
+opening, relative to the nominal layer. It can therefore reject a prediction
+with spurious narrow protrusions even when the real wall passes. The retained
+\texttt{thin-attribution-v27} analysis partitions the short-trained camera's
+thin region on the known cup's layer 86:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Predicted thin material lies & Area (mm$^2$) \\
+\midrule
+Inside actually thin material & 6.1633 \\
+Inside actually thick material & 0.2431 \\
+Outside the actual deposited material & 2.0401 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The spatial partition reproduces the exact metric after accounting for the
+opening's small exterior area. Predicted thin excess is 0.030745, above the
+unchanged 0.03 limit; actual excess is 0.024405. Removing all contour
+simplification worsens the prediction to 0.037241. Predicting more material or
+removing simplification is therefore not supported as a fix for this case.
+This retrospective use of truth explains the diagnostic; it does not supply a
+runtime measurement or prove a recovery improvement.
+
+\subsection*{Train a small spatial output layer with the camera held fixed}
+The \texttt{native-refinement-v28} experiment keeps every existing camera weight
+fixed and learns a 3-by-3 convolution plus bias on the native distance logits,
+before the final tanh: ten new parameters, initialized to identity. Adjacent
+output positions can influence one another across the original pixel blocks.
+The network still receives only observed images and the commanded layer mask.
+
+Training uses the original distance loss, balanced training-only sampling and
+40 epochs. Valid convolutions score the common 62-by-62 tile interior, excluding
+artificial crop-edge padding. Base and refinement use the same dataset and the
+same disjoint 66 training and 36 validation groups. Validation loss selects the
+weights; the known cup's outcome does not choose an epoch or kernel.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Matched tile-interior metric & Identity control & Learned refinement \\
+\midrule
+Boundary MAE (mm) & 0.078446 & 0.072209 \\
+Near-boundary sign accuracy & 78.16\% & 80.50\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Training takes 21.2 seconds. Every base weight remains identical. Maximum export
+disagreement is 0.000006527 mm, below the unchanged 0.000010 tolerance. Full-image
+inference agrees with the training computation across native block boundaries;
+the identity layer preserves the earlier camera field exactly. All 24 focused
+checks pass, including inherited training provenance. The repository suite
+passes 147 tests with three optional modules skipped.
+
+The complete 160-frame cup diagnostic passes for both the raw refined camera and
+its classical-base alternative: no false gap, base, thickness or overhang
+failures. Original and identity controls exactly reproduce the earlier two false
+base layers and one false hard-thin layer. Every model observes all 160 frames.
+The 2,040-frame validation containing real gaps is now running; actual recovery
+comparisons remain conditional on that gate passing. This is an experimental
+learned output layer, not calibrated confidence or a fixed mask repair. Passing
+a known camera diagnostic earns no recovery credit.
+
 \end{document}

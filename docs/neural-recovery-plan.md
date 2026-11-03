@@ -228,6 +228,48 @@ layers. Both exports pass. These are not calibrated confidence bounds. Neither
 trial receives recovery credit; broader follow-ups are skipped. Eight focused
 Torch tests pass, including the unchanged default loss and asymmetric gradients.
 
+## Explaining false thickness alarms and testing spatial refinement
+
+`thin-attribution-v27` decomposes saved measured geometry on two known cup frames
+using the exact functional thickness calculation. The check measures material
+removed by a morphological opening, relative to the nominal layer. On layer 86,
+the short-trained model's thin region contains 6.1633 mm² inside genuinely thin
+material, 0.2431 mm² inside genuinely thick material, and 2.0401 mm² outside the
+actual print. These partitions reproduce the original metric exactly after
+accounting for the opening's small exterior area. The predicted excess is
+0.030745, above the unchanged 0.03 threshold; actual excess is 0.024405. Removing
+contour simplification worsens the prediction to 0.037241. Simply predicting more
+material or removing simplification therefore does not address this error.
+Truth is used only for this retrospective explanation, never as a runtime input.
+
+`native-refinement-v28` freezes the entire commanded temporal camera and learns
+a 3×3 convolution plus bias on its native distance logits before tanh: ten new
+parameters, initialized as identity. The original distance loss, 40 epochs and
+training-only balanced sampling are retained. Valid convolutions score the common
+62×62 tile interior, excluding padding at crop edges. Both base and refinement
+use the same dataset and disjoint 66 training/36 validation trajectory groups;
+the CLI also verifies inherited training provenance before a future run.
+
+Training completes in 21.2 seconds. On those common interiors, validation
+boundary error falls from 0.078446 to 0.072209 mm and near-boundary sign accuracy
+rises from 78.16% to 80.50%. The frozen base arrays remain identical. Export
+disagreement is 0.000006527 mm, below the unchanged 0.000010 tolerance. Full-image
+and training inference agree across native block boundaries. The identity control
+preserves the old camera field exactly. All 24 focused camera/training checks
+pass; the repository suite passes 147 tests with three optional modules skipped.
+
+The complete 160-frame cup diagnostic passes for both the raw refined camera and
+its classical-base/learned-wall alternative: zero false wall gaps, base failures,
+hard/soft thickness failures and overhang failures. The original and identity
+controls reproduce the earlier two false base layers and one false hard-thin
+layer exactly. All models observe all 160 frames. The broader 2,040-frame
+validation containing real gaps is now running in
+`neural-recovery:native-refinement-v28`; actual recovery comparisons remain
+conditional on that gate passing. The weights are selected by tile validation
+loss, never by the cup outcome. This is
+an experimental learned output layer, not calibrated confidence or a fixed mask
+repair. No recovery gain or fresh-test superiority is established by training.
+
 ## Preserving historical container rescues
 
 `joint-historical-gate-v23` compares the complete improved fit policy with
