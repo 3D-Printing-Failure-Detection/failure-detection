@@ -10,8 +10,10 @@ from copy import copy
 import math
 
 from ..types import Layer
-from ..geometry.spec import Verdict
+from ..geometry import features as F
+from ..geometry.spec import HARD_WALL_FRAC, Verdict
 from ..geometry.adapt import Plan
+from ..models.classical import Detection
 from .decide import DecisionContext
 from .contour import ContourObservationState, ContourPolicy
 from .neural import NeuralPolicy
@@ -20,7 +22,7 @@ from .risk_neural import RiskAwareNeuralPolicy
 
 class CameraFallbackMixin:
     def __init__(self, *args, dual_segmenter=None, joint_camera=False, robust_fallback=False,
-                 trend_continuation_fallback=False, **kwargs):
+                 trend_continuation_fallback=False, observed_wall_guard=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.dual_segmenter = dual_segmenter
         self.joint_camera = joint_camera
@@ -28,6 +30,9 @@ class CameraFallbackMixin:
         if trend_continuation_fallback and self.shrink_trend:
             raise ValueError('continuation fallback requires unchanged original contour trends')
         self.trend_continuation_fallback = trend_continuation_fallback
+        self.observed_wall_guard = observed_wall_guard
+        self.wall_guard_checks = 0
+        self.wall_guard_findings = []
         self.damped_continuation_checks = 0
         self.damped_continuation_queries = 0
         self.joint_camera_checks = 0
@@ -43,12 +48,35 @@ class CameraFallbackMixin:
             if self.dual_segmenter.frames != index+1 or self.dual_segmenter.alternative_region is None:
                 raise ValueError('alternative camera measurement is missing or stale')
             alternative = Layer(expected.z, self.dual_segmenter.alternative_region)
-            self.alternative.state.observe(expected, alternative)
+            alternative = self.alternative.state.observe(expected, alternative)
+            container, thickness = self.spec.get('container'), self.spec.get('min_wall_mm')
+            if (self.observed_wall_guard and container and thickness and not self.spec.get('holes')
+                    and alternative.z > container['base_h']):
+                # Match the unchanged hard-wall rule on the observed prefix.
+                # An adapted command is not the original functional reference.
+                threshold = HARD_WALL_FRAC * thickness
+                excess = F.thin_frac(alternative, threshold) - F.thin_frac(self.nominal[index], threshold)
+                self.wall_guard_checks += 1
+                if excess > .03:
+                    self.wall_guard_findings.append(dict(layer=index, thickness_mm=threshold,
+                                                         hard_thin_excess=excess))
+            if self.wall_guard_findings:
+                detection = Detection('functional_risk' if detection.label == 'ok' else detection.label,
+                    detection.deviation_mm, dict(detection.info, observed_wall_guard=dict(self.wall_guard_findings[0])))
         return estimate, detection
 
     def candidates(self, known, current_plan, context=None):
         context = context or DecisionContext()
         original = self._camera_candidates(known, current_plan, context)
+        if self.wall_guard_findings:
+            # Forecast disagreement may be reversible; a measured hard-thin
+            # printed wall cannot be repaired by any remaining-layer command.
+            # Preserve the evidence even when no jointly passing plan exists.
+            finding = self.wall_guard_findings[0]
+            reason = f"learned camera measures an already-printed hard-thin wall at layer {finding['layer']}"
+            return [dict(candidate, observed_wall_guard=dict(finding),
+                         verdict=Verdict(False, candidate['verdict'].violations + [reason],
+                                         candidate['verdict'].metrics)) for candidate in original]
         # Preserve every previously executable recovery, including its timing
         # and ranking. Damping may only reconsider an otherwise inevitable scrap.
         if (not self.trend_continuation_fallback or self.alternative is None

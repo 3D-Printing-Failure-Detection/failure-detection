@@ -102,6 +102,45 @@ def validate_damped_continuation(row, enabled):
     assert row.get('damped_continuation_checks', 0) == 2*count, 'missing paired damped checks'
 
 
+def validate_observed_wall_guard(row, enabled):
+    from recovery.parts import get_part
+    from recovery.geometry.spec import HARD_WALL_FRAC
+    checks, findings = row.get('wall_guard_checks', 0), row.get('wall_guard_findings', [])
+    assert type(checks) is int and checks >= 0, 'invalid wall guard counter'
+    part = get_part(row['part'])
+    container, thickness = part.spec.get('container'), part.spec.get('min_wall_mm')
+    active = enabled and container and thickness and not row['has_fit_constraints']
+    expected = sum(layer.z > container['base_h'] for layer in part.layers()[:row['frames']]) if active else 0
+    assert checks == expected, 'wall guard did not check every eligible observation'
+    assert isinstance(findings, list) and (active or not findings), 'wall guard outside declared domain'
+    indices = []
+    for finding in findings:
+        index = finding['layer']
+        assert type(index) is int and 0 <= index < row['frames'], 'wall guard uses an unobserved layer'
+        assert part.layers()[index].z > container['base_h'], 'wall guard uses a base layer'
+        assert finding['thickness_mm'] == HARD_WALL_FRAC * thickness, 'wall guard thickness threshold changed'
+        excess = finding['hard_thin_excess']
+        assert math.isfinite(excess) and excess > .03, 'wall guard lacks a hard-thin observation'
+        indices.append(index)
+    assert indices == sorted(set(indices)), 'duplicate or unordered wall guard findings'
+    guarded_events = []
+    for event in row['actions']:
+        candidates = [c for c in (event['considered'] or []) if 'name' in c]
+        guarded = [c for c in candidates if 'observed_wall_guard' in c]
+        if not guarded:
+            continue
+        assert findings and len(guarded) == len(candidates), 'wall guard bypassed by an unguarded plan'
+        assert all(c['observed_wall_guard'] == findings[0] for c in guarded), 'wall guard evidence differs'
+        assert event['layer'] >= findings[0]['layer'], 'wall guard uses future evidence'
+        assert all(not c['ok'] and not c.get('damped_continuation') for c in guarded), 'wall guard left an eligible or damped plan'
+        assert event['action'] == 'scrap', 'wall guard did not stop the defective prefix'
+        guarded_events.append(event)
+    if findings:
+        assert len(guarded_events) == 1 and len(findings) == 1, 'wall guard warning did not reach the decision'
+        assert guarded_events[0]['layer'] == findings[0]['layer'], 'wall guard did not act on the current observation'
+        assert row['outcome'] == 'scrapped' and row['layers_printed'] == findings[0]['layer'] + 1, 'wall guard terminal state differs'
+
+
 def validate_model_provenance(manifest, rows, analytical_only=False):
     checkpoints = {}
     for kind in ('neural', 'boundary'):
@@ -160,6 +199,8 @@ def main():
     for row in rows:
         assert row['frames'] == (0 if row['method'] == 'ignore' else row['layers_printed'])
         validate_damped_continuation(row, bool(config.get('boundary_trend_continuation_fallback')
+            and config.get('boundary_fallback') and row['method'].startswith('neural')))
+        validate_observed_wall_guard(row, bool(config.get('boundary_observed_wall_guard')
             and config.get('boundary_fallback') and row['method'].startswith('neural')))
         joint_checks = row.get('analytical_candidate_checks', 0)
         assert type(joint_checks) is int and joint_checks >= 0

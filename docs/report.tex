@@ -2207,20 +2207,38 @@ accuracy alone cannot resolve every remaining failure. It does not establish
 the outcome of a changed controller.
 
 A blanket veto on negative robust margins would reject previously successful
-historical recoveries, so it is not adopted. A narrower use of corroborated
-thin-wall warnings remains a hypothesis requiring actual recovery comparisons,
-preservation of earlier successes, and unchanged functional requirements.
+historical recoveries, so it is not adopted. A narrower guard on observed
+hard-thin walls requires actual recovery comparisons, preservation of earlier
+successes, and unchanged functional requirements.
 
-\subsection*{Next experiment and current verdict}
-The next camera hypothesis penalizes predicting material where the training
-target is empty. Two fixed penalties, 1.25 and 1.5, are planned for the linear
-spatial head, alongside exact reproduction of its previous control. The four
-retained good onsets and all three lost detections will be screened before the
-full camera gates. This experiment has not launched and has no result.
+\subsection*{Stronger overprediction penalties also fail}
+Two fixed signed-distance overprediction costs, 1.25 and 1.5, are trained for the
+linear spatial head. The previous control reproduces exactly, as do twelve
+identity checks. The declared asymmetric cost affects both training and
+checkpoint selection; validation receives no critical-pixel reweighting.
+Both improve average error but restore false leaks on the two good mug onsets
+and still miss real defects. All seven screen controls reproduce exactly.
+The short screen rejects both before full diagnostics or recovery evaluation.
 
-The latest cameras are rejected; the recovery follow-up is skipped. Neither
-this replay nor the successful four-case camera diagnostics establishes a new
-recovery success rate. Superiority over all prior baselines and an added success
-benefit from Qwen remain unproven. Fresh seeds 2001--2004 remain untouched.
+\subsection*{Testing retention of the existing neural warning}
+The optional \code{--boundary-observed-wall-guard} now applies the unchanged hard
+thickness rule to the learned observation of a printed container wall. It uses
+the original design as its reference, retains both observation histories, and
+rejects all future plans when this measured prefix already violates the hard
+limit. A classical \code{ok} detection cannot suppress the warning, and damped
+continuation cannot override it. Disabled-option behavior is preserved.
+
+All 246 repository tests pass, with three optional modules skipped. The four
+paired known-defect runs also pass: controls finish defective after one
+adaptation, while both guarded variants stop at layer 101 without adapting.
+All 510 common camera frames match. Qwen reviews one control correction;
+guarded variants have no eligible plan and make no call.
+
+The 50 retained regression rows are running in
+\code{neural-recovery:observed-wall-v62}. Every earlier success and its action
+sequence, all clean controls and zero defective finishes are required. Physics
+and functional rules remain unchanged. Stopping a defective finish is not a
+recovered print; no new recovery rate or overall superiority is established.
+Fresh seeds 2001--2004 remain untouched.
 
 \end{document}

@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-11-03T11:06:15.393018+00:00",
+  "pid": 2524739,
+  "server_command": [
+    "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-v1/runtime/llama-b12057/llama-server",
+    "-m",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/local-supervisor-v1/Qwen3-0.6B-Q8_0.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8090",
+    "--alias",
+    "local-qwen3",
+    "--threads",
+    "2",
+    "--threads-batch",
+    "2",
+    "--ctx-size",
+    "4096",
+    "--parallel",
+    "1",
+    "--gpu-layers",
+    "0",
+    "--jinja",
+    "--chat-template-kwargs",
+    "{\"enable_thinking\": false}"
+  ],
+  "health": {
+    "status": "ok"
+  },
+  "model_sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+  "manifest_sha256": "a736e16d0314835c3552ddc4bd3a1d78e9292daeb47dbc2172b71221eb80cd0f"
+}

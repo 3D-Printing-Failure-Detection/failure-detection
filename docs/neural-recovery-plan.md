@@ -888,12 +888,60 @@ A blanket robust-margin veto would reject previously successful historical
 recoveries and is not adopted. Any narrower guard must preserve those successes
 and pass a new actual recovery comparison.
 
-The next camera hypothesis is a stronger training penalty for predicting
-material where the target is empty. Two fixed linear-head weights, 1.25 and 1.5,
-are planned, with the v58 control reproduced exactly. The four retained good
-onsets and all three lost detections will be screened before full diagnostics.
-This is an unlaunched experiment, not a qualified model or result; the complete
-camera and recovery requirements remain unchanged.
+`material-penalty-v61` completes the next camera experiment and rejects both
+fixed signed-distance overprediction weights, 1.25 and 1.5. Its control exactly
+reproduces `fb422245`; all twelve identity checks preserve base distances and
+geometry. The same frozen base, training samples, augmentation, critical-pixel
+normalization, epochs and seed are retained. The asymmetric cost affects both
+training and checkpoint selection; validation has no critical-pixel weighting.
+The extra prediction-dependent factor can change effective critical-pixel loss
+mass, so it is not described as retaining exactly 50% of final loss.
+
+The selected checkpoints are `0928679d` and `9475cca`, with boundary errors
+0.091230 and 0.090394 mm versus the control's 0.093104 mm. Better average error
+does not fix functional decisions. Both restore false leak alarms on the two
+good mug onsets; both cups remain locally valid. Both miss the true defects at
+group 410/bedslinger/layer 56 and group 420/CoreXY/layer 88. Weight 1.5 also loses
+group 417/bedslinger/layer 32. The seven-frame screen reproduces every control
+feature exactly, advancing both camera noise streams through all earlier
+selected frames when replaying validation inputs. Zero full-print diagnostics
+or recovery trials follow the rejection. Fresh test seeds remain untouched.
+
+### Retaining an observed hard-wall warning
+
+The optional `--boundary-observed-wall-guard` applies the existing hard-wall
+rule to the current learned observation above a specified container base. It
+compares with original nominal geometry, including after adapted commands, and
+uses neither simulator truth nor failure labels. A finding triggers a decision
+even when the classical detector says `ok`, rejects every remaining-layer plan,
+and cannot be overridden by damped continuation. Existing observation histories
+and disabled-option behavior stay unchanged. This first guard uses the original
+neural camera, whose retained 2,040-frame hard-thin counts were eight true
+positives and zero false positives; that finite validation result does not
+guarantee future accuracy.
+
+The runtime records each eligible observation check and the measured excess at
+the failing layer. The auditor requires complete observation coverage, unchanged
+thresholds, an immediate scrap with no eligible plan, and the same evidence on
+every candidate. Tests cover a serious wall defect, tolerated soft thinning,
+original-design comparison after a command change, immutable history, disabled
+behavior, blocked damped fallback, and missing or bypassed audit evidence.
+All 246 repository tests pass, with three optional modules skipped.
+
+`observed-wall-v62` is running in `neural-recovery:observed-wall-v62`. Its first
+four actual controller runs pass. Both disabled controls reproduce the earlier
+defective finish, one adaptation and identical action layers. Both enabled
+variants stop at layer 101 with zero adaptations, reporting the original neural
+camera's 0.031395 hard-thin excess. All 510 common camera frames match across
+the four new and two retained reference rows. Qwen makes one accepted call on
+the unguarded control; guarded variants have no eligible plan and make no call.
+The guard prevents a defective finish without establishing agent-added success.
+
+The 50 retained v51 rows are now running. Every earlier success and its action
+sequence must remain, all six clean controls per variant must pass, and defective
+finishes must fall to zero. Actual temporal, camera and accepted Qwen inference
+remain required. The physical/specification contract is unchanged. Preservation
+is still unproven; this targets defective finishes, not a new recovery success rate.
 
 ## Preserving historical container rescues
 

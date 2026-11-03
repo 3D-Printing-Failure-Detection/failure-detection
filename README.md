@@ -264,9 +264,16 @@ pass all four complete-print checks across 640 frames. However, the completed
 that the original camera got right, and raise false alarms from 33 to 76 and 85.
 The conditional recovery comparison is skipped. A separate replay of one known
 defective finish shows that the original neural camera already detects its thin
-wall, while the classical camera misses it. The controller can discard that
-warning when no correction passes both views; a fix remains untested.
-No new recovery improvement is established. The implementation passes 238
+wall, while the classical camera misses it. Two stronger material-overprediction
+penalties also fail a seven-frame screen: both restore false leaks on good mugs
+and still miss real defects. The old control reproduces exactly.
+An opt-in `--boundary-observed-wall-guard` now retains the existing neural
+camera's hard-thin warning on a printed wall, even when no plan passes both views.
+Its four paired known-defect runs pass: controls finish defective after one
+adaptation; both guarded variants stop at layer 101 without adapting. All 510
+common camera frames match. The 50 retained regression rows are running in tmux.
+Stopping a defective finish is not a
+recovered print, and no new recovery success rate is established. The implementation passes 246
 repository tests and 41 Torch/training checks.
 
 ## The idea in physical terms
