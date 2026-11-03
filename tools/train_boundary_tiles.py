@@ -172,6 +172,10 @@ def main():
                         help='use the saved commanded layer mask as an additional known input')
     parser.add_argument('--previous-command-masks', type=Path,
                         help='verified sidecar of preceding captured command masks; requires --include-expected-mask')
+    parser.add_argument('--critical-material-labels', type=Path,
+                        help='verified thin-material labels used only to weight training losses')
+    parser.add_argument('--critical-pixel-mass', type=float,
+                        help='fraction of expected training loss weight assigned to audited thin material')
     parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32',
                         help='exported accumulation precision; training and stored weights remain float32')
     args = parser.parse_args()
@@ -187,6 +191,8 @@ def main():
         parser.error('epochs, batch size and skeleton iterations must be positive')
     if (args.sampling_audit is None) != (args.critical_tile_fraction is None):
         parser.error('sampling audit and critical tile fraction must be supplied together')
+    if (args.critical_material_labels is None) != (args.critical_pixel_mass is None):
+        parser.error('critical material labels and pixel mass must be supplied together')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('model artifacts must stay on the data volume')
     if args.out.exists():
@@ -250,14 +256,27 @@ def main():
         for offset in range(0, len(x), args.batch_size):
             skeleton[offset:offset+args.batch_size] = soft_skeleton(truth[offset:offset+args.batch_size], args.skeleton_iterations)
     train_indices, val_indices = np.flatnonzero(~split), np.flatnonzero(split)
+    critical_masks, critical_training = None, None
+    if args.critical_material_labels:
+        from tools.boundary_critical_material import load_critical_material, critical_loss_factors
+        masks = load_critical_material(args.critical_material_labels, groups, split, y, data_sha256)
+        factors = critical_loss_factors(y, masks, split, sampling, args.critical_pixel_mass)
+        critical_masks = torch.from_numpy(masks)
+        critical_training = dict(**factors, path=str(args.critical_material_labels.resolve()),
+            sha256=hashlib.sha256(args.critical_material_labels.read_bytes()).hexdigest(),
+            selection='unchanged unbalanced full-validation objective',
+            labels_are_inputs=False)
     model = TileNetwork(frames, scale=scale, include_expected_mask=args.include_expected_mask,
                         include_previous_expected_mask=bool(args.previous_command_masks))
     initial_arrays = b''.join(t.detach().numpy().tobytes() for t in model.parameters())
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
 
-    def objective(prediction, indices):
+    def objective(prediction, indices, *, training=False):
         actual = target[indices]
         weight = .25 + .75*(torch.abs(actual) < .5)
+        if training and critical_masks is not None:
+            weight = weight * torch.where(critical_masks[indices],
+                critical_training['critical_factor'], critical_training['ordinary_factor'])
         loss = (distance_error_loss(prediction, actual, args.underprediction_weight)*weight).mean()
         if args.gradient_weight:
             loss = loss + args.gradient_weight * distance_gradient_loss(
@@ -300,7 +319,7 @@ def main():
         total = 0.
         for offset in range(0, len(order), args.batch_size):
             indices = order[offset:offset+args.batch_size]
-            loss = objective(model(inputs[indices]), indices)
+            loss = objective(model(inputs[indices]), indices, training=True)
             if not torch.isfinite(loss):
                 raise ValueError('non-finite training loss')
             optimizer.zero_grad()
@@ -327,6 +346,8 @@ def main():
         raise ValueError('exported NumPy model differs from trained convolution')
     if command_history:
         assert hashlib.sha256(args.previous_command_masks.read_bytes()).hexdigest() == command_history['sha256']
+    if critical_training:
+        assert hashlib.sha256(args.critical_material_labels.read_bytes()).hexdigest() == critical_training['sha256']
     manifest = dict(status='complete', architecture=f'{frames} observed images' +
         (' plus commanded mask' if args.include_expected_mask else '') +
         (' plus preceding commanded mask' if args.previous_command_masks else '') +
@@ -339,6 +360,7 @@ def main():
         training_groups=sorted(set(groups[~split].tolist())), validation_groups=sorted(set(groups[split].tolist())),
         train_rows=len(train_indices), validation_rows=len(val_indices), device='cpu', torch=torch.__version__,
         seconds=time.time()-started, data_sha256=data_sha256, sampling=sampling_metadata,
+        critical_material_training=critical_training,
         checkpoint_sha256=exported.sha256, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         initialization_sha256=hashlib.sha256(initial_arrays).hexdigest(), history=history, **verification,
         selection_metric='optionally asymmetric weighted smooth-L1 plus native distance-gradient and equal-weight Dice/clDice losses',

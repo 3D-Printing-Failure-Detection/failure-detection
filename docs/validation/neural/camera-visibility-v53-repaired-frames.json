@@ -1,0 +1,306 @@
+[
+  {
+    "case": "cartesian-mug-1003",
+    "layer": 44,
+    "image_sha256_128": "1f956587a08b4d30b1e4482cd97db92e",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 7956,
+    "current_only_visible_pixels": 8093,
+    "hidden_by_older_scene_pixels": 137,
+    "hidden_fraction": 0.016928209563820587,
+    "deformed_roi_current_only_pixels": 254,
+    "deformed_roi_hidden_pixels": 1,
+    "deformed_roi_hidden_fraction": 0.003937007874015748,
+    "truth_geometry": {
+      "hole_area_mm2": 1603.9465698423924,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 1625.5936288215696,
+      "area_mm2": 496.35414888728315,
+      "open_wall": false
+    },
+    "scene_raster": {
+      "hole_area_mm2": 1625.5936288215696,
+      "area_mm2": 496.2291488872836,
+      "open_wall": false
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 1619.6260171572033,
+      "area_mm2": 501.91261130394764,
+      "open_wall": false
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 1616.9235147336358,
+      "area_mm2": 510.67613859612356,
+      "open_wall": false
+    }
+  },
+  {
+    "case": "cartesian-mug-1003",
+    "layer": 45,
+    "image_sha256_128": "1aa1e609df702cd69205180f3ba02c30",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 7080,
+    "current_only_visible_pixels": 7144,
+    "hidden_by_older_scene_pixels": 64,
+    "hidden_fraction": 0.008958566629339306,
+    "deformed_roi_current_only_pixels": 329,
+    "deformed_roi_hidden_pixels": 15,
+    "deformed_roi_hidden_fraction": 0.04559270516717325,
+    "truth_geometry": {
+      "hole_area_mm2": 1630.704851904233,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 0,
+      "area_mm2": 439.5927193029245,
+      "open_wall": true
+    },
+    "scene_raster": {
+      "hole_area_mm2": 0,
+      "area_mm2": 439.4677193029245,
+      "open_wall": true
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 0,
+      "area_mm2": 446.5482114473505,
+      "open_wall": true
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 0,
+      "area_mm2": 450.18360951330123,
+      "open_wall": true
+    }
+  },
+  {
+    "case": "cartesian-mug-1003",
+    "layer": 46,
+    "image_sha256_128": "b26bc8d5fa862fbdd1158da3056ac931",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 7989,
+    "current_only_visible_pixels": 8080,
+    "hidden_by_older_scene_pixels": 91,
+    "hidden_fraction": 0.011262376237623762,
+    "deformed_roi_current_only_pixels": 252,
+    "deformed_roi_hidden_pixels": 0,
+    "deformed_roi_hidden_fraction": 0.0,
+    "truth_geometry": {
+      "hole_area_mm2": 1603.9465698423924,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 1625.5936288215696,
+      "area_mm2": 496.35414888728315,
+      "open_wall": false
+    },
+    "scene_raster": {
+      "hole_area_mm2": 1625.5936288215696,
+      "area_mm2": 496.2291488872836,
+      "open_wall": false
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 1620.4642428854747,
+      "area_mm2": 503.6022763709209,
+      "open_wall": false
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 1618.3461749294424,
+      "area_mm2": 509.3718831521078,
+      "open_wall": false
+    }
+  },
+  {
+    "case": "cartesian-mug-1003",
+    "layer": 47,
+    "image_sha256_128": "f96b053d3ce819f4d03dc253291c653d",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 8014,
+    "current_only_visible_pixels": 8099,
+    "hidden_by_older_scene_pixels": 85,
+    "hidden_fraction": 0.010495122854673416,
+    "deformed_roi_current_only_pixels": 256,
+    "deformed_roi_hidden_pixels": 6,
+    "deformed_roi_hidden_fraction": 0.0234375,
+    "truth_geometry": {
+      "hole_area_mm2": 1603.9465698423924,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 1625.5936288215696,
+      "area_mm2": 496.35414888728315,
+      "open_wall": false
+    },
+    "scene_raster": {
+      "hole_area_mm2": 1625.5936288215696,
+      "area_mm2": 496.2291488872836,
+      "open_wall": false
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 1623.4735584179402,
+      "area_mm2": 505.56850816412134,
+      "open_wall": false
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 1619.6361457865512,
+      "area_mm2": 510.83318534893556,
+      "open_wall": false
+    }
+  },
+  {
+    "case": "cartesian-cup-1002",
+    "layer": 84,
+    "image_sha256_128": "523e8bb33f27c11e10b0fcaefd690205",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 5072,
+    "current_only_visible_pixels": 5125,
+    "hidden_by_older_scene_pixels": 53,
+    "hidden_fraction": 0.010341463414634147,
+    "deformed_roi_current_only_pixels": 545,
+    "deformed_roi_hidden_pixels": 6,
+    "deformed_roi_hidden_fraction": 0.011009174311926606,
+    "truth_geometry": {
+      "hole_area_mm2": 1685.6922306567858,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 1710.3926967896177,
+      "area_mm2": 311.22034911401715,
+      "open_wall": false
+    },
+    "scene_raster": {
+      "hole_area_mm2": 1710.517696789618,
+      "area_mm2": 311.0953491140169,
+      "open_wall": false
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 1705.9442040483093,
+      "area_mm2": 321.7853115186688,
+      "open_wall": false
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 1702.6362805048518,
+      "area_mm2": 325.09323506212627,
+      "open_wall": false
+    }
+  },
+  {
+    "case": "cartesian-cup-1002",
+    "layer": 85,
+    "image_sha256_128": "a032397ce67ee9e0610a43c2ecd1fba2",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 4454,
+    "current_only_visible_pixels": 4598,
+    "hidden_by_older_scene_pixels": 144,
+    "hidden_fraction": 0.0313179643323184,
+    "deformed_roi_current_only_pixels": 376,
+    "deformed_roi_hidden_pixels": 20,
+    "deformed_roi_hidden_fraction": 0.05319148936170213,
+    "truth_geometry": {
+      "hole_area_mm2": 1704.5513718276563,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 0,
+      "area_mm2": 2010.7514500345164,
+      "open_wall": true
+    },
+    "scene_raster": {
+      "hole_area_mm2": 0,
+      "area_mm2": 2010.6876096214285,
+      "open_wall": true
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 0,
+      "area_mm2": 281.3757812300737,
+      "open_wall": true
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 0,
+      "area_mm2": 291.038733295511,
+      "open_wall": true
+    }
+  },
+  {
+    "case": "cartesian-cup-1002",
+    "layer": 86,
+    "image_sha256_128": "936c7047ab582655f704e19c3c98cf04",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 4552,
+    "current_only_visible_pixels": 4657,
+    "hidden_by_older_scene_pixels": 105,
+    "hidden_fraction": 0.02254670388662229,
+    "deformed_roi_current_only_pixels": 570,
+    "deformed_roi_hidden_pixels": 28,
+    "deformed_roi_hidden_fraction": 0.04912280701754386,
+    "truth_geometry": {
+      "hole_area_mm2": 1710.0429383339942,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 0,
+      "area_mm2": 2016.4304196978592,
+      "open_wall": true
+    },
+    "scene_raster": {
+      "hole_area_mm2": 0,
+      "area_mm2": 2016.3679196978592,
+      "open_wall": true
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 0,
+      "area_mm2": 286.68050818814953,
+      "open_wall": true
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 0,
+      "area_mm2": 294.5695233384572,
+      "open_wall": true
+    }
+  },
+  {
+    "case": "cartesian-cup-1002",
+    "layer": 87,
+    "image_sha256_128": "de1196ddc7f05e2f0ec301dcf75dda16",
+    "original_image_reproduced": true,
+    "diagnostic_segmentation_not_a_model_input": true,
+    "full_scene_current_visible_pixels": 4919,
+    "current_only_visible_pixels": 5005,
+    "hidden_by_older_scene_pixels": 86,
+    "hidden_fraction": 0.017182817182817185,
+    "deformed_roi_current_only_pixels": 159,
+    "deformed_roi_hidden_pixels": 5,
+    "deformed_roi_hidden_fraction": 0.031446540880503145,
+    "truth_geometry": {
+      "hole_area_mm2": 1702.1023789694473,
+      "open_wall": false
+    },
+    "truth_raster": {
+      "hole_area_mm2": 1723.6239031053135,
+      "area_mm2": 310.40454571141095,
+      "open_wall": false
+    },
+    "scene_raster": {
+      "hole_area_mm2": 1723.5614031053135,
+      "area_mm2": 310.46704571141095,
+      "open_wall": false
+    },
+    "full_scene_current_visibility": {
+      "hole_area_mm2": 1721.8336512545977,
+      "area_mm2": 312.05219322853577,
+      "open_wall": false
+    },
+    "current_only_visibility": {
+      "hole_area_mm2": 1718.432830266101,
+      "area_mm2": 317.37204577147986,
+      "open_wall": false
+    }
+  }
+]

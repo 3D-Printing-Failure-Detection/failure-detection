@@ -87,7 +87,7 @@ and matches neural-only. Genuine rescues remain 18 versus matched analytical's
 \toprule
 Implementation & Working simulation/evaluation pipeline; latest predictor is opt-in.\\
 Validation & The complete first fresh comparison fails acceptance: neural + Qwen 126/240, contour 128/240, preventive analytical recovery 133/240. All 4,320 runs are audited.\\
-Latest checks & The trend candidate records 142/240 development successes but fails historical regression at 64/100 with one defect, versus the preceding guard's 67/100 with zero. Three mug recoveries are lost. The candidate is rejected; fresh-test superiority remains unproven.\\
+Latest checks & Global trend damping is rejected by historical regression. A narrower continuation fallback passes all 16 paired checks, retaining the three lost recoveries and the extra mug success. Its preservation regression is running; fresh-test superiority remains unproven.\\
 Hardware & Bambu integration code exists, but physical recovery is unvalidated. The live entry point still constructs the original rule policy.\\
 Integration & \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/1}{PR \#1} merged into main. Neural work is on \code{work/neural-local-recovery}, in draft \href{https://github.com/3D-Printing-Failure-Detection/failure-detection/pull/2}{PR \#2}.\\
 \bottomrule
@@ -1950,5 +1950,76 @@ false leaks and overhang remain, and both cups retain false hard-thin layers.
 The model is rejected before recovery trials. Existing camera outputs remain bitwise equal;
 201 repository tests and 20 Torch/export tests pass. No print-success gain is
 claimed from this new training result.
+
+\clearpage
+\section{Preserving recovery plans and diagnosing thin-wall errors}
+
+The new opt-in \code{--boundary-trend-continuation-fallback} keeps the original
+candidate forecasts and their ranking whenever any executable plan passes.
+Only when all original plans fail may it test unchanged continuation with damped
+trends. Both camera histories must pass the complete functional specification.
+Private forecast copies preserve observations, residuals and original counters.
+This option proposes no damped corrections and leaves learned fit forecasts alone.
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Consumed mug case & Prior guard & Global damping & New fallback \\
+\midrule
+Cartesian shift, seed 10 & Pass & Scrap & Pass \\
+CoreXY shift, seed 10 & Pass & Scrap & Pass \\
+Cartesian under-extrusion, seed 23 & Pass & Defect & Pass \\
+Bedslinger collapse, seed 1001 & Scrap & Pass & Pass \\
+\bottomrule
+\end{tabular}
+\end{center}
+Both neural-only and Qwen variants agree. All 16 newly paired rows pass their
+gate: controls reproduce earlier outcomes, actions and measurement IoU; all eight
+candidate prints succeed without defects. Historical actions remain unchanged
+and invoke no damping. The extra mug completes with zero adaptations and just
+one pair of damped checks, totaling 88 displacement queries. Qwen makes 29
+candidate requests and adds no successes. All 1,135 common camera frames match.
+The next 42 preservation rows are running; full-grid, historical and untouched
+superiority remain unproven.
+
+\subsection*{What the camera diagnostics rule out}
+All 26 distinct retained trained cameras are compared on the same 22 frames,
+including six selected real defects. Every model falsely opens both mugs at
+onset. Only the nonlinear refinement covers both local cup windows while retaining
+those six detections. The 572 predictions reproduce the prior nonlinear features
+and truth. These selected frames do not qualify a replacement camera.
+
+A separate visibility ablation reproduces eight original images and compares
+current-layer visibility with and without older visual layers. Removing older
+layers does not restore closure. The mug has a real 1,630.7 mm2 cavity, but its
+scene raster already has none. The cup retains a 1,747.2 mm2 cavity in its raw
+raster, while its projected visibility mask loses closure. Segmentation labels
+are used only for diagnosis. Physical state, camera counters and noise streams
+remain unchanged. A failed segment-ID diagnostic and its separate repair are
+retained with the evidence.
+
+An exact union of each model's positive pixel squares also resolves no new case
+in 52 onset-frame comparisons. It adds no material and preserves foreground
+area before filtering. Every raw mug prediction already lacks a cavity. The
+experiment therefore does not justify a runtime contour-conversion change.
+
+\subsection*{Targeted training does not generalize}
+Whole-tile balancing still gives few pixels to very thin surviving material.
+A verified sidecar recovers 1,648 such training pixels and 1,147 validation pixels
+using the earlier audited definition. The new model assigns these training
+pixels half the expected distance-loss weight, leaving the other half to ordinary
+pixels. Inputs, architecture, initialization, sampling and the 40-epoch schedule
+remain matched; the control checkpoint reproduces exactly. Validation selection
+retains its original unbalanced objective. Critical-pixel recall rises from
+60.0\% to 91.6\% on training tiles but falls from 35.2\% to 29.7\% on validation
+tiles. Both complete mugs retain false leaks; Cartesian also has 25.1 mm2
+apparent overhang. Both cups retain a false hard-thin layer. All four full-print
+checks fail across 640 frames, rejecting the model before recovery evaluation.
+A saved audit replay reproduces every pixel
+count exactly; no checkpoint was selected using these retrospective scores.
+
+The updated source passes 221 repository tests, with three optional modules
+skipped, plus 29 tests of training labels, Torch export and refinement. Runs remain in tmux;
+fresh seeds are untouched. No new camera recovery gain is established.
 
 \end{document}

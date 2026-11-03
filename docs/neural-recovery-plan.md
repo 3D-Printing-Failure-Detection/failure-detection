@@ -633,9 +633,87 @@ clean controls, no additional defective case and actual trained-model/Qwen use.
 The source and unchanged simulation contract are frozen before launch. The
 existing local Qwen worker's command, model hash and health are rechecked. A
 12 MB artifact allowance plus 1 MB for supervisor logs fits the shared quota.
-This selected regression is running; it does not establish full-grid,
-historical or untouched superiority. The four known camera failures remain
-unresolved, and no broad or fresh comparison launches automatically.
+The first 16 paired rows **pass**. All eight candidate prints finish successfully
+without defects. The three historical recoveries preserve the controls' exact
+actions and never invoke damping. The additional mug finishes without adaptation;
+each candidate invokes two damped forecast checks and 88 displacement queries.
+Qwen makes 29 candidate requests versus 28 for the controls, with identical
+neural-only outcomes. Controls reproduce earlier actions, results and measurement
+IoU. All 1,135 common camera frames match across the 16 rows. The next 42
+preservation rows are running. This selected result does not establish full-grid,
+historical or untouched superiority. Four known camera failures remain unresolved,
+and no broad or fresh comparison launches automatically.
+
+## Camera model coverage, visibility, and rare material supervision
+
+`complementary-cameras-v52` evaluates all 26 distinct retained camera checkpoints
+with training provenance on 22 identical actual frames: four-frame windows around
+each remaining false alarm, plus six selected real defects. All 572 predictions
+are retained, and the prior nonlinear measurements and truth reproduce exactly.
+Every model reports a false gap on both mugs' onset frame. Only the nonlinear
+refinement covers both local cup windows while preserving all six selected true
+defect detections; the linear refinement covers only Cartesian. No combination
+of these complete camera views covers all four cases under the local gate.
+This exploratory screening does not replace complete-print or broad validation.
+
+`camera-visibility-v53` compares the same scene with and without older visual
+layers, using segmentation IDs only for offline diagnosis. The first diagnostic
+stops on an out-of-range renderer segment-ID lookup; its failed script, output
+and exit remain retained. A separate repaired run assigns shared IDs to the two
+semantic classes, reproduces all eight original RGB frames, verifies that labels
+do not change RGB, and leaves physical state, camera counters and noise streams
+unchanged. Removing older layers does not restore visible closure at either
+failing onset frame. The mug's true geometric cavity is 1,630.7 mm2, but its raw
+scene raster has no cavity. The cup's raw raster retains a 1,747.2 mm2 cavity,
+while its projected current-layer visibility mask has none. Raw mask topology is
+reported separately from polygon conversion; this preserves the earlier evidence
+that the cup's pre-render raster still encloses its cavity. These diagnostic
+labels and altered views are never supplied to a runtime model.
+
+`mask-topology-v54` reuses the exact failing onset images and all 26 models,
+comparing the original contour interpretation with an exact union of positive
+pixel squares. Every original model feature reproduces. The union preserves
+foreground area before the existing component filter and adds no pixels. Across
+52 comparisons it resolves no additional cases: every raw mug prediction already
+lacks a cavity, and only the earlier linear/nonlinear cup models pass. No runtime
+conversion change follows this negative result.
+
+`critical-pixel-camera-v55` tests a training issue identified by the retained
+rare-material audit. Balancing whole tiles still gives relatively little loss
+weight to their few surviving thin-material pixels. A small sidecar reproduces
+the exact audited masks from deposited geometry and nominal shapes, including
+the six-native-pixel halo and 0.15 mm opening radius. It verifies all 2,520 audited
+rows, with 1,648 critical training pixels and 1,147 validation pixels. These are
+training labels only; no truth or new feature enters inference.
+
+The matched control must reproduce the original three-channel command-camera
+checkpoint exactly. Both models retain the same inputs, 5,760 tiles, 66/36 groups,
+40 epochs, initialization, optimizer and whole-tile sampling. The candidate gives
+critical pixels half the expected weighted distance-loss mass under that sampler;
+ordinary pixels retain the other half. Only training labels set these factors.
+Epoch selection keeps the original unbalanced full-validation objective. The
+same four complete-print gates and conditional 2,040-frame validation remain
+required, including retention of every original true functional-defect detection.
+The source passes 221 repository tests with three optional modules skipped, plus
+29 Torch/export/refinement/label tests. The run uses tmux window
+`critical-pixels-v55` and an 8 MB allowance while reserving the live controller
+run's remaining space. Both training runs are complete: the control reproduces
+`dab5014a` exactly and the candidate is `c94c6d61`, with identical initial weights.
+The audited critical pixels originally receive 0.996% of expected loss weight;
+the new factors are 96.932 for those pixels and 0.975 for ordinary pixels.
+Boundary validation MAE worsens from 0.078765 to 0.080213 mm, while sign accuracy
+rises from 78.11% to 78.54%. A separate fixed-checkpoint audit shows thin-material
+recall rising from 59.95% to 91.57% on training tiles but falling from 35.22% to
+29.73% on validation tiles. This indicates fitting the scarce training examples
+without improving their generalization. A saved replay script reproduces every
+pixel count and recall exactly, binding the verification to the original audit,
+dataset, labels and checkpoints. Both complete mug diagnostics retain false
+leaks; Cartesian also has 25.1 mm2 apparent overhang. Both completed cups retain
+a false hard-thin layer. All four diagnostics fail across 640 actual frames,
+although all four printed geometries pass. The run exits successfully with a
+rejected result; broader validation and recovery are skipped by its gate.
+No recovery gain or model promotion is established. The next training hypothesis should address representative
+thin-material coverage, rather than infer generalization from training recall.
 
 ## Preserving historical container rescues
 

@@ -1,0 +1,36 @@
+{
+  "status": "complete",
+  "method": "OpenCV contours and hierarchy before any polygon conversion; 4 pixels/mm",
+  "rows": [
+    {
+      "image": "cartesian-cup-1002-truth-raster.png",
+      "sha256": "d2c1aca815373bd541e741585771641b22f08f9fafef4194962924ff78964656",
+      "largest_raw_cavity_mm2": 1747.21875
+    },
+    {
+      "image": "cartesian-cup-1002-visible-current-only.png",
+      "sha256": "24f352f4006ed5d4833b4dee74016a2fa823de5709593a4a13195f94c42f9763",
+      "largest_raw_cavity_mm2": 0.0
+    },
+    {
+      "image": "cartesian-cup-1002-visible-full.png",
+      "sha256": "aecd3447adb8ee21555c9d1687f4fa0bb2122ed266e63cb57d10a8be3d72fa2a",
+      "largest_raw_cavity_mm2": 0.0
+    },
+    {
+      "image": "cartesian-mug-1003-truth-raster.png",
+      "sha256": "f14431daa07bbb1f611cd6c5c8996a2883e0f1c18ca88d264aa80e4ce29e77c9",
+      "largest_raw_cavity_mm2": 0.0
+    },
+    {
+      "image": "cartesian-mug-1003-visible-current-only.png",
+      "sha256": "df10ec3cdce0c8b15451c4851fe45ba76a9af0de03e20d30f301d9375b248aea",
+      "largest_raw_cavity_mm2": 0.0
+    },
+    {
+      "image": "cartesian-mug-1003-visible-full.png",
+      "sha256": "b7703920adfc5f1866b06312aaa2308a5a6c61232546565caa9972bf0550c93e",
+      "largest_raw_cavity_mm2": 0.0
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "created_at": "2026-11-03T09:02:46.153479+00:00",
+  "stage": "development",
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/source",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "purpose": "Determine whether older rendered layers obscure the valid thin current layer in known false camera gaps",
+  "cases": [
+    {
+      "name": "cartesian-mug-1003",
+      "profile": "cartesian",
+      "part": "mug",
+      "seed": 1003,
+      "layers": [
+        44,
+        45,
+        46,
+        47
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-camera-gate-v48/cartesian-mug-1003/layers.json",
+      "snapshot_layer": 45
+    },
+    {
+      "name": "cartesian-cup-1002",
+      "profile": "cartesian",
+      "part": "cup",
+      "seed": 1002,
+      "layers": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-nonlinear-refinement-v35/cup-under-extrusion-1002/layers.json",
+      "snapshot_layer": 85
+    }
+  ],
+  "reference_frames": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-symmetry-v49/frames.jsonl",
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-symmetry-v49/frames.jsonl": "a0c6567789d1f101469273b009173946f2801f846895590afcd2ea9da7613d70",
+    "/home/ishaan/failure-detection/.venv/lib/python3.12/site-packages/mujoco/renderer.py": "458ed1f75d3b19b328b7e251dc7a7318a97e2d41bca4627773cd6af764abfdd7",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-camera-visibility-v53/run.py": "592559281df1dde20399db2e657b91a1c382bf996759084991858db4db50b6fb"
+  },
+  "procedure": "Reproduce the eight original actual images exactly. Label existing visual geoms for offline current-layer visibility, verify labels do not change ordinary RGB, and compare with a same-pose rendering that omits older visual layers. Keep all printed geometry, physical state, camera frame counts and camera RNG unchanged.",
+  "visibility_measure": "Fraction of projected current-only visible pixels hidden in the complete scene, overall and within a dilated nominal/actual-difference region. Segmentation masks use the original calibrated projection and fixed half-intensity threshold. Also report cavity closure of true raster and visible current-layer masks.",
+  "maximum_new_artifact_allowance_bytes": 2000000,
+  "storage_bytes_at_launch": 99960991744,
+  "other_live_reserved_bytes": 12240448,
+  "limitation": "Offline causal visualization only. Segmentation labels and current-only images are unavailable to runtime models and are not proposed as improved policy inputs. Results distinguish occlusion by older layers from other image/model limitations on these consumed frames only; no training, recovery trial, physics change or fresh seed."
+}

@@ -175,9 +175,10 @@ the original executable recovery plans instead of delaying their interventions.
 The opt-in `--boundary-trend-continuation-fallback` now preserves those original
 plans. Only when all original choices fail does it test unchanged continuation
 with damped trends, requiring both camera histories to pass the full spec.
-The source passes 212 tests; a paired simulation regression is running before
-any claim of improved outcomes. Fit forecasts and the physical specification
-remain unchanged.
+All 16 paired runs pass: both variants preserve the three historical mug
+recoveries with unchanged actions and add the usable mug completion. The next
+42 preservation runs are underway. Fit forecasts and the physical specification
+remain unchanged; no broader success-rate improvement is established yet.
 The final 7,200-row command matrix is prepared and passes all 300 argument checks,
 with identical frozen policy settings and model paths. It uses both existing Qwen
 workers and keeps fresh seeds untouched until development and historical gates
@@ -222,6 +223,19 @@ print success.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a
 successful print.
+Screening all 26 distinct retained cameras finds no model that resolves either
+known mug error. The nonlinear camera alone passes both local cup checks while
+retaining six selected real defect detections. A separate visibility diagnostic
+shows that the mug's thin wall loses closure in the rendered scene raster; the
+cup retains its raw raster cavity but loses visible closure after projection.
+Exact unions of predicted positive pixels resolve no additional model failures.
+A matched training experiment gives scarce true thin-material pixels half
+the training loss weight, with unchanged inputs and validation selection. Its
+control reproduces exactly, but recall of those pixels falls from 35.2% to 29.7%
+on validation tiles despite improving on training tiles. All four complete-print
+diagnostics fail across 640 frames: both mugs retain false leaks and both cups
+retain false hard-thin layers. The source passes 221 tests plus
+29 tests covering Torch export, refinement and labels. No recovery gain is established.
 
 ## The idea in physical terms
 

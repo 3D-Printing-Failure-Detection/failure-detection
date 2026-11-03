@@ -1,0 +1,77 @@
+{
+  "truth": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 60956.63448686635,
+      "thin_layers": 0
+    }
+  },
+  "measured": {
+    "classical": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (52 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 51.74795820626258,
+        "capacity_mm3": 61252.912504363514,
+        "thin_layers": 0
+      }
+    },
+    "control": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (106 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)",
+        "base not flat/solid in 8 layers",
+        "expected 1 piece(s) near z=11.8, found 3"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 105.81606506032328,
+        "capacity_mm3": 60946.94347559792,
+        "thin_layers": 1
+      }
+    },
+    "critical_material": {
+      "ok": false,
+      "violations": [
+        "walls not closed in 1 layers (leaks)",
+        "base not flat/solid in 4 layers",
+        "expected 1 piece(s) near z=11.5, found 4"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 4.324782752650902,
+        "capacity_mm3": 61258.29701901913,
+        "thin_layers": 0
+      }
+    },
+    "control:classical-base": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (106 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)",
+        "expected 1 piece(s) near z=11.8, found 3"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 105.81606506032328,
+        "capacity_mm3": 60946.94347559792,
+        "thin_layers": 1
+      }
+    },
+    "critical_material:classical-base": {
+      "ok": false,
+      "violations": [
+        "walls not closed in 1 layers (leaks)",
+        "expected 1 piece(s) near z=11.5, found 4"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 4.324782752650902,
+        "capacity_mm3": 61258.29701901913,
+        "thin_layers": 0
+      }
+    }
+  }
+}

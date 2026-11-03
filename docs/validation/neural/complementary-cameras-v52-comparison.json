@@ -1,0 +1,677 @@
+{
+  "status": "complete",
+  "models": 26,
+  "frames": 22,
+  "predictions": 572,
+  "reference_predictions_and_truth_reproduced": true,
+  "models_summary": {
+    "neural-asymmetric-camera-v25--asymmetric": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 44.313710037842924,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 44.03648451876903,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-asymmetric-camera-v25--control": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 31.932758899207197,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 31.104448436232502,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-balanced-camera-v14--balanced": {
+      "selected_true_detections": 4,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.68740249210341,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.93233856720231,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-balanced-camera-v14--control": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 45.19128927187877,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 45.56030801937158,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 18.92755389017599,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 13.472152768115519,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-boundary-v1--model": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.558214921251505,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.481167005236294,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.210585036479504,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.42308130112184,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-boundary-v2--model": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 51.02183925300613,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 51.03057866531517,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 26.89682472343872,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 28.39611510865512,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-command-history-v50--candidate": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 44.93378463009513,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 44.32995865143931,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 1629.1140173149456,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 1627.8947202962659,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-command-precise-camera-v17--command": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.44911741813534,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.519963331211507,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-context-camera-v8--context": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.49214214545592,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.678650379587516,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 24.409043830105997,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 23.046654268371377,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-context-camera-v8--fine": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 47.934454758906874,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 47.714779385850214,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 14.544291440101532,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 15.226696270118696,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-context-query-camera-v9--model": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.682262408498886,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.902783886186405,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 25.782794367599124,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 26.109573898850304,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-critical-camera-v6--central": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.73443854583776,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.64861028969239,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 20.27485115911805,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 15.495387474450247,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-critical-camera-v6--upper": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 51.67082104321499,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 51.40801608440049,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-dense-camera-v3--model": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.492888367585266,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 50.13512894078514,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.582679073172507,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 28.00898117054216,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-dense-topology-camera-v13--topology": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 46.415711017547295,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 46.59168076354169,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 3.4761517993052724,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 13.593246901706722,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-dihedral-query-camera-v11--dihedral": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 54.95831439614074,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 53.84479795281361,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 14.611258796290917,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 15.968410009088961,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-gap-sensitive-refinement-v30--control": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 31.40051408772746,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 31.16921407371977,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": true,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": true
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 1613.4535016812592,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-gap-sensitive-refinement-v30--gap_sensitive": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 29.457141233034022,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 28.603386264188654,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-gradient-camera-v18--gradient01": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 48.65966513821953,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 47.780056914212444,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": true,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": true
+        }
+      }
+    },
+    "neural-gradient-camera-v18--gradient03": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 52.556815414935066,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 52.34318318330903,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-native-camera-v4--model": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.187268364994246,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 48.688956320609115,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 26.143703923526584,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 26.877607832823692,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-nonlinear-refinement-v35--nonlinear": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 31.479823657182582,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 31.368955500760755,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": true,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": true
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": true,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": true
+        }
+      }
+    },
+    "neural-occupancy-camera-v10--occupancy": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 46.88228932498338,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 47.65175601273139,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 23.21439341239681,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 24.720579670407822,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-quantile-camera-v5--model": {
+      "selected_true_detections": 5,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 52.76036205125609,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 52.45135438244585,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 5.098328845584222,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-query-camera-v7--model": {
+      "selected_true_detections": 6,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.52357391214186,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 49.2392094992388,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.066745437525057,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 27.559678198546614,
+          "local_gate_passes": false
+        }
+      }
+    },
+    "neural-temporal-camera-v12--temporal": {
+      "selected_true_detections": 3,
+      "cases": {
+        "cartesian-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 45.62685078423558,
+          "local_gate_passes": false
+        },
+        "corexy-mug-1003": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 45.986283514036515,
+          "local_gate_passes": false
+        },
+        "cartesian-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        },
+        "bedslinger-cup-1002": {
+          "no_false_fatal_geometry": false,
+          "max_local_overhang_mm2": 0.0,
+          "local_gate_passes": false
+        }
+      }
+    }
+  },
+  "local_case_coverage_preserving_six_selected_defects": {
+    "cartesian-mug-1003": [],
+    "corexy-mug-1003": [],
+    "cartesian-cup-1002": [
+      "neural-gap-sensitive-refinement-v30--control",
+      "neural-nonlinear-refinement-v35--nonlinear"
+    ],
+    "bedslinger-cup-1002": [
+      "neural-nonlinear-refinement-v35--nonlinear"
+    ]
+  },
+  "all_four_locally_covered": false,
+  "protocol_sha256": "2cada50c1e9b256a90630ed2fe47f564f8fb65d2b262e0fba224cb8e15f62b41",
+  "frames_sha256": "c4360acc7dd7dbafc806af66b0f69a155d674c1a39e942b4c741ebdbcf399db4",
+  "support_sha256": "c989db506e44b2a886e6ec287a6d41ff39d6d0f994c03f14ae1f907aa08e7eeb",
+  "new_training_runs": 0,
+  "new_recovery_trials": 0,
+  "limitation": "Exploratory consumed-development screening of retained trained models. Local coverage is not complete-print validity, full validation or recovery success. The six true defects are selected correlated frames. Existing failed experiments remain failed; no model is promoted, training repeated or fresh seeds used."
+}
