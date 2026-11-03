@@ -259,9 +259,14 @@ is rejected before recovery evaluation.
 The latest experiment freezes this camera and trains small spatial refinement
 layers on the same augmented data. Both remove the remaining false hard-thin
 alarms on four sampled images, with unchanged thresholds and inputs. Both heads
-now pass all four complete-print checks across 640 frames. The broader real-defect
-detection check runs in tmux, with a recovery comparison queued only if that gate
-passes. Camera qualification does not establish a recovery improvement. The implementation passes 238
+pass all four complete-print checks across 640 frames. However, the completed
+2,040-frame check rejects both: they lose two and three real-defect detections
+that the original camera got right, and raise false alarms from 33 to 76 and 85.
+The conditional recovery comparison is skipped. A separate replay of one known
+defective finish shows that the original neural camera already detects its thin
+wall, while the classical camera misses it. The controller can discard that
+warning when no correction passes both views; a fix remains untested.
+No new recovery improvement is established. The implementation passes 238
 repository tests and 41 Torch/training checks.
 
 ## The idea in physical terms

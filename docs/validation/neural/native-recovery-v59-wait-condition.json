@@ -1,4 +1,5 @@
 {
-  "status": "waiting_for_camera_gate",
-  "camera_pid": 3523335
+  "status": "skipped",
+  "camera_exit": 0,
+  "camera_status": "rejected"
 }

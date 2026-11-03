@@ -832,16 +832,29 @@ selected-frame evidence, not full-print qualification or improved recovery.
 Both heads pass all four complete 160-layer checks, including both mugs and both
 cups. All 640 base-control records reproduce exactly. Every predicted stack has
 zero apparent overhang and no functional violations under the unchanged specification.
-The frozen tmux run `neural-recovery:native-coverage-v58` checks all four complete
-prints, then advances qualifying heads to all 2,040 retained validation frames.
-Every original true functional-defect detection must remain detected, combined
-false negatives must not increase, and all component error counts are reported.
-The implementation passes 231 repository tests and 41 Torch/training checks.
-Fresh seeds remain untouched and no new recovery result is claimed.
+The frozen tmux run `neural-recovery:native-coverage-v58` completes all 2,040
+retained validation frames and **rejects both heads**. All truth, classical and
+original-camera controls reproduce exactly. The combined functional-defect
+counts are:
 
-A follow-up launcher waits in `neural-recovery:next-recovery-v59`; no recovery
-trial has started yet. It requires successful
-completion of these camera gates before comparing qualified heads with the
+| Camera | True positives | Missed defects | False alarms | Lost original detections |
+| --- | ---: | ---: | ---: | ---: |
+| Original | 90 | 9 | 33 | 0 |
+| Linear refinement | 94 | 5 | 76 | 2 |
+| Nonlinear refinement | 93 | 6 | 85 | 3 |
+
+Both heads lose original detections on mug under-extrusion group 410, bedslinger
+layer 56, and group 420, CoreXY layer 88. The nonlinear head also loses group 417,
+bedslinger layer 32. Fewer total misses do not satisfy the requirement to retain
+every original true detection. Component counts and exact case identities remain
+in `native-coverage-v58-condition.json`. The four successful camera diagnostics
+do not establish a recovery gain. The implementation passes 238 repository tests
+and 41 Torch/training checks; fresh seeds remain untouched.
+
+A follow-up launcher in `neural-recovery:next-recovery-v59` exits successfully
+with status **skipped**, because camera qualification was rejected. It launches
+zero recovery trials. Its retained protocol requires successful completion of
+these camera gates before comparing qualified heads with the
 existing continuation-fallback controller and successful ignore controls on the
 four target cases. Passing heads then have to preserve all 50 retained v51
 candidate/preservation rows: each variant's 14 fault successes and six clean
@@ -851,7 +864,36 @@ the existing classical-base option is enabled for the new cameras. This planned
 comparison does not establish a result. The launcher watches the original camera
 process identity, never restarts it, and checks the completed validation manifest,
 exact qualified checkpoint hashes, local Qwen process and storage quota before
-starting. A rejected camera result skips the follow-up.
+starting. Future candidates need a new qualified-camera protocol; this skipped
+comparison must not be repointed to different models.
+
+### Diagnosing the retained defective finish
+
+`known-defect-v60` completes a nominal-command camera replay for bedslinger mug
+under-extrusion seed 1004. All 102 frames through the first adaptation match each
+of the two retained v51 controller runs (204 comparisons). This is a consumed
+development case; no recovery policy or model is trained or changed by the replay.
+
+The actual layer 101 has hard-thin excess 0.04678, above the unchanged 0.03
+cutoff. Classical measurement reports 0.00109 and misses it. The original neural
+camera reports 0.03140; the new linear and nonlinear heads report 0.04149 and
+0.04168. All learned views detect this defect, including the camera already used
+by the controller. Their classical-base full-stack verdicts reject the print.
+
+Code inspection identifies a relevant fallback: `_camera_candidates` returns
+the primary classical candidates unchanged when no correction passes both
+views. Thus a real neural warning can be dropped before Qwen receives the plans.
+This replay establishes the available warning, not the benefit of a policy fix.
+A blanket robust-margin veto would reject previously successful historical
+recoveries and is not adopted. Any narrower guard must preserve those successes
+and pass a new actual recovery comparison.
+
+The next camera hypothesis is a stronger training penalty for predicting
+material where the target is empty. Two fixed linear-head weights, 1.25 and 1.5,
+are planned, with the v58 control reproduced exactly. The four retained good
+onsets and all three lost detections will be screened before full diagnostics.
+This is an unlaunched experiment, not a qualified model or result; the complete
+camera and recovery requirements remain unchanged.
 
 ## Preserving historical container rescues
 

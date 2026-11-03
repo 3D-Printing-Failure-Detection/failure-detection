@@ -1,0 +1,76 @@
+{
+  "created_at": "2026-11-03T10:41:53.154054+00:00",
+  "source": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/source",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "simulation_contract_sha256": "fb46bdd5177b2582838ca303474f2426d40ea0396cedfc27097e3ba115eb95b6",
+  "case": [
+    "bedslinger",
+    "mug",
+    "under_extrusion",
+    1004
+  ],
+  "prior_results": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/defects-1004/results",
+  "ignore_violations": [
+    "wall far below 1.6 mm in 1 layers"
+  ],
+  "paired_failure": {
+    "k0": 101,
+    "severity": 0.7948510280314087
+  },
+  "diagnostic_arguments": [
+    "inspect",
+    "--profile",
+    "bedslinger",
+    "--part",
+    "mug",
+    "--kind",
+    "under_extrusion",
+    "--seed",
+    "1004",
+    "--checkpoint",
+    "original=/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz",
+    "--checkpoint",
+    "base=/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/candidate/boundary.npz",
+    "--checkpoint",
+    "linear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/linear/boundary.npz",
+    "--checkpoint",
+    "nonlinear=/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/nonlinear/boundary.npz",
+    "--include-classical-base-hybrids",
+    "--snapshot-layers",
+    "100",
+    "101",
+    "102",
+    "--out",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-known-defect-v60/diagnostic"
+  ],
+  "checkpoint_sha256": {
+    "original": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "base": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+    "linear": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+    "nonlinear": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351"
+  },
+  "pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-known-defect-v60/run.py": "3a7920468a728df0ffc32f98ffa5764632edb85340c27854e7ad8207a79456e7",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/comparison.json": "d36979a75c539dc24a67ac9b6fe16bcb1a53986d8bf329bf1bb2e32a2e8d8dfe",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/defects-1004/results/manifest.json": "b3035adaec7d8e95bfedc20642ec1a7d9b3a0f7c7928ca19e1d0f2d0a3a07d98",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/defects-1004/audit/audit.json": "03add49cbfeacfa4d29aac1e47d60b4bf7e08c5cb5cc58c1cc95aff26e7df46a",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/source/tools/inspect_camera_case.py": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/source/tools/experiment_provenance.py": "f739e929191f3f661e30e0cb196bd4217be5ceb17c59b0641726df336117af7a",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/source/tools/result_storage.py": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/defects-1004/results/runs.jsonl": "3d3bd91ebec3745cb4f6e94fb2f212ff2f13574c449254983aef44aca98dccd8",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/boundary.npz": "9215bb362e103074ae1e7f908b28fdb42117d88de737412b88548b443d1faee1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-boundary-v1/model/training.json": "e7117557d8c641d42d9c6efdd68b9854000a702a979a93214657bfdd0128803d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/candidate/boundary.npz": "7cc65d5cc5d0ba553a57f0656ffb457d5112b349bb8fa2d00423be840e98ba64",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/candidate/training.json": "8808ffdfafcd6b3f0c5c7a22d52dfb1787773bf036b8fe7957f29549a725978b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/linear/boundary.npz": "fb422245fad7690bb5f1c601f59e98c3610677a10fbc6df67fb423cae4f3c4d9",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/linear/training.json": "94c3d265588e942f8ddbdfd1901515e3d973c39ff8d7e061160d45c911baa9ba",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/nonlinear/boundary.npz": "752269952c49fcfa26094325efe274b5649a03b7deb7d31995e948ed04767351",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-coverage-v58/nonlinear/training.json": "2d57ce2db9243c2aeee75a78cb110c7d65cce640447daebaea612606c33c09ad"
+  },
+  "maximum_new_artifact_allowance_bytes": 4000000,
+  "storage_bytes_at_launch": 99949408256,
+  "other_live_camera_reservation": 9831424,
+  "pending_recovery_reservation": 19000000,
+  "purpose": "Determine whether new camera measurements recognize the real wall defect in the already consumed mug case that both ignore and the prior controller finish defective.",
+  "limitation": "Supplemental camera diagnosis on one consumed nominal-command trajectory. No recovery controller runs, no physical or scoring rule changes, no checkpoint selection, and no replacement for the ongoing 2040-frame or queued recovery gates."
+}

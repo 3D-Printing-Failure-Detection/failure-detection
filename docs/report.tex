@@ -2144,21 +2144,20 @@ predicted stack has zero apparent overhang and no functional violations. All
 640 per-layer base-control feature records reproduce exactly. This is camera
 qualification evidence, not a new completed-print recovery rate.
 
-The broader camera validation is now running. On all 2,040 retained validation
-frames, each head must preserve every true
-functional-defect detection made by the original camera and must not increase
-combined false negatives. Individual gap, thickness, base and connection errors
-remain reported. Known specified bases use the existing classical measurement;
-truth is used only for offline evaluation. All per-layer base-control features
-must reproduce exactly. Actual neural/Qwen recovery trials are queued in tmux
-only after these gates pass, with exact checkpoint and storage checks. They must
-first complete all four target cases, then preserve the previous controller's
-50 targeted candidate and regression results without new defects or lost successes.
+The broader validation completes all 2,040 retained frames and rejects both
+heads. The original camera detects 90 true functional defects, misses nine and
+raises 33 false alarms. The linear head detects 94, misses five and raises 76
+false alarms; the nonlinear head detects 93, misses six and raises 85. Despite
+fewer total misses, the new heads lose two and three original true detections.
+Both therefore fail the unchanged preservation requirement. All truth,
+classical and original-camera controls reproduce exactly. Component errors and
+lost case identities remain in the retained evidence. The conditional recovery
+launcher exits with status skipped: zero new recovery trials run.
 
 The implementation passes 238 repository tests, with three optional modules
 skipped, and 41 Torch/training checks. The frozen run and logs are retained in
 \code{neural-recovery:native-coverage-v58}. Fresh seeds 2001--2004 remain untouched.
-The experiment does not yet establish a new completed-print success rate.
+The rejected experiment establishes no new completed-print success rate.
 
 The final comparison's training/test separation audit now reads augmented seeds
 separately from severity and includes their parent data. All 25 retained
@@ -2170,5 +2169,58 @@ final-run plan must be regenerated with this audit before launch.
 Lossless packing of 1,176 completed result rows reclaims 15.36 MB. Actual disk
 restoration verifies every original byte in all 13 directories; manifests and
 audits remain unchanged. No active run, checkpoint or training dataset is removed.
+
+\clearpage
+\section{A known defect that the neural camera already detects}
+A separate camera replay examines the retained bedslinger mug under-extrusion
+case at seed 1004. Both the ignore baseline and the earlier neural/Qwen controller
+finish with one seriously thin wall. The replay follows nominal commands through
+160 layers; it does not run a recovery controller. All 102 camera frames through
+the first adaptation match each of the two retained controller runs, giving 204
+exact comparisons. This consumed development example is not fresh test data.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+View at layer 101 & Hard-thin excess & Exceeds 0.03 cutoff\\
+\midrule
+Actual geometry & 0.04678 & Yes\\
+Classical camera & 0.00109 & No\\
+Original neural camera & 0.03140 & Yes\\
+New linear refinement & 0.04149 & Yes\\
+New nonlinear refinement & 0.04168 & Yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All learned views detect the real thin wall, including the original camera
+already available to the controller. Their full-stack verdicts, with the
+existing classical measurement of specified bases, correctly reject the print.
+There is no change to geometry, thickness thresholds or physical scoring.
+
+\subsection*{The warning can be lost during plan selection}
+Code inspection identifies a relevant branch in \code{_camera_candidates}:
+when no correction passes both camera views, it returns the primary classical
+candidates unchanged. A true neural warning can therefore be discarded before
+Qwen receives its eligible plans. This diagnosis shows that better camera
+accuracy alone cannot resolve every remaining failure. It does not establish
+the outcome of a changed controller.
+
+A blanket veto on negative robust margins would reject previously successful
+historical recoveries, so it is not adopted. A narrower use of corroborated
+thin-wall warnings remains a hypothesis requiring actual recovery comparisons,
+preservation of earlier successes, and unchanged functional requirements.
+
+\subsection*{Next experiment and current verdict}
+The next camera hypothesis penalizes predicting material where the training
+target is empty. Two fixed penalties, 1.25 and 1.5, are planned for the linear
+spatial head, alongside exact reproduction of its previous control. The four
+retained good onsets and all three lost detections will be screened before the
+full camera gates. This experiment has not launched and has no result.
+
+The latest cameras are rejected; the recovery follow-up is skipped. Neither
+this replay nor the successful four-case camera diagnostics establishes a new
+recovery success rate. Superiority over all prior baselines and an added success
+benefit from Qwen remain unproven. Fresh seeds 2001--2004 remain untouched.
 
 \end{document}

@@ -1,0 +1,162 @@
+{
+  "classical": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 27,
+      "true_negative": 1977,
+      "false_positive": 0,
+      "false_negative": 36
+    },
+    "hard_thin": {
+      "true_positive": 0,
+      "true_negative": 1992,
+      "false_positive": 0,
+      "false_negative": 48
+    },
+    "open_wall": {
+      "true_positive": 54,
+      "true_negative": 1053,
+      "false_positive": 66,
+      "false_negative": 3
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 192,
+      "false_positive": 0,
+      "false_negative": 0
+    }
+  },
+  "original": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 22,
+      "true_negative": 1977,
+      "false_positive": 0,
+      "false_negative": 41
+    },
+    "hard_thin": {
+      "true_positive": 8,
+      "true_negative": 1992,
+      "false_positive": 0,
+      "false_negative": 40
+    },
+    "open_wall": {
+      "true_positive": 52,
+      "true_negative": 1056,
+      "false_positive": 63,
+      "false_negative": 5
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 192,
+      "false_positive": 0,
+      "false_negative": 0
+    }
+  },
+  "base": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 45,
+      "false_positive": 819,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 59,
+      "true_negative": 1724,
+      "false_positive": 253,
+      "false_negative": 4
+    },
+    "hard_thin": {
+      "true_positive": 41,
+      "true_negative": 1813,
+      "false_positive": 179,
+      "false_negative": 7
+    },
+    "open_wall": {
+      "true_positive": 37,
+      "true_negative": 1089,
+      "false_positive": 30,
+      "false_negative": 20
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 171,
+      "false_positive": 21,
+      "false_negative": 0
+    }
+  },
+  "linear": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 55,
+      "true_negative": 1860,
+      "false_positive": 117,
+      "false_negative": 8
+    },
+    "hard_thin": {
+      "true_positive": 38,
+      "true_negative": 1920,
+      "false_positive": 72,
+      "false_negative": 10
+    },
+    "open_wall": {
+      "true_positive": 40,
+      "true_negative": 1091,
+      "false_positive": 28,
+      "false_negative": 17
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 175,
+      "false_positive": 17,
+      "false_negative": 0
+    }
+  },
+  "nonlinear": {
+    "base_problem": {
+      "true_positive": 0,
+      "true_negative": 864,
+      "false_positive": 0,
+      "false_negative": 0
+    },
+    "soft_thin": {
+      "true_positive": 54,
+      "true_negative": 1852,
+      "false_positive": 125,
+      "false_negative": 9
+    },
+    "hard_thin": {
+      "true_positive": 36,
+      "true_negative": 1916,
+      "false_positive": 76,
+      "false_negative": 12
+    },
+    "open_wall": {
+      "true_positive": 40,
+      "true_negative": 1091,
+      "false_positive": 28,
+      "false_negative": 17
+    },
+    "connection_problem": {
+      "true_positive": 0,
+      "true_negative": 171,
+      "false_positive": 21,
+      "false_negative": 0
+    }
+  }
+}
