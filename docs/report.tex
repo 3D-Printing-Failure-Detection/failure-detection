@@ -823,7 +823,7 @@ the neural result; these runs show no additional completed print from supervisio
 These fit-only results must not be substituted for the full-project 100-case
 historical comparison or for a fresh frozen test.
 
-\note{\textbf{The fit regression is resolved.} The revision retains all passing
+\note{\textbf{The earlier validation regression is resolved.} The revision retains all passing
 contour and earlier-neural validation cases, including the previously lost
 bracket collapse. This does not establish superiority for containers or on the
 reserved fresh test.}
@@ -855,7 +855,7 @@ versus 30/50 for contour, with zero versus one defective finish, no lost contour
 successes, all ten clean controls passed and 40 actual Qwen requests. Validation
 also completes with the improvement shown above. The comparison checks the actual
 earlier and current source snapshots, weights and common simulation contract.
-Source tests pass 130 cases, with one optional module skipped. Seeds 2001--2004
+Source tests pass 136 cases, with one optional module skipped. Seeds 2001--2004
 remain untouched.
 
 \subsection*{Local supervision now uses shorter requests}
@@ -990,5 +990,76 @@ weights and Qwen logs stay on the data volume. Cross-version checks pin code,
 options and models while holding simulation and functional checks fixed.
 Acceptance requires all parts and failures, the strongest prior neural and
 analytical baselines, preserved passing cases and no extra defects on a fresh test.
+
+\clearpage
+\section{Broader fit regression and the latest camera trial}
+
+The completed \texttt{fit-consumed-grid-v5} study covers every fit case in the
+consumed seed grid: three printer profiles, bracket and spacer, five failure
+kinds and four seeds, plus clean controls. All 576 runs and their audits finish.
+These are development cases; fresh seeds 2001--2004 remain untouched.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}Yrrr@{}}
+\toprule
+Policy & Successful failures & Defective finishes & Clean passes\\
+\midrule
+Contour & 71/120 & 3 & 24/24\\
+Analytical preventive & 76/120 & 0 & 24/24\\
+Revised neural & 78/120 & 0 & 24/24\\
+Revised neural with Qwen & 78/120 & 0 & 24/24\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Qwen makes 158 actual requests and preserves the neural-only result. This
+demonstrates exercised supervision, not additional successful prints caused by it.
+
+\note{\textbf{This candidate still fails acceptance.} Against analytical preventive
+recovery it gains three cases but loses one: CoreXY bracket shift, seed 1001.
+A higher total alone does not satisfy the requirement to preserve baseline successes.}
+
+\subsection*{Why the remaining fit case is lost}
+At layer index 26, the neural forecast still accepts continuation. The analytical
+forecast predicts a failed hole fit and has a correction that completes the
+physical simulation. The neural policy waits and scraps at index 27, when the
+already printed hole cannot be repaired by changing future commands.
+
+An observational replay records the otherwise discarded candidate assessments.
+The analytical correction passes both central forecasts, but its neural fit bound
+under the uncertainty scenarios is $-0.150$ mm, below the passing continuation's
+$-0.014$ mm. The guard therefore rejects it. These are geometric scenario bounds,
+not probabilities. Simple mixtures of the two inverse corrections also fail
+that guard in a candidate-only diagnostic.
+
+The new optional \texttt{--neural-hole-envelope} proposal retains both models'
+compensated hole openings in future commands, keeping the neural proposal's
+exterior. It changes neither measurements nor the printed prefix. Both forward
+checks and the original robustness guard still apply. This raises the limiting
+diagnostic bound to $+0.047$ mm. In the actual simulation, the previously lost
+bracket now completes with one adaptation for both neural variants; Qwen makes
+two validated requests. A frozen 51-run regression gate covers earlier gains and
+clean controls. Only if every selected neural case passes will it launch the
+288-run broader comparison against the actual previous implementation. The
+option remains off by default; this single-case recovery is not acceptance.
+
+\subsection*{Explicit material classification did not fix the camera}
+The \texttt{occupancy-camera-v10} trial adds a fixed classification term to the
+distance objective, using the same fine-only inputs, data, seed and 160-epoch
+schedule. Its zero-weight control reproduces every array of the earlier model
+exactly. Both trained models export successfully to NumPy inference.
+
+Near-boundary sign accuracy worsens from 82.09\% to 81.35\%, and boundary error
+rises from 0.06493 to 0.06604 mm. On the full 160-layer cup diagnostic, both false
+wall gaps remain and the false support violation grows from 15 to 23 mm$^2$.
+The predeclared condition skips recovery and wider geometry trials. This network
+is retained as a failed experiment and is not promoted into the recovery loop.
+
+The next matched trial rotates and reflects both image patches and their
+continuous query coordinates. Its unaugmented control exactly reproduces the
+earlier shared-query checkpoint. Augmentation worsens boundary error from
+0.04462 to 0.05504 mm, retains both false gaps and raises false base-problem layers
+from one to eight. Follow-up recovery and wider validation are skipped; this
+checkpoint is also rejected. The source suite passes 136 tests, with one optional
+module skipped. Reserved test seeds remain untouched.
 
 \end{document}

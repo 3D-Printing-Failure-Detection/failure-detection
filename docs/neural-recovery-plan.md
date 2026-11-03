@@ -100,7 +100,29 @@ one false base-problem layer. Recovery and wider geometry checks are skipped as
 predeclared. This model is also rejected; lower patch error did not repair the gap.
 Seeds 2001--2004 remain untouched.
 
-The current source passes 130 tests, with one optional module skipped. Long runs
+The matched `occupancy-camera-v10` trial adds a fixed material/background
+classification loss to distance regression (weight 0.1, distance-to-logit scale
+0.1 mm). The scale is not calibrated uncertainty. It uses the fine-only inputs,
+identical data and 160-epoch schedule. Its zero-weight control reproduces every
+array of the earlier fine-only checkpoint exactly, and both NumPy exports pass.
+The auxiliary objective worsens near-boundary sign accuracy from 82.09% to 81.35%
+and boundary MAE from 0.06493 to 0.06604 mm. The full 160-layer diagnostic retains
+both false gaps and increases false overhang from 15 to 23 mm2. Recovery and wider
+geometry checks are skipped by the predeclared condition; this model is rejected.
+
+`dihedral-query-camera-v11` rotates and reflects both the image patch and its
+continuous subpixel query coordinates, preserving each signed-distance label.
+The unaugmented wider-query control reproduces every earlier v9 checkpoint array
+exactly. Both models train for 160 epochs with verified exports. Augmentation
+worsens boundary MAE from 0.04462 to 0.05504 mm and near-boundary sign accuracy
+from 86.94% to 83.09%. The completed cup diagnostic keeps both false gaps and
+increases false base-problem layers from one to eight. Its conditional follow-ups
+are skipped and the model is rejected. The original protocol retains stale v10
+descriptive fields; the separately recorded metadata correction identifies them
+and the correct trainer hash. Frozen commands, data, source and outcomes were
+unchanged; the original protocol remains available beside that correction.
+
+The current source passes 136 tests, with one optional module skipped. Long runs
 remain in tmux session `neural-recovery`; attach with
 `tmux attach -t neural-recovery`. Full evidence stays on the data volume, with
 compact manifests and completed audits under `docs/validation/neural`.
@@ -415,11 +437,41 @@ the bracket rescue. All three historical gains also pass. The completed broader
 fit comparison scores 33/50 historical and 13/20 validation, versus contour's
 30/50 and 10/20, preserving all its successes with zero defective finishes.
 An explicit comparison against the actual earlier neural source confirms the
-validation gain from 12/20 to 13/20 without losses. `fit-consumed-grid-v5` now
-tests every consumed fit case across three profiles, including the strongest
-analytical preventive baseline: 576 runs over 120 failures and 24 clean controls
-per method. This is a development regression, not a fresh acceptance test.
+validation gain from 12/20 to 13/20 without losses. `fit-consumed-grid-v5` completes
+all 576 runs over 120 failures and 24 clean controls per method across all three
+profiles. Both neural variants score 78/120, versus 76/120 for analytical preventive
+recovery and 71/120 for contour. Both neural variants and analytical preventive
+recovery have zero defective finishes; contour has three. Every method passes all
+24 clean controls. Qwen makes 158 validated requests and ties neural-only outcomes.
+Against analytical preventive recovery there are three gained successes and one
+lost success: CoreXY bracket shift, seed 1001. Thus the completion count improves,
+but the baseline-success preservation requirement fails. The neural policy waits
+at layer index 26 and scraps at 27 after the measured hole becomes irreparable.
+The analytical baseline adapts at 26 and completes. A candidate-only replay shows
+that the analytical correction passes both central forecasts but has a neural
+fit uncertainty bound of -0.150 mm, below the original continuation's -0.014 mm;
+the existing early-intervention guard rejects it. This is a development regression,
+not a fresh acceptance test.
 Reserved seeds 2001--2004 remain untouched.
+
+The optional `--neural-hole-envelope` experiment retains both inverse proposals'
+hole openings in future commands while keeping the neural proposal's exterior.
+It only expands the search when an early neural continuation passes and the
+existing recovery candidates fail the unchanged joint robustness guard. It never
+edits observations or the printed prefix. Every new command still undergoes both
+forward forecasts, the original functional and executable checks, and the same
+fit-bound comparison. It requires `--neural-joint-forecast` and remains off by
+default. Candidate-only diagnostics reject simple mixed inverses, but the shared
+hole proposal improves the limiting bound to +0.047 mm on the lost bracket.
+
+The frozen `hole-envelope-fit-dev-v9` protocol begins with 51 runs: that bracket,
+earlier spacer and bracket regressions, three historical gains, a validation gain
+and clean controls, with actual Qwen. The lost CoreXY bracket now completes with
+one adaptation for both neural variants, matching analytical preventive recovery.
+The remaining gate is running. Only if every selected neural/Qwen case passes
+will it launch 288 broader runs and compare them to the actual earlier source
+and the strongest analytical baselines on the full consumed fit grid. No fresh
+test seeds are used and this diagnostic success is not a final acceptance result.
 
 ### Camera uncertainty and additional deformation coverage did not resolve the diagnostic
 

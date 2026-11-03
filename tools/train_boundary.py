@@ -12,6 +12,7 @@ from torch import nn
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from recovery.models.boundary import PATCH_SIZE, BoundarySegmenter, subpixel_offsets, validate_input_scales
+from tools.boundary_augmentation import dihedral_transforms
 
 
 class QueryBoundaryNetwork(nn.Module):
@@ -22,9 +23,10 @@ class QueryBoundaryNetwork(nn.Module):
         self.query = nn.Linear(2, h2, bias=False)
         self.register_buffer('offsets', torch.from_numpy(subpixel_offsets(scale)))
 
-    def forward(self, patches):
+    def forward(self, patches, offsets=None):
         hidden = self.second(torch.relu(self.first(patches)))
-        return self.last(torch.relu(hidden[:, None, :] + self.query(self.offsets))).squeeze(-1)
+        return self.last(torch.relu(hidden[:, None, :] + self.query(
+            self.offsets if offsets is None else offsets))).squeeze(-1)
 
 
 def main():
@@ -45,11 +47,21 @@ def main():
                         help='share one distance decoder across native subpixel XY queries')
     parser.add_argument('--select-input-scales', type=int, nargs='+', choices=[1, 2, 4],
                         help='train a matched ablation using a subset of the saved camera inputs')
+    parser.add_argument('--occupancy-loss-weight', type=float, default=0.,
+                        help='auxiliary material/background classification loss; zero retains distance-only training')
+    parser.add_argument('--occupancy-temperature-mm', type=float, default=.1,
+                        help='distance-to-logit scale for classification training, not calibrated uncertainty')
     args = parser.parse_args()
     if min(args.hidden) < 1:
         parser.error('hidden widths must be positive')
     if args.distance_quantile is not None and not 0 < args.distance_quantile < 1:
         parser.error('--distance-quantile must be strictly between zero and one')
+    if not np.isfinite(args.occupancy_loss_weight) or args.occupancy_loss_weight < 0:
+        parser.error('--occupancy-loss-weight must be finite and nonnegative')
+    if not np.isfinite(args.occupancy_temperature_mm) or args.occupancy_temperature_mm <= 0:
+        parser.error('--occupancy-temperature-mm must be finite and positive')
+    if args.occupancy_loss_weight and args.distance_quantile is not None:
+        parser.error('occupancy training cannot be interpreted as a distance quantile')
     torch.set_num_threads(2)
     torch.manual_seed(args.seed)
     rng = np.random.default_rng(args.seed)
@@ -81,8 +93,8 @@ def main():
                                   for s in selected])
         x = x[:, columns]
         input_scales = selected
-    if output_upsample > 1 and args.augment_dihedral:
-        parser.error('D4 augmentation requires rotating the subpixel targets and is not implemented')
+    if output_upsample > 1 and args.augment_dihedral and not args.query_conditioned:
+        parser.error('native D4 augmentation requires a query-conditioned decoder')
     if args.query_conditioned and output_upsample == 1:
         parser.error('--query-conditioned requires native subpixel targets')
     y = y.reshape(len(x), -1)
@@ -103,11 +115,10 @@ def main():
     model = (QueryBoundaryNetwork(h1, h2, output_upsample, input_width) if args.query_conditioned else
              nn.Sequential(nn.Linear(input_width, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
                            nn.Linear(h2, output_upsample**2)))
-    grid = np.arange(PATCH_SIZE**2).reshape(PATCH_SIZE, PATCH_SIZE)
-    permutations = [np.rot90(np.fliplr(grid) if flip else grid, rotation).ravel().copy()
-                    for flip in (False, True) for rotation in range(4)]
-    transforms = torch.from_numpy(np.stack([np.concatenate([p + i*PATCH_SIZE**2 for i in range(len(input_scales))])
-                                           for p in permutations]))
+    permutations, transformed_queries = dihedral_transforms(
+        PATCH_SIZE, len(input_scales), subpixel_offsets(output_upsample))
+    transforms = torch.from_numpy(permutations)
+    transformed_queries = torch.from_numpy(transformed_queries)
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
     best, history, started = float('inf'), [], time.time()
     checkpoint = args.out / 'boundary.npz'
@@ -119,10 +130,13 @@ def main():
         for start in range(0, len(indices), args.batch_size):
             idx = indices[start:start+args.batch_size]
             inputs = xtrain[idx]
+            query_offsets = None
             if args.augment_dihedral:
-                permutation = transforms[rng.integers(len(transforms), size=len(idx))]
-                inputs = torch.gather(inputs, 1, permutation)
-            prediction = torch.tanh(model(inputs))
+                augment = rng.integers(len(transforms), size=len(idx))
+                inputs = torch.gather(inputs, 1, transforms[augment])
+                if args.query_conditioned:
+                    query_offsets = transformed_queries[augment]
+            prediction = torch.tanh(model(inputs, query_offsets) if args.query_conditioned else model(inputs))
             weight = .25 + .75 * (torch.abs(ytrain[idx]) < .5)
             if args.distance_quantile is None:
                 point_loss = torch.nn.functional.smooth_l1_loss(prediction, ytrain[idx], beta=.05, reduction='none')
@@ -130,6 +144,10 @@ def main():
                 residual = ytrain[idx] - prediction
                 point_loss = torch.maximum(args.distance_quantile * residual,
                                            (args.distance_quantile - 1) * residual)
+            if args.occupancy_loss_weight:
+                occupancy = torch.nn.functional.binary_cross_entropy_with_logits(
+                    prediction / args.occupancy_temperature_mm, (ytrain[idx] > 0).float(), reduction='none')
+                point_loss = point_loss + args.occupancy_loss_weight * occupancy
             loss = (point_loss * weight).mean()
             optimizer.zero_grad()
             loss.backward()
@@ -147,9 +165,19 @@ def main():
                 point_loss = torch.maximum(args.distance_quantile * residual,
                                            (args.distance_quantile - 1) * residual)
                 score = float((point_loss * (.25 + .75 * edge)).mean())
+            elif args.occupancy_loss_weight:
+                distance_loss = torch.nn.functional.smooth_l1_loss(predicted, yval, beta=.05, reduction='none')
+                occupancy = torch.nn.functional.binary_cross_entropy_with_logits(
+                    predicted / args.occupancy_temperature_mm, (yval > 0).float(), reduction='none')
+                score = float(((distance_loss + args.occupancy_loss_weight * occupancy) * (.25 + .75 * edge)).mean())
+            positive, negative = edge & (yval > 0), edge & (yval <= 0)
+            material_recall = float((predicted[positive] > 0).float().mean())
+            background_recall = float((predicted[negative] <= 0).float().mean())
         row = dict(epoch=epoch+1, train_loss=total/len(xtrain), validation_boundary_mae_mm=error,
                    validation_pixel_accuracy=accuracy, validation_selection_score=score,
-                   validation_boundary_coverage=coverage)
+                   validation_boundary_coverage=coverage,
+                   validation_boundary_material_recall=material_recall,
+                   validation_boundary_background_recall=background_recall)
         history.append(row)
         if score < best:
             best = score
@@ -157,6 +185,9 @@ def main():
                           input_scales=np.array(input_scales))
             if args.distance_quantile is not None:
                 arrays['distance_quantile'] = np.array(args.distance_quantile)
+            if args.occupancy_loss_weight:
+                arrays['occupancy_loss_weight'] = np.array(args.occupancy_loss_weight)
+                arrays['occupancy_temperature_mm'] = np.array(args.occupancy_temperature_mm)
             layers = (model.first, model.second, model.last) if args.query_conditioned else (model[0], model[2], model[4])
             if args.query_conditioned:
                 arrays['query_weights'] = model.query.weight.detach().numpy()
@@ -173,6 +204,12 @@ def main():
         residual = y[split] - predicted
         point_loss = np.maximum(args.distance_quantile * residual, (args.distance_quantile - 1) * residual)
         score = float((point_loss * (.25 + .75 * boundary)).mean())
+    elif args.occupancy_loss_weight:
+        residual = np.abs(predicted - y[split])
+        distance_loss = np.where(residual < .05, .5 * residual**2 / .05, residual - .025)
+        logits = predicted / args.occupancy_temperature_mm
+        occupancy = np.logaddexp(0., logits) - (y[split] > 0) * logits
+        score = float(((distance_loss + args.occupancy_loss_weight * occupancy) * (.25 + .75 * boundary)).mean())
     assert abs(score-best) < 1e-5, 'exported boundary network differs from trained checkpoint'
     manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> {output_upsample**2} tanh distances',
         output_upsample=output_upsample,
@@ -180,9 +217,14 @@ def main():
         dataset_input_scales=list(dataset_input_scales),
         subpixel_decoder='shared XY-conditioned distance' if args.query_conditioned else 'independent distance heads',
         distance_quantile=args.distance_quantile,
+        occupancy_loss_weight=args.occupancy_loss_weight,
+        occupancy_temperature_mm=args.occupancy_temperature_mm,
         validation_selection_score=score,
-        selection_metric='boundary MAE' if args.distance_quantile is None else 'weighted pinball loss',
+        selection_metric=('weighted distance and occupancy loss' if args.occupancy_loss_weight else
+                          'boundary MAE' if args.distance_quantile is None else 'weighted pinball loss'),
         validation_boundary_coverage=float((predicted[boundary] >= y[split][boundary]).mean()),
+        validation_boundary_material_recall=float((predicted[boundary & (y[split] > 0)] > 0).mean()),
+        validation_boundary_background_recall=float((predicted[boundary & (y[split] <= 0)] <= 0).mean()),
         args={k: str(v) if isinstance(v, Path) else [str(p) for p in v] if k == 'extra_data' else v
               for k, v in vars(args).items()},
         device='cpu', torch=torch.__version__, seconds=time.time()-started, train_rows=len(xtrain),
@@ -191,7 +233,9 @@ def main():
         data_sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(), checkpoint_sha256=exported.sha256,
         data_sources=sources,
         history=history, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        augmentation='random D4 training patches' if args.augment_dihedral else 'none',
+        augmentation=('random D4 training patches and corresponding XY queries' if args.query_conditioned
+                      else 'random D4 training patches') if args.augment_dihedral else 'none',
+        augmentation_helper_sha256=hashlib.sha256(Path(__file__).with_name('boundary_augmentation.py').read_bytes()).hexdigest(),
         limitation='patch validation is not full-frame or closed-loop recovery validation')
     if args.query_conditioned:
         manifest['architecture'] = f'9x9 grayscale patch -> {h1} ReLU -> {h2} plus XY query ReLU -> shared tanh distance'

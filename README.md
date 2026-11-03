@@ -79,8 +79,14 @@ rejects that candidate: 126/240 successes versus contour's 128/240 and analytica
 preventive recovery's 133/240, with five defective finishes versus three for the
 strongest baseline. The revised fit policy reaches 13/20 validation successes
 versus contour's 10/20 and the earlier neural policy's 12/20, preserving both
-methods' passing cases with no defective finishes. Camera regressions remain
-unresolved. New untouched seeds are reserved for another final test; these
+methods' passing cases with no defective finishes. A broader completed fit study
+scores 78/120 for both neural variants versus 76/120 for analytical preventive
+recovery, with no defective finishes and all 24 clean controls passed. It still
+loses one analytical success, so it fails the preservation requirement. Qwen
+makes 158 actual requests but adds no successes over the neural policy alone.
+The new opt-in `--neural-hole-envelope` proposal restores that lost bracket in a
+completed simulation with and without Qwen; its broader regression is still running.
+Camera regressions remain unresolved. New untouched seeds are reserved for another final test; these
 policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a

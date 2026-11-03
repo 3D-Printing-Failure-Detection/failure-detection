@@ -11,12 +11,33 @@ from shapely.geometry import Point
 from shapely.ops import unary_union
 
 from ..geometry import adapt as A, features as F
-from ..geometry.ops import clean, iou
+from ..geometry.ops import clean, hole_polys, iou
 from ..geometry.spec import check
 from ..types import Layer
 from .decide import DecisionContext, Decision
 from .contour import ContourPolicy
 from .neural import NeuralPolicy
+
+
+def shared_hole_plan(neural_plan, analytical_plan, nominal):
+    """Retain both inverse proposals' voids in future commands only.
+
+    Keep the neural proposal's exterior; subtract the analytical proposal's
+    holes without filling, buffering, or inventing any missing opening. This
+    proposes commands, not a modified observation. Both full forward checks
+    still decide whether the larger voids meet the fit and structural limits.
+    """
+    if (len(neural_plan.layers) != len(analytical_plan.layers)
+            or len(neural_plan.layers) != len(nominal)):
+        raise ValueError('hole-envelope proposals must cover the same future layers')
+    layers = []
+    for neural, analytical, reference in zip(neural_plan.layers, analytical_plan.layers, nominal):
+        if neural.z != analytical.z or neural.z != reference.z:
+            raise ValueError('hole-envelope proposals must have matching layer heights')
+        region = clean(neural.region.difference(unary_union(hole_polys(analytical.region))))
+        layers.append(Layer(neural.z, region))
+    fidelity = float(np.mean([iou(a.region, b.region) for a, b in zip(layers, nominal)]))
+    return A.Plan('shared hole clearance:' + neural_plan.name.removeprefix('compensate:'), layers, fidelity)
 
 
 class PreventiveFitMixin:
@@ -128,9 +149,12 @@ class PreventiveFitMixin:
 class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
     """Preventive fit planning with the trained temporal forecast."""
 
-    def __init__(self, *args, joint_forecast=False, **kwargs):
+    def __init__(self, *args, joint_forecast=False, hole_envelope=False, **kwargs):
         super().__init__(*args, **kwargs)
+        if hole_envelope and not joint_forecast:
+            raise ValueError('hole-envelope recovery requires joint forecasts')
         self.joint_forecast = joint_forecast
+        self.hole_envelope = hole_envelope
         self.analytical_candidate_checks = 0
 
     def candidates(self, known, current_plan, context=None):
@@ -175,13 +199,11 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
             alternatives.append(self._evaluate(known, plan, context, current_plan, budget))
         candidates = [dict(c) for c in primary + alternatives]
         joint = []
-        for index, candidate in enumerate(candidates):
+        def assess_joint(candidate, assessment=None):
             if not candidate['verdict'].ok or not candidate['executable']:
                 candidate['both_forecasts_pass'] = False
-                continue
-            if index == 0 and continuation_assessment is not None:
-                assessment = continuation_assessment
-            else:
+                return
+            if assessment is None:
                 self.analytical_candidate_checks += 1
                 assessment = analytical._evaluate(known, candidate['plan'], context, current_plan,
                                                   candidate.get('correction_budget'))
@@ -199,6 +221,21 @@ class RiskAwareNeuralPolicy(PreventiveFitMixin, NeuralPolicy):
                         candidate['fit_robust_clearance_mm'] >= original_primary[0]['fit_robust_clearance_mm'])
                 if candidate.get('early_fit_robustness_preserved', True):
                     joint.append(candidate)
+
+        for index, candidate in enumerate(candidates):
+            assess_joint(candidate, continuation_assessment if index == 0 else None)
+        if not joint and early_warning and getattr(self, 'hole_envelope', False):
+            # Only expand the search after the existing early-recovery choices
+            # fail their unchanged joint robustness guard. Previously selected
+            # recoveries retain their ranking and behavior.
+            neural_plans = {c['name']: c['plan'] for c in primary}
+            for (target, budget), alternative in zip(targets, alternatives):
+                plan = shared_hole_plan(neural_plans['compensate:' + target.name],
+                                        alternative['plan'], self.nominal[len(known):])
+                candidate = self._evaluate(known, plan, context, current_plan, budget)
+                candidate['hole_envelope'] = True
+                candidates.append(candidate)
+                assess_joint(candidate)
         if not joint:
             return original_primary
         if early_warning and candidates[0]['both_forecasts_pass']:

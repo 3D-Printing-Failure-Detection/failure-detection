@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-03T00:15:20.395756+00:00",
+  "purpose": "candidate-only diagnostic; original decisions unchanged",
+  "source_sha256": "05765fdb4b51a34c796d3cdd4970808e8a61c7e31176ae694187a610a4ee86b7",
+  "diagnostic_runner_sha256": "042d4869acde23de23c23723cb2c6ee858e480a09078ec28f773ad9e02deab46",
+  "assessments_sha256": "6b692286d5c52efa154957c5491a34fce776cf5a5f25b44d0937c6de62517d99",
+  "result_sha256": "a9f10f5ded8f6f0a96dc8155685fe993302cfa5e9f01a5ed374e468ad8d75cf4",
+  "underlying_print": {
+    "profile": "corexy",
+    "part": "bracket",
+    "kind": "shift",
+    "seed": 1001,
+    "method": "neural_risk",
+    "in_place": false,
+    "defective_finished": false,
+    "adaptations": 0,
+    "layers_printed": 28
+  },
+  "limitation": "Consumed development case; candidate-only calculations do not establish completed recovery."
+}

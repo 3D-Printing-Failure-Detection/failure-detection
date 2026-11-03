@@ -9,7 +9,7 @@ from recovery.geometry.adapt import Plan
 from recovery.geometry import features as F
 from recovery.geometry.spec import Verdict
 from recovery.loop.decide import DecisionContext
-from recovery.loop.risk_neural import RiskAwareNeuralPolicy, PreventiveFitMixin
+from recovery.loop.risk_neural import RiskAwareNeuralPolicy, PreventiveFitMixin, shared_hole_plan
 from recovery.loop import risk_neural
 from recovery.models.classical import Detection
 from recovery.types import Layer
@@ -109,19 +109,23 @@ def test_joint_forecasts_require_a_passing_alternative_before_excluding_a_plan(m
         assert result is primary
 
 
-@pytest.mark.parametrize('analytical_ok,clearance,recovery_ok,recovery_clearance,continuation_robust,expected', [
-    (False, -.1, True, .4, -.1, 'recover'),  # intervene while the prefix is still repairable
-    (True, .4, True, .6, -.1, 'continue'),  # both forecasts already cover observed uncertainty
-    (False, -.1, False, -.2, -.1, 'continue'),  # no jointly passing alternative: preserve neural choice
-    (True, .1, True, .2, -.1, 'continue'),  # improvement is below half a camera pixel
-    (True, .1, True, .4, -.1, 'recover'),  # low analytical clearance has a measurable remedy
-    (False, -.1, True, .4, .5, 'continue'),  # disagreement cannot justify a weaker fit bound
+@pytest.mark.parametrize('analytical_ok,clearance,recovery_ok,recovery_clearance,continuation_robust,envelope_slack,expected', [
+    (False, -.1, True, .4, -.1, None, 'recover'),  # intervene while the prefix is still repairable
+    (True, .4, True, .6, -.1, None, 'continue'),  # both forecasts already cover observed uncertainty
+    (False, -.1, False, -.2, -.1, None, 'continue'),  # no jointly passing alternative: preserve neural choice
+    (True, .1, True, .2, -.1, None, 'continue'),  # improvement is below half a camera pixel
+    (True, .1, True, .4, -.1, None, 'recover'),  # low analytical clearance has a measurable remedy
+    (False, -.1, True, .4, .5, None, 'continue'),  # disagreement cannot justify a weaker fit bound
+    (False, -.1, True, .4, .5, .6, 'recover'),  # new void proposal clears the same robustness guard
+    (False, -.1, True, .4, .5, .49, 'continue'),  # larger voids do not bypass that guard
+    (False, -.1, False, .4, .5, .6, 'continue'),  # both full forecasts must still pass
 ])
 def test_joint_forecast_checks_a_confident_neural_continuation(monkeypatch,
-        analytical_ok, clearance, recovery_ok, recovery_clearance, continuation_robust, expected):
+        analytical_ok, clearance, recovery_ok, recovery_clearance, continuation_robust, envelope_slack, expected):
     layer = Layer(.25, Point(0, 0).buffer(15).difference(Point(0, 0).buffer(5)))
     policy = object.__new__(RiskAwareNeuralPolicy)
     policy.joint_forecast, policy.analytical_candidate_checks = True, 0
+    policy.hole_envelope = envelope_slack is not None
     policy.spec = {'holes': [dict(center=[0, 0], diameter=[8.5, 11.5], tol_center=1.)]}
     policy.allow_adapt, policy.use_fea, policy.reserve_fit = True, False, True
     policy.h, policy.max_correction_per_layer_mm = .25, .25
@@ -140,11 +144,13 @@ def test_joint_forecast_checks_a_confident_neural_continuation(monkeypatch,
     primary[0]['fit_robust_clearance_mm'] = continuation_robust
     monkeypatch.setattr(PreventiveFitMixin, 'candidates', lambda *args, **kwargs: primary)
     monkeypatch.setattr(policy, '_targets', lambda known: [(Plan('target', [layer]*3, 1.), {})])
-    monkeypatch.setattr(policy, '_evaluate', lambda known, plan, *args: candidate(plan))
+    monkeypatch.setattr(policy, '_evaluate', lambda known, plan, *args:
+        candidate(plan, slack=envelope_slack if plan.name.startswith('shared hole clearance:') else .8))
     analytical = SimpleNamespace(state=SimpleNamespace(compensate=lambda layers: layers),
         _evaluate=lambda known, plan, *args: candidate(plan,
             analytical_ok if plan.name == 'continue' else recovery_ok,
-            clearance if plan.name == 'continue' else recovery_clearance))
+            clearance if plan.name == 'continue' else envelope_slack
+            if plan.name.startswith('shared hole clearance:') else recovery_clearance))
     monkeypatch.setattr(risk_neural, 'RiskAwareContourPolicy', lambda *args, **kwargs: analytical)
     before = layer.region.wkb
     result = policy.candidates(history, policy.nominal, DecisionContext(3))
@@ -157,3 +163,23 @@ def test_joint_forecast_checks_a_confident_neural_continuation(monkeypatch,
         assert result[0]['fit_at_risk']
         assert any(c['name'] != 'continue' and c['both_forecasts_pass'] for c in result)
         assert policy.pick_candidates(result, DecisionContext(3)).action == 'adapt'
+
+
+def test_shared_hole_commands_preserve_both_voids_without_adding_material():
+    exterior = Point(0, 0).buffer(15)
+    left, right = Point(-1, 0).buffer(4), Point(1, 0).buffer(4)
+    neural = Plan('compensate:target', [Layer(.5, exterior.difference(left))], 1.)
+    analytical = Plan('analytical inverse:target', [Layer(.5, exterior.difference(right))], 1.)
+    nominal = [Layer(.5, exterior.difference(Point(0, 0).buffer(4)))]
+    before = [plan.layers[0].region.wkb for plan in (neural, analytical)]
+    plan = shared_hole_plan(neural, analytical, nominal)
+    assert plan.layers[0].z == .5
+    region = plan.layers[0].region
+    assert region.difference(neural.layers[0].region).area < 1e-8
+    assert region.intersection(left.union(right)).area < 1e-8
+    assert region.symmetric_difference(exterior.difference(left.union(right))).area < 1e-8
+    assert [plan.layers[0].region.wkb for plan in (neural, analytical)] == before
+    with pytest.raises(ValueError, match='same future layers'):
+        shared_hole_plan(neural, Plan('empty', [], 1.), nominal)
+    with pytest.raises(ValueError, match='matching layer heights'):
+        shared_hole_plan(neural, Plan('other height', [Layer(.75, exterior)], 1.), nominal)

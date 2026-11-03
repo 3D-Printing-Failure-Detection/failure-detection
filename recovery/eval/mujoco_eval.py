@@ -123,6 +123,7 @@ def run_case(job):
                     if method in ('neural_risk', 'neural_risk_agent'):
                         policy_options['reserve_fit'] = options.get('neural_reserve_fit', False)
                         policy_options['joint_forecast'] = options.get('neural_joint_forecast', False)
+                        policy_options['hole_envelope'] = options.get('neural_hole_envelope', False)
                     if method.endswith('_agent'):
                         policy_options['supervisor'] = LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
                                                                       options.get('supervisor_timeout', 120))
@@ -300,6 +301,8 @@ def main(argv=None):
                         help='offer a bounded clearance-reserve candidate to the preventive learned policy')
     parser.add_argument('--neural-joint-forecast', action='store_true',
                         help='prefer recovery candidates verified by both learned and analytical fit forecasts')
+    parser.add_argument('--neural-hole-envelope', action='store_true',
+                        help='try shared future hole clearances if existing early joint recovery choices fail the robustness guard')
     parser.add_argument('--boundary-checkpoint', type=Path,
                         help='learned camera boundary model for neural methods; historical baselines stay classical')
     parser.add_argument('--boundary-scope', choices=('all', 'nonfits'), default='all',
@@ -329,6 +332,8 @@ def main(argv=None):
         parser.error('nonfits boundary scope requires --boundary-checkpoint')
     if args.boundary_joint_forecast and not args.boundary_fallback:
         parser.error('--boundary-joint-forecast requires --boundary-fallback')
+    if args.neural_hole_envelope and not args.neural_joint_forecast:
+        parser.error('--neural-hole-envelope requires --neural-joint-forecast')
     if args.boundary_fallback and (not args.boundary_checkpoint or args.boundary_scope != 'nonfits'
                                   or args.neural_forecast_scope != 'fits'
                                   or any(m in args.methods for m in ('neural_camera', 'neural_camera_agent'))):
@@ -353,6 +358,7 @@ def main(argv=None):
                    neural_forecast_scope=args.neural_forecast_scope,
                    neural_reserve_fit=args.neural_reserve_fit,
                    neural_joint_forecast=args.neural_joint_forecast,
+                   neural_hole_envelope=args.neural_hole_envelope,
                    supervisor_endpoint=args.supervisor_endpoint, supervisor_model=args.supervisor_model,
                    supervisor_timeout=args.supervisor_timeout,
                    supervisor_review_interval=args.supervisor_review_interval)
