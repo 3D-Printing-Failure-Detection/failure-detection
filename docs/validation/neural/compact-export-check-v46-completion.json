@@ -1,0 +1,129 @@
+{
+  "status": "passed",
+  "new_simulation_rows": 0,
+  "real_primary_rows": 10,
+  "all_primary_bytes_preserved": true,
+  "all_duplicate_exports_actually_restored": true,
+  "entire_comparison_byte_identical": true,
+  "comparison_sha256": "ec6ed53f507b0fa787f9cc2f3f385707bb50cd5a9b81a7ad18cf71e4ad3ff6f2",
+  "negative_checks": [
+    "changed_export_rejected_before_removal",
+    "unfinished_run_rejected",
+    "damaged_restore_receipt_rejected_before_writing"
+  ],
+  "reports": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/previous_combined_neural-spacer/results",
+      "files": 2,
+      "bytes": 42127,
+      "receipt_sha256": "f547981c1e39e42b25a243eda77894f2ccc2359055b66fbf33a5c059e9f469a0",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/previous_combined_neural-cup/results",
+      "files": 2,
+      "bytes": 10551,
+      "receipt_sha256": "fb317a3b9f9bfc4f9b415815ea476cf877bdce829133ede58da78bb3f26775cd",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/joint_camera_neural-spacer/results",
+      "files": 2,
+      "bytes": 79904,
+      "receipt_sha256": "bcd359d14bbcf36e1c0143f126c7de3d84c6c075c59b51ee92fa61ad51708857",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/joint_camera_neural-cup/results",
+      "files": 2,
+      "bytes": 9468,
+      "receipt_sha256": "035d25754c93261941a22e92ccbfba519b96313f6ed7f80e5aeacc1539a108fa",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/robust_camera_neural-spacer/results",
+      "files": 2,
+      "bytes": 79900,
+      "receipt_sha256": "660b4f60ccaaffd21797b88178fd10bcda38ebd364c4dd1f105c5dcda0148473",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/robust_camera_neural-cup/results",
+      "files": 2,
+      "bytes": 9468,
+      "receipt_sha256": "7ef79e26cdac5fdf19a2b92b02ea232c225e05e8ba0d7c988c547552df45e130",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/neural_risk-spacer/results",
+      "files": 2,
+      "bytes": 79960,
+      "receipt_sha256": "97c47daae688baf8d6ceb600006d2ee43282f90b7fc37842279ead45e2e50a78",
+      "all_files_actually_restored": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-compact-export-check-v46/neural_risk-cup/results",
+      "files": 2,
+      "bytes": 9528,
+      "receipt_sha256": "548887ab1ea4c29072e5f8cf8f62a16897f2fe5feff1f19c4c850ca7f54484ee",
+      "all_files_actually_restored": true
+    }
+  ],
+  "tool_sha256": "9ecdd362cd0b73521cf30260970cd8678ba30d3763d63ffcf3b0f401b7c0e6a1",
+  "large_agent_grid": {
+    "rows": 576,
+    "files": 289,
+    "bytes": 17711023,
+    "every_export_matches_retained_archive": true,
+    "raw_sha256": "1c2119bc8e4c693aa6229a8b2d43084da29c62c7325e797d52c28821ee58dcb9",
+    "archive_sha256": "f4b212745202533f20c1d169e3db9ce3d5c9dd27aa57867128211f0e9c269186"
+  },
+  "source_pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/recovery/types.py": "e6662e55e5e5ba9793d7938da5a3c74d71fbd6bc44739fb3b8599c6c11fd9a61",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/recovery/__init__.py": "62df3a0438f5963c0080e67235fc1149d5336d75ef64bb76237916d45af9283c",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/tools/compare_neural_experiments.py": "89fe02d3e0a64698f59695f6ae9ef548f0806467c6af1cc71344b1e5826fabfd",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/tools/experiment_provenance.py": "f739e929191f3f661e30e0cb196bd4217be5ceb17c59b0641726df336117af7a",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/tools/result_storage.py": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/tools/audit_neural_experiment.py": "f459f71d9748caf252661e7fc7165f8385fd8e32454998122bd3cd1b9cb411a3",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/recovery/eval/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/audit-tools/recovery/eval/camera_trace.py": "0fa95d2f0665e4202a4deba8c83716a286778e46a45b32b51344fe293cada11a"
+  },
+  "original_input_pins": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-spacer/results/manifest.json": "c99edeb328c44b196af2c0ae90f063df2f091a602b649ae36176012d53a767fe",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-spacer/results/runs.jsonl.gz": "39fa9a1fac13395a236b5174cb5ea6cdd0dd8c775fc95357082140641afc3040",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-spacer/results/runs-storage.json": "eb6e6f43ca1c98f7eda9fa26e635604a44478cd30543943db2d5d96b113a2391",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-spacer/audit/audit.json": "fde16142d23c65a8baf099ae6a46f34bacaf82b1d09dd5e8b1f3b9a8fb08ef13",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-cup/results/manifest.json": "d981eaf88b7f4330dfe98761de8f227e40930fc9c68f1be440732d7a90efe6f6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-cup/results/runs.jsonl.gz": "2e923f2533bc00be1cd8c1b834943c832b531007bab49db8ce28ff8f2659614b",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-cup/results/runs-storage.json": "c6a029c8448edff2f7731f5a59f213679312d3c2a40b18ce02d40ae15fb2b191",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/previous_combined_neural-cup/audit/audit.json": "959d65a8665cbd90463f68013ae2dfaa0d2a702981a41572fbb81b192453ecc2",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-spacer/results/manifest.json": "d42ad982a97256ed2438f2a9824fc432f8c274d67944519745185f121914a367",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-spacer/results/runs.jsonl.gz": "cbda85aa235d6f3ef5bcfc2761c56831dc302dd572fbd326faeb103370b3a742",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-spacer/results/runs-storage.json": "6bfff2ae159a49031e3cb17af77ca53731ab6da3d2107468f46d9d981cbc1eef",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-spacer/audit/audit.json": "54789577f47aece09de9d037175739c61a01272e7c82c1baed0cc690769f22ee",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-cup/results/manifest.json": "06e3c4fa698105ad976c6be721dcee8c89bb9509a7d092207f27740d3ce4c189",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-cup/results/runs.jsonl.gz": "36152526f0cb0fe11b1739d4ec6bc3dba612f94624487e8d6ba98561aa2cb75f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-cup/results/runs-storage.json": "374f1628903d72137c817fc96e4e760a03f35c85247f98b291423c29545c02ec",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/joint_camera_neural-cup/audit/audit.json": "9c89c9f4b5f437114713e0d361dbc12846e91c8cc885ada655daf7c0db64fed8",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-spacer/results/manifest.json": "8e0f45942987bff92931f43aaffea15f10c6798076cc3de11e1de706643d8c88",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-spacer/results/runs.jsonl.gz": "dcf964abbcc3d045be4d7f5dceabea4cbf5a77741731a3c995ddbb2903aea071",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-spacer/results/runs-storage.json": "660e10ea7d460be164fdaa8002b9523525f084b512ca81e36bb24c31bd4823eb",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-spacer/audit/audit.json": "c22f4288ab0e12954cc2593e0a9ee907cc845d444efd6b71b812477ec065750f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-cup/results/manifest.json": "5c96728492c92a3c6395f74301c45035b054a53ff0b6b985f4e55325f7ee7763",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-cup/results/runs.jsonl.gz": "604e1251586ea77fa1db0991d9f404c49164ff6134cadf9232a19750a4c6e624",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-cup/results/runs-storage.json": "c583e2b9ed55a5c6e04501fed97a828876dffebd754bd008297fcf397810e9a4",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/robust_camera_neural-cup/audit/audit.json": "1d261202a822ff2a62b27a57e8a009e68bc5c0bbfa5c1e39961030d2a6279901",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-spacer/results/manifest.json": "5ba8c92039490ef11b38caea234cf2dc77f59e6d172a133c4a37d729bef346d3",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-spacer/results/runs.jsonl.gz": "e312bc0bd1139adc670143fbc2ca90c5cca8bb20f220647cd914e300f395696d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-spacer/results/runs-storage.json": "52e75d210ece9695cfaad1fa9756b7c7b36b206f5616a7ccce96efa7ab0947a7",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-spacer/audit/audit.json": "85b843d2f8943acad3204b7d311d07c9ea2777681d52a6e380ee09984c5348aa",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-cup/results/manifest.json": "8d2ee3cd1960bef3f6c61558372269f7e7b9dd660d30797122cf1d89728738c2",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-cup/results/runs.jsonl.gz": "d4358b1a2bc1dbd49a19d54de857550297419d8f676e008c2d4c801d6f0245e8",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-cup/results/runs-storage.json": "90282a7247667517ccd300e89961341128ebf394e1e9b9e887ff7d2e96d1c7c1",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-packed-evidence-v45/neural_risk-cup/audit/audit.json": "5be79b5cc72185b768f21403f9200a58e94a49045c3c571c46a68691fa1e6e7c"
+  },
+  "storage_bytes_before": 99949764608,
+  "reserved_concurrent_bytes": 26819072,
+  "maximum_artifact_allowance": 2000000,
+  "limitation": "Storage and reconstruction checks only; no simulation is rerun and no fresh case is used. Primary records remain available in their verified lossless representation."
+}

@@ -161,6 +161,11 @@ evidence preserves every restored byte, audit and comparison result exactly.
 The historical follow-up is queued in `neural-recovery:trend-history-v43`;
 eligibility follows the full neural-plus-agent system, with the neural-only
 ablation still evaluated and reported.
+The final 7,200-row command matrix is prepared and passes all 300 argument checks,
+with identical frozen policy settings and model paths. It uses both existing Qwen
+workers and keeps fresh seeds untouched until development and historical gates
+pass, including resolution of every lost passing case. Exact export reconstruction
+and verified compression keep the planned run within the storage budget.
 Fixed averaging and asymmetric camera
 training both fail their geometry gates and are rejected. A learned spatial
 output layer on the frozen camera now passes the complete known 160-layer cup

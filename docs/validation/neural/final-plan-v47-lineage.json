@@ -1,0 +1,252 @@
+{
+  "ignore": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "717170f2e98b4a417b425aeef728fa026e9b5b196128e735b08202040d5c4899",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "scrap": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "aaf348b4b0fac8277e8b35bbf370d3665ac43dfabb9a2f97f9ba8e7815bb6f3b",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "alert": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "c9a89f658f5f68c4bee141c4d02ff28fd8b3877717eb642b31ff5e20cfc3b3c0",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "ours": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "409b342e1f523718b213433df02ee16419c0ab8e1f1b5a8166f04eefb3a4b736",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "measured": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "a0f2d58af85a1d87904eca8db5e928a30949e196161be7e9f9003269d36cb812",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "predictive": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "8e7cdfa1be4bdba085b07bd36b7196970699084afcffe7a97eaab2a72334b847",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "functional": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "ae5a94de092da9b926927bd8db4fdcc15ac11c0da3e579fcb81d97b83ec06b7d",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "guarded": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "76d92adfce62b160322cc8184622a090b69cb220ea03a92d89eb2051e2184e96",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "contour": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "4d342cc0e1c63cbb17a3571b6f81d5b5d3edf94136e9ba267fd11d0045050bb8",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "contour_risk": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "43ab116baf3b04350ae0f3a7f83e61bdb26b1af48e773263dc139cb29d864073",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "neural": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "56557769f57b857e50f013cf9b3c88f7cb4b52c2dd2af5ed463fdab6fcf075cc",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "previous_combined_neural": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "3a5b03f6f5dea053e0def9de476aa30f4dc2e4db226c0cf70d0c842f7af6d550",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "previous_combined_agent": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "452a8467db903affaad3082d7b2f18b75dfe8a85f4c816cd238f9e3c58b2de53",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "Fresh live-worker attestation with identical model assets and inference settings",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "neural_camera": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "dcc8d14f07f0586549898025761f548a4637cdd746e87dd9dc1cad22161f836f",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "previous_classical_camera_neural": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-frozen-test-v1/source",
+    "original_source_sha256": "4ed28f4355b9cc923b727ca90a67cee279e524b10c6764b4d5ec5585a60f49f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9",
+    "source_sha256": "017741744309a3f2f30b3bdb055bf3ff5342693e0983a3a853902b6fb75996d4",
+    "original_configuration_sha256": "2995b3db3838b2297e594f8922d56c8b8757de5961f7f067aa77f7baf218cd33",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/4ed28f4355b9/camera-instrumentation.json"
+  },
+  "analytical_containers_neural": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/source",
+    "original_source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f",
+    "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe",
+    "original_configuration_sha256": "90e0238ed330091f97109745ccbf7c92d94464be49d986f14d9fbaf04bd6204e",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f/camera-instrumentation.json"
+  },
+  "analytical_containers_agent": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-analytical-containers-v22/source",
+    "original_source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f",
+    "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe",
+    "original_configuration_sha256": "d8a3193ef9eafa16524ecffb913e9fc4ac03841e9f5ddde93ea7e92e6b5dde04",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "Fresh live-worker attestation with identical model assets and inference settings",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f/camera-instrumentation.json"
+  },
+  "joint_camera_neural": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/source",
+    "original_source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f",
+    "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe",
+    "original_configuration_sha256": "24e785c28b27a97210e372951eeb543257552fb1633d376b2c38ecafe69b1424",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f/camera-instrumentation.json"
+  },
+  "joint_camera_agent": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/source",
+    "original_source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f",
+    "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe",
+    "original_configuration_sha256": "c4ef8f801c47d839922390ecd9afbc6a54c85decce1352218756c2dcb72e89ee",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "Fresh live-worker attestation with identical model assets and inference settings",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f/camera-instrumentation.json"
+  },
+  "matched_analytical": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-joint-historical-gate-v23/source",
+    "original_source_sha256": "c5ab67763e4fd06d760217af08e29fbc9afb05923e873b4e46dab2353d62c1f3",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f",
+    "source_sha256": "b8a44da8e2109fe8b641d9dc3a61bc0af1225dda37b065f614d4b6e56b9b1cfe",
+    "original_configuration_sha256": "12f24e89a7e9e169b512f6e6c7bb4b0419ac5940b723d3904cc73d7851ba9945",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/c5ab67763e4f/camera-instrumentation.json"
+  },
+  "robust_camera_neural": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/source",
+    "original_source_sha256": "3a194dd002fe610af0e9e106d1f018a6f812efce75cb588f0b8df33f88fa1b7e",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/3a194dd002fe",
+    "source_sha256": "57987569d1f0cceae365365d18129cb24cb5bb9872c5452ae3e56ba9cdd2da9d",
+    "original_configuration_sha256": "d83303969067487e0f102020b31111211b8d919d7b1f4445ca38473be6437322",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/3a194dd002fe/camera-instrumentation.json"
+  },
+  "robust_camera_agent": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-robust-fallback-v32/source",
+    "original_source_sha256": "3a194dd002fe610af0e9e106d1f018a6f812efce75cb588f0b8df33f88fa1b7e",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/3a194dd002fe",
+    "source_sha256": "57987569d1f0cceae365365d18129cb24cb5bb9872c5452ae3e56ba9cdd2da9d",
+    "original_configuration_sha256": "123df2b28932e081b48bca340dcbbdc24228fd9c52a77354ce486826f5428f13",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "Fresh live-worker attestation with identical model assets and inference settings",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/3a194dd002fe/camera-instrumentation.json"
+  },
+  "neural_risk": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/source",
+    "original_source_sha256": "7e854d1a905fe2afbc55afe3ffe66efe57b78802a16b8f6aad6caff11ad51b66",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/7e854d1a905f",
+    "source_sha256": "afb760f317f10c94dc926249636df7648e93cc7ce3d5cca63f3f6b70db9e5e5d",
+    "original_configuration_sha256": "385f2f963f3ae86e6615ddc540d5a039aed8125bd8d4fb78c9d4f035ed7db606",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/7e854d1a905f/camera-instrumentation.json"
+  },
+  "neural_risk_agent": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/source",
+    "original_source_sha256": "7e854d1a905fe2afbc55afe3ffe66efe57b78802a16b8f6aad6caff11ad51b66",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/7e854d1a905f",
+    "source_sha256": "afb760f317f10c94dc926249636df7648e93cc7ce3d5cca63f3f6b70db9e5e5d",
+    "original_configuration_sha256": "c98123b673fa8d1acce965f4c4642d31369de3456f86927ae8311e9e7277ac27",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "Fresh live-worker attestation with identical model assets and inference settings",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/7e854d1a905f/camera-instrumentation.json"
+  },
+  "trend_analytical": {
+    "original_source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-shrinkage-v37/source",
+    "original_source_sha256": "7e854d1a905fe2afbc55afe3ffe66efe57b78802a16b8f6aad6caff11ad51b66",
+    "source_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/7e854d1a905f",
+    "source_sha256": "afb760f317f10c94dc926249636df7648e93cc7ce3d5cca63f3f6b70db9e5e5d",
+    "original_configuration_sha256": "c74108fd6242ebdce1c405684032f404d0bccbc3b223bf5bf92bdeb0a8c7a173",
+    "policy_options_and_model_paths_unchanged": true,
+    "supervisor_changes": "None",
+    "camera_instrumentation_receipt": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fresh-preparation-v42/sources/7e854d1a905f/camera-instrumentation.json"
+  }
+}

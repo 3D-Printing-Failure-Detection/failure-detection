@@ -1,0 +1,56 @@
+{
+  "status": "complete",
+  "created_at": "2026-11-03T07:26:42.360143+00:00",
+  "completed_rows": 576,
+  "removed_duplicate_files": 291,
+  "original_bytes": 8491684,
+  "original_allocated_bytes": 9084928,
+  "all_291_files_actually_restored_byte_identically": true,
+  "primary_results_manifests_audits_unchanged": true,
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-a/results",
+      "rows": 72,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-a/results/runs.jsonl": "00ad57c58e98093407bf46674936db353045256077cddb160f673d99249ef08c",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-a/results/manifest.json": "ed0c7a4e030f24999a5982143710c813ae495261517fa31eba0e85322d646eb8",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-a/audit/audit.json": "af705d81677b9144e027e7141892d0a80f44e6b951b8bd2f6b3a2e91781c4c6e"
+      },
+      "receipt_sha256": "afcc7c5ab11a84fbd3ad7a2860ca08e347096d29c0c872080f681fe926b3f6f4",
+      "files": 73,
+      "original_bytes": 2037344,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-b/results",
+      "rows": 72,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-b/results/runs.jsonl": "297c7798bc894a016df9511dae7c5768b60dd437ff17b9d9c1195b64fc16e166",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-b/results/manifest.json": "5543cf4d819f794d6e2256c7d4a0b983e13a48f161688fbd621b2b0dce441103",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/agent-b/audit/audit.json": "267b7e095c35c93502cdca9c1815d400bec5ec5594016f70949be31a462904a7"
+      },
+      "receipt_sha256": "66b0afe08d2cf3f5c34db1a3cbafec667d113c22764b65796e82d1333178dda0",
+      "files": 73,
+      "original_bytes": 1531138,
+      "all_files_actually_restored_and_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/matrix/results",
+      "rows": 432,
+      "pins": {
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/matrix/results/runs.jsonl": "81d192c01846c37ea70f41a7722234cdd90d6aad8a0c12bd2ac1c52aae052371",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/matrix/results/manifest.json": "18f0d0b2b8a3be4a325af801cfbea1569fdaed402e5d84612157ff478be5254d",
+        "/mnt/data/ishaan/hri-workspace/failure-detection/neural-fit-consumed-grid-v5/matrix/audit/audit.json": "2bd362694b4fdaf16cfe20abfeca2658c07ad7a18bdd2bb30e836569dbd60c3e"
+      },
+      "receipt_sha256": "61de3ca373df18cb432d19b496310954baa4e88c4913aca47278e309c7e6f1a6",
+      "files": 145,
+      "original_bytes": 4923202,
+      "all_files_actually_restored_and_verified": true
+    }
+  ],
+  "tool_sha256": "9ecdd362cd0b73521cf30260970cd8678ba30d3763d63ffcf3b0f401b7c0e6a1",
+  "storage_helper_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+  "storage_before_bytes": 99958112256,
+  "storage_after_bytes": 99949101056,
+  "limitation": "Only exactly reconstructible duplicate case journals and CSV exports of completed, audited runs are removed. Primary JSONL, manifests and audits remain unchanged. Every removed file was actually restored and verified before re-compaction. Other live jobs can change total storage during this operation."
+}

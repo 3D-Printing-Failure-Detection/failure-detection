@@ -1,0 +1,10 @@
+{
+  "full_suite": {
+    "passed": 195,
+    "skipped": 3,
+    "seconds": 28.63
+  },
+  "suite_output_sha256": "57c00c80e9d4c1bb7d1e0b7d4d793034f4e06165a4b425403ec0c422b3e92740",
+  "new_utility_validation": "Real-file reconstruction, actual restoration, full comparison byte equality, and three negative evidence checks; no new print outcome is claimed",
+  "utility_sha256": "9ecdd362cd0b73521cf30260970cd8678ba30d3763d63ffcf3b0f401b7c0e6a1"
+}

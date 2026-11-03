@@ -12,9 +12,11 @@ active recovery baselines' successes are retained, and five ignore successes
 remain lost. The 6,336-row comparison preserves all 20 previous configuration
 summaries. Qwen makes 523 actual calls. Neural-only records 140/240 with one
 defect; the additional loss has an anomalous pre-fault measurement trace before
-any agent decision. A separate repeatability diagnostic is investigating that
-discrepancy, with the original row retained. Historical regression has started;
-agent causality and untouched-test superiority remain unproven.
+any agent decision. The completed repeatability diagnostic does not reproduce
+that discrepancy; its cause remains unresolved and the original row is retained.
+Guarded historical regression passes at 67/100 with zero defects and all 20 clean
+controls. The trend correction passes all 46 targeted runs; its full comparison
+is running. Agent causality and untouched-test superiority remain unproven.
 
 The complete analytical-container/learned-fit policy finishes **136/240
 fault cases**, versus the matched current analytical policy's **133/240**,
@@ -660,6 +662,46 @@ comparison is identical before and after packing. Original evidence remains
 unchanged. No new simulations or fresh cases are run. An initial isolated-tool
 snapshot missed the package's `recovery.types` dependency; that harness failure
 is retained and the corrected snapshot passes the full proof.
+
+`tools/compact_result_exports.py` additionally removes only duplicate journals
+and CSVs that can be regenerated exactly from retained primary rows. Every file
+must match reconstructed bytes before removal; restoration verifies the receipt
+and refuses to overwrite existing files. `compact-export-check-v46` exercises
+this on the ten real rows already stored losslessly, including actual restores.
+The entire before/after comparison is byte-identical. Changed exports, unfinished
+runs and damaged restore receipts are rejected before deletion or restoration.
+All 289 exports from the earlier 576-row guarded grid, including actual Qwen
+records, also reconstruct exactly against their retained archive.
+
+`completed-export-compaction-v8` applies this to three completed fit-grid shards:
+291 duplicate exports containing 8,491,684 bytes (9,084,928 allocated bytes).
+All 291 files are actually restored and verified before re-compaction. Primary
+rows, manifests and audits remain unchanged. A pinned, quota-aware `restore.py`
+is retained with the receipt and utility source. This frees space for the final
+comparison without removing its primary evidence.
+
+`final-plan-v47` prepares 300 commands covering all 25 configurations on the
+reserved 2001–2004 seeds: 240 fault cases and 48 clean controls each, 7,200 rows
+overall. Every actual command is parsed and intercepted before evaluation;
+policy options and model paths match their frozen predecessors. A scan of 156
+prior evaluation manifests and all training/validation groups confirms no seed
+overlap. Five agent configurations use the two existing equivalent Qwen workers;
+three execution lanes would use at most twelve simulation workers. Worker
+attestations change only provenance and endpoint selection, not model assets or
+inference settings. Times would include shared queues and the declared different
+worker counts, so they are operational measurements, not isolated latency tests.
+
+No final runner has been launched or queued. Launch requires complete development
+and historical validation, strict full-system improvement over the required
+baselines, no higher defect count, no lost passing case against any included
+policy, all clean controls passing, and actual neural and accepted agent decisions.
+The neural-only ablation remains visible without being required to tie the best.
+Final acceptance retains these requirements and adds complete paired grids,
+strict camera consistency and counterfactual rescue accounting. Source, model,
+tool and worker identities must be rechecked before execution. The storage plan
+reserves 60 MB for results and 6 MB for existing supervisor-log growth; completed
+shards are audited, their duplicate exports compacted and primary rows packed
+losslessly. Existing development regressions cannot be ignored to spend the holdout.
 
 The completed historical run's 124 duplicate journals/CSV exports are archived
 from 6,384,738 bytes to 424,298 bytes in `completed-report-archive-v7`. Every member

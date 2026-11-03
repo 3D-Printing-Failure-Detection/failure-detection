@@ -1854,4 +1854,19 @@ Every archive member is verified before removing its duplicate. Actual sample
 restores from all four shards pass. Primary raw results, manifests, audits and
 completed comparison files remain unchanged and available.
 
+The export compactor also verifies exact reconstruction from retained primary
+rows. All 291 duplicate files from a completed fit-grid run are actually restored
+and verified before re-compaction, freeing about 9 MB of allocated space. Checks
+on compressed real evidence preserve the entire comparison byte-for-byte and
+reject changed exports, unfinished runs and damaged restoration receipts.
+
+The \texttt{final-plan-v47} matrix prepares 300 commands for all 25 configurations:
+7,200 fresh rows, using both existing Qwen workers and at most twelve simulation
+workers. Every command passes argument checks without executing a case. The
+plan reserves 60 MB for results and 6 MB for supervisor logs. Launch still requires
+strict development improvement, historical regression, all clean controls,
+actual neural and accepted agent decisions, no higher defect count and no lost
+passing case against any included policy. Fresh seeds remain unused; no final
+runner is launched or queued.
+
 \end{document}
