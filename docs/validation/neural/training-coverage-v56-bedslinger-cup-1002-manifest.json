@@ -1,0 +1,57 @@
+{
+  "status": "complete",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "script_sha256": "4a39e8dd225917e47fc397c95ae124b8682012642867adc1fd066d10401f9ccc",
+  "arguments": {
+    "profile": "bedslinger",
+    "part": "cup",
+    "kind": "under_extrusion",
+    "seed": 1002,
+    "checkpoint": [
+      "control=/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/control/boundary.npz",
+      "coverage=/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/candidate/boundary.npz"
+    ],
+    "include_classical_base_hybrids": true,
+    "snapshot_layers": [],
+    "out": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/bedslinger-cup-1002"
+  },
+  "checkpoint_paths": {
+    "control": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/control/boundary.npz",
+    "coverage": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/candidate/boundary.npz"
+  },
+  "checkpoint_sha256": {
+    "control": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54",
+    "coverage": "13559e16ca5222b7d5f77330c1890d035828d931e4a4a728ec0b867d9fd35749"
+  },
+  "hybrid_classical_base_layers": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "hybrid_labels": {
+    "control": "control:classical-base",
+    "coverage": "coverage:classical-base"
+  },
+  "follows_nominal_commands": true,
+  "recovery_actions": 0,
+  "limitation": "diagnostic measurements on a fixed trajectory; not closed-loop recovery evidence",
+  "frames": 160,
+  "layers_printed": 160,
+  "final_source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "checkpoint_queries": {
+    "control": 160,
+    "coverage": 160
+  },
+  "observation_counts": {
+    "classical": 160,
+    "control": 160,
+    "coverage": 160,
+    "control:classical-base": 160,
+    "coverage:classical-base": 160
+  }
+}

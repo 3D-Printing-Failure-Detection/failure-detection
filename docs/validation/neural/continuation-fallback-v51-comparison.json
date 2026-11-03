@@ -1,0 +1,148 @@
+{
+  "status": "passed",
+  "new_rows": 58,
+  "summary": {
+    "neural_risk": {
+      "fault_cases": 15,
+      "fault_successes": 10,
+      "defective_finishes": 1,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "prohibited_defective_finishes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2280,
+      "agent_requests": 0,
+      "passes": true
+    },
+    "neural_risk_agent": {
+      "fault_cases": 15,
+      "fault_successes": 10,
+      "defective_finishes": 1,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "prohibited_defective_finishes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2280,
+      "agent_requests": 60,
+      "passes": true
+    }
+  },
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "camera_consistency": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "checked_rows": 58,
+    "unchecked_legacy_rows": 0,
+    "recorded_frames": 5948,
+    "paired_cases": 25,
+    "compared_frames": 3345
+  },
+  "inputs": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/bedslinger-mug-gain/results",
+      "manifest_sha256": "9aa4b5a6384db48654c9f20a522162815507326454054a1c2b51e431c565dac6",
+      "runs_sha256": "26a42daa22a5e34c0a54172c1f34a74b4e437a6544614004d0533b882759f0e9",
+      "audit_sha256": "ae6fd964950233876f6c88c73b30e22d168844187e17f7f892fc3af65bc0869b"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/candidate-mug-gain/results",
+      "manifest_sha256": "3d9a09d0bf01bb597988dce9afbd8070bc460fea674ca5e109242979203f7bd7",
+      "runs_sha256": "19753e2cd43ffde6756f55753397f2a820e6ed2cb3428bc9ccf58cfb16c211f0",
+      "audit_sha256": "661e890b749911cf6032450951d7af0499b95dd376bba0b255e871d975d60e10"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/candidate-shift-recoveries/results",
+      "manifest_sha256": "eebb3287c4deea85c6813d862324d2ce86d2fb3bf7072481ada3674d1720f43e",
+      "runs_sha256": "068aec63ee3f69452f82b01588d5a1b0e8d700b0b4011e95bec176d0c36c2f10",
+      "audit_sha256": "52bc48bb941f896df5c7aab7235074f601f624994a3e06c64affb1b9c7d41e5b"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/candidate-under-recovery/results",
+      "manifest_sha256": "1bb8d9a99d912df8acd0b7fb7201a1de77e45b3ab60ac203e16868795c3661ad",
+      "runs_sha256": "98c15b766fda5578d83177906a3ee75cf78f7d33c2514e00e77b8e09bf05451b",
+      "audit_sha256": "ea5259b543062e5339ff520ace5a98f99a0166fea89a37a98bee0f5ce42b3b87"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/clean/results",
+      "manifest_sha256": "b1461a25a71b7a54297823ff3a3fd9126176de8c11b0bb8bae252fff8ac8af8b",
+      "runs_sha256": "67c7a8a1b05c8c90d747ce2cde7fdc771ed3fe408e0be3ee40cf3dfa26f0a987",
+      "audit_sha256": "f788c101ce2efe5400c87a88d5920ad68cf0338b795537edd657a4e52c085931"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/control-mug-gain/results",
+      "manifest_sha256": "5f0f0965094444233f2c1e739102f600129b5417a535e1f16cdf003584ab15de",
+      "runs_sha256": "c8ee98ef1ccc9f7273f70f9afba27d721cd2783058ef6205db669c8a0be37c30",
+      "audit_sha256": "b36fc490aa0dd14b1ef04009a6446d7cebc7f09a1294149d19f45f5f4de4e592"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/control-shift-recoveries/results",
+      "manifest_sha256": "85e78aab5bb14952aa7bc4cf4fdc4e66e00da29c8ead6f7a15fb9f6cee37ee43",
+      "runs_sha256": "5498d8675f8ae923cf9b9f68b5191ec97aacce97cfc8bffa1e0a6f37893bea6d",
+      "audit_sha256": "2afa49521e2ed4e5474b105e9f14a66000d15edf73b4997e43689257a928cb11"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/control-under-recovery/results",
+      "manifest_sha256": "78c65b4a27b47f49905697bbc91f1d3c9233c4e498cee023ca27bb19b03d4eba",
+      "runs_sha256": "e5167cbbae57f1c603bfdac79a8d3a556fcea929bb0eab75f4c049a7a77c92c6",
+      "audit_sha256": "348775c27d03fac4f3baea0aa9c0567d2a9eb2aebea60df7345e258aba4c8111"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/corexy-mug-gains/results",
+      "manifest_sha256": "4467dc188a593b5158ae6eb263dd7056779aa89d84d75de64d5bf4186b7b6cf1",
+      "runs_sha256": "6934c09eff73c570fe365c6db3bcefc69cf345503ef51b8186081263102e6c2d",
+      "audit_sha256": "7bfe12503c7daf134fe8ceb73ef2e0482d915ccf3cd9dd6d7af6c8d08512b5a8"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/cup-collapse/results",
+      "manifest_sha256": "54b539ec14ab232c5280c06f33f6ca8b7b95e6485753cd725bca5c37cd7d9527",
+      "runs_sha256": "9b032382c0ff7e1cb84db02c31f693763e2abddae09556dcdb5a0eddc09f0bed",
+      "audit_sha256": "363ffb30f87501b2f0ffe82e7161bbc7fca9b4ca68174fb31b3601261e815965"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/cup-shift/results",
+      "manifest_sha256": "1e7f9e8205b9a76365b4301fc90696573d41b1ec667f23420d6fcb1d40832195",
+      "runs_sha256": "cb65ec4d5d7da8a3ea73703f38a540e61938e762cf5d017bf34faa6d267b89ac",
+      "audit_sha256": "19b6255a2bf79223f429cb9edfed1407f3feade8107c8dab6463cfa901c523e2"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/defects-1004/results",
+      "manifest_sha256": "b3035adaec7d8e95bfedc20642ec1a7d9b3a0f7c7928ca19e1d0f2d0a3a07d98",
+      "runs_sha256": "3d3bd91ebec3745cb4f6e94fb2f212ff2f13574c449254983aef44aca98dccd8",
+      "audit_sha256": "03add49cbfeacfa4d29aac1e47d60b4bf7e08c5cb5cc58c1cc95aff26e7df46a"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/historical-clean/results",
+      "manifest_sha256": "ca4ed6be4b4c37e04b8a70de243f8e5ea8f5eeeb2eceebec08557583166111a0",
+      "runs_sha256": "fa779cb42a09583f6b147ad212b96e8cf33e1d61ee801855771d7499326f1c2c",
+      "audit_sha256": "a02a75e2d954253056027d61455e40a129b7030a8178cd02c751459436a23db7"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/historical-cup/results",
+      "manifest_sha256": "0ca19c6bda17606eadea3a05238c020a86773f9a61d21e8f1649c3e4085ac094",
+      "runs_sha256": "845af39e3e534190a29db42cfb7e9916818b4c7ca2aa0e714511012e766c364e",
+      "audit_sha256": "eb5385ea1349d4a32b94234a7d947c8f926dac685fd3425b24cb5c4e90b5d17e"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/historical-mug/results",
+      "manifest_sha256": "1d1ff058459b0ad92c8f1f60e66a7a7630d771ead50dc99c7253033fab88687d",
+      "runs_sha256": "3cda8351d639e755f9248b224806a545b0ca2888f20e2e62eab89e8ab0932191",
+      "audit_sha256": "934ffe9d9841fd05a817b313cda501a687463f086205758712d41b3332585b8b"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/learned-fit-gains/results",
+      "manifest_sha256": "2217e773d9278d9dab129e2f1c44a280e5f996abf14c684cb31af8b6356af40e",
+      "runs_sha256": "e207e53b8d902ebaee990c946334c1421a5364c14d12000c9f0fc072f07c9dc9",
+      "audit_sha256": "b40ce8d4352da2c0c3e293723837d062e07ca710251a5ea7ca57736709c1bbca"
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-continuation-fallback-v51/new-defects-1002/results",
+      "manifest_sha256": "6c77c7c4b23344824f0dcb173923fed7c5959346009bffb9e499a26fe3ccfeb6",
+      "runs_sha256": "2c722c608b856b1876b4a21962dcc9a08bd8629432e9b53cd27249cf5f9e60f1",
+      "audit_sha256": "475febe7b9586dbed5d95c41d71742f517393a34c330ecd6ae27fcc0c856cec9"
+    }
+  ],
+  "paired_comparison_sha256": "fd075dc9e30d515b6e25133012326acf35a7a3e776ff3f77a30085a3504b1e47",
+  "limitation": "Consumed targeted regression only; passing it does not establish full-grid, historical or untouched superiority. Four known camera failures remain separate. No fresh seeds or automatic broad evaluation."
+}

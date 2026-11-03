@@ -1,0 +1,85 @@
+{
+  "status": "complete",
+  "stage": "retrospective_fixed_checkpoint_audit_not_selection",
+  "source_sha256": "c4bdf280953f8f2589332af4b11af329f734b6668f8e3249e0797e66f9974337",
+  "script_sha256": "b7c48d1ca58c54981df1755c612a9fe0e38d98f20852821813fa9db37e1b8dae",
+  "dataset_sha256": "2f04a6fb66c1465d8a1c6e9115b3ddbfb88365cb5c7014316709617fe41fe4da",
+  "mask_sha256": "cb630f6da9268a0f6853750196c26cf51d6590ee0e5acb934079c013e16970ee",
+  "reference_sha256": "13fc9dd208ae5002d9e00f7c26ffdf66ce4fb251ade2be70168c51ade7780bc9",
+  "checkpoints": {
+    "control": {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/control/boundary.npz",
+      "sha256": "dab5014aa7131b689b7dd2fea4a4bd5104b292a3d8221f2aa80cb27bc6a90f54"
+    },
+    "weighted": {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-critical-pixel-camera-v55/candidate/boundary.npz",
+      "sha256": "c94c6d611fc74659187efea1391140a71c78de1aa630b2fd8d14aa938d060b55"
+    },
+    "coverage": {
+      "path": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/candidate/boundary.npz",
+      "sha256": "13559e16ca5222b7d5f77330c1890d035828d931e4a4a728ec0b867d9fd35749"
+    }
+  },
+  "summary": {
+    "training": {
+      "control": {
+        "critical_positive_pixels": 1648,
+        "critical_correct": 988,
+        "other_positive_pixels": 37486,
+        "other_positive_correct": 35994,
+        "negative_pixels": 120610,
+        "false_positive_pixels": 2816,
+        "critical_recall": 0.5995145631067961
+      },
+      "weighted": {
+        "critical_positive_pixels": 1648,
+        "critical_correct": 1509,
+        "other_positive_pixels": 37486,
+        "other_positive_correct": 35180,
+        "negative_pixels": 120610,
+        "false_positive_pixels": 3386,
+        "critical_recall": 0.9156553398058253
+      },
+      "coverage": {
+        "critical_positive_pixels": 1648,
+        "critical_correct": 742,
+        "other_positive_pixels": 37486,
+        "other_positive_correct": 34249,
+        "negative_pixels": 120610,
+        "false_positive_pixels": 3052,
+        "critical_recall": 0.45024271844660196
+      }
+    },
+    "validation": {
+      "control": {
+        "critical_positive_pixels": 1147,
+        "critical_correct": 404,
+        "other_positive_pixels": 27985,
+        "other_positive_correct": 25562,
+        "negative_pixels": 77364,
+        "false_positive_pixels": 3971,
+        "critical_recall": 0.35222319093286836
+      },
+      "weighted": {
+        "critical_positive_pixels": 1147,
+        "critical_correct": 341,
+        "other_positive_pixels": 27985,
+        "other_positive_correct": 25195,
+        "negative_pixels": 77364,
+        "false_positive_pixels": 3613,
+        "critical_recall": 0.2972972972972973
+      },
+      "coverage": {
+        "critical_positive_pixels": 1147,
+        "critical_correct": 92,
+        "other_positive_pixels": 27985,
+        "other_positive_correct": 25244,
+        "negative_pixels": 77364,
+        "false_positive_pixels": 2035,
+        "critical_recall": 0.08020924149956409
+      }
+    }
+  },
+  "old_control_and_weighted_counts_reproduced_exactly": true,
+  "limitation": "Only the original 65 rare-material tiles; correlated pixel counts do not establish geometric or recovery success. No epoch or model is selected here."
+}

@@ -1,0 +1,41 @@
+{
+  "status": "verified",
+  "complete": false,
+  "frames": 320,
+  "script_sha256": "420b9ee4cb7c7d933ef767d6ebada3615e5a87c85c81b6ec9f47100605308b18",
+  "protocol_sha256": "dbfe1ae8791527f1cfa78ffc43bc6c235b1556eb3fc93db393076029e91a4d98",
+  "records": [
+    {
+      "case": [
+        "cartesian",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "frames": 160,
+      "current": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/cartesian-mug-1003",
+      "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/cartesian-mug-1003",
+      "current_layers_sha256": "79b7d2215872d0d05620df83b16b55725ac1183e0807ba92f9af51ae67b50571",
+      "reference_layers_sha256": "bbd2af1560ff431707cbc5cc7343a265b6d9486e6870eb48762b0440522608fa",
+      "current_final_sha256": "5683df7442c131595bb8b3b2dee4c0a51ddf9b5b783a91757b62c7fed9579bac",
+      "reference_final_sha256": "309b4b33a851108ed6c4911571a4338cad2e5af0a11f9ac9f115780f444c6e15"
+    },
+    {
+      "case": [
+        "corexy",
+        "mug",
+        "under_extrusion",
+        1003
+      ],
+      "frames": 160,
+      "current": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-coverage-weighting-v57/corexy-mug-1003",
+      "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/corexy-mug-1003",
+      "current_layers_sha256": "8c05aa6775b9e4168ed8787ea0460ded2613e4aca4c042b93f744048f62c9dfd",
+      "reference_layers_sha256": "5f53090df76c88e28daf154f71e18109e54b3db66239245d63cf7dcae55e8e75",
+      "current_final_sha256": "c4b433ba66d864f9c1d3ed763ae73215e02f60e6541b58a85682676256c56ef5",
+      "reference_final_sha256": "4cd565046e2a36b270d0ed1cfc969171bb82fa29ef95bcb85f1c5fcfb66dbbed"
+    }
+  ],
+  "scope": "Exact per-layer truth, camera features, IoU, boundary distance, and final verdict/metrics",
+  "limitation": "These diagnostics retain no per-frame RGB hashes or complete measured geometry; neither is claimed to match byte-for-byte."
+}

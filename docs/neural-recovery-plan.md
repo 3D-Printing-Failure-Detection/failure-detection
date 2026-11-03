@@ -640,7 +640,12 @@ each candidate invokes two damped forecast checks and 88 displacement queries.
 Qwen makes 29 candidate requests versus 28 for the controls, with identical
 neural-only outcomes. Controls reproduce earlier actions, results and measurement
 IoU. All 1,135 common camera frames match across the 16 rows. The next 42
-preservation rows are running. This selected result does not establish full-grid,
+preservation rows also **pass**. Each variant retains ten required fault successes
+and all six clean controls, with just the one pre-existing defective finish and
+no lost reference success. Actual inference includes 104,468 temporal queries,
+2,280 boundary queries and 60 Qwen requests for the supervised variant. The full
+58-row audit checks 5,948 recorded frames and matches 3,345 common frames across
+25 cases. The runner exits zero. This selected result does not establish full-grid,
 historical or untouched superiority. Four known camera failures remain unresolved,
 and no broad or fresh comparison launches automatically.
 
@@ -714,6 +719,96 @@ although all four printed geometries pass. The run exits successfully with a
 rejected result; broader validation and recovery are skipped by its gate.
 No recovery gain or model promotion is established. The next training hypothesis should address representative
 thin-material coverage, rather than infer generalization from training recall.
+
+## Broadening training coverage without changing the evaluation
+
+`training-coverage-v56` addresses concentration in the retained labels: 1,538 of
+1,648 thin-positive training pixels (93.3%) come from two trajectories. It uses
+the original fault operator to augment retained clean training deposits with
+eight new training seeds (500–507) and four under-extrusion severities (0.90,
+1.05, 1.15 and 1.30 mm), all within the existing fault range. Both container
+parts and all three camera profiles are rendered. First/last affected frames
+and four command-boundary locations are chosen without model scores. This is
+geometry-based training augmentation, not a new physical rollout or recovery
+result. The physical model, camera resolution, functional specification and
+existing validation/diagnostic cases stay unchanged.
+
+The dataset completes with 64 augmented groups and 1,344 tiles. It contains
+30,090 audited thin-positive pixels; 56 groups have at least 16 such pixels,
+and the two largest groups contribute only 18.3%. Another audit records 42
+groups with actually open-wall frames. All coverage gates pass. Parents belong
+exclusively to the original training split; the original data hash is unchanged.
+The additional arrays and their parent groups are independently verified when
+loaded for training. No geometry, fault identity, severity or outcome becomes
+a network input.
+
+The matched control must reproduce the original three-channel command-camera
+checkpoint exactly. The candidate keeps the same model, initialization, loss,
+40 epochs and 3,720 sampled tiles per epoch. Half its sampling mass goes to the
+original training rows with their existing relative weights; half goes uniformly
+to augmented groups and then their tiles. Validation retains the original 2,040
+tiles and selection objective. This tests coverage rather than extra optimizer
+steps or the failed pixel-weighting objective. The same four full-print gates
+control the 2,040-frame functional validation; no recovery trial or policy
+promotion is automatic.
+
+The source passes 230 repository tests (three optional modules skipped), plus
+38 tests in the Torch environment. The frozen run uses tmux window
+`neural-recovery:training-coverage-v56`, with a 28 MB maximum allowance. Verified
+byte-for-byte restoration and removal of 294 completed duplicate exports
+reclaims 12.6 MB; all 418 primary result rows and their audits remain retained.
+Both training runs complete and the control reproduces `dab5014a` exactly.
+The candidate `13559e16` retains identical initialization and the original
+validation split. Its average boundary error worsens from 0.078765 to 0.085009 mm,
+and near-boundary sign accuracy falls from 78.11% to 77.13%. A fixed-checkpoint
+audit of the original rare-material tiles reproduces the earlier control and
+weighted-model counts exactly. The new model's thin-positive recall is 45.02%
+on training tiles and 8.02% on validation, versus the control's 59.95% and 35.22%.
+False-positive background pixels decrease from 3,971 to 2,035 on those validation
+tiles, indicating a more conservative material prediction, not a functional
+success. All four complete-print diagnostics fail across 640 actual frames.
+Both mugs retain one false leak and approximately 46 mm2 apparent overhang;
+both cups retain two false leaks, with 25 mm2 apparent overhang on Bedslinger.
+All four actual printed geometries pass. The run exits zero with a rejected
+result, and the gate skips broader validation and recovery. There is no promotion.
+Seeds 2001–2004 remain untouched.
+
+`coverage-weighting-v57` completes the paired comparison of data coverage and
+pixel weighting. The original-data/unweighted model, original-data/weighted
+model and augmented-data/unweighted model are all retained. The new candidate
+uses the augmented data with the same 50% critical-pixel loss mass as v55.
+Its matched control must reproduce the unweighted coverage checkpoint exactly.
+Both runs keep the same examples, sampling probabilities, initialization,
+training budget and original validation objective.
+
+The label builder replays all 1,344 augmented targets bitwise and reconstructs
+their audited masks from the pinned clean parents and unchanged fault operator.
+The combined sidecar has 7,104 rows, including 31,738 critical training pixels
+and the unchanged 1,147 critical validation pixels. It binds both datasets by
+hash and preserves every original label. The new control reproduces `13559e16`
+exactly. The weighted candidate finishes as `7cc65d5c`. Its average boundary error
+is 0.093091 mm and sign accuracy 73.46%, both worse than the unweighted coverage
+control. However, the fixed-checkpoint audit now finds 59.11% rare-material
+validation recall (678/1,147), versus the original control's 35.22%, weighting
+alone's 29.73% and coverage alone's 8.02%. Training recall is 95.75%. Validation
+background false positives increase to 4,706 versus the original 3,971. Thus
+broader coverage and weighting together improve this local recall measure while
+trading away other accuracy; a functional benefit is not established. All three
+earlier model audits reproduce exactly. Full-print diagnostics run in
+`neural-recovery:coverage-weighting-v57`.
+The Cartesian mug's complete 160-layer check now passes using learned walls and
+the specified classical bases: no false gap, zero apparent overhang and no
+functional violations. CoreXY also closes the false gap and has zero apparent
+overhang, but retains one false hard-thin layer at onset, so it fails qualification.
+A separate audit exactly reproduces all 320 completed per-layer control features,
+IoU and boundary-distance measurements, as well as the final full-stack verdicts.
+It does not claim byte-identical RGB or measured geometry, which these diagnostic
+records do not retain. Each subsequent full-print diagnostic must also reproduce
+the prior coverage model's final verdict and metrics. The unchanged camera qualification gates still
+apply. The source passes 231 repository tests and 39 Torch and training checks.
+Its 8 MB allowance reserves the concurrent coverage experiment's remaining
+space. Packing 864 completed result rows and actually restoring their bytes
+reclaims a further 10.6 MB without changing any primary result or audit.
 
 ## Preserving historical container rescues
 

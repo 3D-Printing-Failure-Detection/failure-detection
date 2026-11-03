@@ -1,0 +1,73 @@
+{
+  "truth": {
+    "ok": true,
+    "violations": [],
+    "metrics": {
+      "max_overhang_mm2": 0.0,
+      "capacity_mm3": 60956.63448686635,
+      "thin_layers": 0
+    }
+  },
+  "measured": {
+    "classical": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (52 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 51.74795820626258,
+        "capacity_mm3": 61252.912504363514,
+        "thin_layers": 0
+      }
+    },
+    "control": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (46 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)",
+        "base not flat/solid in 1 layers"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 45.69536200667603,
+        "capacity_mm3": 61216.21284640739,
+        "thin_layers": 0
+      }
+    },
+    "combined": {
+      "ok": false,
+      "violations": [
+        "base not flat/solid in 8 layers",
+        "wall far below 1.6 mm in 1 layers"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 0.0,
+        "capacity_mm3": 61602.6629971818,
+        "thin_layers": 1
+      }
+    },
+    "control:classical-base": {
+      "ok": false,
+      "violations": [
+        "layer not supported by layer below (46 mm2 overhang)",
+        "walls not closed in 1 layers (leaks)"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 45.69536200667603,
+        "capacity_mm3": 61216.21284640739,
+        "thin_layers": 0
+      }
+    },
+    "combined:classical-base": {
+      "ok": false,
+      "violations": [
+        "wall far below 1.6 mm in 1 layers"
+      ],
+      "metrics": {
+        "max_overhang_mm2": 0.0,
+        "capacity_mm3": 61602.6629971818,
+        "thin_layers": 1
+      }
+    }
+  }
+}

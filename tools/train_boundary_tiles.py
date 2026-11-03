@@ -176,6 +176,10 @@ def main():
                         help='verified thin-material labels used only to weight training losses')
     parser.add_argument('--critical-pixel-mass', type=float,
                         help='fraction of expected training loss weight assigned to audited thin material')
+    parser.add_argument('--extra-training-data', type=Path,
+                        help='verified training-only augmentations; original validation remains unchanged')
+    parser.add_argument('--extra-training-fraction', type=float,
+                        help='sampling mass for extra examples; retains the original samples per epoch')
     parser.add_argument('--inference-dtype', choices=['float32', 'float64'], default='float32',
                         help='exported accumulation precision; training and stored weights remain float32')
     args = parser.parse_args()
@@ -193,6 +197,10 @@ def main():
         parser.error('sampling audit and critical tile fraction must be supplied together')
     if (args.critical_material_labels is None) != (args.critical_pixel_mass is None):
         parser.error('critical material labels and pixel mass must be supplied together')
+    if (args.extra_training_data is None) != (args.extra_training_fraction is None):
+        parser.error('extra training data and fraction must be supplied together')
+    if args.extra_training_data and (not args.include_expected_mask or args.previous_command_masks):
+        parser.error('extra training requires the current command mask without previous-command sidecars')
     if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
         parser.error('model artifacts must stay on the data volume')
     if args.out.exists():
@@ -245,6 +253,13 @@ def main():
             method='training-only weighted sampling with replacement; same samples per epoch',
             validation='unchanged full validation set and selection objective',
             inputs='unchanged observed images; thin labels affect training frequency only')
+    samples_per_epoch = int((~split).sum())
+    extra_training = None
+    if args.extra_training_data:
+        from tools.boundary_training_augmentation import load_extra_training
+        x, y, split, groups, sampling, extra_training = load_extra_training(
+            args.extra_training_data, x, y, split, groups, data_sha256,
+            sampling, args.extra_training_fraction)
     args.out.mkdir(parents=True)
     checkpoint = args.out/'boundary.npz'
     started = time.time()
@@ -259,7 +274,8 @@ def main():
     critical_masks, critical_training = None, None
     if args.critical_material_labels:
         from tools.boundary_critical_material import load_critical_material, critical_loss_factors
-        masks = load_critical_material(args.critical_material_labels, groups, split, y, data_sha256)
+        masks = load_critical_material(args.critical_material_labels, groups, split, y, data_sha256,
+            extra_data_sha256=extra_training['sha256'] if extra_training else None)
         factors = critical_loss_factors(y, masks, split, sampling, args.critical_pixel_mass)
         critical_masks = torch.from_numpy(masks)
         critical_training = dict(**factors, path=str(args.critical_material_labels.resolve()),
@@ -315,7 +331,7 @@ def main():
     for epoch in range(args.epochs):
         model.train()
         order = (rng.permutation(train_indices) if sampling is None else
-                 rng.choice(train_indices, size=len(train_indices), replace=True, p=sampling))
+                 rng.choice(train_indices, size=samples_per_epoch, replace=True, p=sampling))
         total = 0.
         for offset in range(0, len(order), args.batch_size):
             indices = order[offset:offset+args.batch_size]
@@ -327,7 +343,7 @@ def main():
             optimizer.step()
             total += float(loss.detach())*len(indices)
         model.eval()
-        row = dict(epoch=epoch+1, train_loss=total/len(train_indices), **evaluate())
+        row = dict(epoch=epoch+1, train_loss=total/len(order), **evaluate())
         history.append(row)
         if row['validation_selection_score'] < best:
             best = row['validation_selection_score']
@@ -348,6 +364,8 @@ def main():
         assert hashlib.sha256(args.previous_command_masks.read_bytes()).hexdigest() == command_history['sha256']
     if critical_training:
         assert hashlib.sha256(args.critical_material_labels.read_bytes()).hexdigest() == critical_training['sha256']
+    if extra_training:
+        assert hashlib.sha256(args.extra_training_data.read_bytes()).hexdigest() == extra_training['sha256']
     manifest = dict(status='complete', architecture=f'{frames} observed images' +
         (' plus commanded mask' if args.include_expected_mask else '') +
         (' plus preceding commanded mask' if args.previous_command_masks else '') +
@@ -361,6 +379,7 @@ def main():
         train_rows=len(train_indices), validation_rows=len(val_indices), device='cpu', torch=torch.__version__,
         seconds=time.time()-started, data_sha256=data_sha256, sampling=sampling_metadata,
         critical_material_training=critical_training,
+        extra_training=extra_training, samples_per_epoch=samples_per_epoch,
         checkpoint_sha256=exported.sha256, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         initialization_sha256=hashlib.sha256(initial_arrays).hexdigest(), history=history, **verification,
         selection_metric='optionally asymmetric weighted smooth-L1 plus native distance-gradient and equal-weight Dice/clDice losses',

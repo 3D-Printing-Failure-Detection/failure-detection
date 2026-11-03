@@ -1,0 +1,26 @@
+{
+  "status": "verified",
+  "created_at": "2026-11-03T09:43:49.062727+00:00",
+  "tool_sha256": "b2a7bc068a53c6340e90e820c6e7edae8af1adaa0212575a498aa6960695e610",
+  "rows": 864,
+  "reclaimed_allocated_bytes": 10608640,
+  "records": [
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/analytical/results",
+      "rows": 288,
+      "receipt_sha256": "ddeb3c540f53598f8eeeab0007563e33dca0489364ff1110ceed77b480511466",
+      "primary_sha256": "f3e9826d1c962fae5b9ea6a8df81e07e915de6354c93ec1e7027889b11a5ba90",
+      "reclaimed_allocated_bytes": 2240512,
+      "actual_disk_restore_verified": true
+    },
+    {
+      "directory": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-trend-full-v38/neural/results",
+      "rows": 576,
+      "receipt_sha256": "9c39bea35b0d0874c6d3ca21200f248d2d2f28e94d7fd609e825ba660f69b76f",
+      "primary_sha256": "fd5296bb1e7e7d04955a48c3efc400570de279257da4a149d4e9b1ff9918152e",
+      "reclaimed_allocated_bytes": 8368128,
+      "actual_disk_restore_verified": true
+    }
+  ],
+  "preservation": "Decoded primary bytes, manifests, audit hashes and existing comparisons remain unchanged; the receipt documents exact restoration."
+}

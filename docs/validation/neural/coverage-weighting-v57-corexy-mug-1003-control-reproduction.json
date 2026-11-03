@@ -1,0 +1,6 @@
+{
+  "status": "verified",
+  "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/corexy-mug-1003/final.json",
+  "reference_sha256": "4cd565046e2a36b270d0ed1cfc969171bb82fa29ef95bcb85f1c5fcfb66dbbed",
+  "current_final_sha256": "c4b433ba66d864f9c1d3ed763ae73215e02f60e6541b58a85682676256c56ef5"
+}

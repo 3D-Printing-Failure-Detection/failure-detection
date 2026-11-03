@@ -177,8 +177,10 @@ plans. Only when all original choices fail does it test unchanged continuation
 with damped trends, requiring both camera histories to pass the full spec.
 All 16 paired runs pass: both variants preserve the three historical mug
 recoveries with unchanged actions and add the usable mug completion. The next
-42 preservation runs are underway. Fit forecasts and the physical specification
-remain unchanged; no broader success-rate improvement is established yet.
+42 preservation runs also pass: both variants retain ten required fault successes
+and six clean controls, with no additional defects. All 3,345 common camera frames
+match across the 58 runs. Fit forecasts and the physical specification remain
+unchanged; no broader success-rate improvement is established yet.
 The final 7,200-row command matrix is prepared and passes all 300 argument checks,
 with identical frozen policy settings and model paths. It uses both existing Qwen
 workers and keeps fresh seeds untouched until development and historical gates
@@ -236,6 +238,23 @@ on validation tiles despite improving on training tiles. All four complete-print
 diagnostics fail across 640 frames: both mugs retain false leaks and both cups
 retain false hard-thin layers. The source passes 221 tests plus
 29 tests covering Torch export, refinement and labels. No recovery gain is established.
+A subsequent training augmentation varies fault locations and severities on
+retained clean training deposits while preserving the camera and fault model.
+Its 1,344 extra tiles contain 30,090 thin-material pixels across 64 groups; the
+two largest groups supply 18.3%, versus 93.3% in the original rare-pixel labels.
+The original validation set and number of training samples per epoch stay fixed.
+Both models finish training and the control reproduces exactly. The candidate's
+boundary error and rare-pixel validation recall worsen; all four full-print
+diagnostics also fail across 640 frames. The updated source passes 230 repository tests and 38 Torch
+and training checks; no recovery improvement is established.
+The next paired candidate combines those same augmented examples with the
+earlier thin-pixel loss weighting. All added targets and labels reproduce
+exactly, and its unweighted control reproduces the coverage checkpoint. Training
+finishes with rare-pixel validation recall at 59.1%, versus the original 35.2%,
+but more false-positive material and worse average error. The complete Cartesian
+mug check now passes; CoreXY closes its false gap but retains one false hard-thin
+layer. Diagnostics continue in tmux; the qualification gates remain unchanged.
+The latest implementation passes 231 repository tests and 39 Torch/training checks.
 
 ## The idea in physical terms
 

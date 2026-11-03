@@ -31,10 +31,13 @@ def critical_material(region, nominal, origin, target, radius=.15):
     return ((thin[0] & (1-thin[1]))[pad:-pad, pad:-pad].astype(bool) & (target > 0))
 
 
-def load_critical_material(path, groups, validation, target, data_sha256):
+def load_critical_material(path, groups, validation, target, data_sha256, *, extra_data_sha256=None):
     with np.load(path, allow_pickle=False) as data:
         if str(data['parent_data_sha256']) != data_sha256:
             raise ValueError('critical labels refer to a different dataset')
+        recorded_extra = str(data['extra_data_sha256']) if 'extra_data_sha256' in data else None
+        if recorded_extra != extra_data_sha256:
+            raise ValueError('critical labels refer to different extra training data')
         if not np.array_equal(data['group'], groups) or not np.array_equal(data['validation'], validation):
             raise ValueError('critical label row order or trajectory split differs')
         masks = data['critical_material']

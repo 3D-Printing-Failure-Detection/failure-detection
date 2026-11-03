@@ -1,0 +1,6 @@
+{
+  "status": "verified",
+  "reference": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-training-coverage-v56/cartesian-mug-1003/final.json",
+  "reference_sha256": "309b4b33a851108ed6c4911571a4338cad2e5af0a11f9ac9f115780f444c6e15",
+  "current_final_sha256": "5683df7442c131595bb8b3b2dee4c0a51ddf9b5b783a91757b62c7fed9579bac"
+}

@@ -1,0 +1,7 @@
+{
+  "critical_positive_pixels": 30090,
+  "groups_with_at_least_16_critical_pixels": 56,
+  "top_two_group_fraction": 0.18325024925224326,
+  "groups_with_true_open_frames": 42,
+  "rows": 1344
+}
