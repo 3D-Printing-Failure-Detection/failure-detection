@@ -47,6 +47,8 @@ def main():
                         help='share one distance decoder across native subpixel XY queries')
     parser.add_argument('--select-input-scales', type=int, nargs='+', choices=[1, 2, 4],
                         help='train a matched ablation using a subset of the saved camera inputs')
+    parser.add_argument('--select-input-frames', type=int, choices=[1, 2],
+                        help='retain only current images or both current and preceding images')
     parser.add_argument('--occupancy-loss-weight', type=float, default=0.,
                         help='auxiliary material/background classification loss; zero retains distance-only training')
     parser.add_argument('--occupancy-temperature-mm', type=float, default=.1,
@@ -69,6 +71,9 @@ def main():
         x, y, split, group = [data[k] for k in ('x', 'y', 'validation', 'group')]
         output_upsample = int(data['output_upsample']) if 'output_upsample' in data else 1
         input_scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
+        input_frames = int(data['input_frames']) if 'input_frames' in data else 1
+    if input_frames not in (1, 2):
+        raise ValueError('invalid dataset frame count')
     sources = [dict(path=str(args.data.resolve()), sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(), rows=len(x))]
     seen_groups = set(group.tolist())
     for path in args.extra_data:
@@ -76,8 +81,9 @@ def main():
             xx, yy, ss, gg = [data[k] for k in ('x', 'y', 'validation', 'group')]
             scale = int(data['output_upsample']) if 'output_upsample' in data else 1
             scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
+            frames = int(data['input_frames']) if 'input_frames' in data else 1
         if (scale != output_upsample or scales != input_scales
-                or xx.shape[1:] != x.shape[1:] or yy.shape[1:] != y.shape[1:]):
+                or frames != input_frames or xx.shape[1:] != x.shape[1:] or yy.shape[1:] != y.shape[1:]):
             raise ValueError('additional dataset has incompatible camera inputs or output targets')
         if seen_groups & set(gg.tolist()):
             raise ValueError('additional dataset repeats an existing trajectory')
@@ -85,20 +91,27 @@ def main():
         x, y, split, group = [np.concatenate([a, b]) for a, b in zip((x, y, split, group), (xx, yy, ss, gg))]
         sources.append(dict(path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest(), rows=len(xx)))
     dataset_input_scales = input_scales
+    dataset_input_frames = input_frames
     if args.select_input_scales is not None:
         selected = validate_input_scales(args.select_input_scales)
         if not set(selected).issubset(input_scales):
             parser.error('selected input scales must exist in every dataset')
-        columns = np.concatenate([np.arange(PATCH_SIZE**2) + input_scales.index(s)*PATCH_SIZE**2
-                                  for s in selected])
+        columns = np.concatenate([np.arange(PATCH_SIZE**2)
+                                  + (frame*len(input_scales) + input_scales.index(s))*PATCH_SIZE**2
+                                  for frame in range(input_frames) for s in selected])
         x = x[:, columns]
         input_scales = selected
+    if args.select_input_frames is not None:
+        if args.select_input_frames > input_frames:
+            parser.error('selected frame count exceeds the saved camera inputs')
+        input_frames = args.select_input_frames
+        x = x[:, :input_frames*len(input_scales)*PATCH_SIZE**2]
     if output_upsample > 1 and args.augment_dihedral and not args.query_conditioned:
         parser.error('native D4 augmentation requires a query-conditioned decoder')
     if args.query_conditioned and output_upsample == 1:
         parser.error('--query-conditioned requires native subpixel targets')
     y = y.reshape(len(x), -1)
-    input_width = PATCH_SIZE**2 * len(input_scales)
+    input_width = PATCH_SIZE**2 * len(input_scales) * input_frames
     if x.ndim != 2 or x.shape[1] != input_width:
         raise ValueError('boundary inputs do not match the declared context scales')
     if y.shape[1] != output_upsample**2:
@@ -116,7 +129,7 @@ def main():
              nn.Sequential(nn.Linear(input_width, h1), nn.ReLU(), nn.Linear(h1, h2), nn.ReLU(),
                            nn.Linear(h2, output_upsample**2)))
     permutations, transformed_queries = dihedral_transforms(
-        PATCH_SIZE, len(input_scales), subpixel_offsets(output_upsample))
+        PATCH_SIZE, len(input_scales) * input_frames, subpixel_offsets(output_upsample))
     transforms = torch.from_numpy(permutations)
     transformed_queries = torch.from_numpy(transformed_queries)
     optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
@@ -183,6 +196,8 @@ def main():
             best = score
             arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(output_upsample),
                           input_scales=np.array(input_scales))
+            if input_frames > 1:
+                arrays['input_frames'] = np.array(input_frames)
             if args.distance_quantile is not None:
                 arrays['distance_quantile'] = np.array(args.distance_quantile)
             if args.occupancy_loss_weight:
@@ -214,6 +229,7 @@ def main():
     manifest = dict(architecture=f'9x9 grayscale patch -> {h1} ReLU -> {h2} ReLU -> {output_upsample**2} tanh distances',
         output_upsample=output_upsample,
         input_scales=list(input_scales), input_width=input_width,
+        input_frames=input_frames, dataset_input_frames=dataset_input_frames,
         dataset_input_scales=list(dataset_input_scales),
         subpixel_decoder='shared XY-conditioned distance' if args.query_conditioned else 'independent distance heads',
         distance_quantile=args.distance_quantile,
@@ -242,6 +258,8 @@ def main():
     if len(input_scales) > 1:
         manifest['architecture'] = manifest['architecture'].replace('9x9 grayscale patch',
             f'9x9 grayscale patches at strides {input_scales}')
+    if input_frames > 1:
+        manifest['architecture'] = f'{input_frames} observed images, current then previous: ' + manifest['architecture']
     (args.out / 'training.json').write_text(json.dumps(manifest, indent=2))
     print('Exported', checkpoint, 'boundary MAE mm', error, flush=True)
 

@@ -1,7 +1,8 @@
 """Learned local signed-distance segmentation at the camera's full resolution.
 
-The small network consumes only grayscale camera patches. NumPy/OpenCV inference
-uses exported trained weights, with no Torch or simulator access at runtime.
+The small network consumes grayscale camera patches, optionally including the
+preceding observed image. NumPy/OpenCV inference uses exported trained weights,
+with no Torch or simulator access at runtime.
 """
 import hashlib
 from pathlib import Path
@@ -59,11 +60,14 @@ class BoundarySegmenter:
             self.distance_quantile = float(data['distance_quantile']) if 'distance_quantile' in data else None
             self.query_weights = data['query_weights'] if 'query_weights' in data else None
             self.input_scales = validate_input_scales(data['input_scales'] if 'input_scales' in data else (1,))
+            self.input_frames = int(data['input_frames']) if 'input_frames' in data else 1
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
+        if self.input_frames not in (1, 2):
+            raise ValueError('boundary input frames must be one or two')
         if self.distance_quantile is not None and not 0 < self.distance_quantile < 1:
             raise ValueError('invalid boundary distance quantile')
         subpixel_offsets(self.output_upsample)
-        width = PATCH_SIZE ** 2 * len(self.input_scales)
+        width = PATCH_SIZE ** 2 * len(self.input_scales) * self.input_frames
         for w, b in self.weights:
             if w.ndim != 2 or w.shape[1] != width or b.shape != (len(w),):
                 raise ValueError('invalid boundary network shape')
@@ -80,7 +84,15 @@ class BoundarySegmenter:
             raise ValueError('invalid boundary output or upsample factor')
         self.upsample = upsample
         self._sampling_grid = None
+        self._previous_gray = None
         self.queries = 0
+
+    def reset_history(self):
+        self._previous_gray = None
+
+    def prime_history(self, previous_image):
+        """Supply the actual preceding camera frame for a nonsequential replay."""
+        self._previous_gray = normalized_gray(previous_image)
 
     def _distance_outputs(self, hidden):
         weights, bias = self.weights[1]
@@ -103,16 +115,24 @@ class BoundarySegmenter:
 
     def signed_distance(self, image):
         gray = normalized_gray(image)
+        frames = [gray]
+        if self.input_frames == 2:
+            previous = gray if self._previous_gray is None else self._previous_gray
+            if previous.shape != gray.shape:
+                raise ValueError('previous camera frame has a different shape; reset the history')
+            frames.append(previous)
         weights, bias = self.weights[0]
         channels = []
-        for kernels, offset in zip(weights.reshape(len(weights), len(self.input_scales), PATCH_SIZE, PATCH_SIZE), bias):
+        for kernels, offset in zip(weights.reshape(len(weights), self.input_frames,
+                                                   len(self.input_scales), PATCH_SIZE, PATCH_SIZE), bias):
             channel = np.full_like(gray, offset)
-            for kernel, scale in zip(kernels, self.input_scales):
-                if scale > 1:
-                    sparse = np.zeros(((PATCH_SIZE-1)*scale+1,)*2, dtype='float32')
-                    sparse[::scale, ::scale] = kernel
-                    kernel = sparse
-                channel += cv2.filter2D(gray, cv2.CV_32F, kernel, borderType=cv2.BORDER_REFLECT_101)
+            for frame, frame_kernels in zip(frames, kernels):
+                for kernel, scale in zip(frame_kernels, self.input_scales):
+                    if scale > 1:
+                        sparse = np.zeros(((PATCH_SIZE-1)*scale+1,)*2, dtype='float32')
+                        sparse[::scale, ::scale] = kernel
+                        kernel = sparse
+                    channel += cv2.filter2D(frame, cv2.CV_32F, kernel, borderType=cv2.BORDER_REFLECT_101)
             channels.append(channel)
         hidden = np.stack(channels, axis=-1)
         hidden = np.maximum(hidden, 0)
@@ -128,6 +148,8 @@ class BoundarySegmenter:
     def measure(self, image, expected_mask=None):
         self.queries += 1
         distance = self.signed_distance(image)
+        if self.input_frames == 2:
+            self._previous_gray = normalized_gray(image)
         if self.upsample > self.output_upsample:
             factor = self.upsample // self.output_upsample
             height, width = distance.shape

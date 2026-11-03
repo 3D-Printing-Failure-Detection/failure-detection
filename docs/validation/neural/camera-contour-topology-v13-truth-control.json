@@ -1,0 +1,22 @@
+{
+  "input": "/mnt/data/ishaan/hri-workspace/failure-detection/neural-native-camera-v4/cup-under-extrusion-1002/geometry-085.json",
+  "input_sha256": "3383cafac04a7525f5db0d72b56823f5faa65cc179251264475358e3f04643e6",
+  "method": "shapely.contains_xy on exact runtime native pixel coordinates, then scipy.ndimage.label on complement",
+  "native_shape": [
+    2048,
+    2048
+  ],
+  "models": {
+    "true_geometry": {
+      "background_4_connected": {
+        "center_reaches_exterior": false,
+        "largest_cavity_mm2": 1704.49609375
+      },
+      "background_8_connected": {
+        "center_reaches_exterior": false,
+        "largest_cavity_mm2": 1704.49609375
+      }
+    }
+  },
+  "script_sha256": "dca64cf1b8cd12914581d7dd6d42db0074aa240d5589943870a43558f7328e2c"
+}

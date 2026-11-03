@@ -84,9 +84,15 @@ scores 78/120 for both neural variants versus 76/120 for analytical preventive
 recovery, with no defective finishes and all 24 clean controls passed. It still
 loses one analytical success, so it fails the preservation requirement. Qwen
 makes 158 actual requests but adds no successes over the neural policy alone.
-The new opt-in `--neural-hole-envelope` proposal restores that lost bracket in a
-completed simulation with and without Qwen; its broader regression is still running.
-Camera regressions remain unresolved. New untouched seeds are reserved for another final test; these
+The new opt-in `--neural-hole-envelope` proposal restores that lost bracket and
+completes the full fit grid at **79/120** with and without Qwen, versus analytical
+preventive recovery's **76/120**. It preserves every analytical and previous-neural
+success, with zero defective finishes and all 24 clean controls passed. Qwen makes
+161 actual requests and ties neural-only outcomes. Historical and validation fit
+checks also preserve the previous best results (33/50 and 13/20).
+Camera regressions remain unresolved: a two-image network improves boundary error
+but still invents two wall gaps. A matched dense-connectivity training experiment
+is running. New untouched seeds are reserved for another final test; these
 policies remain opt-in.
 The experiment records real model calls, failed attempts and neural-only
 ablations. It does not count an agent response or lower prediction error as a

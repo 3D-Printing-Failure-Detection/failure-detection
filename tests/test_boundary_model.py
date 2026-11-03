@@ -59,6 +59,47 @@ def test_invalid_boundary_weights_rejected(tmp_path):
         BoundarySegmenter(checkpoint(tmp_path/'bad.npz', weights))
 
 
+def test_two_frame_inference_matches_observed_patches_at_both_scales(tmp_path):
+    rng = np.random.default_rng(19)
+    weights = [(rng.normal(0, .05, (outputs, inputs)).astype('float32'),
+                rng.normal(0, .02, outputs).astype('float32'))
+               for inputs, outputs in ((324, 8), (8, 4), (4, 16))]
+    model = BoundarySegmenter(checkpoint(tmp_path/'temporal-camera.npz', weights,
+        input_frames=np.array(2), input_scales=np.array([1, 4]), output_upsample=np.array(4)))
+    previous = rng.integers(0, 255, (24, 32, 3), dtype='uint8')
+    current = rng.integers(0, 255, (24, 32, 3), dtype='uint8')
+    yy, xx = np.mgrid[:24, :32]
+    pixels = np.column_stack([xx.ravel(), yy.ravel()])
+    patches = np.concatenate([camera_patches(normalized_gray(image), pixels, (1, 4))
+                              for image in (current, previous)], axis=1)
+    model.prime_history(previous)
+    expected = model.predict_patches(patches).reshape(24, 32, 4, 4).transpose(0, 2, 1, 3).reshape(96, 128)
+    assert np.allclose(model.signed_distance(current), expected, atol=1e-6)
+
+
+def test_camera_history_uses_only_the_preceding_observation_and_resets(tmp_path):
+    first = np.zeros((1, 162), dtype='float32')
+    first[0, 81+40] = 1.  # Only the previous image's centre pixel matters.
+    weights = [(first, np.zeros(1, dtype='float32')),
+               (np.ones((1, 1), dtype='float32'), np.zeros(1, dtype='float32')),
+               (np.ones((1, 1), dtype='float32'), np.array([-.5], dtype='float32'))]
+    model = BoundarySegmenter(checkpoint(tmp_path/'history.npz', weights, input_frames=np.array(2)))
+    bright, dark = np.full((24, 32), 255, dtype='uint8'), np.zeros((24, 32), dtype='uint8')
+    assert np.all(model.signed_distance(bright) > 0)  # Cold start duplicates current pixels.
+    model.measure(bright)
+    assert np.all(model.signed_distance(dark) > 0)  # Read-only inference must not advance history.
+    assert np.all(model.signed_distance(dark) > 0)
+    model.measure(dark)
+    assert np.all(model.signed_distance(bright) < 0)
+    assert model.queries == 2
+    with pytest.raises(ValueError, match='different shape'):
+        model.signed_distance(np.zeros((12, 12), dtype='uint8'))
+    model.reset_history()
+    assert np.all(model.signed_distance(bright) > 0)
+    with pytest.raises(ValueError, match='input frames'):
+        BoundarySegmenter(checkpoint(tmp_path/'bad-frames.npz', weights, input_frames=np.array(3)))
+
+
 def test_native_outputs_represent_material_between_negative_pixel_centres(tmp_path):
     # A vertical strip occupies x=0.125 mm within each camera pixel. Sampling
     # only the original centres (x=0, 0.25, ...) would erase it entirely.

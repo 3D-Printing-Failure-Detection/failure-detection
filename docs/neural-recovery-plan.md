@@ -122,7 +122,49 @@ descriptive fields; the separately recorded metadata correction identifies them
 and the correct trainer hash. Frozen commands, data, source and outcomes were
 unchanged; the original protocol remains available beside that correction.
 
-The current source passes 136 tests, with one optional module skipped. Long runs
+The `temporal-camera-v12` experiment adds the immediate preceding camera image
+to the current fine patch. The first layer duplicates the current image; later
+layers retain the preceding observed image. No nominal geometry, injected fault,
+simulator truth or future image enters the network. Legacy checkpoints still use
+one image. Offline validation explicitly supplies the immediate predecessor,
+because its selected frames are not necessarily consecutive.
+
+A three-trajectory replay check covers 165 current frames and 156 preceding
+frames across all three views. Every current input and target is exactly equal
+to the retained dataset; cold starts duplicate current pixels. The full study
+reuses the 66 training and 36 validation trajectories and verifies the same
+equality across all 86,400 patches. Its current-only control exactly reproduces
+every earlier fine-only checkpoint array. Both models completed 160 epochs.
+Boundary MAE improves from 0.06493 to 0.06174 mm, and near-boundary sign accuracy
+from 82.09% to 82.64%. The full-stack diagnostic still reports both false wall
+gaps and one false hard-thin layer, despite removing the false support violation.
+Recovery and broad geometry validation were skipped under the predeclared gate;
+the temporal checkpoint is rejected.
+
+The [raw-mask diagnostic](validation/neural/camera-contour-topology-diagnostic-v13.json)
+finds that the centre air region already reaches the exterior in both models'
+native pixel masks, under both 4- and 8-neighbor background connectivity. These
+gaps precede contour conversion. Its separate provenance record identifies the
+actual current/previous images and the retrospective diagnostic procedure.
+Sampling the true deposited geometry at those exact native coordinates preserves
+the closed wall under both connectivity definitions (enclosed cavity 1704.50 mm²),
+so this frame's output grid is capable of representing the missing connection.
+
+The [dense-topology study](validation/neural/dense-topology-camera-v13-protocol.json)
+therefore tests adjacent image tiles with an auxiliary soft-Dice/soft-clDice loss,
+following [Shit et al., CVPR 2021](https://arxiv.org/abs/2003.07311). Both variants
+use the same two-image runtime network, initialization, data, split and 40-epoch
+schedule. The control uses distance loss alone. One 24-by-24 input tile per
+selected frame supplies a 64-by-64 distance target at the runtime's native pixel
+positions. The fixed auxiliary weight is 0.1, with equal Dice/clDice contributions,
+20 soft-skeleton iterations and a 0.1 mm distance-to-logit scale. Homogeneous tiles
+omit clDice. Truth supplies training labels and sampling locations only. No runtime
+gap filling or changed functional thresholds are introduced. The experiment is
+running in tmux; whole-image and recovery gains remain unproven.
+
+The current source passes 139 tests, with two optional modules skipped. Three
+focused checks also pass in the Torch environment, including dense-to-OpenCV
+export parity and penalties for missing walls and invented bridges. Long runs
 remain in tmux session `neural-recovery`; attach with
 `tmux attach -t neural-recovery`. Full evidence stays on the data volume, with
 compact manifests and completed audits under `docs/validation/neural`.
@@ -464,14 +506,27 @@ fit-bound comparison. It requires `--neural-joint-forecast` and remains off by
 default. Candidate-only diagnostics reject simple mixed inverses, but the shared
 hole proposal improves the limiting bound to +0.047 mm on the lost bracket.
 
-The frozen `hole-envelope-fit-dev-v9` protocol begins with 51 runs: that bracket,
+The frozen `hole-envelope-fit-dev-v9` protocol completes its 51-run gate: that bracket,
 earlier spacer and bracket regressions, three historical gains, a validation gain
 and clean controls, with actual Qwen. The lost CoreXY bracket now completes with
 one adaptation for both neural variants, matching analytical preventive recovery.
-The remaining gate is running. Only if every selected neural/Qwen case passes
-will it launch 288 broader runs and compare them to the actual earlier source
-and the strongest analytical baselines on the full consumed fit grid. No fresh
-test seeds are used and this diagnostic success is not a final acceptance result.
+Both neural variants pass all 11 selected failures and six clean controls, with
+no defective finishes and 38 actual Qwen requests. The broader neural-only grid
+also completes: 79/120 failures versus analytical preventive recovery's 76/120
+and the actual preceding neural implementation's 78/120. There are no lost
+successes, no defective finishes, and all 24 clean controls pass. The paired
+Qwen grid also finishes at 79/120 with 161 actual calls and the same preserved
+successes and controls. This remains consumed development evidence.
+
+The same frozen source completes `hole-envelope-fit-history-v10`: 252 new runs
+cover all 50 historical fit failures, 20 validation fit failures and their clean
+controls. Neural-only and Qwen tie the previous best at 33/50 historical and
+13/20 validation, versus analytical preventive recovery's 31/50 and 12/20.
+No baseline or previous-neural success is lost; there are zero defective finishes,
+and all ten historical and four validation clean controls pass. Qwen makes 40
+historical and 32 validation requests. Comparisons pin the actual earlier
+implementation separately. These ties are preservation evidence, not new gains
+over the previous neural policy. Reserved test seeds remain untouched.
 
 ### Camera uncertainty and additional deformation coverage did not resolve the diagnostic
 

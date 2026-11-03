@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "rows": 51,
+  "candidate_rows": 34,
+  "agent_requests": 38,
+  "failures": [],
+  "broad_status": "complete"
+}

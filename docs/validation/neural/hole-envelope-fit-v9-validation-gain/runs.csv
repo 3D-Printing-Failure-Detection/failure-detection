@@ -1,0 +1,4 @@
+profile,part,kind,seed,method,in_place,scrapped,defective_finished,layers_printed,frames,adaptations,agent_requests,agent_accepted,seconds
+cartesian,bracket,collapse,71,contour_risk,True,False,False,32,32,1,0,0,11.592436485923827
+cartesian,bracket,collapse,71,neural_risk,True,False,False,32,32,1,0,0,22.357020606985316
+cartesian,bracket,collapse,71,neural_risk_agent,True,False,False,32,32,1,2,2,30.304592844913714

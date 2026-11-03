@@ -1,0 +1,216 @@
+"""Train the existing camera network on spatially adjacent distance labels.
+
+Optional training-only soft-clDice follows Algorithms 1/2 of Shit et al.,
+CVPR 2021, https://arxiv.org/abs/2003.07311. This is an implementation of the
+published equations, not a runtime contour repair or a topology guarantee.
+"""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+import time
+
+import numpy as np
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from recovery.models.boundary import BoundarySegmenter, PATCH_SIZE
+
+
+def soft_skeleton(probability, iterations):
+    # A cross-shaped erosion and square dilation approximate 2D thinning.
+    def erode(value):
+        vertical = -F.max_pool2d(-value, (3, 1), 1, (1, 0))
+        horizontal = -F.max_pool2d(-value, (1, 3), 1, (0, 1))
+        return torch.minimum(vertical, horizontal)
+
+    def residue(value):
+        return F.relu(value - F.max_pool2d(erode(value), 3, 1, 1))
+
+    skeleton = residue(probability)
+    for _ in range(iterations):
+        probability = erode(probability)
+        skeleton = skeleton + (1-skeleton) * residue(probability)
+    return skeleton
+
+
+def connectivity_losses(probability, truth, truth_skeleton, iterations):
+    """Per-tile Dice and clDice losses; homogeneous tiles have no clDice term."""
+    dims = (1, 2, 3)
+    epsilon = 1e-6
+    skeleton = soft_skeleton(probability, iterations)
+    precision = ((skeleton*truth).sum(dims)+epsilon)/(skeleton.sum(dims)+epsilon)
+    recall = ((truth_skeleton*probability).sum(dims)+epsilon)/(truth_skeleton.sum(dims)+epsilon)
+    cldice = 1 - 2*precision*recall/(precision+recall).clamp_min(epsilon)
+    mixed = (truth.sum(dims) > 0) & ((1-truth).sum(dims) > 0)
+    cldice = torch.where(mixed, cldice, torch.zeros_like(cldice))
+    dice = 1 - (2*(probability*truth).sum(dims)+epsilon)/(probability.sum(dims)+truth.sum(dims)+epsilon)
+    return dice, cldice
+
+
+class TileNetwork(nn.Module):
+    def __init__(self, frames=2, hidden=(64, 32), scale=4):
+        super().__init__()
+        self.frames, self.scale = frames, scale
+        self.layers = nn.ModuleList([nn.Conv2d(frames, hidden[0], PATCH_SIZE),
+                                    nn.Conv2d(hidden[0], hidden[1], 1),
+                                    nn.Conv2d(hidden[1], scale**2, 1)])
+
+    def forward(self, value):
+        for layer in self.layers[:-1]:
+            value = torch.relu(layer(value))
+        return F.pixel_shuffle(torch.tanh(self.layers[-1](value)), self.scale)
+
+    def export(self, path):
+        arrays = dict(patch_size=np.array(PATCH_SIZE), output_upsample=np.array(self.scale),
+                      input_frames=np.array(self.frames), input_scales=np.array([1]))
+        for i, layer in enumerate(self.layers):
+            arrays[f'w{i}'] = layer.weight.detach().numpy().reshape(layer.out_channels, -1)
+            arrays[f'b{i}'] = layer.bias.detach().numpy()
+        np.savez_compressed(path, **arrays)
+
+
+def exported_tiles(model, tiles):
+    """Independent NumPy patch inference, reassembled at native coordinates."""
+    patches = np.lib.stride_tricks.sliding_window_view(tiles, (PATCH_SIZE, PATCH_SIZE), axis=(-2, -1))
+    batch, channels, height, width = patches.shape[:4]
+    patches = patches.transpose(0, 2, 3, 1, 4, 5).reshape(-1, channels*PATCH_SIZE**2)
+    scale = model.output_upsample
+    return model.predict_patches(patches).reshape(batch, height, width, scale, scale).transpose(
+        0, 1, 3, 2, 4).reshape(batch, 1, height*scale, width*scale)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--data', type=Path, required=True)
+    parser.add_argument('--out', type=Path, required=True)
+    parser.add_argument('--epochs', type=int, default=40)
+    parser.add_argument('--batch-size', type=int, default=32)
+    parser.add_argument('--seed', type=int, default=2026)
+    parser.add_argument('--topology-weight', type=float, default=0.)
+    parser.add_argument('--skeleton-iterations', type=int, default=20)
+    parser.add_argument('--temperature-mm', type=float, default=.1)
+    args = parser.parse_args()
+    if not np.isfinite(args.topology_weight) or args.topology_weight < 0:
+        parser.error('topology weight must be finite and nonnegative')
+    if not np.isfinite(args.temperature_mm) or args.temperature_mm <= 0:
+        parser.error('temperature must be finite and positive')
+    if min(args.epochs, args.batch_size, args.skeleton_iterations) < 1:
+        parser.error('epochs, batch size and skeleton iterations must be positive')
+    if not args.out.resolve().is_relative_to(Path('/mnt/data/ishaan')):
+        parser.error('model artifacts must stay on the data volume')
+    if args.out.exists():
+        parser.error('refusing to overwrite a training run')
+    torch.set_num_threads(2)
+    torch.manual_seed(args.seed)
+    rng = np.random.default_rng(args.seed)
+    with np.load(args.data, allow_pickle=False) as data:
+        x, y, split, groups = [data[k] for k in ('x', 'y', 'validation', 'group')]
+        size, scale, frames = [int(data[k]) for k in ('dense_tile_size', 'output_upsample', 'input_frames')]
+        if not np.array_equal(data['input_scales'], [1]):
+            raise ValueError('dense convolution requires fine camera inputs')
+    if (size != 16 or scale != 4 or frames not in (1, 2)
+            or x.shape != (len(x), frames, size+8, size+8)
+            or y.shape != (len(x), 1, size*scale, size*scale)):
+        raise ValueError('invalid dense camera dataset shapes')
+    if (split.dtype != bool or split.shape != (len(x),) or groups.shape != (len(x),)
+            or not split.any() or split.all() or set(groups[split]) & set(groups[~split])):
+        raise ValueError('invalid trajectory-separated split')
+    if not np.isfinite(x).all() or not np.isfinite(y).all() or np.max(np.abs(y)) > 1:
+        raise ValueError('invalid camera inputs or distance targets')
+    args.out.mkdir(parents=True)
+    checkpoint = args.out/'boundary.npz'
+    started = time.time()
+    inputs, target = torch.from_numpy(x.astype('float32')), torch.from_numpy(y.astype('float32'))
+    truth = (target > 0).float()
+    # Labels are fixed: compute their skeleton once, outside the gradient graph.
+    skeleton = torch.zeros_like(truth)
+    if args.topology_weight:
+        for offset in range(0, len(x), args.batch_size):
+            skeleton[offset:offset+args.batch_size] = soft_skeleton(truth[offset:offset+args.batch_size], args.skeleton_iterations)
+    train_indices, val_indices = np.flatnonzero(~split), np.flatnonzero(split)
+    model = TileNetwork(frames, scale=scale)
+    initial_arrays = b''.join(t.detach().numpy().tobytes() for t in model.parameters())
+    optimizer = torch.optim.AdamW(model.parameters(), lr=.002, weight_decay=.0001)
+
+    def objective(prediction, indices):
+        actual = target[indices]
+        weight = .25 + .75*(torch.abs(actual) < .5)
+        loss = (F.smooth_l1_loss(prediction, actual, beta=.05, reduction='none')*weight).mean()
+        if args.topology_weight:
+            dice, cldice = connectivity_losses(torch.sigmoid(prediction/args.temperature_mm),
+                truth[indices], skeleton[indices], args.skeleton_iterations)
+            loss = loss + args.topology_weight * (.5*dice + .5*cldice).mean()
+        return loss
+
+    def evaluate(exported=None):
+        totals = dict(selection_score=0., boundary_error=0., boundary_n=0,
+                      near_correct=0, near_n=0, export_max_abs_error=0.)
+        with torch.no_grad():
+            for offset in range(0, len(val_indices), args.batch_size):
+                indices = val_indices[offset:offset+args.batch_size]
+                predicted = model(inputs[indices])
+                if exported is not None:
+                    numpy_prediction = exported_tiles(exported, x[indices].astype('float32'))
+                    totals['export_max_abs_error'] = max(totals['export_max_abs_error'],
+                        float(np.abs(numpy_prediction-predicted.numpy()).max()))
+                    predicted = torch.from_numpy(numpy_prediction)
+                totals['selection_score'] += float(objective(predicted, indices))*len(indices)
+                actual = target[indices]
+                edge, near = torch.abs(actual)<.5, torch.abs(actual)<.15
+                totals['boundary_error'] += float(torch.abs(predicted[edge]-actual[edge]).sum())
+                totals['boundary_n'] += int(edge.sum())
+                totals['near_correct'] += int(((predicted[near]>0)==(actual[near]>0)).sum())
+                totals['near_n'] += int(near.sum())
+        return dict(validation_selection_score=totals['selection_score']/len(val_indices),
+                    validation_boundary_mae_mm=totals['boundary_error']/max(1,totals['boundary_n']),
+                    near_boundary_sign_accuracy=totals['near_correct']/max(1,totals['near_n']),
+                    export_max_abs_error=totals['export_max_abs_error'])
+
+    history, best, best_state = [], float('inf'), None
+    for epoch in range(args.epochs):
+        model.train()
+        order = rng.permutation(train_indices)
+        total = 0.
+        for offset in range(0, len(order), args.batch_size):
+            indices = order[offset:offset+args.batch_size]
+            loss = objective(model(inputs[indices]), indices)
+            if not torch.isfinite(loss):
+                raise ValueError('non-finite training loss')
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            total += float(loss.detach())*len(indices)
+        model.eval()
+        row = dict(epoch=epoch+1, train_loss=total/len(train_indices), **evaluate())
+        history.append(row)
+        if row['validation_selection_score'] < best:
+            best = row['validation_selection_score']
+            best_state = {name: value.clone() for name, value in model.state_dict().items()}
+            model.export(checkpoint)
+        print(json.dumps(row), flush=True)
+    model.load_state_dict(best_state)
+    exported = BoundarySegmenter(checkpoint)
+    verification = evaluate(exported)
+    if verification['export_max_abs_error'] > 1e-5 or abs(verification['validation_selection_score']-best) > 1e-5:
+        raise ValueError('exported NumPy model differs from trained convolution')
+    manifest = dict(status='complete', architecture='2 observed fine images -> 9x9 conv64 -> 1x1 conv32 -> 16 tanh heads -> pixel shuffle4',
+        input_frames=frames, input_scales=[1], output_upsample=scale,
+        args={key:str(value) if isinstance(value,Path) else value for key,value in vars(args).items()},
+        training_groups=sorted(set(groups[~split].tolist())), validation_groups=sorted(set(groups[split].tolist())),
+        train_rows=len(train_indices), validation_rows=len(val_indices), device='cpu', torch=torch.__version__,
+        seconds=time.time()-started, data_sha256=hashlib.sha256(args.data.read_bytes()).hexdigest(),
+        checkpoint_sha256=exported.sha256, trainer_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        initialization_sha256=hashlib.sha256(initial_arrays).hexdigest(), history=history, **verification,
+        selection_metric='weighted smooth-L1 plus optional equal-weight Dice and clDice loss',
+        topology_reference='https://arxiv.org/abs/2003.07311',
+        limitation='Dense tile validation is not whole-image topology or closed-loop recovery evidence; no runtime repair')
+    (args.out/'training.json').write_text(json.dumps(manifest, indent=2)+'\n')
+    print(json.dumps({key:manifest[key] for key in ['checkpoint_sha256', *verification]}), flush=True)
+
+
+if __name__ == '__main__':
+    main()

@@ -1037,10 +1037,15 @@ exterior. It changes neither measurements nor the printed prefix. Both forward
 checks and the original robustness guard still apply. This raises the limiting
 diagnostic bound to $+0.047$ mm. In the actual simulation, the previously lost
 bracket now completes with one adaptation for both neural variants; Qwen makes
-two validated requests. A frozen 51-run regression gate covers earlier gains and
-clean controls. Only if every selected neural case passes will it launch the
-288-run broader comparison against the actual previous implementation. The
-option remains off by default; this single-case recovery is not acceptance.
+two validated requests. The 51-run gate passes all 11 selected failures and six
+clean controls for both neural variants, with 38 actual Qwen requests and no
+defective finishes. The broader comparison completes at 79/120 for both neural
+variants versus analytical preventive recovery's 76/120 and the previous neural
+policy's 78/120. All prior successes are preserved, with zero defective finishes
+and all 24 clean controls passed; Qwen makes 161 actual requests. Historical and
+validation fit checks tie the previous best at 33/50 and 13/20, preserving all
+passing cases and clean controls with no defects. The option remains off by
+default; fresh acceptance is required.
 
 \subsection*{Explicit material classification did not fix the camera}
 The \texttt{occupancy-camera-v10} trial adds a fixed classification term to the
@@ -1054,12 +1059,111 @@ wall gaps remain and the false support violation grows from 15 to 23 mm$^2$.
 The predeclared condition skips recovery and wider geometry trials. This network
 is retained as a failed experiment and is not promoted into the recovery loop.
 
-The next matched trial rotates and reflects both image patches and their
-continuous query coordinates. Its unaugmented control exactly reproduces the
-earlier shared-query checkpoint. Augmentation worsens boundary error from
-0.04462 to 0.05504 mm, retains both false gaps and raises false base-problem layers
-from one to eight. Follow-up recovery and wider validation are skipped; this
-checkpoint is also rejected. The source suite passes 136 tests, with one optional
-module skipped. Reserved test seeds remain untouched.
+Rotating and reflecting image patches and their continuous queries also fails.
+The unaugmented control exactly reproduces the earlier shared-query checkpoint.
+Augmentation worsens boundary error from 0.04462 to 0.05504 mm, retains both false
+gaps and raises false base-problem layers from one to eight. This checkpoint is
+rejected; follow-up recovery and wider validation are skipped. Reserved test
+seeds remain untouched.
+
+\clearpage
+\section{Learning from two observed camera frames}
+
+The camera studies still lose thin walls that are physically present. A new
+coverage analysis finds missed near-boundary material in training examples as
+well as validation. The \texttt{temporal-camera-v12} experiment therefore tests
+an additional observed image: the immediately preceding layer. This may help
+distinguish faint current material from older layers visible underneath. It is
+an experiment, not an accepted improvement.
+
+\begin{center}
+\begin{tikzpicture}[>=Latex,
+ frame/.style={draw=teal!65,fill=pale,rounded corners=2pt,text width=4.1cm,align=center,minimum height=1.5cm,font=\small},
+ stage/.style={draw=navy!55,rounded corners=2pt,text width=9.3cm,align=center,minimum height=0.95cm,font=\small}]
+\node[frame] (previous) {\textbf{Previous layer image}\\9-by-9 grayscale patch\\at the same location};
+\node[frame,right=0.7cm of previous] (current) {\textbf{Current layer image}\\9-by-9 grayscale patch\\at the same location};
+\node[stage,below=0.6cm of previous.south east,xshift=0.35cm,anchor=north] (network) {\textbf{Trained camera network}\\162 inputs $\rightarrow$ 64 $\rightarrow$ 32 $\rightarrow$ 16 signed distances};
+\node[stage,below=0.5cm of network] (geometry) {\textbf{Estimate the current layer's material}\\Zero contour on the native subpixel output grid};
+\node[stage,below=0.5cm of geometry] (loop) {\textbf{Existing recovery loop}\\Future forecasts, functional checks and local Qwen};
+\draw[->] (previous.south)--(network.north -| previous.south);
+\draw[->] (current.south)--(network.north -| current.south);
+\draw[->] (network)--(geometry);
+\draw[->] (geometry)--(loop);
+\end{tikzpicture}
+\end{center}
+
+This network estimates only the current layer. The separate learned deposition
+model predicts future layers. No nominal geometry, failure identity, simulator
+truth or future image enters the camera network. At the first layer, both input
+slots use the current image. Later calls retain the preceding observation;
+they do not acquire a second current-layer image or alter the measured prefix.
+Legacy checkpoints keep their one-image behavior.
+
+\subsection*{A matched control and explicit history handling}
+The study reuses all 66 training and 36 validation trajectories. A three-trajectory
+check covers 165 current frames and 156 predecessor renders across all three
+views: every current input and target exactly matches the retained dataset.
+An independent renderer supplies the prior image with independent camera noise,
+preserving the current-image sequence. These are re-rendered camera samples,
+not new physical printing trials.
+
+The full 86,400-patch build preserves all current inputs, targets, groups and
+splits exactly. A model trained on only current-image columns exactly reproduces
+the earlier fine-only checkpoint. Both variants completed 160 epochs. Offline geometry
+validation supplies the immediate predecessor for every selected frame; it never
+uses the last selected frame when intervening layers were skipped.
+
+Boundary error improves from 0.06493 to 0.06174 mm and near-boundary sign accuracy
+from 82.09\% to 82.64\%. However, the full-stack cup diagnostic retains two false
+wall gaps and adds one false hard-thin layer, despite eliminating the false
+support violation. The checkpoint is rejected; conditional recovery and wider
+geometry trials are skipped. All-part, fresh-test superiority remains unproven.
+
+\clearpage
+\section{Training for connected camera geometry}
+
+A diagnostic on the retained layer-85 image finds that the central air region
+already connects to the image exterior in both the fine-only and two-image
+networks' native pixel masks. This occurs under both four- and eight-neighbor
+background connectivity, before mask-to-contour conversion. The source images,
+model hashes and diagnostic procedure are retained. This is one consumed frame,
+not a fresh recovery benchmark. True geometry sampled on the identical native
+grid retains a closed wall under both connectivity definitions, enclosing
+1704.50 mm$^2$. The output grid can represent the missing connection.
+
+The \texttt{dense-topology-camera-v13} experiment now tests spatial supervision.
+It follows the soft-clDice formulation of Shit et al., CVPR 2021
+(\url{https://arxiv.org/abs/2003.07311}), which compares predicted material and
+reference centre lines. Here it is an experimental training objective, with no
+claim that minimizing it guarantees a valid printed part.
+
+\subsection*{The matched experiment}
+Both models retain the two-image camera architecture and train on the same 102
+retained trajectories. Each selected image contributes one 24-by-24 input tile,
+including the existing 9-by-9 convolution's border. The outputs are a contiguous
+64-by-64 signed-distance grid at quarter-pixel spacing. Labels are clipped to
+$[-1,1]$ mm and stored in half precision. Entire trajectories remain separated
+between training and validation.
+
+The control uses the existing weighted distance objective. The candidate adds a
+fixed 0.1 weight on equally weighted soft-Dice and soft-clDice losses, with 20
+soft-skeleton iterations and a 0.1 mm distance-to-logit scale. Homogeneous tiles
+omit the clDice term. Both models use the same initialization, sample order,
+40-epoch schedule and per-objective validation selection rule. Truth supplies
+training labels and sampling locations only. Runtime receives observed images;
+there is no morphology-based repair or change to physical or functional limits.
+
+\subsection*{Verification and acceptance}
+The dense convolution exports to the existing NumPy/OpenCV runtime. Focused tests
+verify native-coordinate alignment, image-border handling and numerical parity
+with full-frame inference. The loss penalizes both a removed wall segment and an
+invented bridge. All three focused checks pass in the Torch environment; the
+project suite passes 139 tests with two optional modules skipped.
+
+The matched training runs in \texttt{neural-recovery}, with logs and frozen source
+on the data volume. Both models must undergo the unchanged full-stack cup
+diagnostic. Only if the topology model passes does its predeclared sequence run
+actual recovery with Qwen and all 2,040 validation images. This experiment has no
+success-rate result yet; reserved seeds 2001--2004 remain untouched.
 
 \end{document}

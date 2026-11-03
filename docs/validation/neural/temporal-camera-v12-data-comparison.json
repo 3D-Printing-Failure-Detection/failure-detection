@@ -1,0 +1,8 @@
+{
+  "current_inputs_identical": true,
+  "targets_and_split_identical": true,
+  "rows": 86400,
+  "current_columns": 81,
+  "temporal_columns": 162,
+  "data_sha256": "80aab158d452d7f958d4f671ec2cbb3d122df02a2e3a9d98c697ff09a55ec7df"
+}

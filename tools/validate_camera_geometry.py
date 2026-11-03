@@ -4,6 +4,7 @@ The same deposited geometry is re-rendered through each camera profile. This is
 camera validation, not a new physical rollout or a closed-loop success rate.
 """
 import argparse
+from contextlib import nullcontext
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import gzip
 import hashlib
@@ -59,16 +60,30 @@ def inspect_group(job):
         assert models[name].sha256 == digest, 'checkpoint changed before validation'
     indices = frame_indices(record, part, count)
     rows = []
+    needs_history = any(getattr(model, 'input_frames', 1) == 2 for model in models.values())
     for profile in ('cartesian', 'corexy', 'bedslinger'):
-        with MujocoPrinter(nominal, None, int(seed), profile, False) as printer:
+        previous_seed = int.from_bytes(hashlib.sha256(
+            (record['group'] + profile + '-previous-camera').encode()).digest()[:8], 'little')
+        previous_context = (MujocoPrinter(nominal, None, previous_seed, profile, False)
+                            if needs_history else nullcontext(None))
+        with MujocoPrinter(nominal, None, int(seed), profile, False) as printer, previous_context as previous_printer:
             for index in indices:
                 printer.printed = actual[:index+1]
                 image = printer.camera_image()
+                previous_image = image
+                if needs_history and index > 0:
+                    previous_printer.printed = actual[:index]
+                    previous_image = previous_printer.camera_image()
                 expected = camera.expected_mask(nominal[index])
                 truth = layer_features(actual[index], nominal[index], part.spec)
                 measured = {}
                 for name, model in models.items():
                     try:
+                        if getattr(model, 'input_frames', 1) == 2:
+                            # Selected frames can be far apart. Prime from the
+                            # actual immediate predecessor, never the last
+                            # selected validation frame or another profile.
+                            model.prime_history(previous_image)
                         region = clean(model.measure(image, expected).simplify(.25/4))
                     except Exception as exc:
                         raise RuntimeError(f"{record['group']}/{profile}/layer-{index}/{name}: camera measurement failed") from exc
@@ -76,6 +91,7 @@ def inspect_group(job):
                 rows.append(dict(group=record['group'], profile=profile, layer=index,
                                  truth=truth, measured=measured))
     return rows, dict(group=record['group'], frames=len(rows),
+                      previous_camera_images=3*sum(index > 0 for index in indices) if needs_history else 0,
                       trajectory_sha256=hashlib.sha256(Path(path).read_bytes()).hexdigest())
 
 
@@ -131,6 +147,7 @@ def main():
         feature_script_sha256=hashlib.sha256((Path(__file__).parent/'inspect_camera_case.py').read_bytes()).hexdigest(),
         groups=sorted(groups), expected_frames=expected_frames, checkpoints=checkpoints,
         training_manifests=training_manifests,
+        temporal_camera_replay='Two-frame models receive the actual immediate predecessor, with independent camera noise; current frames stay matched across models',
         arguments={k: [str(p) for p in v] if k == 'collections' else str(v) if isinstance(v, Path) else v
                    for k, v in vars(args).items()},
         limitation='Selected validation camera frames and per-layer flags; not complete-print or recovery success rates')

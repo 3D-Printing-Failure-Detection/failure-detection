@@ -1,0 +1,85 @@
+{
+  "status": "passed",
+  "source_sha256": "13f9e7ad01a01bff3d79dd849801e4abfd017f676ae933d617af212b504dea1a",
+  "checkpoints": {
+    "neural": "4c475acc99912d7b5cf1570cab43444bf65d4bd8798bb3edd52d4acfbd077f62"
+  },
+  "runs_sha256": "9a608d9059b9600814788a15682c7d7df9fc957d393ff98bc338f2ace2d80361",
+  "rows": 108,
+  "actual_agent_calls": 25,
+  "reused_reviews": 90,
+  "summary": [
+    {
+      "method": "contour_risk",
+      "split": "clean",
+      "n": 6,
+      "in_place": 6,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 39.60177494306117
+    },
+    {
+      "method": "contour_risk",
+      "split": "failure",
+      "n": 30,
+      "in_place": 19,
+      "scrapped": 11,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 0,
+      "seconds": 228.69313819520175
+    },
+    {
+      "method": "neural_risk",
+      "split": "clean",
+      "n": 6,
+      "in_place": 6,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 39.726623917231336
+    },
+    {
+      "method": "neural_risk",
+      "split": "failure",
+      "n": 30,
+      "in_place": 21,
+      "scrapped": 9,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 43933,
+      "seconds": 343.6014331293991
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "clean",
+      "n": 6,
+      "in_place": 6,
+      "scrapped": 0,
+      "defective_finished": 0,
+      "agent_requests": 0,
+      "neural_queries": 516,
+      "seconds": 40.42010620899964
+    },
+    {
+      "method": "neural_risk_agent",
+      "split": "failure",
+      "n": 30,
+      "in_place": 21,
+      "scrapped": 9,
+      "defective_finished": 0,
+      "agent_requests": 25,
+      "neural_queries": 43933,
+      "seconds": 463.5953203092795
+    }
+  ],
+  "agent_decision_opportunities": 115,
+  "agent_review_status": "exercised",
+  "stage": "historical",
+  "limitation": "development/historical comparison; does not establish superiority on untouched test cases",
+  "auditor_sha256": "e83176b2276f24583bc088248999a60f5292d7cecc52f2a54667e4a947fbb3fd",
+  "completed_prints_and_paired_failure_conditions_verified": true
+}
