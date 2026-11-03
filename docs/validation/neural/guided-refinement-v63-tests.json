@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "tests": 54,
+  "seconds": 1.92,
+  "torch": "2.7.1+cu126",
+  "python_environment": "/mnt/data/ishaan/hri-workspace/envs/openpi/bin/python",
+  "modules": [
+    "tests/test_boundary_refinement.py",
+    "tests/test_boundary_model.py",
+    "tests/test_boundary_tiles.py",
+    "tests/test_boundary_critical_material.py",
+    "tests/test_boundary_training_augmentation.py"
+  ],
+  "source_sha256": {
+    "recovery/models/boundary.py": "33dc7e21fd0c129673929cb2b49a61d88d152b6447efec322d201245ba855673",
+    "tools/train_boundary_refinement.py": "c9b7d5097c616b6892b697456b27085532e772e6a2c52b03333e197682272fa9",
+    "tests/test_boundary_refinement.py": "7cd6ff336250076f9c6839ed22b893e3bd51b9eff0f764ae3a8b60d5b10cc373"
+  },
+  "completed_fixture_directory": "/mnt/data/ishaan/hri-workspace/failure-detection/guided-refinement-test-tmp-v63",
+  "regenerable_test_fixture_bytes_removed": 2908160,
+  "limitation": "Unit/export checks only; not trained-camera qualification or recovery outcomes."
+}

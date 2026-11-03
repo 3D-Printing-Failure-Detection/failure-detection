@@ -271,10 +271,22 @@ An opt-in `--boundary-observed-wall-guard` now retains the existing neural
 camera's hard-thin warning on a printed wall, even when no plan passes both views.
 Its four paired known-defect runs pass: controls finish defective after one
 adaptation; both guarded variants stop at layer 101 without adapting. All 510
-common camera frames match. The 50 retained regression rows are running in tmux.
-Stopping a defective finish is not a
-recovered print, and no new recovery success rate is established. The implementation passes 246
-repository tests and 41 Torch/training checks.
+common camera frames match. All 50 retained regression rows also pass. Each
+variant preserves 14/19 fault successes and all six clean controls, with unchanged
+successful action sequences and defective finishes reduced from one to zero.
+The complete comparison checks 8,217 common camera frames; Qwen makes 88 actual
+preservation requests and matches neural-only. Stopping a defective finish is
+not an additional recovered print, and this targeted check is not a fresh benchmark.
+Two further spatial heads receive the same observed images and commanded mask
+directly. Both improve average boundary error but fail the seven-frame functional
+screen, so neither enters recovery. Two missed defects have closed but excessively
+thin walls: the existing extra training weights target roughly 0.3 mm material,
+while the hard wall limit is 0.96 mm for mugs and 0.84 mm for cups. A training-only
+supervision audit targets both sides of that physical boundary. Two audit failures
+exposed original-target rounding and invalid derived geometry; both are retained.
+The corrected audit reproduces all 7,104 targets exactly and preserves all old
+critical labels. No gain is established by creating labels.
+The implementation passes 249 repository tests and 54 focused Torch/training checks.
 
 ## The idea in physical terms
 

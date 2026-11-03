@@ -1,0 +1,52 @@
+{
+  "status": "complete",
+  "verified_target_rows": 7104,
+  "original_rows": 5760,
+  "augmented_rows": 1344,
+  "summaries": {
+    "original_training": {
+      "pixels": 292679,
+      "positive": 152464,
+      "negative": 140187,
+      "zero": 28,
+      "old_critical": 1648,
+      "rows": 3720,
+      "nonzero_rows": 3503
+    },
+    "validation": {
+      "pixels": 158642,
+      "positive": 82429,
+      "negative": 76176,
+      "zero": 37,
+      "old_critical": 1147,
+      "rows": 2040,
+      "nonzero_rows": 1904
+    },
+    "extra_training": {
+      "pixels": 294897,
+      "positive": 150426,
+      "negative": 144471,
+      "zero": 0,
+      "old_critical": 30090,
+      "rows": 1344,
+      "nonzero_rows": 984
+    }
+  },
+  "all_original_critical_pixels_preserved": true,
+  "original_inputs_targets_and_split_unchanged": true,
+  "hard_wall_fraction": 0.6,
+  "wall_spec_mm": {
+    "cup": 1.4,
+    "mug": 1.6
+  },
+  "opening_radius_mm": {
+    "cup": 0.42,
+    "mug": 0.48
+  },
+  "boundary_margin_mm": 0.15,
+  "mask_sha256": "8c475117f7c054b68e4413d1bda928ea8132eaa5fc1ac2ec14a1f4423e6ae91a",
+  "rows_sha256": "632c06f62445521bf2d759bd8c24d3270973c6b59bd6945ac4cffd6a18e56cad",
+  "source_sha256": "da4388358742415387bb9e78a1886da5278a6d9d62b8d00e23d5b5fa7207cb54",
+  "protocol_sha256": "4c0f04db7a2e4a1cfb1187939f4d7eaa49b75af84e1ec43ad0dd5399e5627481",
+  "limitation": "Supervision audit only. No model is trained, no validation label is used for fitting, and no recovery or accuracy gain is established."
+}

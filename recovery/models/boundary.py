@@ -66,6 +66,12 @@ class BoundarySegmenter:
                 if 'include_previous_expected_mask' in data else False)
             self.inference_dtype = str(data['inference_dtype']) if 'inference_dtype' in data else 'float32'
             self.weights = [(data[f'w{i}'], data[f'b{i}']) for i in range(3)]
+            self.native_guidance = False
+            if 'native_guidance' in data:
+                guidance = data['native_guidance']
+                if guidance.shape != () or guidance.dtype != np.dtype('bool'):
+                    raise ValueError('invalid native guidance flag')
+                self.native_guidance = bool(guidance)
             refinement_keys = {'native_refinement_kernel', 'native_refinement_bias'}
             if refinement_keys & set(data.files) and not refinement_keys <= set(data.files):
                 raise ValueError('incomplete native refinement weights')
@@ -108,20 +114,26 @@ class BoundarySegmenter:
                 raise ValueError('invalid subpixel query weights')
         if self.native_refinement is not None:
             kernel, bias = self.native_refinement
-            if (kernel.shape != (3, 3) or bias.shape != () or self.output_upsample == 1
+            kernel_shape = (4, 3, 3) if self.native_guidance else (3, 3)
+            if (kernel.shape != kernel_shape or bias.shape != () or self.output_upsample == 1
                     or not np.isfinite(kernel).all() or not np.isfinite(bias)):
                 raise ValueError('invalid native refinement weights')
             self.native_refinement = (kernel.astype(self.inference_dtype),
                                       bias.astype(self.inference_dtype))
         if self.native_residual_refinement is not None:
             kernels, bias, output_weights, output_bias = self.native_residual_refinement
-            if (kernels.ndim != 3 or kernels.shape[1:] != (3, 3) or not len(kernels)
+            kernel_shape = (4, 3, 3) if self.native_guidance else (3, 3)
+            if (kernels.ndim != len(kernel_shape)+1 or kernels.shape[1:] != kernel_shape or not len(kernels)
                     or bias.shape != (len(kernels),) or output_weights.shape != (len(kernels),)
                     or output_bias.shape != () or self.output_upsample == 1
                     or not all(np.isfinite(value).all() for value in self.native_residual_refinement)):
                 raise ValueError('invalid native residual refinement weights')
             self.native_residual_refinement = tuple(
                 value.astype(self.inference_dtype) for value in self.native_residual_refinement)
+        if self.native_guidance and (not self.has_native_refinement or self.input_frames != 2
+                or not self.include_expected_mask or self.include_previous_expected_mask
+                or self.input_scales != (1,) or self.output_upsample != 4):
+            raise ValueError('native guidance requires a refined two-frame commanded native camera')
         outputs = 1 if self.query_weights is not None else self.output_upsample**2
         if (width != outputs or upsample < self.output_upsample
                 or upsample % self.output_upsample):
@@ -182,12 +194,39 @@ class BoundarySegmenter:
         weights, bias = self.weights[0]
         return self._distance_outputs(np.maximum(patches @ weights.T + bias, 0), activate=False)
 
-    def refine_native_logits(self, logits):
+    def refine_native_logits(self, logits, frames=None):
         """Apply the checkpoint's learned spatial head before its tanh output."""
         logits = np.asarray(logits, dtype=self.inference_dtype)
         if logits.ndim != 2:
             raise ValueError('native refinement requires a two-dimensional grid')
         depth = cv2.CV_64F if self.inference_dtype == 'float64' else cv2.CV_32F
+        if self.native_guidance:
+            if frames is None or len(frames) != 3:
+                raise ValueError('native guidance requires current/previous images and the command mask')
+            scale = self.output_upsample
+            channels = [logits]
+            for frame in frames:
+                frame = np.asarray(frame, dtype=self.inference_dtype)
+                if frame.ndim != 2 or tuple(n*scale for n in frame.shape) != logits.shape or not np.isfinite(frame).all():
+                    raise ValueError('native guidance frame does not match the native grid')
+                # Every subpixel output inherits the observations of its parent
+                # camera pixel. This matches the pixel-shuffle decoder's grid;
+                # resize() would introduce a different half-pixel convention.
+                channels.append(np.repeat(np.repeat(frame, scale, axis=0), scale, axis=1))
+
+            def guided_filter(kernels, bias):
+                result = np.full_like(logits, bias)
+                for channel, kernel in zip(channels, kernels):
+                    result += cv2.filter2D(channel, depth, kernel, borderType=cv2.BORDER_REFLECT_101)
+                return result
+
+            if self.native_refinement is not None:
+                return guided_filter(*self.native_refinement)
+            kernels, bias, output_weights, output_bias = self.native_residual_refinement
+            residual = np.full_like(logits, output_bias)
+            for kernel, offset, weight in zip(kernels, bias, output_weights):
+                residual += weight*np.maximum(guided_filter(kernel, offset), 0)
+            return logits + residual
         if self.native_residual_refinement is not None:
             kernels, bias, output_weights, output_bias = self.native_residual_refinement
             residual = np.full_like(logits, output_bias)
@@ -245,7 +284,7 @@ class BoundarySegmenter:
         distance = distance.reshape(height, width, scale, scale).transpose(
             0, 2, 1, 3).reshape(height*scale, width*scale)
         if self.has_native_refinement:
-            distance = np.tanh(self.refine_native_logits(distance))
+            distance = np.tanh(self.refine_native_logits(distance, frames if self.native_guidance else None))
         return distance
 
     def measure(self, image, expected_mask=None):

@@ -23,27 +23,31 @@ from tools.train_boundary_tiles import TileNetwork, training_sampling_probabilit
 
 class ResidualRefinement(nn.Module):
     """An identity-initialized nonlinear correction on the native logit grid."""
-    def __init__(self, hidden_channels):
+    def __init__(self, hidden_channels, input_channels=1):
         super().__init__()
         if hidden_channels < 1:
             raise ValueError('residual refinement needs positive hidden channels')
-        self.hidden = nn.Conv2d(1, hidden_channels, 3)
+        if input_channels not in (1, 4):
+            raise ValueError('refinement inputs must be logits alone or logits plus three image channels')
+        self.hidden = nn.Conv2d(input_channels, hidden_channels, 3)
         self.output = nn.Conv2d(hidden_channels, 1, 1)
         with torch.no_grad():
             self.output.weight.zero_()
             self.output.bias.zero_()
 
     def forward(self, logits):
-        return logits[:, :, 1:-1, 1:-1] + self.output(torch.relu(self.hidden(logits)))
+        return logits[:, :1, 1:-1, 1:-1] + self.output(torch.relu(self.hidden(logits)))
 
 
 def refinement_parameters(layer):
     if isinstance(layer, ResidualRefinement):
-        return dict(hidden_kernels=layer.hidden.weight.detach().numpy()[:, 0].tolist(),
+        kernels = layer.hidden.weight.detach().numpy()
+        return dict(hidden_kernels=(kernels[:, 0] if layer.hidden.in_channels == 1 else kernels).tolist(),
                     hidden_bias=layer.hidden.bias.detach().numpy().tolist(),
                     output_weights=layer.output.weight.detach().numpy()[0, :, 0, 0].tolist(),
                     output_bias=float(layer.output.bias.detach()[0]))
-    return dict(kernel=layer.weight.detach().numpy()[0, 0].tolist(),
+    kernels = layer.weight.detach().numpy()[0]
+    return dict(kernel=(kernels[0] if layer.in_channels == 1 else kernels).tolist(),
                 bias=float(layer.bias.detach()[0]))
 
 
@@ -101,13 +105,21 @@ def export_refinement(base_checkpoint, layer, path, inference_dtype):
     with np.load(base_checkpoint, allow_pickle=False) as data:
         arrays = {key: data[key] for key in data.files}
     if isinstance(layer, ResidualRefinement):
-        arrays['native_residual_kernels'] = layer.hidden.weight.detach().numpy()[:, 0].copy()
+        channels = layer.hidden.in_channels
+        kernels = layer.hidden.weight.detach().numpy()
+        arrays['native_residual_kernels'] = (kernels[:, 0] if channels == 1 else kernels).copy()
         arrays['native_residual_bias'] = layer.hidden.bias.detach().numpy().copy()
         arrays['native_residual_output_weights'] = layer.output.weight.detach().numpy()[0, :, 0, 0].copy()
         arrays['native_residual_output_bias'] = layer.output.bias.detach().numpy()[0].copy()
     else:
-        arrays['native_refinement_kernel'] = layer.weight.detach().numpy()[0, 0].copy()
+        channels = layer.in_channels
+        kernels = layer.weight.detach().numpy()[0]
+        arrays['native_refinement_kernel'] = (kernels[0] if channels == 1 else kernels).copy()
         arrays['native_refinement_bias'] = layer.bias.detach().numpy()[0].copy()
+    if channels not in (1, 4):
+        raise ValueError('unsupported refinement input channels')
+    if channels == 4:
+        arrays['native_guidance'] = np.array(True)
     if inference_dtype != 'float32':
         arrays['inference_dtype'] = np.array(inference_dtype)
     else:
@@ -125,8 +137,20 @@ def exported_refined_tiles(model, tiles):
     logits = logits.transpose(0, 1, 3, 2, 4).reshape(batch, height*scale, width*scale)
     # The retained interior agrees with a valid Torch convolution, including at
     # subpixel block seams. No artificial crop-boundary padding is scored.
-    return np.stack([np.tanh(model.refine_native_logits(grid))[1:-1, 1:-1]
-                     for grid in logits])[:, None]
+    radius = PATCH_SIZE // 2
+    return np.stack([np.tanh(model.refine_native_logits(grid,
+        tile[:, radius:-radius, radius:-radius] if model.native_guidance else None))[1:-1, 1:-1]
+        for grid, tile in zip(logits, tiles)])[:, None]
+
+
+def guided_refinement_inputs(logits, tiles):
+    """Use existing observed inputs at each native output's parent pixel."""
+    radius = PATCH_SIZE // 2
+    frames = tiles[:, :, radius:-radius, radius:-radius]
+    if (logits.ndim != 4 or logits.shape[1] != 1 or frames.ndim != 4 or frames.shape[1] != 3
+            or frames.shape[0] != logits.shape[0] or tuple(n*4 for n in frames.shape[2:]) != logits.shape[2:]):
+        raise ValueError('guided refinement tile inputs do not match native logits')
+    return torch.cat([logits, frames.repeat_interleave(4, 2).repeat_interleave(4, 3)], dim=1)
 
 
 def main():
@@ -140,6 +164,8 @@ def main():
     parser.add_argument('--seed', type=int, default=2026)
     parser.add_argument('--hidden-channels', type=int, default=0,
                         help='positive enables a nonlinear residual head; zero retains the linear control')
+    parser.add_argument('--condition-on-images', action='store_true',
+                        help='give the spatial head the existing current/previous grayscale and commanded mask at each parent pixel')
     parser.add_argument('--overprediction-weight', type=float, default=1.,
                         help='training cost multiplier when predicted signed distance exceeds its target')
     parser.add_argument('--extra-training-data', type=Path,
@@ -212,18 +238,23 @@ def main():
     args.out.mkdir(parents=True)
     started = time.time()
     logits = frozen_tile_logits(args.base_checkpoint, torch.from_numpy(x.astype('float32')), args.batch_size)
+    refinement_inputs = (guided_refinement_inputs(logits, torch.from_numpy(x.astype('float32')))
+                         if args.condition_on_images else logits)
+    input_channels = refinement_inputs.shape[1]
     target = torch.from_numpy(y[:, :, 1:-1, 1:-1].astype('float32'))
     if args.hidden_channels:
-        layer = ResidualRefinement(args.hidden_channels)
+        layer = ResidualRefinement(args.hidden_channels, input_channels)
         architecture = ('frozen commanded temporal camera -> native logits -> '
                         '3x3 convolution + ReLU + 1x1 convolution + residual -> tanh')
     else:
-        layer = nn.Conv2d(1, 1, 3)
+        layer = nn.Conv2d(input_channels, 1, 3)
         with torch.no_grad():
             layer.weight.zero_()
             layer.weight[0, 0, 1, 1] = 1.
             layer.bias.zero_()
         architecture = 'frozen commanded temporal camera -> native logits -> learned 3x3 convolution -> tanh'
+    if args.condition_on_images:
+        architecture += '; spatial head also receives current/previous grayscale and commanded mask at parent-pixel coordinates'
     initial_parameters = refinement_parameters(layer)
     optimizer = torch.optim.AdamW(layer.parameters(), lr=.002, weight_decay=.0001)
     train_indices, val_indices = np.flatnonzero(~validation), np.flatnonzero(validation)
@@ -241,7 +272,7 @@ def main():
         with torch.no_grad():
             for start in range(0, len(val_indices), args.batch_size):
                 indices = val_indices[start:start+args.batch_size]
-                predicted = torch.tanh(layer(logits[indices]))
+                predicted = torch.tanh(layer(refinement_inputs[indices]))
                 if exported is not None:
                     numpy_prediction = exported_refined_tiles(exported, x[indices].astype('float32'))
                     maximum = max(maximum, float(np.abs(numpy_prediction-predicted.numpy()).max()))
@@ -269,7 +300,7 @@ def main():
         total = 0.
         for start in range(0, len(order), args.batch_size):
             indices = order[start:start+args.batch_size]
-            loss = objective(torch.tanh(layer(logits[indices])), indices, training=True)
+            loss = objective(torch.tanh(layer(refinement_inputs[indices])), indices, training=True)
             assert torch.isfinite(loss)
             optimizer.zero_grad()
             loss.backward()

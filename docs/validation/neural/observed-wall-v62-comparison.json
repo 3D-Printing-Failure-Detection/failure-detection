@@ -1,0 +1,174 @@
+{
+  "status": "passed",
+  "new_rows": 54,
+  "targeted": {
+    "passes": true,
+    "control": [
+      {
+        "profile": "bedslinger",
+        "part": "mug",
+        "kind": "under_extrusion",
+        "seed": 1004,
+        "method": "neural_risk",
+        "in_place": false,
+        "defective_finished": true,
+        "adaptations": 1,
+        "layers_printed": 160,
+        "boundary_queries": 160,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "wall_guard_checks": 0,
+        "wall_guard_findings": []
+      },
+      {
+        "profile": "bedslinger",
+        "part": "mug",
+        "kind": "under_extrusion",
+        "seed": 1004,
+        "method": "neural_risk_agent",
+        "in_place": false,
+        "defective_finished": true,
+        "adaptations": 1,
+        "layers_printed": 160,
+        "boundary_queries": 160,
+        "neural_queries": 0,
+        "agent_requests": 1,
+        "wall_guard_checks": 0,
+        "wall_guard_findings": []
+      }
+    ],
+    "candidate": [
+      {
+        "profile": "bedslinger",
+        "part": "mug",
+        "kind": "under_extrusion",
+        "seed": 1004,
+        "method": "neural_risk",
+        "in_place": false,
+        "defective_finished": false,
+        "adaptations": 0,
+        "layers_printed": 102,
+        "boundary_queries": 102,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "wall_guard_checks": 94,
+        "wall_guard_findings": [
+          {
+            "layer": 101,
+            "thickness_mm": 0.96,
+            "hard_thin_excess": 0.03139541425376802
+          }
+        ]
+      },
+      {
+        "profile": "bedslinger",
+        "part": "mug",
+        "kind": "under_extrusion",
+        "seed": 1004,
+        "method": "neural_risk_agent",
+        "in_place": false,
+        "defective_finished": false,
+        "adaptations": 0,
+        "layers_printed": 102,
+        "boundary_queries": 102,
+        "neural_queries": 0,
+        "agent_requests": 0,
+        "wall_guard_checks": 94,
+        "wall_guard_findings": [
+          {
+            "layer": 101,
+            "thickness_mm": 0.96,
+            "hard_thin_excess": 0.03139541425376802
+          }
+        ]
+      }
+    ],
+    "camera_consistency": {
+      "version": 1,
+      "algorithm": "sha256-128",
+      "checked_rows": 6,
+      "unchecked_legacy_rows": 0,
+      "recorded_frames": 612,
+      "paired_cases": 1,
+      "compared_frames": 510
+    },
+    "limitation": "Stopping a pre-existing defective finish is not a successful recovered print."
+  },
+  "preservation": {
+    "neural_risk": {
+      "fault_cases": 19,
+      "fault_successes": 14,
+      "defective_finishes": 0,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "new_defects": [],
+      "successful_reference_action_changes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2862,
+      "agent_requests": 0,
+      "wall_guard_findings": [
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "under_extrusion",
+            1004,
+            "neural_risk"
+          ],
+          "findings": [
+            {
+              "layer": 101,
+              "thickness_mm": 0.96,
+              "hard_thin_excess": 0.03139541425376802
+            }
+          ]
+        }
+      ],
+      "passes": true
+    },
+    "neural_risk_agent": {
+      "fault_cases": 19,
+      "fault_successes": 14,
+      "defective_finishes": 0,
+      "clean_cases": 6,
+      "clean_successes": 6,
+      "lost_reference_successes": [],
+      "new_defects": [],
+      "successful_reference_action_changes": [],
+      "neural_queries": 104468,
+      "boundary_queries": 2862,
+      "agent_requests": 88,
+      "wall_guard_findings": [
+        {
+          "case": [
+            "bedslinger",
+            "mug",
+            "under_extrusion",
+            1004,
+            "neural_risk_agent"
+          ],
+          "findings": [
+            {
+              "layer": 101,
+              "thickness_mm": 0.96,
+              "hard_thin_excess": 0.03139541425376802
+            }
+          ]
+        }
+      ],
+      "passes": true
+    }
+  },
+  "source_sha256": "11c7762975bd91dd45635c4a011a70eda9842ec528658c4f81bbf270da7f42bb",
+  "camera_consistency": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "checked_rows": 104,
+    "unchecked_legacy_rows": 0,
+    "recorded_frames": 10820,
+    "paired_cases": 25,
+    "compared_frames": 8217
+  },
+  "limitation": "Consumed targeted development/preservation only. Preventing a defective finish is not a recovered successful print. No full-grid or fresh-test superiority and no automatic broad run or promotion."
+}

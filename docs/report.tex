@@ -2234,11 +2234,59 @@ adaptation, while both guarded variants stop at layer 101 without adapting.
 All 510 common camera frames match. Qwen reviews one control correction;
 guarded variants have no eligible plan and make no call.
 
-The 50 retained regression rows are running in
-\code{neural-recovery:observed-wall-v62}. Every earlier success and its action
-sequence, all clean controls and zero defective finishes are required. Physics
-and functional rules remain unchanged. Stopping a defective finish is not a
-recovered print; no new recovery rate or overall superiority is established.
-Fresh seeds 2001--2004 remain untouched.
+The 50 retained regression rows complete in
+\code{neural-recovery:observed-wall-v62}. Each variant preserves all 14/19 fault
+successes and all six clean controls, with unchanged successful action sequences.
+Defective finishes fall from one to zero. Qwen makes 88 actual preservation
+requests and ties neural-only. All 8,217 common camera frames in the complete
+comparison match. Physics and functional rules remain unchanged. Stopping a
+defective finish is not another recovered print. Fresh seeds 2001--2004 remain
+untouched; this selected comparison does not establish overall superiority.
+
+\clearpage
+\section{Current verdict: reliability progress, no new recovery gain}
+The observed-wall guard passes all 54 new controller runs, including paired
+controls and fifty preservation rows. It prevents the known defective finish
+without losing an earlier success. The number of successful recoveries does not
+increase. This is a verified reliability improvement on selected consumed cases;
+the strongest prior method and fresh benchmark still have to be beaten overall.
+
+\subsection*{Direct image guidance does not fix the camera}
+Two further spatial heads receive the current and previous camera images and
+commanded mask already supplied to the base network. Their 37 and 305 parameters
+reduce average boundary error to 0.089590 and 0.089083 mm, versus 0.093104 mm for
+the exactly reproduced control. Both fail the seven-frame functional screen.
+The linear head detects one missed defect but restores false leaks on good mugs
+and loses another alarm. The nonlinear head keeps the four good onsets valid but
+misses all three selected defects. Neither enters recovery evaluation.
+
+The source passes 249 repository tests, with three optional modules skipped,
+and 54 focused Torch/training checks. These checks establish implementation
+consistency; they do not turn a rejected checkpoint into a qualified policy.
+
+\subsection*{The remaining errors include wall width, not only gaps}
+Two missed defects have closed actual walls, with hard-thin excesses 0.030402 and
+0.036836. The unchanged cutoff is 0.03. The third case is both open and too thin.
+The original camera's overall alarms on the first two are correct even though
+its predicted open-wall component is wrong. Merely encouraging closed contours
+therefore cannot resolve all functional errors.
+
+The earlier extra training weights focus on material roughly 0.3 mm thick.
+The physical hard-wall limits are 0.96 mm for mugs and 0.84 mm for cups. A training-only
+label helper uses that existing physical scale, marks both sides of the thin
+boundary and retains every previous critical-positive label. A focused label
+suite passes 22 tests. No new weighted model has been trained yet.
+
+The first label audit stops because its replay wrapper omits the original
+dataset's intermediate float32 rounding. One target pixel differs by
+0.000244140625 mm. The original recipe reproduces it exactly. A separately frozen
+audit restores the documented per-dataset recipes, then exposes an invalid
+derived polygon opening at row 5291. Repairing that opening changes its area by
+only $2.27\times10^{-13}$ mm$^2$; larger changes are rejected. A third audit
+completes with exact agreement on all 7,104 targets and augmented geometries.
+Its 587,576 training labels retain all 31,738 old critical-positive labels;
+validation labels remain audit-only. Stored data, camera inputs and functional
+thresholds are unchanged.
+Fresh seeds 2001--2004 remain untouched; the overall improvement goal is still open.
 
 \end{document}

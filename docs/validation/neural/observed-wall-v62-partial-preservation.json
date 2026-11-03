@@ -1,0 +1,47 @@
+{
+  "status": "partial",
+  "snapshot_utc": "2026-11-03T11:37:24.337372+00:00",
+  "source_sha256": "11c7762975bd91dd45635c4a011a70eda9842ec528658c4f81bbf270da7f42bb",
+  "completed_jobs": [
+    "candidate-shift-recoveries",
+    "candidate-under-recovery",
+    "candidate-mug-gain",
+    "cup-collapse",
+    "cup-shift",
+    "corexy-mug-gains",
+    "bedslinger-mug-gain",
+    "new-defects-1002",
+    "defects-1004",
+    "historical-cup",
+    "historical-mug"
+  ],
+  "checked_rows": 32,
+  "remaining_rows": 18,
+  "lost_reference_successes": [],
+  "successful_reference_action_changes": [],
+  "defects": 0,
+  "agent_requests": 73,
+  "camera_consistency": {
+    "version": 1,
+    "algorithm": "sha256-128",
+    "checked_rows": 64,
+    "unchecked_legacy_rows": 0,
+    "recorded_frames": 7208,
+    "paired_cases": 16,
+    "compared_frames": 5406
+  },
+  "audits": {
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/candidate-shift-recoveries/audit/audit.json": "ae32cf8db064fc5fc87b59bdf6bd02730e779d7eca8636efecba4d595e0db25d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/candidate-under-recovery/audit/audit.json": "8b855179aa61f429257982635dbe80d1651a947fd5a68eb73a3e0ee19c985f00",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/candidate-mug-gain/audit/audit.json": "1981dbdcc794cf85350f5a683829c9aa4ef36e77c87504bcf5c483f2141cd25f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/cup-collapse/audit/audit.json": "25487b44682c9129c6dbcf4628409199e4d7275fd591211fc788096314e4f71d",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/cup-shift/audit/audit.json": "f531037a9c6c33b8ed5fc0d8bff1f251934c5e81d5311ec82af7d53058d562c6",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/corexy-mug-gains/audit/audit.json": "b42928f6b32a679f269a43c9a60040d50c605b9aa3e22bd62dc61c7290b43e3e",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/bedslinger-mug-gain/audit/audit.json": "e623c51e96bbe6032ce0e11bac039854914fea350d625b341dac5d7aa2e7efc3",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/new-defects-1002/audit/audit.json": "32b3970bc6037e6ec187f297aef26c12a0645ef2db8edaceeed90f542fa6bee5",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/defects-1004/audit/audit.json": "fabd6299457fc02ea2d5249613a4ce60d11aa9eb6239db7fcb8bd68d5e490961",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/historical-cup/audit/audit.json": "eff99d01295cc63017091473667544dd48b68b2d6143198dfb00b7b98fc5960f",
+    "/mnt/data/ishaan/hri-workspace/failure-detection/neural-observed-wall-v62/historical-mug/audit/audit.json": "e91840728a2edc1901994acf7cb8a1586057d94c70f5a28036b86b1c2481b9e8"
+  },
+  "limitation": "Partial preservation only. Remaining jobs and final comparison are required; no new recovery success rate is established."
+}

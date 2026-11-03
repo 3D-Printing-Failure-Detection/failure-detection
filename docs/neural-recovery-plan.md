@@ -928,8 +928,8 @@ original-design comparison after a command change, immutable history, disabled
 behavior, blocked damped fallback, and missing or bypassed audit evidence.
 All 246 repository tests pass, with three optional modules skipped.
 
-`observed-wall-v62` is running in `neural-recovery:observed-wall-v62`. Its first
-four actual controller runs pass. Both disabled controls reproduce the earlier
+`observed-wall-v62` completes in `neural-recovery:observed-wall-v62` with exit 0.
+Its first four actual controller runs pass. Both disabled controls reproduce the earlier
 defective finish, one adaptation and identical action layers. Both enabled
 variants stop at layer 101 with zero adaptations, reporting the original neural
 camera's 0.031395 hard-thin excess. All 510 common camera frames match across
@@ -937,11 +937,78 @@ the four new and two retained reference rows. Qwen makes one accepted call on
 the unguarded control; guarded variants have no eligible plan and make no call.
 The guard prevents a defective finish without establishing agent-added success.
 
-The 50 retained v51 rows are now running. Every earlier success and its action
-sequence must remain, all six clean controls per variant must pass, and defective
-finishes must fall to zero. Actual temporal, camera and accepted Qwen inference
-remain required. The physical/specification contract is unchanged. Preservation
-is still unproven; this targets defective finishes, not a new recovery success rate.
+All 50 retained v51 rows also pass the completed preservation comparison. Each
+variant retains all 14/19 fault successes, their successful action sequences,
+and all six clean controls. Defective finishes fall from one to zero. Each makes
+104,468 temporal and 2,862 camera queries; the agent variant makes 88 actual Qwen
+requests and ties neural-only. Across the complete paired and preservation
+comparison, all 8,217 common camera frames match. The physical/specification
+contract is unchanged. These 54 new selected runs establish preservation and
+removal of the known bad finish, not another recovery or a fresh success rate.
+
+### Direct image guidance does not preserve functional decisions
+
+`guided-refinement-v63` gives the spatial head the same current/prior camera
+images and commanded mask already available to the frozen base. Each image
+pixel is repeated at its native output parent coordinates; no new observation,
+truth input or physical threshold is introduced. Strict checkpoint metadata and
+export tests cover linear and nonlinear heads, both inference precisions, seams,
+edge crops and exact identity behavior. The optional heads have 37 and 305
+parameters; older checkpoints and heads retain their existing interpretation.
+
+The old control reproduces exactly. Guided linear and nonlinear boundary errors
+are 0.089590 and 0.089083 mm, versus 0.093104 mm for the control. Both nonetheless
+fail the seven-frame screen. The linear head detects one previously missed defect
+but restores false leak alarms on both good mugs and loses another true alarm.
+The nonlinear head keeps the four good onsets valid but misses all three selected
+defects. Every control feature record and twelve identity checks reproduce.
+Neither head proceeds to full-print diagnostics, broad camera validation or
+recovery. No successful-print improvement follows from the lower average error.
+
+Component evidence distinguishes the remaining errors: the actual walls at
+group 410/bedslinger/layer 56 and group 417/bedslinger/layer 32 are closed, with
+hard-thin excesses 0.030402 and 0.036836. Group 420/CoreXY/layer 88 is both open
+and hard-thin, with excess 0.043660. The original camera's alarms on the first
+two cases use incorrect open-wall predictions, although their overall fatal
+verdict is correct. Preserving closure alone therefore cannot fix the problem.
+
+### Aligning supervision with the existing wall limit
+
+The earlier critical-positive labels use a 0.15 mm opening radius, focusing on
+material roughly 0.3 mm thick. The unchanged hard wall criterion uses
+`0.6 * min_wall_mm`: 0.96 mm for mugs and 0.84 mm for cups, corresponding to
+opening radii of 0.48 and 0.42 mm.
+The new training-only helper finds additional thin material at this physical
+scale relative to the original nominal shape, adds a 0.15 mm boundary band and
+unions every old critical-positive label. Both positive and negative targets
+near the boundary are included so a future loss can supervise wall width.
+This changes neither camera inputs nor physical scoring. Mixed-sign training
+weights have not yet been implemented or evaluated.
+
+`functional-band-v64` stops on an exact target replay check at row 1. The
+audit wrapper used the augmentation dataset's direct float64-to-float16 cast
+for original tiles, which were built through an intermediate float32 cast.
+One pixel differs by 0.000244140625 mm. The original builder reproduces the stored
+target exactly. The failed run remains frozen; `functional-band-v65` separately
+replays each dataset's documented recipe without altering a target or relaxing
+equality. That run reaches row 5291 before a separate geometry failure: a valid
+deposit produces a self-intersecting morphological opening. Repairing only this
+derived opening changes its area by -2.27e-13 mm2; the original geometry and
+targets are untouched. The helper rejects any repair exceeding a relative
+1e-9 area tolerance (with a 1 mm2 denominator floor). A compact fixture preserves
+the actual failing geometry. `functional-band-v66` completes the full audit
+with this repair and exit 0. All 7,104 target rows and every augmented geometry
+hash match exactly. The 587,576 training labels include 302,890 positive,
+284,658 negative and 28 zero targets; all 31,738 old critical-positive labels
+remain. The 158,642 validation labels are audit-only. No model has yet been
+trained with this new supervision.
+
+The current source passes 249 repository tests, with three optional modules
+skipped, plus 54 focused Torch/training checks. The new physical-band helper
+passes its focused 22-test label suite, including the numerical overlay
+regression. The completed wall-guard preservation result is recorded above.
+Fresh seeds 2001--2004 are untouched; neither selected preservation nor these
+camera experiments establish overall superiority.
 
 ## Preserving historical container rescues
 

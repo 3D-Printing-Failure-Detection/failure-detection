@@ -1,0 +1,4 @@
+{
+  "status": "failed",
+  "error": "GEOSException('TopologyException: found non-noded intersection between LINESTRING (-19.3808 -11.6248, -18.7936 -12.552) and LINESTRING (-19.3808 -11.6248, -18.7936 -12.552) at -18.901076341895362 -12.382237471033841')"
+}

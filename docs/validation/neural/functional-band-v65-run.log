@@ -1,0 +1,41 @@
+{"verified_rows": 240, "total": 7104}
+{"verified_rows": 480, "total": 7104}
+{"verified_rows": 720, "total": 7104}
+{"verified_rows": 960, "total": 7104}
+{"verified_rows": 1200, "total": 7104}
+{"verified_rows": 1440, "total": 7104}
+{"verified_rows": 1680, "total": 7104}
+{"verified_rows": 1920, "total": 7104}
+{"verified_rows": 2160, "total": 7104}
+{"verified_rows": 2400, "total": 7104}
+{"verified_rows": 2640, "total": 7104}
+{"verified_rows": 2880, "total": 7104}
+{"verified_rows": 3120, "total": 7104}
+{"verified_rows": 3360, "total": 7104}
+{"verified_rows": 3600, "total": 7104}
+{"verified_rows": 3840, "total": 7104}
+{"verified_rows": 4080, "total": 7104}
+{"verified_rows": 4320, "total": 7104}
+{"verified_rows": 4560, "total": 7104}
+{"verified_rows": 4800, "total": 7104}
+{"verified_rows": 5040, "total": 7104}
+{"verified_rows": 5280, "total": 7104}
+Traceback (most recent call last):
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-band-v65/run.py", line 137, in <module>
+    main()
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-band-v65/run.py", line 101, in main
+    bands[i, 0] = functional_boundary_band(actual, nominal[index].region, part.spec,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-band-v65/source/tools/boundary_functional_band.py", line 30, in functional_boundary_band
+    band = thin(region).difference(thin(nominal)).buffer(margin_mm, quad_segs=4)
+           ^^^^^^^^^^^^
+  File "/mnt/data/ishaan/hri-workspace/failure-detection/neural-functional-band-v65/source/tools/boundary_functional_band.py", line 28, in thin
+    return shape.difference(opened)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ishaan/failure-detection/.venv/lib/python3.12/site-packages/shapely/decorators.py", line 184, in wrapper
+    result = func(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ishaan/failure-detection/.venv/lib/python3.12/site-packages/shapely/geometry/base.py", line 685, in difference
+    return shapely.lib.difference_scalar(self, other)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+shapely.errors.GEOSException: TopologyException: found non-noded intersection between LINESTRING (-19.3808 -11.6248, -18.7936 -12.552) and LINESTRING (-19.3808 -11.6248, -18.7936 -12.552) at -18.901076341895362 -12.382237471033841

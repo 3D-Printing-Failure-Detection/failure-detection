@@ -1,0 +1,28 @@
+{
+  "snapshot_utc": "2026-11-03T11:41:07.645443+00:00",
+  "repository": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MUJOCO_GL=egl .venv/bin/python -m pytest -q",
+    "passed": 249,
+    "skipped": 3,
+    "seconds": 28.82
+  },
+  "focused_labels": {
+    "passed": 22,
+    "seconds": 0.39,
+    "modules": [
+      "tests/test_boundary_functional_band.py",
+      "tests/test_boundary_critical_material.py",
+      "tests/test_boundary_training_augmentation.py"
+    ]
+  },
+  "focused_torch_receipt": "guided-refinement-v63-tests.json",
+  "source_sha256": {
+    "recovery/models/boundary.py": "33dc7e21fd0c129673929cb2b49a61d88d152b6447efec322d201245ba855673",
+    "tools/train_boundary_refinement.py": "c9b7d5097c616b6892b697456b27085532e772e6a2c52b03333e197682272fa9",
+    "tools/boundary_functional_band.py": "a168d2a31034b92d07b45c129ae430df03b1bccdf2b40c10450e1be079631ebb",
+    "tests/test_boundary_refinement.py": "7cd6ff336250076f9c6839ed22b893e3bd51b9eff0f764ae3a8b60d5b10cc373",
+    "tests/test_boundary_functional_band.py": "ba5d828cb914f2d0c839bbcaf7d92cd7cd1239872ef6759c695290ed31738bcd",
+    "tests/fixtures/functional_band_overlay.json": "2ce0ac98ac0add67cc2e3352924104abcb9e1acc00c6fd02dd43d5fa59b07bca"
+  },
+  "limitation": "Implementation checks only. Guided heads are rejected, and new physical-band labels have not yet been used in training."
+}
