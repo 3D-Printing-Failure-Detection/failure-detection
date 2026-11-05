@@ -185,5 +185,10 @@ def calibrate_bed_camera(frames, pattern=(9, 6), square_mm=10.0, board_origin_mm
     ok, rvec, tvec = cv2.solvePnP(_board_points(pattern, square_mm, board_origin_mm), c, K, dist)
     if not ok:
         raise RuntimeError("pose estimation failed")
+    R, _ = cv2.Rodrigues(rvec)
+    if (-R.T @ tvec.reshape(3))[2] <= 0:
+        # corners were ordered along the other board axis, which mirrors the frame (z down)
+        raise RuntimeError("pose puts the camera below the bed: the board's corner order does not match "
+                           "bed X/Y. Rotate the flat board 90 degrees (or swap `pattern`) and retake the pose shot")
     print(f"intrinsics RMS reprojection error: {rms:.2f} px (aim for < 0.7)")
     return BedCamera(K, dist, rvec, tvec)

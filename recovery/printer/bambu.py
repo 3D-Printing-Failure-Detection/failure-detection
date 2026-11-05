@@ -12,15 +12,14 @@ Printer prerequisites: LAN mode on (and Developer mode, if your firmware has it,
 firmware restricts third-party control), the access code, the serial number, the printer's IP.
 
 THE RISKY PART -- changing the remaining layers. A running Bambu job cannot be edited, so
-`replace_remaining` has two modes (set `mode`), both to be proven on a scrap print in week 1:
-  "restart"  PAUSE -> STOP -> upload a self-contained 'resume' G-code (heats, no homing/leveling,
-             adapted layers, `M73 L<n>` so layer_num keeps counting) -> `gcode_file`.
-             Works only if the printer still knows its position after STOP. If it does not
-             (steppers released), supply `rehome_gcode` -- e.g. re-home XY and re-reference Z
-             at a bed corner away from the part. Never G28 over the part.
-  "stream"   (experimental) stays paused and sends the adapted layers line-by-line with
-             `gcode_line`, then STOPs the original job at the end. Whether the firmware accepts
-             motion via gcode_line while a job is paused is unverified.
+`replace_remaining` does PAUSE -> STOP -> upload a self-contained 'resume' G-code (heats, no
+homing/leveling, adapted layers, `M73 L<n>` so layer_num keeps counting) -> `gcode_file`.
+This works only if the printer still knows its position after STOP. If it does not (steppers
+released), supply `rehome_gcode` -- e.g. re-home XY and re-reference Z at a bed corner away
+from the part. Never G28 over the part. Prove it on a scrap print first.
+
+observe_only=True never sends a print command (pause, resume, stop, upload): use it for the
+first runs on a real printer (`python -m recovery.cli watch`) and for collecting real images.
 """
 import ftplib
 import json
@@ -40,6 +39,10 @@ from ..gcode import print_settings, write_layers
 from ..types import Layer
 
 FOOTER = "M104 S0\nM140 S0\nM84\n; end\n"
+
+
+class PrintEnded(RuntimeError):
+    """The job ended on the printer (stopped from the screen/app, or finished early)."""
 
 
 REHOME_PRESETS = {
@@ -162,6 +165,7 @@ class BambuCamera:
     def __init__(self, ip, code):
         self.ip, self.code = ip, code
         self.frame: Optional[np.ndarray] = None
+        self.frame_t = 0.0                # time.time() when `frame` arrived
         self._stop = False
         self._t = threading.Thread(target=self._run, daemon=True)
         self._t.start()
@@ -188,17 +192,18 @@ class BambuCamera:
                     jpg = self._recv(s, size)
                     if jpg[:2] == b"\xff\xd8" and jpg[-2:] == b"\xff\xd9":
                         self.frame = cv2.imdecode(np.frombuffer(jpg, np.uint8), cv2.IMREAD_COLOR)
+                        self.frame_t = time.time()
             except (OSError, ConnectionError, struct.error):
                 time.sleep(2)
 
     def grab(self, timeout=10.0, newer_than=None):
-        """Latest frame; if `newer_than` (time.time()) is given, wait for a frame after it."""
+        """Latest frame; if `newer_than` (a time.time() value) is given, wait for a frame that
+        arrived after it (the chamber camera streams only about 1 frame/s)."""
         t0 = time.time()
-        last = self.frame
         while time.time() - t0 < timeout:
-            if self.frame is not None and (newer_than is None or self.frame is not last):
-                time.sleep(0.2)
-                return self.frame.copy()
+            frame, ft = self.frame, self.frame_t
+            if frame is not None and (newer_than is None or ft > newer_than):
+                return frame.copy()
             time.sleep(0.1)
         raise TimeoutError("no camera frame (check LAN mode, access code, port 6000)")
 
@@ -207,12 +212,25 @@ class BambuCamera:
 
 
 class BambuPrinter:
+    # defaults for attributes added after the first version, so partially built printers
+    # (tests, BambuPrinter.__new__) behave like an acting printer
+    observe_only = False
+    skipped_layers = 0
+    _seen_running = False
+    _layer_done_t = 0.0
+    last_frame = None
+
     def __init__(self, ip, serial, code, planned: List[Layer], layer_h, bed_camera: BedCamera,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
-                 rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600):
+                 rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False):
         self.ip, self.code, self.plan, self.layer_h = ip, code, list(planned), layer_h
         if mode != "restart":
-            raise ValueError("stream mode lacks execution acknowledgements; use restart")
+            raise ValueError("only mode='restart' is supported")
+        self.observe_only = observe_only
+        self.skipped_layers = 0          # observe_only: layers that finished while we were busy
+        self._seen_running = False
+        self._layer_done_t = 0.0         # when the last finished layer was seen to finish
+        self.last_frame: Optional[np.ndarray] = None   # raw camera frame behind camera_image()
         self.printed: List[Layer] = []  # measured observations, not physical ground truth
         self.link = BambuLink(ip, serial, code)
         self.cam = BambuCamera(ip, code)
@@ -247,8 +265,23 @@ class BambuPrinter:
             state = self.link.get("gcode_state")
             if state == "FAILED":
                 raise RuntimeError("printer reports FAILED")
+            if state == "RUNNING":
+                self._seen_running = True
+            elif state == "IDLE" and self._seen_running:
+                raise PrintEnded("the job was stopped on the printer (state IDLE)")
             reported = self._layer_num()
-            if reported > self._layer + 2 or (state == "FINISH" and self._layer != self.n_total - 1):
+            if reported > self._layer + 2 and self.observe_only:
+                # we were busy while layers finished: skip ahead instead of failing
+                n = reported - 2 - self._layer
+                self.printed.extend(self.plan[self._layer:self._layer + n])
+                self._layer += n
+                self.skipped_layers += n
+            if state == "FINISH" and self._layer != self.n_total - 1:
+                if self.observe_only:
+                    raise PrintEnded(f"the printer finished at our layer {self._layer} of {self.n_total} "
+                                     "(does the parsed layer count match total_layer_num?)")
+                raise RuntimeError("missed completed layers; cannot reconstruct them from the latest frame")
+            if reported > self._layer + 2:
                 raise RuntimeError("missed completed layers; cannot reconstruct them from the latest frame")
             if reported == self._layer + 2 or state == "FINISH":
                 break
@@ -258,9 +291,11 @@ class BambuPrinter:
         self.printed.append(self.plan[self._layer])
         self._layer += 1
         time.sleep(self.settle)          # head parks (timelapse 'traditional') and the image settles
+        self._layer_done_t = time.time()
 
     def camera_image(self):
-        frame = self.cam.grab()
+        frame = self.cam.grab(newer_than=self._layer_done_t)     # never a frame from mid-layer
+        self.last_frame = frame
         z = self.plan[self._layer - 1].z
         return self.bed_cam.top_down(frame, z, self.origin)
 
@@ -270,24 +305,24 @@ class BambuPrinter:
     def record_measurement(self, layer: Layer):
         self.printed[-1] = layer
 
+    def _command_allowed(self, what):
+        if self.observe_only:
+            raise RuntimeError(f"observe_only: refusing to {what} the printer")
+
     def pause(self):
+        self._command_allowed("pause")
         self.link.command("pause")
         if not self.link.wait_state({"PAUSE"}, timeout=60):
             raise TimeoutError("printer did not acknowledge pause")
 
     def resume(self):
+        self._command_allowed("resume")
         self.link.command("resume")
 
     def replace_remaining(self, layers: List[Layer]):
+        self._command_allowed("replace the remaining layers of")
         keep = self._layer
         gc = resume_gcode(layers, self.layer_h, keep, self.origin, self.nozzle, self.bed, self.rehome)
-        if self.mode == "stream":
-            lines = [l for l in gc.splitlines() if l and not l.startswith(";")]
-            for i in range(0, len(lines), 20):
-                self.link.command("gcode_line", "\n".join(lines[i:i + 20]))
-                time.sleep(0.2)
-            self.link.command("stop")
-            return
         self._restart(gc, keep, layers)
 
     def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2):
@@ -326,6 +361,7 @@ class BambuPrinter:
         self.resumed_at = keep
 
     def cancel(self):
+        self._command_allowed("stop")
         self.cancelled = True
         self.link.command("stop")
 
