@@ -37,13 +37,22 @@ park, press a flat tool (spatula, screwdriver shaft) into the **top edge** of th
 resume. **Safety:** the nozzle is about 220 °C and the bed about 60 °C: use a tool, never fingers,
 and keep clear of the nozzle.
 
-During runs 2 and 3, run `watch` from the repo (`main-with-stresstest`) so we get frames before and
-after the dent:
+During runs 2 and 3, run `watch` from the repo (branch `test-parts` or `main-with-stresstest`).
+**What `watch` does:** after each layer it grabs a frame from the printer's camera, compares it
+with what the sliced file says that layer should look like, and logs whether it looks off and
+what our system *would* do (continue or scrap). It **never pauses, stops or changes the print**.
+Start the print normally from Bambu Studio, then in a terminal:
 
 ```bash
-python -m recovery.cli check-gcode two-hole-block.gcode.3mf
-python -m recovery.cli watch --gcode two-hole-block.gcode.3mf --ip IP --serial SERIAL --code CODE --calib calib.npz
+python -m recovery.cli check-gcode two-hole-block.gcode.3mf      # does our parser read the file?
+python -m recovery.cli watch --gcode two-hole-block.gcode.3mf --ip IP --serial SERIAL --code CODE
 ```
+
+- IP, serial and the 8-character access code are on the printer screen (*Settings → WLAN/General*),
+  with **LAN Only Mode** on. See step 1 of the main README.
+- Without a `--calib calib.npz` (camera calibration) it saves raw frames and layer timing only,
+  which is fine for these runs. Ctrl-C stops watching; the print is not affected.
+- Output: `results/watch/<time>/` with `layers.jsonl` (one line per layer), `meta.json`, `frames/`.
 
 ## Check each finished part
 
