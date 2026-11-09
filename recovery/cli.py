@@ -10,6 +10,7 @@
   stress    FE stress-test the part about to be printed (optionally with an injected failure)
   slice     cross-section an STL into layers and write G-code (no slicer needed)
   check-gcode  offline: what the parser makes of a sliced file (markers, layers, outline rebuild)
+  agent     agentic monitoring: pause on alarm, function check, decider recommends, a person approves
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
   watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
@@ -87,6 +88,8 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    from .agent.cli import add_arguments as agent_arguments
+    agent_arguments(sub.add_parser("agent"))
     cg = sub.add_parser("check-gcode")
     cg.add_argument("file", help="Bambu Studio .gcode.3mf or a plain .gcode")
     cg.add_argument("--plate", type=int, default=1)
@@ -177,6 +180,10 @@ def main(argv=None):
     if a.cmd == "calibrate":
         from .live import calibrate
         calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        return
+    if a.cmd == "agent":
+        from .agent.cli import main as agent_main
+        agent_main(a)
         return
     if a.cmd == "check-gcode":
         from .gcode import inspect_gcode
