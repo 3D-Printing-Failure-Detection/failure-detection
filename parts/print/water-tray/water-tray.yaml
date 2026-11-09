@@ -1,0 +1,18 @@
+# Test part 2: 30 x 20 x 12 mm open tray, 1.2 mm walls and floor (about 2.5 g of PLA, holds ~5 ml).
+# Function: holds water. A wall pushed in but still closed only changes the form (and slightly the
+# capacity); a wall broken open leaks. So the dent tests severity, not location.
+# Datums: A = bottom face (on the bed), B = long front face, C = left end face.
+# Kept out of parts/*.yaml on purpose, so the simulation benchmarks' default part list is unchanged.
+# For `watch`, use the Bambu Studio export instead:  --gcode water-tray.gcode.3mf
+name: water-tray
+height: 12
+layer_h: 0.2
+geometry:
+  - add: {rect: {size: [30, 20]}}
+  - cut: {rect: {size: [27.6, 17.6]}, z: [1.2, 12]}
+# --- function spec ---
+container:
+  base_h: 1.2                        # solid floor up to here
+  capacity_mm3: [4200, 6300]         # nominal 5246 mm3 (5.2 ml); a dent that loses >20% fails
+description: A small tray that must hold water without leaking.
+material: PLA

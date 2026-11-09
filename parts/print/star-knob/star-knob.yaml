@@ -1,0 +1,17 @@
+# Test part 3: 4-lobe knob, 31 mm across, 8 mm tall, hex hole straight through for a pressed-in
+# M5 nut (about 3 g of PLA). Function: the nut sits in the hex and a bolt threaded through it can be
+# turned by hand. A dented lobe only changes the form; a dent in a valley (where the wall outside
+# the hex is only ~2.3 mm) narrows the hex and the nut no longer fits.
+# The hex goes all the way through so the existing `holes` rule can check it: the largest circle
+# that fits a hexagon is its across-flats size. (A partial-depth pocket would need a new rule.)
+# Geometry comes from the STL (tools/make_star_knob.py), centred on the hex.
+# For `watch`, use the Bambu Studio export instead:  --gcode star-knob.gcode.3mf
+name: star-knob
+layer_h: 0.2
+stl: star-knob.stl
+# --- function spec ---
+holes:
+  # M5 nut: 8.0 mm across flats; designed at 8.2 so a slightly small print still press-fits
+  - {center: [0, 0], diameter: [8.0, 8.6], tol_center: 1.0}
+description: A thumb knob holding an M5 nut, turned by hand to tighten a bolt.
+material: PLA
