@@ -1,4 +1,4 @@
-"""Write the STL for the first real-printer test part: a 50 x 10 x 20 mm block with two
+"""Write the STL for the first real-printer test part: a 42 x 10 x 12 mm block with two
 vertical M5 clearance holes 30 mm apart (parts/print/two-hole-block/).
 
   python tools/make_two_hole_block.py
@@ -11,7 +11,7 @@ from pathlib import Path
 import trimesh
 from shapely.geometry import Point, box
 
-LENGTH, WIDTH, HEIGHT = 50.0, 10.0, 20.0
+LENGTH, WIDTH, HEIGHT = 42.0, 10.0, 12.0     # about 3 g of PLA
 HOLE_D, PITCH = 5.5, 30.0                 # ISO 273 medium clearance for M5
 
 OUT = Path(__file__).resolve().parent.parent / "parts" / "print" / "two-hole-block" / "two-hole-block.stl"
