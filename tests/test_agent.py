@@ -92,3 +92,31 @@ def test_real_run_refuses_auto_approve():
     with pytest.raises(SystemExit, match="sim only"):
         main(["agent", "--part", "parts/print/two-hole-block/two-hole-block.yaml", "--gcode", "x.gcode.3mf",
               "--ip", "1", "--serial", "s", "--code", "c", "--auto-approve"])
+
+
+def test_reply_parser_ignores_a_thinking_block():
+    from recovery.agent.deciders import parse_reply
+    text = '<think>maybe {"action": "resume"} ... no</think>\n{"action": "stop", "reason": "hole too small"}'
+    assert parse_reply(text) == {"action": "stop", "reason": "hole too small"}
+
+
+def test_auto_chain_without_key_or_server_falls_back_to_rules(monkeypatch):
+    from recovery.agent.cli import OPTIONS, SAMPLE, make_decider
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    dec = make_decider("auto", endpoint="http://127.0.0.1:9")      # nothing listens there
+    out = dec.decide(SAMPLE, OPTIONS)
+    assert out["action"] == "stop" and out["source"] == "local:qwen3:1.7b->rules"
+    assert "error" in dec.full_transcript[0]
+
+
+def test_claude_failure_falls_back_to_local_then_rules(monkeypatch):
+    from recovery.agent.deciders import LLMDecider
+
+    def broken(system, user):
+        raise RuntimeError("no credits")
+    local = LLMDecider(lambda s, u: '{"action": "resume", "reason": "cosmetic"}', name="local")
+    dec = LLMDecider(broken, name="claude", fallback=local)
+    from recovery.agent.cli import OPTIONS, SAMPLE_OK
+    out = dec.decide(SAMPLE_OK, OPTIONS)
+    assert out["action"] == "resume" and out["source"] == "claude->local"
+    assert [r["decider"] for r in dec.full_transcript] == ["claude", "local"]

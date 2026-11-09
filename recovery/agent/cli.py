@@ -5,17 +5,19 @@
   real P1S:               agent --part parts/print/two-hole-block/two-hole-block.yaml \
                                 --gcode two-hole-block.gcode.3mf --ip IP --serial SERIAL --code CODE \
                                 --calib calib.npz
-Decider: --decider rules (default) | claude (needs ANTHROPIC_API_KEY, --model) |
-         openai (any OpenAI-compatible server, e.g. llama.cpp/Ollama: --endpoint, --model).
+Decider: --decider rules (default) | local (Qwen on Ollama, or any OpenAI-compatible server) |
+         claude (ANTHROPIC_API_KEY) | auto (Claude if a key is set, then local, then rules).
+Check a model before a print:  python -m recovery.cli llm-check --decider local
 """
 import json
 import os
-import urllib.request
+import time
 
 import yaml
 
 from ..parts import Part, get_part
-from .deciders import LLMDecider, RuleDecider
+from ..loop.llm import MODEL as CLAUDE_MODEL
+from .deciders import LLMDecider, RuleDecider, openai_complete
 from .gate import ActionGate, AutoApprover, TerminalApprover
 from .loop import run_agent
 from .tools import PrinterTools
@@ -36,37 +38,74 @@ def add_arguments(p):
     p.add_argument("--at-layer", type=int, default=None, help="sim: layer of the dent (default: half height)")
     p.add_argument("--seed", type=int, default=1)
     p.add_argument("--models", default="classical", choices=["classical", "torch"])
-    p.add_argument("--decider", default="rules", choices=["rules", "claude", "openai"])
-    p.add_argument("--model", default=None, help="model id for --decider claude/openai")
-    p.add_argument("--endpoint", default="http://127.0.0.1:8080", help="--decider openai: server URL")
+    add_decider_arguments(p)
     p.add_argument("--no-auto-pause", action="store_true", help="ask before pausing, keep printing meanwhile")
     p.add_argument("--auto-approve", action="store_true", help="sim only: accept every recommendation")
     p.add_argument("--out", default="results/agent")
 
 
-def make_decider(kind, model=None, endpoint=None):
+def add_decider_arguments(p):
+    p.add_argument("--decider", default="rules", choices=["rules", "local", "claude", "auto"])
+    p.add_argument("--local-model", default="qwen3:1.7b", help="local model (Ollama tag), e.g. qwen3:1.7b (~1.4 GB) "
+                   "or qwen3:8b (~5 GB, better) on 16 GB machines")
+    p.add_argument("--endpoint", default="http://127.0.0.1:11434", help="local OpenAI-compatible server")
+    p.add_argument("--claude-model", default=CLAUDE_MODEL)
+
+
+def _claude_complete(model):
+    import anthropic
+    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+    def complete(system, user):
+        msg = client.messages.create(model=model, max_tokens=400, system=system,
+                                     messages=[{"role": "user", "content": user}])
+        return msg.content[0].text
+    return complete
+
+
+def make_decider(kind, local_model="qwen3:1.7b", endpoint="http://127.0.0.1:11434", claude_model=CLAUDE_MODEL):
+    """rules; local -> rules; claude -> rules; auto: claude (if a key is set) -> local -> rules."""
     if kind == "rules":
         return RuleDecider()
-    if kind == "claude":
-        import anthropic
-        client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-        if not model:
-            raise SystemExit("--decider claude needs --model (a Claude model id)")
+    local = LLMDecider(openai_complete(endpoint, local_model), name=f"local:{local_model}")
+    if kind == "local":
+        return local
+    if kind == "auto" and not os.environ.get("ANTHROPIC_API_KEY"):
+        return local
+    return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}",
+                      fallback=local if kind == "auto" else None)
 
-        def complete(system, user):
-            msg = client.messages.create(model=model, max_tokens=400, system=system,
-                                         messages=[{"role": "user", "content": user}])
-            return msg.content[0].text
-        return LLMDecider(complete)
 
-    def complete(system, user):                    # OpenAI-compatible chat completions
-        body = dict(model=model or "local", temperature=0,
-                    messages=[dict(role="system", content=system), dict(role="user", content=user)])
-        req = urllib.request.Request(endpoint.rstrip("/") + "/v1/chat/completions", json.dumps(body).encode(),
-                                     {"Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=120) as r:
-            return json.loads(r.read())["choices"][0]["message"]["content"]
-    return LLMDecider(complete)
+# a situation like the one the agent sends after a dent next to a hole (the right answer: stop)
+SAMPLE = dict(observation=dict(layer=29, z=6.0, label="function_risk", deviation_mm=0.45, paused=True),
+              function_if_continue=dict(continue_ok=False, features=[
+                  dict(feature="layers supported by the layer below", ok=True, detail=""),
+                  dict(feature="hole at [-15, 0] (dia 5.1-6.0 mm)", ok=True, detail=""),
+                  dict(feature="hole at [15, 0] (dia 5.1-6.0 mm)", ok=False,
+                       detail="hole at [15, 0] diameter 4.7 outside [5.1, 6.0]")]),
+              cost=dict(filament_used_mm=929, filament_total_mm=1858, fraction_done=0.5))
+SAMPLE_OK = dict(SAMPLE, observation=dict(SAMPLE["observation"], label="under_extrusion", deviation_mm=2.1),
+                 function_if_continue=dict(continue_ok=True, features=[
+                     dict(f, ok=True, detail="") for f in SAMPLE["function_if_continue"]["features"]]))
+OPTIONS = [dict(id="resume", effect="keep printing the original plan"),
+           dict(id="stop", effect="stop the print; it is scrapped and must be restarted")]
+
+
+def llm_check(a):
+    """Two canned alarms (one cosmetic, one that breaks a hole) through the chosen decider."""
+    dec = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model)
+    right = 0
+    for name, sit, want in (("cosmetic dent", SAMPLE_OK, "resume"), ("hole narrowed", SAMPLE, "stop")):
+        t0 = time.time()
+        out = dec.decide(sit, OPTIONS)
+        ok = out["action"] == want
+        right += ok
+        print(f"{name:14s} -> {out['action']:6s} ({'right' if ok else 'WRONG, expected ' + want}) "
+              f"by {out['source']} in {time.time() - t0:.1f}s\n    reason: {out['reason']}")
+    used = {r.get("decider"): "error: " + r["error"] if "error" in r else "ok"
+            for r in getattr(dec, "full_transcript", [])}
+    print(f"{right}/2 right; model calls: {json.dumps(used)}")
+    return right
 
 
 def _spec_only(path):
@@ -102,7 +141,8 @@ def main(a):
     approver = AutoApprover() if a.auto_approve else TerminalApprover()
     gate = ActionGate(tools, approver, auto_pause=not a.no_auto_pause)
     try:
-        return run_agent(tools, make_decider(a.decider, a.model, a.endpoint), gate, out_dir=a.out)
+        return run_agent(tools, make_decider(a.decider, a.local_model, a.endpoint, a.claude_model), gate,
+                         out_dir=a.out)
     finally:
         if hasattr(printer, "close"):
             printer.close()

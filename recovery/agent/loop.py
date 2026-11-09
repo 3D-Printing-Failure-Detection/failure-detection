@@ -73,10 +73,11 @@ def run_agent(tools, decider, gate, out_dir="results/agent", regrow_mm=0.5, log=
             outcome = f"ended on the printer: {e}"
         except KeyboardInterrupt:
             outcome = "agent interrupted (the print itself is not affected)"
-    transcript = getattr(decider, "transcript", None)
+    transcript = getattr(decider, "full_transcript", None)
     if transcript:
         (run / "llm_transcript.json").write_text(json.dumps(transcript, indent=1, default=str))
-    summary = dict(outcome=outcome, layers=tools.pr.n_done, alarms=len(events), decider=decider.name)
+    summary = dict(outcome=outcome, layers=tools.pr.n_done, alarms=len(events), decider=decider.name,
+                   decided_by=[e["recommendation"]["source"] for e in events])
     (run / "summary.json").write_text(json.dumps(summary, indent=1))
     log(f"{outcome} after {tools.pr.n_done} layers, {len(events)} decision(s); see {run}")
     return dict(summary, run=str(run), events=events)
