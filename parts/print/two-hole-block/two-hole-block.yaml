@@ -1,0 +1,23 @@
+# First real-printer test part: 50 x 10 x 20 mm block, two vertical M5 clearance holes 30 mm apart.
+# Function: two M5 bolts on a 30 mm pattern pass through. The side walls next to each hole are
+# only 2.25 mm, so the same dent is cosmetic in the middle of the block (x = 0) but narrows a hole
+# when pushed in next to it (x = +-15). A shift that moves the holes also breaks the function.
+# Datums: A = bottom face (on the bed), B = long front face, C = left end face.
+# Kept out of parts/*.yaml on purpose, so the simulation benchmarks' default part list is unchanged.
+# For `watch`, use the Bambu Studio export instead:  --gcode two-hole-block.gcode.3mf
+name: two-hole-block
+height: 20
+layer_h: 0.2
+geometry:
+  - add: {rect: {size: [50, 10]}}
+  - cut: {circle: {center: [-15, 0], r: 2.75}}
+  - cut: {circle: {center: [15, 0], r: 2.75}}
+# --- function spec ---
+holes:
+  # diameter: an M5 bolt (5.0 mm) must pass; prints usually come out ~0.1-0.2 mm undersize
+  # tol_center: floating-fastener position tolerance (GD&T), T = H - F = 5.5 - 5.0 = 0.5 mm
+  #             diametral, i.e. 0.25 mm radial from true position
+  - {center: [-15, 0], diameter: [5.1, 6.0], tol_center: 0.25}
+  - {center: [15, 0], diameter: [5.1, 6.0], tol_center: 0.25}
+description: A spacer block clamped by two M5 bolts on a 30 mm pattern.
+material: PLA
