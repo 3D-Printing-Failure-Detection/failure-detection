@@ -219,6 +219,9 @@ class BambuPrinter:
     _seen_running = False
     _layer_done_t = 0.0
     last_frame = None
+    notify_pause = False             # dent tests: return "paused" at a pause planned in the slicer
+    _paused_by_us = False
+    _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
 
     def __init__(self, ip, serial, code, planned: List[Layer], layer_h, bed_camera: BedCamera,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
@@ -266,7 +269,10 @@ class BambuPrinter:
             if state == "FAILED":
                 raise RuntimeError("printer reports FAILED")
             if state == "RUNNING":
-                self._seen_running = True
+                self._seen_running, self._await_running = True, False
+            elif (state == "PAUSE" and self.notify_pause and not self._paused_by_us
+                  and not self._await_running):
+                return self._planned_pause()
             elif state == "IDLE" and self._seen_running:
                 raise PrintEnded("the job was stopped on the printer (state IDLE)")
             reported = self._layer_num()
@@ -293,6 +299,20 @@ class BambuPrinter:
         time.sleep(self.settle)          # head parks (timelapse 'traditional') and the image settles
         self._layer_done_t = time.time()
 
+    def _planned_pause(self):
+        """The printer stopped at a pause planned in the slicer. Bambu Studio puts it at the start of
+        a layer, so layer_num is assumed to be the layer about to print (CHECK on the first real
+        test: compare with the layer you set in Bambu Studio). Count everything before it as done."""
+        done = min(max(self._layer, self._layer_num() - 1), self.n_total)
+        self.printed.extend(self.plan[self._layer:done])
+        self._layer = done
+        self._layer_done_t = time.time()
+        return "paused"
+
+    def snapshot(self):
+        """Raw camera frame (as the camera sees it), newer than the last finished layer."""
+        return self.cam.grab(newer_than=self._layer_done_t)
+
     def camera_image(self):
         frame = self.cam.grab(newer_than=self._layer_done_t)     # never a frame from mid-layer
         self.last_frame = frame
@@ -311,12 +331,14 @@ class BambuPrinter:
 
     def pause(self):
         self._command_allowed("pause")
+        self._paused_by_us = True
         self.link.command("pause")
         if not self.link.wait_state({"PAUSE"}, timeout=60):
             raise TimeoutError("printer did not acknowledge pause")
 
     def resume(self):
         self._command_allowed("resume")
+        self._paused_by_us, self._await_running = False, True
         self.link.command("resume")
 
     def replace_remaining(self, layers: List[Layer]):

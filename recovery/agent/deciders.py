@@ -23,11 +23,14 @@ import time
 import urllib.request
 
 SYSTEM = """You supervise a 3D printer that just raised an alarm during a print. The print is
-paused (unless stated otherwise). You get the camera measurement, a per-feature function check of
-the finished part IF we simply continue, the filament cost, and the allowed actions.
+paused (unless stated otherwise). You get the measurement, a per-feature function check of the
+finished part IF we simply continue, possibly a correction (new remaining layers that start on the
+measured shape and return to the original) with its own function check, the filament cost, and the
+allowed actions.
 Goal: finish parts that still do their job even if they look different; stop parts that will not
 work, since every further layer wastes filament. A cosmetic deviation alone is never a reason to
-stop. Do not invent measurements; rely on the function check.
+stop. Prefer continuing over correcting when both keep every feature working (correcting replaces
+the print job, which is riskier). Do not invent measurements; rely on the function checks.
 Reply with JSON only: {"action": "<one allowed action id>", "reason": "<one or two sentences>"}"""
 
 
@@ -44,8 +47,13 @@ class RuleDecider:
         if report["continue_ok"]:
             return dict(action=go_on, reason="every functional feature still passes if we continue; "
                         "the deviation is cosmetic", source=self.name)
-        bad = [f"{f['feature']}: {f['detail']}" for f in report["features"] if not f["ok"]]
-        return dict(action="stop", reason="the finished part would fail: " + "; ".join(bad),
+        bad = "; ".join(f"{f['feature']}: {f['detail']}" for f in report["features"] if not f["ok"])
+        if "correct" in ids:
+            fade = situation["correction"]["fade_layers"]
+            back = f"returns to the original shape over {fade} layers" if fade else "keeps the new shape"
+            return dict(action="correct", reason=f"continuing would fail ({bad}); the correction starts on "
+                        f"the measured shape, {back}, and every feature passes", source=self.name)
+        return dict(action="stop", reason="the finished part would fail and no correction passes: " + bad,
                     source=self.name)
 
 

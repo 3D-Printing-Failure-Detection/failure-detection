@@ -31,7 +31,17 @@ Pause at layer 30 (Bambu Studio preview: right-click the "+" on the layer slider
 or pause from the printer screen at 6 mm), wait for the head to park, dent, resume.
 **Safety:** nozzle about 220 °C, bed about 60 °C: use a tool, never fingers.
 
-Run `watch` during runs 2 and 3 (what it does and how: see `../two-hole-block/README.md`):
+**With the agent (dent test):** add the pause in Bambu Studio at layer 31 and run the agent
+instead of pausing by hand. It waits for the pause, saves before/after frames, asks what you did,
+checks whether the tray will still hold water, and recommends resume, correct (new layers that
+return to the original wall) or stop, for you to approve. See `recovery/agent/README.md`:
+
+```bash
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --dent-test \
+    --pause-at-layer 30 --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
+```
+
+Without the agent, run `watch` during runs 2 and 3 (what it does and how: see `../two-hole-block/README.md`):
 
 ```bash
 python -m recovery.cli check-gcode water-tray.gcode.3mf

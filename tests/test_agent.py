@@ -52,7 +52,7 @@ def test_event_log_is_written(tmp_path):
     _, _, _, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path)
     lines = (tmp_path.glob("*/events.jsonl").__next__()).read_text().splitlines()
     ev = json.loads(lines[0])
-    assert set(ev) >= {"situation", "recommendation", "action", "frame"}
+    assert set(ev) >= {"situation", "recommendation", "action", "frames"}
 
 
 def test_llm_choice_is_used_when_valid(tmp_path):
@@ -80,7 +80,7 @@ def test_bad_llm_reply_falls_back_to_rules_visibly(tmp_path, reply):
 
 
 def test_person_can_override_the_recommendation(tmp_path):
-    answers = iter(["s"])                                      # recommendation is resume; person stops
+    answers = iter(["9", "2"])                                 # an invalid key, then [2] stop
     approver = TerminalApprover(ask=lambda prompt: next(answers), show=lambda *a: None)
     _, _, pr, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path, approver=approver)
     assert res["events"][0]["recommendation"]["action"] == "resume" and res["events"][0]["action"] == "stop"
@@ -120,3 +120,96 @@ def test_claude_failure_falls_back_to_local_then_rules(monkeypatch):
     out = dec.decide(SAMPLE_OK, OPTIONS)
     assert out["action"] == "resume" and out["source"] == "claude->local"
     assert [r["decider"] for r in dec.full_transcript] == ["claude", "local"]
+
+
+
+# ---------------------------------------------------------------- container dent test at a planned pause
+def _dent_test(change, tmp_path, decider=None, approver=None):
+    from recovery.agent.loop import DentTest
+    from recovery.agent.measure import ScriptedMeasure
+    from recovery.agent.rehearse import PlannedPauseSim
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    nom = p.layers()
+    pr = PlannedPauseSim(nom, None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, p, ClassicalSegmenter(), ClassicalDetector())
+    test = DentTest(person=lambda: pr.user_change(change), measure=ScriptedMeasure(change))
+    gate = ActionGate(tools, approver or AutoApprover(), log=lambda *a: None)
+    res = run_agent(tools, decider or RuleDecider(), gate, out_dir=str(tmp_path), dent_test=test, log=lambda *a: None)
+    return p, nom, pr, res
+
+
+@pytest.mark.parametrize("change, action, works", [
+    ("none", "resume", True),
+    ("dent 0 -10 1", "resume", True),          # cosmetic: continue as planned
+    ("dent 0 -10 3", "correct", True),         # next layer would hang in air: new layers fade back
+    ("dent 15 0 4", "correct", True),          # same on the right wall
+    ("poke 5 -10", "stop", None),              # wall open: already-printed layers cannot be fixed
+])
+def test_tray_dent_test_decides_once_and_the_part_ends_as_predicted(tmp_path, change, action, works):
+    p, nom, pr, res = _dent_test(change, tmp_path)
+    assert [e["action"] for e in res["events"]] == [action]            # the agent is asked exactly once
+    if works is None:
+        assert pr.cancelled and pr.n_done == 30
+    else:
+        truth = check(pr.printed, nom, p.spec, p.layer_h)               # the shape actually printed
+        assert res["outcome"] == "finished" and truth.ok, truth.violations
+
+
+def test_dent_test_saves_before_after_and_change_frames(tmp_path):
+    _, _, _, res = _dent_test("dent 0 -10 3", tmp_path)
+    ev = res["events"][0]
+    assert set(ev["frames"]) == {"before", "after", "change"}
+    assert ev["situation"]["observation"]["camera_change"]["changed_fraction"] > 0
+    assert ev["situation"]["correction"]["fade_layers"] and ev["options"] == ["resume", "correct", "stop"]
+
+
+def test_printed_layers_are_not_judged_for_hanging_over_air(tmp_path):
+    # a 3 mm bend of the printed top layers is not itself a failure; only new layers printed over it are
+    from recovery.agent.rehearse import PlannedPauseSim
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    pr = PlannedPauseSim(p.layers(), None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, p)
+    while tools.next_layer() != "paused":
+        pass
+    tools.believe_top(pr.user_change("dent 0 -10 3"))
+    report = tools.function_report(future=tools.correction()["layers"])
+    assert report["continue_ok"]
+
+
+def test_person_can_type_the_dent(tmp_path):
+    from recovery.agent.measure import ManualMeasure
+    answers = iter(["dent 0 -10", "dent 0 -10 3"])               # first answer is incomplete
+    shown = []
+    m = ManualMeasure(ask=lambda prompt: next(answers), show=shown.append)
+    from recovery.agent.rehearse import PlannedPauseSim
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    pr = PlannedPauseSim(p.layers(), None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, p)
+    while tools.next_layer() != "paused":
+        pass
+    new, described = m(tools)
+    assert described == "dent 0 -10 3" and len(new) == 5 and shown
+
+
+def test_bambu_reports_a_planned_pause_once():
+    import threading
+    from recovery.printer.bambu import BambuPrinter
+
+    class Link:
+        def __init__(self):
+            self.state, self.sent, self.lock = dict(gcode_state="PAUSE", layer_num=31), [], threading.Lock()
+
+        def get(self, k, d=None):
+            return self.state.get(k, d)
+
+        def command(self, *a):
+            self.sent.append(a)
+
+    pr = BambuPrinter.__new__(BambuPrinter)
+    pr.plan, pr.printed, pr.link, pr.notify_pause = [object()] * 60, [], Link(), True
+    pr._layer, pr._offset, pr.timeout, pr.settle, pr.cancelled = 29, 0, 1.0, 0.0, False
+    assert pr.print_layer() == "paused" and pr.n_done == 30            # layer 31 is about to print
+    pr.resume()
+    assert pr.link.sent == [("resume",)]
+    with pytest.raises(TimeoutError):                                   # still PAUSE in the report: not again
+        pr.print_layer()
