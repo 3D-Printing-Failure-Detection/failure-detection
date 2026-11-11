@@ -43,6 +43,8 @@ def add_arguments(p):
                    "after a person dents the part")
     p.add_argument("--pause-at-layer", type=int, default=None, help="dent test: the layer the pause is "
                    "before (sim: where to pause; real: must match the pause added in Bambu Studio)")
+    p.add_argument("--resume-test", action="store_true", help="at the planned pause, send the ORIGINAL "
+                   "remaining layers through stop -> upload -> start (no dent), to prove 'correct' works")
     p.add_argument("--measure", choices=["manual", "camera"], default="manual",
                    help="dent test: the person types the dent (default), or the top-down camera measures it")
     p.add_argument("--monitor", choices=["auto", "on", "off"], default="auto",
@@ -138,7 +140,7 @@ def main(a):
         from .rehearse import PlannedPauseSim, hand_dent, hand_poke
         part = get_part(a.part)
         nom = part.layers()
-        if a.dent_test:
+        if a.dent_test or a.resume_test:
             k = a.pause_at_layer if a.pause_at_layer is not None else len(nom) // 2
             printer = PlannedPauseSim(nom, None, seed=a.seed, pause_at=k)
             measure = CameraMeasure() if a.measure == "camera" else ScriptedMeasure(change)
@@ -164,8 +166,8 @@ def main(a):
                                BedCamera.load(a.calib) if camera_needed else None,
                                origin=part.origin, original_gcode=part.gcode_text)
         test = None
+        printer.notify_pause = bool(a.dent_test or a.resume_test)
         if a.dent_test:
-            printer.notify_pause = True
             where = f"layer {a.pause_at_layer}" if a.pause_at_layer is not None else "the layer you chose"
             test = DentTest(person=lambda: input(f"\nPrinter paused at {where}. Make the dent or poke now "
                                                  "(tool, not fingers), then press Enter... "),
@@ -175,7 +177,7 @@ def main(a):
     gate = ActionGate(tools, approver, auto_pause=not a.no_auto_pause)
     try:
         return run_agent(tools, make_decider(a.decider, a.local_model, a.endpoint, a.claude_model), gate,
-                         out_dir=a.out, monitor=monitor, dent_test=test)
+                         out_dir=a.out, monitor=monitor, dent_test=test, resume_test=a.resume_test)
     finally:
         if hasattr(printer, "close"):
             printer.close()

@@ -45,14 +45,38 @@ python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --den
 
 Tray coordinates: centre (0, 0); front wall middle `0 -10`; right wall middle `15 0`; walls 1.2 mm.
 
+### Test order on the printer
+
+| Phase | Run | Passes if |
+|---|---|---|
+| 0 · setup | `check-gcode`, `probe`, one `--sim` rehearsal | "looks usable"; printer status and a frame come back |
+| 1 · decisions | dent tests: clean, 1 mm, 3 mm, poke; accept **resume or stop only** | pause found at layer 31, frames saved, recommendations match the table, the agent's resume/stop commands work, water test agrees |
+| 2 · mechanism | `--resume-test` on a scrap tray, no dent | no homing over the part, no collision, no seam, holds water |
+| 3 · correction | 3 mm dent, approve **correct** | new layers step back to the original wall, holds water, ~5.2 ml |
+
+Each phase starts only after the one before it passes.
+
 ### Before the first real dent test
 
 - **Check the layer number at the pause.** The agent assumes Bambu Studio's pause stops *before*
   the chosen layer starts and that the printer then reports that layer's number. Compare the
   layer the agent prints in its summary with the one set in Bambu Studio.
 - **"correct" depends on stop → upload → start working on the P1S**, which has never been tried.
-  Test it once on a scrap tray with no dent before relying on it. Until then, choose resume or
-  stop at the prompt.
+  Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
+  *original* remaining layers through stop → upload → start. Watch the bed: on the P1S the bed is
+  Z (it drops for each layer and for travel moves), so if it homes Z or rises toward the nozzle
+  over the part, stop the printer. Pass = the tray finishes with no visible seam and holds water.
+  Until it passes, choose resume or stop at the prompt.
+
+  ```bash
+  python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --resume-test \
+      --pause-at-layer 30 --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
+  ```
+- **Inspect a correction before approving it.** The agent saves the exact G-code it would send
+  (`correction_from_layer_N.gcode`) and a picture of the dented layer and the next new layers
+  (`.png`) in the run folder, and prints both paths at the prompt. The correction G-code fills
+  the middle of thin walls, retracts before each travel and drops the bed 0.4 mm while
+  travelling; temperatures come from the sliced file (bed: the plate it was sliced for).
 - **The side-on camera.** The P1S chamber camera looks across the bed from the front, almost
   horizontally, and the bed moves down while the nozzle stays at a fixed height. So the top layers
   always sit at the same place in the image, but are seen from the side. The existing camera

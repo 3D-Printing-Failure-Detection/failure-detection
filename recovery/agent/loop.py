@@ -4,6 +4,10 @@ Two kinds of alarm: the outline is more than ~1 mm off plan (detector), or the m
 breaks a functional feature even though it looks almost right (a hole narrowed by a 1 mm dent
 moves the outline by less than the detector's threshold). The second is checked on every layer.
 
+Resume test (`resume_test=True`): at the planned pause, with no change to the part, send the
+ORIGINAL remaining layers through the correction path (stop -> upload -> start). If that tray
+finishes cleanly, the mechanism behind "correct" works on this printer.
+
 Dent test: the printer stops at a pause planned in the slicer. The agent saves a camera frame,
 the person makes the change (dent or poke), the agent saves another frame, gets the measurement
 (typed in, or from the camera), checks function and decides while the printer is still paused:
@@ -42,6 +46,7 @@ def _summary(situation, rec):
     if fix:
         back = f"back to the original over {fix['fade_layers']} layers" if fix["fade_layers"] else "keeping the new shape"
         lines.append(f"Correction available: new remaining layers, {back}; every feature passes.")
+        lines.append(f"  Its G-code and a preview are saved; inspect before approving: {fix['gcode']}, {fix['preview']}")
     lines.append(f"Filament: {c['filament_used_mm']} mm used of {c['filament_total_mm']} "
                  f"({c['fraction_done']:.0%} done)")
     lines.append(f"Agent ({rec['source']}): {rec['action'].upper()} because {rec['reason']}")
@@ -69,6 +74,18 @@ class _Run:
         cv2.imwrite(str(self.dir / "frames" / name), image)
         return f"frames/{name}"
 
+    def save_plan(self, layers, label):
+        """The replacement G-code and a picture of its first layers, before anyone approves it."""
+        from ..viz import layer_preview
+        k = self.tools.pr.n_done
+        gcode = self.dir / f"{label}_from_layer_{k}.gcode"
+        gcode.write_text(self.tools.correction_gcode(layers))
+        shown = [self.tools.known[-1]] + list(layers[:12])
+        fig = layer_preview(shown, f"{label}: printed top layer, then the next {len(shown) - 1} new layers", n=4)
+        preview = self.dir / f"{label}_from_layer_{k}.png"
+        fig.savefig(preview, dpi=120)
+        return str(gcode), str(preview)
+
     def decide(self, observation, report, paused, frames, extra=None):
         tools = self.tools
         options = [dict(id="resume" if paused else "continue", effect="keep printing the original plan")]
@@ -83,8 +100,9 @@ class _Run:
                         if fix["fade_layers"] else "keep the new shape to the top")
                 options.append(dict(id="correct", effect=f"replace the remaining {n} layers: start on the "
                                     f"measured shape and {back}; every feature passes"))
+                gcode, preview = self.save_plan(fix["layers"], "correction")
                 situation["correction"] = dict(fade_layers=fix["fade_layers"], fidelity=fix["fidelity"],
-                                               features=fix["report"]["features"])
+                                               features=fix["report"]["features"], gcode=gcode, preview=preview)
         options.append(dict(id="stop", effect="stop the print; it is scrapped and must be restarted"))
         rec = self.decider.decide(situation, options)
         action = self.gate.decide_and_act(rec, options, _summary(situation, rec),
@@ -114,12 +132,37 @@ class _Run:
                            camera_change=change, paused=True)
         return self.decide(observation, tools.function_report(), paused=True, frames=frames)
 
+    def resume_test(self):
+        """Send the unchanged remaining layers through stop -> upload -> start, after approval."""
+        tools = self.tools
+        layer = tools.pr.n_done - 1
+        frames = dict(before=self.save(f"{layer:04d}_before.png", tools.snapshot()))
+        layers = tools.pr.plan[tools.pr.n_done:]
+        gcode, preview = self.save_plan(layers, "resume_test")
+        options = [dict(id="restart", effect="stop the job, upload the ORIGINAL remaining layers as a new "
+                        "file and start it (tests the mechanism behind 'correct')"),
+                   dict(id="resume", effect="normal resume instead (no test)"),
+                   dict(id="stop", effect="stop the print")]
+        rec = dict(action="restart", reason="resume test requested", source="test")
+        summary = (f"\n=== RESUME TEST at layer {layer}: the part is unchanged.\n"
+                   f"The printer will stop, then start {gcode} ({len(layers)} layers).\n"
+                   f"Watch the bed: if it homes Z or moves toward the nozzle over the part, stop the printer.")
+        action = self.gate.decide_and_act(rec, options, summary, correction_layers=layers)
+        event = dict(t=time.time(), situation=dict(observation=dict(layer=layer, label="resume test"),
+                     gcode=gcode, preview=preview), options=[o["id"] for o in options],
+                     recommendation=rec, action=action, frames=frames)
+        self.file.write(json.dumps(event, default=str) + "\n")
+        self.file.flush()
+        self.events.append(event)
+        self.log(f"layer {layer}: resume test -> {action}")
+        return action
+
     def close(self):
         self.file.close()
 
 
 def run_agent(tools, decider, gate, out_dir="results/agent", regrow_mm=0.5, monitor=True,
-              dent_test: DentTest = None, log=print):
+              dent_test: DentTest = None, resume_test=False, log=print):
     r = _Run(tools, decider, gate, out_dir, log)
     acknowledged, outcome = None, "finished"
     log(f"agent watching {tools.pr.n_total} layers (camera monitoring {'on' if monitor else 'off'}"
@@ -127,9 +170,12 @@ def run_agent(tools, decider, gate, out_dir="results/agent", regrow_mm=0.5, moni
     try:
         while tools.pr.n_done < tools.pr.n_total and not tools.pr.cancelled:
             if tools.next_layer() == "paused":
-                if dent_test is None:
+                if resume_test:
+                    action = r.resume_test()
+                elif dent_test is None:
                     raise RuntimeError("the printer paused for a dent test, but no dent test was set up")
-                action = r.dent_test(dent_test)
+                else:
+                    action = r.dent_test(dent_test)
                 if action == "stop":
                     outcome = "stopped"
                     break

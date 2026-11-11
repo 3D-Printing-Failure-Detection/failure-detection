@@ -67,7 +67,9 @@ def resume_gcode(layers: List[Layer], layer_h, start_idx, origin, nozzle=220, be
     if rehome_gcode:
         head.append(rehome_gcode)
     head += [f"G1 Z{z0 + z_hop:.3f} F600", "M106 P1 S255"]       # part-cooling fan on
-    body, _ = write_layers(layers, layer_h, start_idx=start_idx, origin=origin, bambu=True)
+    # thin walls filled, filament retracted and the bed dropped z_hop for every travel move
+    body, _ = write_layers(layers, layer_h, start_idx=start_idx, origin=origin, bambu=True,
+                           gap_fill=True, retract_mm=0.8, zhop_mm=z_hop)
     return "\n".join(head) + "\n" + body + FOOTER
 
 
@@ -341,11 +343,14 @@ class BambuPrinter:
         self._paused_by_us, self._await_running = False, True
         self.link.command("resume")
 
+    def correction_gcode(self, layers: List[Layer]) -> str:
+        """The file `replace_remaining` would upload, for inspection before approving."""
+        return resume_gcode(layers, self.layer_h, self._layer, self.origin, self.nozzle, self.bed, self.rehome)
+
     def replace_remaining(self, layers: List[Layer]):
         self._command_allowed("replace the remaining layers of")
         keep = self._layer
-        gc = resume_gcode(layers, self.layer_h, keep, self.origin, self.nozzle, self.bed, self.rehome)
-        self._restart(gc, keep, layers)
+        self._restart(self.correction_gcode(layers), keep, layers)
 
     def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2):
         """Fully automatic stop -> upload -> start -> confirm. No human touches the printer.

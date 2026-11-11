@@ -213,3 +213,79 @@ def test_bambu_reports_a_planned_pause_once():
     assert pr.link.sent == [("resume",)]
     with pytest.raises(TimeoutError):                                   # still PAUSE in the report: not again
         pr.print_layer()
+
+
+# ---------------------------------------------------------------- correction G-code for the real printer
+def test_gap_fill_closes_the_middle_of_the_trays_thin_wall():
+    import shapely
+    from recovery.gcode import gap_fill_paths, layer_paths
+    wall = get_part("parts/print/water-tray/water-tray.yaml").layers()[40]
+    paths = layer_paths(wall.region, 40, w=0.42, loops=2)
+    lines = [shapely.LineString(q).buffer(0.21) for q in paths]
+    before = wall.region.difference(shapely.union_all(lines).buffer(0.01)).area / wall.region.area
+    gaps = gap_fill_paths(wall.region, paths, 0.42)
+    lines += [shapely.LineString(q).buffer(g / 2) for q, g in gaps]
+    after = wall.region.difference(shapely.union_all(lines).buffer(0.01)).area / wall.region.area
+    extruded = (sum(shapely.LineString(q).length * 0.42 for q in paths)
+                + sum(shapely.LineString(q).length * g for q, g in gaps)) / wall.region.area
+    assert before > 0.2 and after < 0.01 and 0.9 < extruded < 1.1     # filled, not over-extruded
+
+
+def test_correction_gcode_retracts_and_drops_the_bed_for_every_travel():
+    from recovery.printer.bambu import resume_gcode
+    nom = get_part("parts/print/water-tray/water-tray.yaml").layers()
+    lines = resume_gcode(nom[30:32], 0.2, 30, (128.0, 128.0)).splitlines()
+    travels = [i for i, l in enumerate(lines) if l.startswith("G0 ")]
+    assert travels
+    for i in travels:
+        assert lines[i - 1].startswith("G1 Z") and lines[i + 1].startswith("G1 Z")      # up, move, down
+        assert float(lines[i - 1].split("Z")[1].split()[0]) > float(lines[i + 1].split("Z")[1].split()[0])
+    assert sum(" E-" in l for l in lines) == len(travels) - 1                          # all but the first
+    assert any(l == ";TYPE:Gap infill" for l in lines)
+
+
+def test_simulator_gcode_is_unchanged_by_default():
+    from recovery.gcode import write_layers
+    nom = get_part("parts/print/water-tray/water-tray.yaml").layers()
+    text, _ = write_layers(nom[30:31], 0.2)
+    assert " E-" not in text and "Gap infill" not in text and text.count("G1 Z") == 1
+
+
+def test_bed_temperature_follows_the_plate_in_use():
+    from recovery.gcode import print_settings
+    cfg = ("; nozzle_temperature = 215,215\n; hot_plate_temp = 55,55\n; textured_plate_temp = 65,65\n"
+           "; curr_bed_type = Textured PEI Plate\n")
+    assert print_settings(cfg) == dict(nozzle=215, bed=65)
+    assert print_settings(cfg.replace("Textured PEI Plate", "High Temp Plate"))["bed"] == 55
+
+
+def test_correction_gcode_and_preview_are_saved_before_approval(tmp_path):
+    import os
+    from recovery.gcode import gcode_to_layers
+    from recovery.geometry.ops import iou
+    seen = []
+
+    class Inspecting(AutoApprover):                    # what a person could open at the prompt
+        def choose(self, recommendation, options, summary):
+            paths = [w.rstrip(",") for w in summary.split() if w.endswith((".gcode,", ".png"))]
+            seen.extend(os.path.exists(x) for x in paths)
+            return super().choose(recommendation, options, summary)
+    p, nom, pr, res = _dent_test("dent 0 -10 3", tmp_path, approver=Inspecting())
+    assert seen == [True, True]
+    fix = res["events"][0]["situation"]["correction"]
+    parsed = gcode_to_layers(open(fix["gcode"]).read())
+    assert len(parsed) == 30 and iou(parsed[0].region, pr.plan[30].region) > 0.95
+
+
+def test_resume_test_sends_the_original_remaining_layers(tmp_path):
+    from recovery.agent.rehearse import PlannedPauseSim
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    nom = p.layers()
+    pr = PlannedPauseSim(nom, None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, p)
+    gate = ActionGate(tools, AutoApprover(), log=lambda *a: None)
+    res = run_agent(tools, RuleDecider(), gate, out_dir=str(tmp_path), monitor=False, resume_test=True,
+                    log=lambda *a: None)
+    assert [e["action"] for e in res["events"]] == ["restart"] and res["outcome"] == "finished"
+    assert all(a is b for a, b in zip(pr.plan, nom))                      # the plan itself is unchanged
+    assert check(pr.printed, nom, p.spec, p.layer_h).ok

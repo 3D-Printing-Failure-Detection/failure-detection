@@ -46,6 +46,6 @@ class ActionGate:
             self.tools.stop()
         elif action == "resume":
             self.tools.resume()
-        elif action == "correct":
+        elif action in ("correct", "restart"):
             self.tools.correct(correction_layers)
         return action                                # "continue": printer was never paused

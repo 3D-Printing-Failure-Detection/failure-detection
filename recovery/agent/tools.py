@@ -162,6 +162,14 @@ class PrinterTools:
     def stop(self):
         self.pr.cancel()
 
+    def correction_gcode(self, layers: List[Layer]) -> str:
+        """The G-code that `correct` would send (the simulator writes it the same way)."""
+        own = getattr(self.pr, "correction_gcode", None)
+        if own:
+            return own(layers)
+        from ..printer.bambu import resume_gcode
+        return resume_gcode(layers, self.part.layer_h, self.pr.n_done, self.part.origin)
+
     def correct(self, layers: List[Layer]):
         """Replace the remaining layers (real P1S: stop, upload new G-code, start; unproven)."""
         self.pr.replace_remaining(layers)
