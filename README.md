@@ -136,8 +136,20 @@ to lay it **flat on the bed** with its first inner corner at the bed position yo
 `--board-origin` (default X=100 Y=100 mm). Replace the IP and access code with yours. This writes
 `calib.npz`; keep it, it only needs redoing if the camera moves.
 
-No checkerboard? `python -m recovery.cli calibrate-bed` fits the camera from clicks along the bed edges
-(about 0.5 mm in simulation, less proven than the board): see
+No checkerboard? `python -m recovery.cli calibrate-bed` fits the camera from the plate itself
+(about 0.5 mm in simulation; unproven on a real printer, so the board is still the reference):
+
+```bash
+# 1. grab a frame and write calib_click.html
+python -m recovery.cli calibrate-bed --ip 192.168.1.50 --code 12345678 --out calib.npz
+# 2. open calib_click.html, click 8+ points along each plate edge, and 5-9 "markers" (tape dots at
+#    measured X,Y mm from the front-left corner), Copy JSON -> points.json
+# 3. fit; it prints residuals and refuses to save a calibration it cannot vouch for
+python -m recovery.cli calibrate-bed --ip 192.168.1.50 --code 12345678 --points points.json --out calib.npz
+```
+
+Then check `calib_overlay.png` (the green outline must sit on the plate edges) and run `watch` on a clean
+print. If the camera sees the plate at a grazing angle, markers are what make it work. Full guide:
 [docs/calibration-without-checkerboard.md](docs/calibration-without-checkerboard.md).
 
 ### 5. Stress-test before you print
