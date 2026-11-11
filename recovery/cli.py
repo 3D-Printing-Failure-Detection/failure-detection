@@ -6,10 +6,16 @@
   train     train detector + segmenter
   app       launch the Gradio interface
   specgen   LLM (or heuristic) pins form + function of ANY part into a verified spec
+  fea-verify  check the FE solver against closed-form benchmarks
   stress    FE stress-test the part about to be printed (optionally with an injected failure)
   slice     cross-section an STL into layers and write G-code (no slicer needed)
+  check-gcode  offline: what the parser makes of a sliced file (markers, layers, outline rebuild)
+  agent     agentic monitoring: pause on alarm, function check, decider recommends, a person approves
+  llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
+  probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
-  live      run the loop on a real Bambu P1S (print started from Bambu Studio)
+  watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
+  live      run the loop on a real Bambu P1S (print started from Bambu Studio); acts on alarms
 """
 import argparse
 import sys
@@ -54,11 +60,23 @@ def main(argv=None):
     sg = sub.add_parser("specgen")
     sg.add_argument("--part", required=True)
     sg.add_argument("--describe", default="", help="plain-English description of the part's job")
-    sg.add_argument("--no-llm", action="store_true", help="deterministic heuristic author only")
+    sg.add_argument("--method", choices=["llm", "heuristic", "template", "manual"], default="llm",
+                    help="how the function spec is produced (default: llm)")
+    sg.add_argument("--no-llm", action="store_true", help="same as --method heuristic")
+    sg.add_argument("--template", default=None, help="for --method template: container|compression|cantilever")
+    sg.add_argument("--param", action="append", default=[], metavar="KEY=VALUE",
+                    help="template parameter, repeatable (e.g. --param force_N=80)")
+    sg.add_argument("--manual", default=None, help="for --method manual: YAML file holding the spec")
+    sg.add_argument("--strict", action="store_true", help="llm method: fail instead of falling back")
     sg.add_argument("--out", default=None, help="default: parts/specs/<name>.yaml")
     st = sub.add_parser("stress")
     st.add_argument("--part", required=True)
     st.add_argument("--h", type=float, default=1.0, help="voxel size in mm (smaller = finer, slower)")
+    st.add_argument("--solver", choices=["auto", "calculix", "builtin"], default="auto",
+                    help="auto = CalculiX if `ccx` is installed, else built-in")
+    st.add_argument("--converge", action="store_true", help="also re-run at several mesh sizes")
+    fv = sub.add_parser("fea-verify")
+    fv.add_argument("--solver", choices=["auto", "calculix", "builtin"], default="auto")
     st.add_argument("--failure", default=None, help="inject this failure and stress-test the damaged part")
     st.add_argument("--severity", type=float, default=None)
     st.add_argument("--seed", type=int, default=0)
@@ -71,6 +89,31 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    from .agent.cli import add_arguments as agent_arguments, add_decider_arguments
+    agent_arguments(sub.add_parser("agent"))
+    add_decider_arguments(sub.add_parser("llm-check"))
+    cg = sub.add_parser("check-gcode")
+    cg.add_argument("file", help="Bambu Studio .gcode.3mf or a plain .gcode")
+    cg.add_argument("--plate", type=int, default=1)
+    cg.add_argument("--out", default="results/check-gcode", help="where to save the layer preview")
+    pb = sub.add_parser("probe")
+    pb.add_argument("--ip", required=True)
+    pb.add_argument("--serial", required=True)
+    pb.add_argument("--code", required=True, help="printer LAN access code")
+    pb.add_argument("--calib", default=None, help="optional calib.npz: also save a top-down view")
+    pb.add_argument("--out", default="results/probe")
+    wt = sub.add_parser("watch")
+    src = wt.add_mutually_exclusive_group(required=True)
+    src.add_argument("--part", help="part YAML with `gcode:` (and a spec, so decisions are meaningful)")
+    src.add_argument("--gcode", help="sliced .gcode.3mf/.gcode directly (no function spec)")
+    wt.add_argument("--plate", type=int, default=1)
+    wt.add_argument("--ip", required=True)
+    wt.add_argument("--serial", required=True)
+    wt.add_argument("--code", required=True)
+    wt.add_argument("--calib", default="calib.npz")
+    wt.add_argument("--models", default="classical", choices=["classical", "torch"])
+    wt.add_argument("--no-decide", action="store_true", help="only detect; skip the (slower) policy")
+    wt.add_argument("--out", default="results/watch")
     lv = sub.add_parser("live")
     lv.add_argument("--part", required=True, help="part YAML with `gcode:` pointing at the sliced .gcode.3mf")
     lv.add_argument("--ip", required=True)
@@ -78,8 +121,8 @@ def main(argv=None):
     lv.add_argument("--code", required=True)
     lv.add_argument("--calib", default="calib.npz")
     lv.add_argument("--models", default="classical", choices=["classical", "torch"])
-    lv.add_argument("--mode", default="restart", choices=["restart", "stream"])
-    lv.add_argument("--rehome-gcode", default="")
+    lv.add_argument("--mode", default="restart", choices=["restart"])
+    lv.add_argument("--rehome-gcode", default="", help="G-code run before resuming, or preset: none, lift_xy")
     lv.add_argument("--skip-stress", action="store_true", help="do not gate the print on the FE stress test")
 
     a = ap.parse_args(argv)
@@ -87,8 +130,13 @@ def main(argv=None):
         from .parts import get_part
         from .specgen import author_spec, save_spec
         part = get_part(a.part)
+        import yaml
+        params = {k: yaml.safe_load(v) for k, v in (p.split("=", 1) for p in a.param)}
+        manual = yaml.safe_load(open(a.manual)) if a.manual else None
+        method = "heuristic" if a.no_llm else a.method
         res = author_spec(part.layers(), part.layer_h, a.describe or part.spec.get("description", ""),
-                          use_llm=not a.no_llm)
+                          method=method, template=a.template, template_params=params,
+                          manual_spec=manual, allow_fallback=not a.strict)
         out = Path(a.out or f"parts/specs/{part.name}.yaml")
         out.parent.mkdir(parents=True, exist_ok=True)
         save_spec(res, out, part.name)
@@ -111,7 +159,7 @@ def main(argv=None):
             f = random_failure(layers, np.random.default_rng(a.seed), kind=a.failure, severity=a.severity)
             layers = [f.apply(l, i) if f.active(i) else l for i, l in enumerate(layers)]
             title += f" with {a.failure} from layer {f.k0}"
-        rep = stress_test(layers, part.spec, part.layer_h, a.h)
+        rep = stress_test(layers, part.spec, part.layer_h, a.h, solver=a.solver)
         print(title)
         print(rep.table() if rep.cases else "(no `loads:` in this part's spec; run specgen first)")
         out = Path(a.out)
@@ -120,10 +168,59 @@ def main(argv=None):
             if case.fi3 is not None:
                 stress_figure(case, title).savefig(out / f"{part.name}_case{i}.png", dpi=140)
         print("verdict:", "PASS: safe to print" if rep.ok else "FAIL: " + "; ".join(rep.violations))
+        if a.converge:
+            from .fea.verify import convergence, converged
+            rows = convergence(layers, part.spec, part.layer_h, solver=a.solver)
+            for h, sf in rows:
+                print(f"  h={h:4.2f} mm  safety factors: " + ", ".join(f"{v:.2f}" for v in sf))
+            print("mesh-converged (finest two within 10%):", converged(rows))
+        return
+    if a.cmd == "fea-verify":
+        from .fea.verify import format_rows, verify
+        print(format_rows(verify(a.solver)))
         return
     if a.cmd == "calibrate":
         from .live import calibrate
         calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        return
+    if a.cmd == "llm-check":
+        from .agent.cli import llm_check
+        llm_check(a)
+        return
+    if a.cmd == "agent":
+        from .agent.cli import main as agent_main
+        agent_main(a)
+        return
+    if a.cmd == "check-gcode":
+        from .gcode import inspect_gcode
+        from .parts import Part
+        from .slicing import read_gcode_3mf
+        rep = inspect_gcode(read_gcode_3mf(a.file, a.plate))
+        for k, v in rep.items():
+            print(f"{k:22s} {v}")
+        try:
+            part = Part.from_gcode(a.file, plate=a.plate)
+            part.layers()                     # also checks the part fits the camera field of view
+        except ValueError as e:
+            raise SystemExit(f"NOT USABLE: {e}")
+        from .viz import layer_preview
+        out = Path(a.out)
+        out.mkdir(parents=True, exist_ok=True)
+        path = out / f"{part.name}_layers.png"
+        layer_preview(part.layers(), f"{part.name}: {len(part.layers())} layers, {part.layer_h} mm").savefig(path, dpi=140)
+        ok = rep["layers_with_material"] > 0 and not part.dropped_layers and \
+            rep["slicer_total_layers"] in (None, len(part.layers()))
+        print(f"preview -> {path}")
+        print("verdict:", "looks usable" if ok else "CHECK: layer count/empty layers differ from the slicer's")
+        return
+    if a.cmd == "probe":
+        from .live import probe
+        probe(a.ip, a.serial, a.code, a.out, a.calib)
+        return
+    if a.cmd == "watch":
+        from .live import run_watch
+        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.models, a.out,
+                  decide=not a.no_decide, plate=a.plate)
         return
     if a.cmd == "live":
         from .live import run_live

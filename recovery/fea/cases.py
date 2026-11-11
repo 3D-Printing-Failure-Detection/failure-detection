@@ -28,6 +28,7 @@ from scipy import ndimage
 
 from ..types import Layer
 from .material import MATERIALS
+from . import calculix
 from .model import FACE_NODES, Model, failure_index
 from .voxel import VoxelGrid, stack_bounds, voxelize
 
@@ -47,6 +48,7 @@ class CaseResult:
     floating_mm3: float = 0.0
     converged: bool = True
     iters: int = 0
+    solver: str = "builtin"
     fi3: Optional[np.ndarray] = field(default=None, repr=False)     # (nx, ny, nz) failure index
     grid: Optional[VoxelGrid] = field(default=None, repr=False)
 
@@ -56,9 +58,10 @@ class StressReport:
     ok: bool
     cases: List[CaseResult]
     violations: List[str]
+    solver: str = "builtin"
 
     def table(self) -> str:
-        rows = [f"{'load case':44s} {'SF':>6s} {'SF peak':>8s} {'defl mm':>8s}  result"]
+        rows = [f"solver: {self.solver}", f"{'load case':44s} {'SF':>6s} {'SF peak':>8s} {'defl mm':>8s}  result"]
         for c in self.cases:
             rows.append(f"{c.name[:44]:44s} {min(c.safety_factor, 99):6.1f} {min(c.safety_factor_peak, 99):8.1f} "
                         f"{c.max_disp_mm:8.3f}  {'PASS' if c.ok else 'FAIL: ' + '; '.join(c.violations)}")
@@ -98,6 +101,19 @@ def select_nodes(model: Model, sel: dict):
     return np.nonzero(m)[0]
 
 
+def _tributary_weights(model, nodes):
+    """Share of a surface load each selected node carries (sums to 1). On a face of equal bricks a
+    corner node owns 1/4 of a brick face, an edge node 1/2, an interior node 1: counting the face
+    quads (elements with >= 4 selected nodes) around each node reproduces that, so the load is
+    consistent rather than point-like."""
+    sel = np.zeros(model.nn, bool)
+    sel[nodes] = True
+    quad = sel[model.enode].sum(1) >= 4
+    w = np.bincount(model.enode[quad].ravel(), minlength=model.nn)[nodes].astype(float)
+    w[w == 0] = 1.0
+    return w / w.sum()
+
+
 def _fixed(model, supports):
     fixed = np.zeros(model.ndof, bool)
     sup_nodes = np.zeros(model.nn, bool)
@@ -133,7 +149,7 @@ def _fluid_forces(model, cavity, rho, z_fill, force):
                 np.add.at(force, model.enode[idx, ln] * 3 + axis, -s * f)   # liquid pushes into the solid
 
 
-def _run_case(layers: List[Layer], case: dict, spec: dict, mat, layer_h, h) -> CaseResult:
+def _run_case(layers: List[Layer], case: dict, spec: dict, mat, layer_h, h, solver="builtin") -> CaseResult:
     name = case.get("name", "load case")
     m = max(1, int(round(h / layer_h)))
     grid = voxelize(layers, h, m, "mid")
@@ -181,14 +197,20 @@ def _run_case(layers: List[Layer], case: dict, spec: dict, mat, layer_h, h) -> C
             continue
         d = np.array(ld.get("direction", [0, 0, -1]), float)
         d /= np.linalg.norm(d)
+        w = _tributary_weights(model, nodes)
         for c in range(3):
-            np.add.at(force, nodes * 3 + c, ld["force_N"] * d[c] / len(nodes))
+            np.add.at(force, nodes * 3 + c, ld["force_N"] * d[c] * w)
     if case.get("self_weight", True):
         w = mat.rho * G * grid.h * grid.h * grid.hz                         # N per element
         np.add.at(force, (model.enode * 3 + 2).ravel(), -w / 8.0)
 
-    u, conv, iters = model.solve(force, fixed)
-    fi = failure_index(model.stress(u), mat)
+    if solver == "calculix":
+        u, sig, conv = calculix.solve(model, force, fixed, mat)
+        iters = 0
+    else:
+        u, conv, iters = model.solve(force, fixed)
+        sig = model.stress(u)
+    fi = failure_index(sig, mat)
     sf = 1.0 / max(float(np.percentile(fi, 99)), 1e-9)
     sf_peak = 1.0 / max(float(fi.max()), 1e-9)
     disp = float(np.linalg.norm(u.reshape(-1, 3), axis=1).max())
@@ -206,14 +228,28 @@ def _run_case(layers: List[Layer], case: dict, spec: dict, mat, layer_h, h) -> C
     fi3 = np.full(grid.solid.shape, np.nan, np.float32)
     fi3[tuple(model.ei.T)] = fi
     return CaseResult(name, not viol, viol, sf, sf_peak, disp, leak, cap, floating_mm3, conv, iters,
-                      fi3, grid)
+                      solver, fi3, grid)
+
+
+def resolve_solver(solver: Optional[str]) -> str:
+    """'auto' -> CalculiX when installed, else the built-in solver; 'calculix' requires it."""
+    solver = solver or "auto"
+    if solver == "auto":
+        return "calculix" if calculix.available() else "builtin"
+    if solver == "calculix" and not calculix.available():
+        raise RuntimeError("solver='calculix' but `ccx` was not found (see recovery/fea/calculix.py)")
+    if solver not in ("builtin", "calculix"):
+        raise ValueError(f"unknown solver {solver!r}")
+    return solver
 
 
 def stress_test(layers: List[Layer], spec: dict, layer_h: float, h: float = 1.5,
-                material: Optional[str] = None) -> StressReport:
-    """Run every load case in spec['loads'] on this layer stack (nominal, printed, or planned)."""
+                material: Optional[str] = None, solver: Optional[str] = None) -> StressReport:
+    """Run every load case in spec['loads'] on this layer stack (nominal, printed, or planned).
+    solver: 'auto' (default; or spec['solver']), 'calculix', or 'builtin'."""
     cases = spec.get("loads") or []
     mat = MATERIALS[material or spec.get("material", "PLA")]
-    results = [_run_case(layers, c, spec, mat, layer_h, h) for c in cases]
+    sv = resolve_solver(solver or spec.get("solver"))
+    results = [_run_case(layers, c, spec, mat, layer_h, h, sv) for c in cases]
     viol = [f"[{r.name}] {v}" for r in results for v in r.violations]
-    return StressReport(not viol, results, viol)
+    return StressReport(not viol, results, viol, sv)

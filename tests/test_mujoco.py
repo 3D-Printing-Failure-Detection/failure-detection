@@ -1,5 +1,7 @@
 import os
-os.environ.setdefault("MUJOCO_GL", "egl")
+import sys
+if sys.platform.startswith("linux"):          # headless servers; macOS/Windows use their native GL
+    os.environ.setdefault("MUJOCO_GL", "egl")
 
 import numpy as np
 import pytest

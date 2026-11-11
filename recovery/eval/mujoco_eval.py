@@ -67,6 +67,18 @@ class ObservedSegmenter(ClassicalSegmenter):
         return measured
 
 
+
+def _package_version(name):
+    """Installed version of `name`; OpenCV may come from any of its wheels, which all provide cv2."""
+    alternatives = {"opencv-python-headless": ("opencv-python-headless", "opencv-python",
+                                               "opencv-contrib-python", "opencv-contrib-python-headless")}
+    for dist in alternatives.get(name, (name,)):
+        try:
+            return importlib.metadata.version(dist)
+        except importlib.metadata.PackageNotFoundError:
+            continue
+    return None
+
 def run_case(job):
     from ..printer.mujoco import MujocoPrinter
     profile, part_name, kind, seed, methods, clear_on_adapt = job[:6]
@@ -421,7 +433,7 @@ def main(argv=None):
                     instrumentation_version=4, camera_trace_version=TRACE_VERSION,
                     profiles={k: asdict(PROFILES[k]) for k in args.profiles},
                     python=platform.python_version(),
-                    packages={p: importlib.metadata.version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},
+                    packages={p: _package_version(p) for p in ("numpy", "scipy", "shapely", "opencv-python-headless", "mujoco")},
                     git_revision=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
                     source_sha256=source_digest(), expected_runs=len(jobs)*len(args.methods),
                     status="running", assumptions=["quasi-static waypoints", "geometric bead deposition",

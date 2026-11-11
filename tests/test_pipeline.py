@@ -124,3 +124,44 @@ def test_stress_test_reports_a_safety_factor():
         pytest.skip("no part defines loads")
     rep = stress_test(part.layers(), part.spec, part.layer_h, 2.0)
     assert rep.cases and all(c.safety_factor > 0 for c in rep.cases)
+
+
+def test_template_and_manual_spec_methods():
+    from recovery.specgen import author_spec
+    part = get_part(PART_NAMES[0])
+    lay = part.layers()
+    t = author_spec(lay, part.layer_h, method="template", template="compression",
+                    template_params={"force_N": 50}, h=2.0)
+    assert t["source"] == "template" and t["spec"]["loads"][0]["loads"][0]["force_N"] == 50
+    m = author_spec(lay, part.layer_h, method="manual", manual_spec={"material": "PLA"}, h=2.0)
+    assert m["source"] == "manual"
+
+
+def test_llm_method_without_fallback_raises_when_unavailable(monkeypatch):
+    from recovery.specgen import author_spec
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    part = get_part(PART_NAMES[0])
+    with pytest.raises(RuntimeError):
+        author_spec(part.layers(), part.layer_h, method="llm", allow_fallback=False, h=2.0)
+
+
+def test_builtin_solver_matches_tension_patch_test():
+    from recovery.fea.verify import tension_patch_test
+    r = tension_patch_test("builtin", h=2.0)
+    assert abs(r["error_pct"]) < 2.0, r
+
+
+def test_calculix_matches_builtin_when_installed():
+    from recovery.fea import calculix
+    if not calculix.available():
+        pytest.skip("ccx not installed")
+    from recovery.fea.verify import tension_patch_test
+    a, b = tension_patch_test("builtin", h=2.0), tension_patch_test("calculix", h=2.0)
+    assert abs(a["computed"] - b["computed"]) < 0.02 * a["exact"]
+
+
+def test_resume_gcode_expands_rehome_preset():
+    from recovery.printer.bambu import resume_gcode
+    part = get_part(PART_NAMES[0])
+    gc = resume_gcode(part.layers()[5:8], part.layer_h, 5, (128, 128), rehome_gcode="lift_xy")
+    assert "G28 X Y" in gc and "M73 L" in gc

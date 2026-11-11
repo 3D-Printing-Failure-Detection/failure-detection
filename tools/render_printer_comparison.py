@@ -4,7 +4,9 @@ This is an illustrative scene at a specified layer, not an evaluation rollout.
 """
 import argparse
 import os
-os.environ.setdefault("MUJOCO_GL", "egl")
+import sys
+if sys.platform.startswith("linux"):          # headless servers; macOS/Windows use their native GL
+    os.environ.setdefault("MUJOCO_GL", "egl")
 
 import matplotlib
 matplotlib.use("Agg")
