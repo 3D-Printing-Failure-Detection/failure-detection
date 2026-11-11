@@ -56,7 +56,10 @@ def _bed_corners_mm(bed):
 
 def _to_bed(cam: BedCamera, px):
     und = cv2.undistortPoints(np.asarray(px, np.float64).reshape(-1, 1, 2), cam.K, cam.dist, P=cam.K).reshape(-1, 2)
-    H = np.linalg.inv(cam.plane_to_image(0.0))
+    try:
+        H = np.linalg.inv(cam.plane_to_image(0.0))
+    except np.linalg.LinAlgError:      # degenerate pose during the search
+        return np.full((len(und), 2), np.nan)
     q = (H @ np.c_[und, np.ones(len(und))].T).T
     return q[:, :2] / q[:, 2:]
 
@@ -92,43 +95,105 @@ def _check_points(points, min_per_edge):
         raise ValueError(f"need at least {min_per_edge} points on each bed edge; short: {missing}")
 
 
-def fit_from_bed_edges(points, image_size=(1280, 720), bed=(256.0, 256.0), diag_fov_deg=None,
-                       fit_distortion=True, min_per_edge=6):
-    """Fit f, k1 and pose from clicked bed-edge points. Returns (BedCamera, FitReport)."""
-    _check_points(points, min_per_edge)
+def _camera_above_bed(cam):
+    R, _ = cv2.Rodrigues(cam.rvec)
+    return bool((-R.T @ cam.tvec.reshape(3))[2] > 0)
+
+
+def _marker_residuals(cam, markers):
+    if not markers:
+        return np.zeros(0)
+    got = _to_bed(cam, [m["px"] for m in markers])
+    return (got - np.array([m["mm"] for m in markers], float)).ravel()
+
+
+def edge_straightness(points):
+    """Per-edge RMS (px) of the raw clicks about their best straight line. A lens bows edges, but one
+    edge far worse than the rest usually means a mis-click or a feature that is not the plate edge."""
+    out = {}
+    for e in EDGES:
+        p = np.asarray(points[e], np.float32)
+        vx, vy, x0, y0 = cv2.fitLine(p, cv2.DIST_L2, 0, 0.01, 0.01).ravel()
+        out[e] = float(np.sqrt(np.mean(((p[:, 0] - x0) * vy - (p[:, 1] - y0) * vx) ** 2)))
+    return out
+
+
+def _fit_once(points, markers, image_size, bed, f_start, f0, fit_distortion, fit_k2):
     w, h = image_size
-    f0 = nominal_focal_px(w, h, diag_fov_deg or NOMINAL["diag_fov_deg"])
     corners = _corners_from_edges(points)
-    ok, rvec, tvec = cv2.solvePnP(_bed_corners_mm(bed), corners.astype(np.float32), _K(f0, w, h), None)
+    ok, rvec, tvec = cv2.solvePnP(_bed_corners_mm(bed), corners.astype(np.float32), _K(f_start, w, h), None)
     if not ok:
-        raise RuntimeError("could not get an initial pose from the bed corners")
-    x0 = np.r_[np.log(f0 / f0), 0.0, rvec.ravel(), tvec.ravel()]
+        return None
+    x0 = np.r_[np.log(f_start / f0), 0.0, 0.0, rvec.ravel(), tvec.ravel()]
 
     def build(x):
-        return BedCamera(_K(f0 * np.exp(x[0]), w, h), np.array([x[1] if fit_distortion else 0.0, 0, 0, 0, 0.0]),
-                         x[2:5].reshape(3, 1), x[5:8].reshape(3, 1))
+        return BedCamera(_K(f0 * np.exp(x[0]), w, h),
+                         np.array([x[1] if fit_distortion else 0.0, x[2] if fit_k2 else 0.0, 0, 0, 0.0]),
+                         x[3:6].reshape(3, 1), x[6:9].reshape(3, 1))
 
     def resid(x):
-        r = _edge_residuals(build(x), points, bed)
-        # weak priors keep f and k1 near plausible values when the clicks alone cannot separate them
-        return np.r_[r, (x[0] / 0.12), (x[1] / 0.5)]
+        cam = build(x)
+        r = np.r_[_edge_residuals(cam, points, bed), _marker_residuals(cam, markers)]
+        r = np.clip(np.nan_to_num(r, nan=500.0, posinf=500.0, neginf=-500.0), -500, 500)
+        # weak priors keep f and distortion plausible when the clicks alone cannot separate them
+        return np.r_[r, x[0] / 0.6, x[1] / 1.0, (x[2] / 1.5 if fit_k2 else 0.0)]
 
-    sol = least_squares(resid, x0, loss="soft_l1", f_scale=1.0)
+    sol = least_squares(resid, x0, loss="soft_l1", f_scale=1.0, max_nfev=300)
     cam = build(sol.x)
-    r = _edge_residuals(cam, points, bed)
+    return sol.cost, cam
+
+
+def fit_from_bed_edges(points, image_size=(1280, 720), bed=(256.0, 256.0), diag_fov_deg=None,
+                       fit_distortion=True, min_per_edge=6, markers=None, fit_k2=True):
+    """Fit f, k1 (and k2) and pose from clicked bed-edge points, plus optional `markers`
+    [{"px": [u, v], "mm": [X, Y]}, ...] at known bed positions (very effective: they constrain the
+    interior of the view). Several focal-length starts are tried because the cost has local minima.
+    Returns (BedCamera, FitReport)."""
+    _check_points(points, min_per_edge)
+    markers = markers or []
+    w, h = image_size
+    fov = diag_fov_deg or NOMINAL["diag_fov_deg"]
+    f0 = nominal_focal_px(w, h, fov)
+    runs = [r for r in (_fit_once(points, markers, image_size, bed, f0 * m, f0, fit_distortion, fit_k2)
+                        for m in (0.7, 1.0, 1.4, 1.8)) if r]
+    if not runs:
+        raise RuntimeError("could not get an initial pose from the bed corners")
+    above = [r for r in runs if _camera_above_bed(r[1])]
+    cam = min(above or runs, key=lambda r: r[0])[1]
+    r = np.r_[_edge_residuals(cam, points, bed), _marker_residuals(cam, markers)]
+    r = np.clip(np.nan_to_num(r, nan=500.0, posinf=500.0, neginf=-500.0), -500, 500)
     notes = []
     f, k1 = float(cam.K[0, 0]), float(cam.dist[0])
-    if abs(np.log(f / f0)) > 0.2:
-        notes.append(f"focal length {f:.0f}px is far from the {f0:.0f}px implied by a {diag_fov_deg or NOMINAL['diag_fov_deg']:.0f} deg FOV; "
-                     "re-check the clicks (or the FOV)")
-    if not fit_distortion:
-        notes.append("distortion was not fitted")
-    rep = FitReport(float(np.sqrt(np.mean(r ** 2))), float(np.abs(r).max()), f, k1, len(r),
-                    bool(np.abs(r).max() <= MAX_RESIDUAL_MM * 2 and np.sqrt(np.mean(r ** 2)) <= MAX_RESIDUAL_MM
-                         and not any("far from" in n for n in notes)), notes)
-    if rep.ok:
-        notes.append("residuals only prove the edges are consistent; also check the overlay image and run a clean `watch`")
-    return cam, rep
+    rms, worst = float(np.sqrt(np.mean(r ** 2))), float(np.abs(r).max())
+    st = edge_straightness(points)
+    notes.append("clicks' straightness (px RMS about a line): " + ", ".join(f"{e} {v:.1f}" for e, v in st.items()))
+    per = []
+    for e in EDGES:
+        xy = _to_bed(cam, points[e])
+        d = {"front": xy[:, 1], "back": xy[:, 1] - bed[1], "left": xy[:, 0], "right": xy[:, 0] - bed[0]}[e]
+        per.append(f"{e} {np.sqrt(np.nanmean(np.clip(d, -500, 500) ** 2)):.1f}")
+    notes.append("residual mm RMS per edge: " + ", ".join(per) + "  (edges seen at a grazing angle are the noisiest: "
+                 "one pixel there is several mm)")
+    typical = np.median(list(st.values()))
+    for e, v in st.items():
+        if v > max(4.0, 3 * typical):
+            notes.append(f"the '{e}' edge is much more curved than the others: re-click it (is it really the plate edge?)")
+    if not above:
+        notes.append("every solution puts the camera BELOW the bed: left/right (or front/back) are probably mirrored")
+    if rms > MAX_RESIDUAL_MM:
+        swapped = {**points, "left": points["right"], "right": points["left"]}
+        if not markers:
+            alt = [x for x in (_fit_once(swapped, markers, image_size, bed, f0 * m, f0, fit_distortion, fit_k2)
+                               for m in (0.7, 1.0, 1.4, 1.8)) if x]
+            if alt:
+                ra = _edge_residuals(min(alt, key=lambda x: x[0])[1], swapped, bed)
+                if np.sqrt(np.mean(np.clip(ra, -500, 500) ** 2)) < 0.5 * rms:
+                    notes.append("swapping the LEFT and RIGHT labels fits much better: they look mirrored "
+                                 "(left/right are as seen standing at the front of the printer, facing it)")
+    ok_fit = bool(above and worst <= MAX_RESIDUAL_MM * 2 and rms <= MAX_RESIDUAL_MM)
+    if ok_fit:
+        notes.append("residuals only prove the clicks are consistent; also check the overlay image and run a clean `watch`")
+    return cam, FitReport(rms, worst, f, k1, len(r), ok_fit, notes)
 
 
 def refit_pose(profile: BedCamera, corners_px, bed=(256.0, 256.0)):
@@ -162,17 +227,25 @@ def draw_overlay(cam: BedCamera, frame, bed=(256.0, 256.0), step=32):
         pts = np.c_[seg, np.zeros(40)].astype(np.float64)
         px, _ = cv2.projectPoints(pts, cam.rvec, cam.tvec, cam.K, cam.dist)
         edge = a[0] in (0, bed[0]) and b[0] in (0, bed[0]) or a[1] in (0, bed[1]) and b[1] in (0, bed[1])
-        cv2.polylines(out, [px.reshape(-1, 2).astype(np.int32)], False, (0, 255, 0) if edge else (0, 160, 255), 2 if edge else 1)
+        px = np.nan_to_num(px.reshape(-1, 2), nan=-1e6, posinf=1e6, neginf=-1e6).clip(-1e6, 1e6)
+        cv2.polylines(out, [px.astype(np.int32)], False, (0, 255, 0) if edge else (0, 160, 255), 2 if edge else 1)
     return out
 
 
-def save_points(points, path):
-    Path(path).write_text(json.dumps({e: np.asarray(points[e], float).round(1).tolist() for e in EDGES}, indent=1))
+def save_points(points, path, markers=None):
+    d = {e: np.asarray(points[e], float).round(1).tolist() for e in EDGES}
+    if markers:
+        d["markers"] = markers
+    Path(path).write_text(json.dumps(d, indent=1))
 
 
 def load_points(path):
     d = json.loads(Path(path).read_text())
     return {e: d[e] for e in EDGES}
+
+
+def load_markers(path):
+    return json.loads(Path(path).read_text()).get("markers", [])
 
 
 def pick_points_html(image_name, out_path):
@@ -183,18 +256,18 @@ button,select{{font-size:14px;margin-right:8px}}textarea{{width:100%;height:9em}
 <p>Choose an edge, then click at least <b>4 points along that plate edge</b>, spread from end to end
 (front = edge nearest the door/you, left/right as you face the printer, back = far edge). Put one click
 on each corner too. Then <b>Copy JSON</b> and save it as <code>points.json</code>.</p>
-<select id=e><option>front<option>right<option>back<option>left</select>
+<select id=e><option>front<option>right<option>back<option>left<option value=marker>marker (known X,Y mm)</select>
 <button id=u>Undo</button><button id=c>Copy JSON</button><span id=n></span><br>
 <canvas id=cv></canvas><textarea id=o readonly></textarea>
 <script>
 const img=new Image();img.src={json.dumps(image_name)};const cv=document.getElementById('cv'),x=cv.getContext('2d');
-const P={{front:[],right:[],back:[],left:[]}},col={{front:'red',right:'lime',back:'cyan',left:'orange'}};
+const P={{front:[],right:[],back:[],left:[],markers:[]}},col={{front:'red',right:'lime',back:'cyan',left:'orange',markers:'magenta'}};
 img.onload=()=>{{cv.width=img.width;cv.height=img.height;draw()}};
-function draw(){{x.drawImage(img,0,0);for(const k in P){{x.fillStyle=col[k];P[k].forEach(p=>{{x.beginPath();x.arc(p[0],p[1],4,0,7);x.fill()}})}}
+function draw(){{x.drawImage(img,0,0);for(const k in P){{x.fillStyle=col[k];P[k].forEach(p=>{{p=k=='markers'?p.px:p;x.beginPath();x.arc(p[0],p[1],4,0,7);x.fill()}})}}
 document.getElementById('n').textContent=' '+Object.entries(P).map(([k,v])=>k+':'+v.length).join('  ');
 document.getElementById('o').value=JSON.stringify(P)}}
-cv.onclick=ev=>{{const r=cv.getBoundingClientRect(),s=cv.width/r.width;P[document.getElementById('e').value].push([(ev.clientX-r.left)*s,(ev.clientY-r.top)*s]);draw()}};
-document.getElementById('u').onclick=()=>{{P[document.getElementById('e').value].pop();draw()}};
+cv.onclick=ev=>{{const r=cv.getBoundingClientRect(),s=cv.width/r.width;const pt=[(ev.clientX-r.left)*s,(ev.clientY-r.top)*s],k=document.getElementById('e').value;if(k=='marker'){{const t=prompt('Bed X,Y in mm of this point (e.g. 128,128)');if(!t)return;const m=t.split(',').map(Number);if(m.length!=2||m.some(isNaN))return;P.markers.push({{px:pt,mm:m}})}}else P[k].push(pt);draw()}};
+document.getElementById('u').onclick=()=>{{const k=document.getElementById('e').value;P[k=='marker'?'markers':k].pop();draw()}};
 document.getElementById('c').onclick=()=>navigator.clipboard.writeText(document.getElementById('o').value);
 </script>""")
 
@@ -227,7 +300,7 @@ def main(a):
         lens = BedCamera.load(a.profile)
         cam_model, rep = refit_pose(lens, _corners_from_edges({e: points[e] for e in EDGES}), (a.bed, a.bed))
     else:
-        cam_model, rep = fit_from_bed_edges(points, (w, h), (a.bed, a.bed), a.fov)
+        cam_model, rep = fit_from_bed_edges(points, (w, h), (a.bed, a.bed), a.fov, markers=load_markers(a.points))
     print(rep.text())
     cv2.imwrite(str(work.with_name(work.name + "_overlay.png")), draw_overlay(cam_model, frame, (a.bed, a.bed)))
     if not rep.ok and not a.force:

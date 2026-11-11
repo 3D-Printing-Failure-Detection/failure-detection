@@ -59,3 +59,26 @@ def test_points_roundtrip(tmp_path):
 
 def test_nominal_focal_from_datasheet():
     assert 500 < nominal_focal_px(1280, 720, 110) < 530
+
+
+def test_markers_at_known_positions_tighten_a_noisy_edge_fit():
+    truth = make(f_from_diag_fov(110), k1=-0.25)
+    pts = clicks(truth, n=6, noise=1.5, seed=3)
+    g = [(x, y) for x in (64, 128, 192) for y in (64, 128, 192)]
+    px, _ = cv2.projectPoints(np.array([[x, y, 0.0] for x, y in g]), truth.rvec, truth.tvec, truth.K, truth.dist)
+    rng = np.random.default_rng(4)
+    markers = [dict(px=(p + rng.normal(0, 0.7, 2)).tolist(), mm=list(m)) for p, m in zip(px.reshape(-1, 2), g)]
+    plain, _ = fit_from_bed_edges(pts)
+    with_markers, rep = fit_from_bed_edges(pts, markers=markers)
+    assert bed_error(truth, with_markers)[0] <= bed_error(truth, plain)[0] + 0.05
+    assert bed_error(truth, with_markers)[0] < 1.0
+
+
+def test_user_report_points_are_diagnosed_not_crashed():
+    import json
+    from pathlib import Path
+    pts = json.loads((Path(__file__).parent / "data" / "p1s_clicks_issue5.json").read_text())
+    cam, rep = fit_from_bed_edges(pts, min_per_edge=4)
+    assert not rep.ok                                     # 4-5 mm RMS at grazing edges: refuse to save
+    assert any("'left' edge is much more curved" in n for n in rep.notes)
+    assert any("per edge" in n for n in rep.notes)
