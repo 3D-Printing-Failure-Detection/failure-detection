@@ -136,6 +136,10 @@ to lay it **flat on the bed** with its first inner corner at the bed position yo
 `--board-origin` (default X=100 Y=100 mm). Replace the IP and access code with yours. This writes
 `calib.npz`; keep it, it only needs redoing if the camera moves.
 
+No checkerboard? `python -m recovery.cli calibrate-bed` fits the camera from clicks along the bed edges
+(about 0.5 mm in simulation, less proven than the board): see
+[docs/calibration-without-checkerboard.md](docs/calibration-without-checkerboard.md).
+
 ### 5. Stress-test before you print
 
 ```bash

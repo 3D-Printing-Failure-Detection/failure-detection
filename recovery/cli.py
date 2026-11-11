@@ -14,6 +14,7 @@
   llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
+  calibrate-bed  same, without a checkerboard: click the bed edges in one frame
   watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
   live      run the loop on a real Bambu P1S (print started from Bambu Studio); acts on alarms
 """
@@ -89,6 +90,15 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    cb = sub.add_parser("calibrate-bed", help="checkerboard-free calibration from the bed edges (see docs/calibration-without-checkerboard.md)")
+    cb.add_argument("--ip"); cb.add_argument("--code")
+    cb.add_argument("--image", default=None, help="use this saved frame instead of grabbing one from the printer")
+    cb.add_argument("--points", default=None, help="points.json from the click page; omit to grab a frame and write the page")
+    cb.add_argument("--profile", default=None, help="existing calib.npz: keep its lens, refit only the pose from the corners")
+    cb.add_argument("--out", default="calib.npz")
+    cb.add_argument("--fov", type=float, default=None, help="diagonal FOV prior in degrees (default 110)")
+    cb.add_argument("--bed", type=float, default=256.0, help="plate edge length in mm")
+    cb.add_argument("--force", action="store_true", help="save even if the fit is not acceptable")
     from .agent.cli import add_arguments as agent_arguments, add_decider_arguments
     agent_arguments(sub.add_parser("agent"))
     add_decider_arguments(sub.add_parser("llm-check"))
@@ -182,6 +192,10 @@ def main(argv=None):
     if a.cmd == "calibrate":
         from .live import calibrate
         calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        return
+    if a.cmd == "calibrate-bed":
+        from .calib_offline import main as calibrate_bed
+        calibrate_bed(a)
         return
     if a.cmd == "llm-check":
         from .agent.cli import llm_check
