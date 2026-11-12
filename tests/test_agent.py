@@ -289,3 +289,25 @@ def test_resume_test_sends_the_original_remaining_layers(tmp_path):
     assert [e["action"] for e in res["events"]] == ["restart"] and res["outcome"] == "finished"
     assert all(a is b for a, b in zip(pr.plan, nom))                      # the plan itself is unchanged
     assert check(pr.printed, nom, p.spec, p.layer_h).ok
+
+
+def test_if_someone_resumes_on_the_printer_the_agent_sends_nothing(tmp_path):
+    from recovery.agent.loop import DentTest
+    from recovery.agent.measure import ScriptedMeasure
+    from recovery.agent.rehearse import PlannedPauseSim
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    pr = PlannedPauseSim(p.layers(), None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, p)
+    sent = []
+    tools.resume = lambda: sent.append("resume")
+
+    def dent_then_resume_on_screen():
+        pr.user_change("dent 0 -10 1")
+        pr.paused = False                                   # someone pressed resume on the printer
+    test = DentTest(person=dent_then_resume_on_screen, measure=ScriptedMeasure("dent 0 -10 1"))
+    gate = ActionGate(tools, AutoApprover(), log=lambda *a: None)
+    res = run_agent(tools, RuleDecider(), gate, out_dir=str(tmp_path), monitor=False, dent_test=test,
+                    log=lambda *a: None)
+    ev = res["events"][0]
+    assert ev["options"][0] == "continue" and ev["action"] == "continue" and sent == []
+    assert res["outcome"] == "finished"

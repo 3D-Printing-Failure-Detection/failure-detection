@@ -8,10 +8,13 @@ Resume test (`resume_test=True`): at the planned pause, with no change to the pa
 ORIGINAL remaining layers through the correction path (stop -> upload -> start). If that tray
 finishes cleanly, the mechanism behind "correct" works on this printer.
 
-Dent test: the printer stops at a pause planned in the slicer. The agent saves a camera frame,
-the person makes the change (dent or poke), the agent saves another frame, gets the measurement
-(typed in, or from the camera), checks function and decides while the printer is still paused:
-resume (still works), correct (new remaining layers that return to the original shape), or stop.
+Dent test: a person pauses the printer (screen, app, or a pause planned in Bambu Studio). The
+agent notices the pause, saves a camera frame, the person makes the change (dent or poke) and
+presses Enter, the agent saves another frame, gets the measurement (typed in, or from the camera),
+checks function and decides while the printer is still paused: resume (still works), correct (new
+remaining layers that return to the original shape), or stop. The person must not resume on the
+printer; if they do anyway, the agent offers "continue" instead of "resume" and sends nothing.
+Until the pause, the agent only reads the printer's status: no camera, no decider calls.
 
 An acknowledged deviation (we resumed and the part still worked) does not raise a new alarm on
 every following layer; only a function check that now fails, or a deviation that has grown by
@@ -128,9 +131,13 @@ class _Run:
         new, described = test.measure(tools)
         if new:
             tools.believe_top(new)
+        paused = tools.is_paused()
+        if not paused:
+            self.log("the printer was resumed while the agent was waiting: new layers are printing "
+                     "over the change; deciding anyway")
         observation = dict(layer=layer, z=tools.known[-1].z, label="dent test", described=described,
-                           camera_change=change, paused=True)
-        return self.decide(observation, tools.function_report(), paused=True, frames=frames)
+                           camera_change=change, paused=paused)
+        return self.decide(observation, tools.function_report(), paused=paused, frames=frames)
 
     def resume_test(self):
         """Send the unchanged remaining layers through stop -> upload -> start, after approval."""

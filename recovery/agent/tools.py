@@ -45,8 +45,8 @@ class PrinterTools:
         return s
 
     def next_layer(self):
-        """Block until the next layer has finished printing. Returns "paused" instead if the
-        printer stopped at a pause planned in the slicer (dent tests)."""
+        """Block until the next layer has finished printing. Returns "paused" instead if someone
+        else paused the printer (dent tests: from the screen, the app, or a planned pause)."""
         step = self.pr.print_layer()
         self._sync()
         return step if step == "paused" else None
@@ -55,6 +55,13 @@ class PrinterTools:
         """Believe the plan for layers that finished without being looked at."""
         while len(self.known) < self.pr.n_done:
             self.known.append(self.pr.plan[len(self.known)])
+
+    def is_paused(self) -> bool:
+        """Is the printer paused right now (someone may have resumed it on the screen)?"""
+        link = getattr(self.pr, "link", None)
+        if link is not None:
+            return link.get("gcode_state") == "PAUSE"
+        return bool(getattr(self.pr, "paused", False))
 
     def snapshot(self):
         """The camera frame as the camera sees it (raw, not re-projected), for the log."""

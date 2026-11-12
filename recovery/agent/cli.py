@@ -39,10 +39,10 @@ def add_arguments(p):
     p.add_argument("--poke", type=float, nargs=2, metavar=("X", "Y"), help="sim: poke through a wall at (X, Y)")
     p.add_argument("--at-layer", type=int, default=None, help="sim without --dent-test: layer of the dent "
                    "(default: half height)")
-    p.add_argument("--dent-test", action="store_true", help="decide at a pause planned in the slicer, "
-                   "after a person dents the part")
-    p.add_argument("--pause-at-layer", type=int, default=None, help="dent test: the layer the pause is "
-                   "before (sim: where to pause; real: must match the pause added in Bambu Studio)")
+    p.add_argument("--dent-test", action="store_true", help="when a person pauses the printer (screen, "
+                   "app or a pause planned in Bambu Studio) and dents the part, decide what to do")
+    p.add_argument("--pause-at-layer", type=int, default=None, help="--sim only: pause after this many "
+                   "layers (on the real printer the agent reacts to whatever pause the person makes)")
     p.add_argument("--resume-test", action="store_true", help="at the planned pause, send the ORIGINAL "
                    "remaining layers through stop -> upload -> start (no dent), to prove 'correct' works")
     p.add_argument("--measure", choices=["manual", "camera"], default="manual",
@@ -168,9 +168,10 @@ def main(a):
         test = None
         printer.notify_pause = bool(a.dent_test or a.resume_test)
         if a.dent_test:
-            where = f"layer {a.pause_at_layer}" if a.pause_at_layer is not None else "the layer you chose"
-            test = DentTest(person=lambda: input(f"\nPrinter paused at {where}. Make the dent or poke now "
-                                                 "(tool, not fingers), then press Enter... "),
+            test = DentTest(person=lambda: input(f"\nPrinter paused after layer {printer.n_done} of "
+                                                 f"{printer.n_total}. Make the dent or poke now "
+                                                 "(tool, not fingers), then press Enter here. Do NOT "
+                                                 "resume on the printer; the agent does that... "),
                             measure=CameraMeasure() if a.measure == "camera" else ManualMeasure())
     tools = PrinterTools(printer, part, seg, det)
     approver = AutoApprover() if a.auto_approve else TerminalApprover()

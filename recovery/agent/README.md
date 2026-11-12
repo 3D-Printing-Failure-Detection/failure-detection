@@ -4,12 +4,14 @@ Connects the printer to a decision-maker and back, with a person in the loop.
 
 ## Container dent test (current focus)
 
-One hand-made change per print, at a pause planned in Bambu Studio. The agent is asked once.
+One hand-made change per print. The agent only reads the printer's status until someone pauses
+it; then it is asked once. The person pauses, dents, and presses Enter in the agent, but does NOT
+resume on the printer: the agent resumes, corrects or stops.
 
 ```
-P1S pauses before layer N (pause added in Bambu Studio)
-  1. frame     agent saves a camera frame ("before")
-  2. change    the person dents or pokes the tray, presses Enter
+person pauses the P1S (screen or app; a pause planned in Bambu Studio also works)
+  1. frame     agent notices the pause, saves a camera frame ("before")
+  2. change    the person dents or pokes the tray, presses Enter in the agent
   3. frame     agent saves "after" and a picture of what changed
   4. measure   the person types what they did: 'dent X Y DEPTH' | 'poke X Y' | 'none'
                (part-centred mm; the camera can't measure the side-on P1S view yet)
@@ -37,10 +39,10 @@ shape:
 # rehearse (no printer)
 python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --sim --dent-test \
     --pause-at-layer 30 --dent 0 -10 3          # or --poke 5 -10, or nothing for a clean run
-# real P1S: in Bambu Studio add a pause at layer 31 (the first layer above z = 6 mm), export, print,
-# then start the agent; it waits for the pause, then walks you through the steps above
+# real P1S: start the print and the agent; around half height (z = 6 mm) pause from the printer
+# screen; the agent takes over from there
 python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --dent-test \
-    --pause-at-layer 30 --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
+    --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
 ```
 
 Tray coordinates: centre (0, 0); front wall middle `0 -10`; right wall middle `15 0`; walls 1.2 mm.
@@ -50,7 +52,7 @@ Tray coordinates: centre (0, 0); front wall middle `0 -10`; right wall middle `1
 | Phase | Run | Passes if |
 |---|---|---|
 | 0 · setup | `check-gcode`, `probe`, one `--sim` rehearsal | "looks usable"; printer status and a frame come back |
-| 1 · decisions | dent tests: clean, 1 mm, 3 mm, poke; accept **resume or stop only** | pause found at layer 31, frames saved, recommendations match the table, the agent's resume/stop commands work, water test agrees |
+| 1 · decisions | dent tests: clean, 1 mm, 3 mm, poke; accept **resume or stop only** | the agent notices the pause, frames saved, recommendations match the table, the agent's resume/stop commands work, water test agrees |
 | 2 · mechanism | `--resume-test` on a scrap tray, no dent | no homing over the part, no collision, no seam, holds water |
 | 3 · correction | 3 mm dent, approve **correct** | new layers step back to the original wall, holds water, ~5.2 ml |
 
@@ -58,9 +60,11 @@ Each phase starts only after the one before it passes.
 
 ### Before the first real dent test
 
-- **Check the layer number at the pause.** The agent assumes Bambu Studio's pause stops *before*
-  the chosen layer starts and that the printer then reports that layer's number. Compare the
-  layer the agent prints in its summary with the one set in Bambu Studio.
+- **Check the layer number at the pause.** The agent counts the layer the printer reports as
+  not yet finished (a pause from the screen usually lands mid-layer). Compare the layer the agent
+  prints at the prompt with the printer screen.
+- **Don't resume on the printer.** If someone does, the agent notices, sends nothing and offers
+  "continue" instead of "resume"; the next layers are then already printing over the dent.
 - **"correct" depends on stop → upload → start working on the P1S**, which has never been tried.
   Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
   *original* remaining layers through stop → upload → start. Watch the bed: on the P1S the bed is
@@ -70,7 +74,7 @@ Each phase starts only after the one before it passes.
 
   ```bash
   python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --resume-test \
-      --pause-at-layer 30 --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
+      --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE     # then pause on the screen
   ```
 - **Inspect a correction before approving it.** The agent saves the exact G-code it would send
   (`correction_from_layer_N.gcode`) and a picture of the dented layer and the next new layers

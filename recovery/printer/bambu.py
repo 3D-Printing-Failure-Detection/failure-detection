@@ -221,7 +221,7 @@ class BambuPrinter:
     _seen_running = False
     _layer_done_t = 0.0
     last_frame = None
-    notify_pause = False             # dent tests: return "paused" at a pause planned in the slicer
+    notify_pause = False             # dent tests: return "paused" when someone else pauses the printer
     _paused_by_us = False
     _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
 
@@ -274,7 +274,7 @@ class BambuPrinter:
                 self._seen_running, self._await_running = True, False
             elif (state == "PAUSE" and self.notify_pause and not self._paused_by_us
                   and not self._await_running):
-                return self._planned_pause()
+                return self._external_pause()
             elif state == "IDLE" and self._seen_running:
                 raise PrintEnded("the job was stopped on the printer (state IDLE)")
             reported = self._layer_num()
@@ -301,10 +301,11 @@ class BambuPrinter:
         time.sleep(self.settle)          # head parks (timelapse 'traditional') and the image settles
         self._layer_done_t = time.time()
 
-    def _planned_pause(self):
-        """The printer stopped at a pause planned in the slicer. Bambu Studio puts it at the start of
-        a layer, so layer_num is assumed to be the layer about to print (CHECK on the first real
-        test: compare with the layer you set in Bambu Studio). Count everything before it as done."""
+    def _external_pause(self):
+        """Someone else paused the printer: from the screen, the app, or a pause planned in Bambu
+        Studio. layer_num is the layer being printed (or about to print, for a planned pause), which
+        may be half done; count only the layers before it as done. (CHECK on the first real test:
+        compare the layer the agent reports with the printer screen.)"""
         done = min(max(self._layer, self._layer_num() - 1), self.n_total)
         self.printed.extend(self.plan[self._layer:done])
         self._layer = done
