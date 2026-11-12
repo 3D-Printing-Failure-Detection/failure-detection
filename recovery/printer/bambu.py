@@ -219,10 +219,14 @@ class BambuPrinter:
     _seen_running = False
     _layer_done_t = 0.0
     last_frame = None
+    frame_extra_drop_mm = 0.0    # extra bed drop when frames are grabbed (timelapse park Z-hop); measure it
 
     def __init__(self, ip, serial, code, planned: List[Layer], layer_h, bed_camera: BedCamera,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
                  rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False):
+        if bed_camera is not None and bed_camera.calib_z_mm is None:
+            raise ValueError("this calibration file does not record the bed Z of its calibration frame. The P1S bed "
+                             "drops every layer, so frames cannot be mapped without it: recalibrate with --calib-z")
         self.ip, self.code, self.plan, self.layer_h = ip, code, list(planned), layer_h
         if mode != "restart":
             raise ValueError("only mode='restart' is supported")
@@ -296,7 +300,13 @@ class BambuPrinter:
     def camera_image(self):
         frame = self.cam.grab(newer_than=self._layer_done_t)     # never a frame from mid-layer
         self.last_frame = frame
-        z = self.plan[self._layer - 1].z
+        # The bed drops as the print grows and the camera is fixed. A layer counts as done once the printer
+        # reports the NEXT layer, so the bed is already at the next layer's Z (plus any Z-hop while the head
+        # parks, frame_extra_drop_mm): the finished layer's top is that far below the nozzle plane. After the
+        # last layer the end G-code moves the bed, so that final frame is not reliable.
+        done = self.plan[self._layer - 1]
+        bed_z = (self.plan[self._layer].z if self._layer < len(self.plan) else done.z) + self.frame_extra_drop_mm
+        z = self.bed_cam.layer_plane_z(done.z, bed_z)
         return self.bed_cam.top_down(frame, z, self.origin)
 
     def expected_layer(self) -> Layer:

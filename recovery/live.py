@@ -33,19 +33,30 @@ STATUS_KEYS = ("gcode_state", "layer_num", "total_layer_num", "mc_percent", "mc_
                "nozzle_temper", "bed_temper", "subtask_name", "gcode_file", "print_error")
 
 
-def calibrate(ip, code, out, pattern=(9, 6), square_mm=10.0, board_origin=(100.0, 100.0), n_frames=12):
+def calibrate(ip, code, out, pattern=(9, 6), square_mm=10.0, board_origin=(100.0, 100.0), n_frames=12,
+              calib_z=None, board_thickness=0.0, camera_height=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM, force=False):
+    if calib_z is None:
+        raise SystemExit("--calib-z is required: the bed Z (mm, as the printer screen shows it after homing) "
+                         "while the board lies flat for the pose shot")
     cam = BambuCamera(ip, code)
     frames = []
     print("Hold the printed checkerboard in view, different places/tilts for each shot.")
     for i in range(n_frames):
         input(f"[{i+1}/{n_frames}] position the board, press Enter to capture...")
         frames.append(cam.grab())
-    input(f"Lay the board FLAT on the bed, first inner corner at bed X={board_origin[0]} "
-          f"Y={board_origin[1]} mm, then press Enter...")
+    input(f"Home the printer, move the bed to Z={calib_z:g} mm from the screen, then lay the board FLAT on the "
+          f"bed, first inner corner at bed X={board_origin[0]} Y={board_origin[1]} mm, and press Enter...")
     pose = cam.grab()
-    calib = calibrate_bed_camera(frames, pattern, square_mm, board_origin, pose)
-    calib.save(out)
+    calib = calibrate_bed_camera(frames, pattern, square_mm, board_origin, pose, calib_z, board_thickness)
+    print(calib.pose_text())
+    warn = calib.check_height(camera_height)
     cv2.imwrite(str(out).replace(".npz", "_pose.png"), pose)
+    if warn and not force:
+        cam.close()
+        raise SystemExit(f"not saved: {warn} (and --board-thickness); --force saves anyway")
+    if warn:
+        print("WARNING:", warn)
+    calib.save(out)
     print("saved", out)
     cam.close()
 
@@ -104,9 +115,11 @@ def probe(ip, serial, code, out="results/probe", calib_path=None, wait_s=15.0, l
         cv2.imwrite(str(out / "camera_raw.jpg"), frame)
         log(f"camera frame {frame.shape[1]}x{frame.shape[0]} -> {out / 'camera_raw.jpg'}")
         if calib_path:
-            top = BedCamera.load(calib_path).top_down(frame, 0.0, C.BED_CENTER)
+            bc = BedCamera.load(calib_path)
+            top = bc.top_down(frame, bc.layer_plane_z(0.0), C.BED_CENTER)
             cv2.imwrite(str(out / "camera_topdown_bed.png"), top)
-            log(f"top-down view of the bed centre -> {out / 'camera_topdown_bed.png'}")
+            log(f"top-down view of the print plane at the bed centre -> {out / 'camera_topdown_bed.png'} "
+                "(sharp only for an object at the nozzle height, e.g. the top of a print)")
         return state
     finally:
         cam.close()

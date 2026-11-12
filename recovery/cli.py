@@ -14,6 +14,7 @@
   llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
+  calibrate-board  calibrate from a large 10 mm checkerboard: tilted frames + flat frames at known bed Z
   calibrate-bed  same, without a checkerboard: click the bed edges in one frame
   watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
   live      run the loop on a real Bambu P1S (print started from Bambu Studio); acts on alarms
@@ -21,6 +22,8 @@
 import argparse
 import sys
 from pathlib import Path
+
+from . import config as C
 
 
 def main(argv=None):
@@ -90,6 +93,23 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    c.add_argument("--calib-z", type=float, default=None,
+                   help="bed Z (mm, printer screen) during the flat pose shot; required (the P1S bed moves in Z)")
+    c.add_argument("--board-thickness", type=float, default=0.0, help="mm from the plate to the board's printed face")
+    c.add_argument("--force", action="store_true", help="save even if the camera-height check fails")
+    c.add_argument("--camera-height", type=float, default=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM,
+                   help="measured camera height above the print plane, used to check the fit (mm)")
+    bd = sub.add_parser("calibrate-board", help="calibrate from a large checkerboard (see docs/calibration-board.md)")
+    bd.add_argument("--ip", default=None, help="with --code: capture frames interactively into --dir")
+    bd.add_argument("--code", default=None)
+    bd.add_argument("--dir", default="calib_shots", help="folder with shots.json and the frames")
+    bd.add_argument("--markers", default=None, help="markers.json from the click page (default: <dir>/markers.json)")
+    bd.add_argument("--square-mm", type=float, default=10.0)
+    bd.add_argument("--board-thickness", type=float, default=0.0, help="mm from the plate to the board's printed face")
+    bd.add_argument("--camera-height", type=float, default=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM,
+                    help="measured camera height above the print plane, used to check the fit (mm)")
+    bd.add_argument("--out", default="calib.npz")
+    bd.add_argument("--force", action="store_true", help="save even if the fit is not acceptable")
     cb = sub.add_parser("calibrate-bed", help="checkerboard-free calibration from the bed edges (see docs/calibration-without-checkerboard.md)")
     cb.add_argument("--ip"); cb.add_argument("--code")
     cb.add_argument("--image", default=None, help="use this saved frame instead of grabbing one from the printer")
@@ -99,6 +119,12 @@ def main(argv=None):
     cb.add_argument("--fov", type=float, default=None, help="diagonal FOV prior in degrees (default 110)")
     cb.add_argument("--bed", type=float, default=256.0, help="plate edge length in mm")
     cb.add_argument("--force", action="store_true", help="save even if the fit is not acceptable")
+    cb.add_argument("--calib-z", type=float, default=None,
+                    help="bed Z (mm, printer screen) when the frame was grabbed; required to fit (the P1S bed moves in Z)")
+    cb.add_argument("--camera-height", type=float, default=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM,
+                    help="measured camera height above the print plane, used to check the fit (mm)")
+    cb.add_argument("--height-prior", type=float, default=None, metavar="SIGMA_MM",
+                    help="also use --camera-height as a soft constraint in the fit, with this uncertainty (mm)")
     from .agent.cli import add_arguments as agent_arguments, add_decider_arguments
     agent_arguments(sub.add_parser("agent"))
     add_decider_arguments(sub.add_parser("llm-check"))
@@ -191,7 +217,15 @@ def main(argv=None):
         return
     if a.cmd == "calibrate":
         from .live import calibrate
-        calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin),
+                  calib_z=a.calib_z, board_thickness=a.board_thickness, camera_height=a.camera_height,
+                  force=a.force)
+        return
+    if a.cmd == "calibrate-board":
+        if a.ip and not a.code:
+            raise SystemExit("--ip needs --code (printer LAN access code)")
+        from .calib_board import main as calibrate_board
+        calibrate_board(a)
         return
     if a.cmd == "calibrate-bed":
         from .calib_offline import main as calibrate_bed

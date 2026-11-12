@@ -27,9 +27,38 @@ front-left corner (X to the right, Y toward the back) with a ruler or calipers, 
 `marker (known X,Y mm)`, click the mark and type `X,Y`. They constrain the interior of the view, which is where parts
 are printed, and make the edge clicks much less critical.
 
+## The bed moves: calibration Z
+The P1S bed drops by one layer height every layer while the camera stays fixed, so the top of a layer is at
+the nozzle height while it is printed, not `z` above where the plate was. The calibration therefore records the
+bed Z of its frame (`--calib-z`) and later frames are mapped on the plane `calib-z` above the calibrated plate,
+lowered by however far the bed has dropped since that layer when the frame is grabbed (`BedCamera.layer_plane_z`;
+see docs/calibration-board.md for the frame timing). Without this, at a 6 mm print height the
+mapping is off by tens of mm on this camera. The fit also reports the camera's position, its height above
+the print plane and how steeply it looks down; the height is checked against the team's measurement of
+22.784 mm (`P1S_CAMERA_ABOVE_PRINT_PLANE_MM`), and a disagreement over 1 mm blocks saving (usually a wrong
+`--calib-z`). This only catches gross mistakes: 1 mm of height is about 8 mm on the bed. On a grazing view several poses explain the clicks almost equally well; the measured height
+is used to pick the physical one, and `--height-prior SIGMA` also adds it to the fit as a soft constraint.
+
+**How sensitive this camera is** (from the issue-5 fit: camera about 32 mm left of and 34 mm behind the
+plate's front-left corner, 22.8 mm above the print plane, f about 820 px):
+
+| part at (mm) | distance | looks down | mm per pixel toward / across the camera | XY error per 1 mm of height error |
+|---|---|---|---|---|
+| 64, 64   | 101 mm | 12.8 deg | 0.57 / 0.13 | 4.4 mm |
+| 128, 128 | 186 mm | 7.0 deg  | 1.88 / 0.23 | 8.1 mm |
+| 192, 192 | 274 mm | 4.8 deg  | 4.06 / 0.34 | 12.0 mm |
+
+So the bed Z must be exact (use the printer's own Z, not a ruler), and parts should be placed near the
+front-left corner, where the view is steepest.
+
+Simulated on that camera (0.7 px click noise, 10 seeds; error over the middle 80 x 80 mm of the print plane):
+edge clicks alone give 1.5 to 4 mm mean, edges plus 9 markers 0.6 to 1.0 mm, for a calibration Z anywhere
+from 0 to 40 mm (10 mm: 2.4 mm edges only, 0.9 mm with markers and `--height-prior 1`). The height prior
+helps by about 20 %. Markers are what matter; the calibration Z is not critical.
+
 ## Steps
-1. Printer on, bed EMPTY and clean, chamber lit, door closed, bed at the position used during prints (lowered
-   Z does not matter, the fit is for the plate plane at Z=0). Printer in LAN mode.
+1. Printer on, bed EMPTY and clean, chamber lit, door closed, printer in LAN mode. Home the printer, then move
+   the bed to a known Z from the printer screen (10 mm is a good default) and note it: it is `--calib-z`.
 2. Grab a frame and create the click page:
    ```bash
    python -m recovery.cli calibrate-bed --ip <printer-ip> --code <access-code> --out calib.npz
@@ -42,16 +71,17 @@ are printed, and make the edge clicks much less critical.
    click what is visible; at least 6 per edge are required.
 4. Fit:
    ```bash
-   python -m recovery.cli calibrate-bed --ip <printer-ip> --code <access-code> --points points.json --out calib.npz
+   python -m recovery.cli calibrate-bed --ip <printer-ip> --code <access-code> --points points.json --calib-z 10 --out calib.npz
    ```
    It prints the edge residual (RMS and max, in mm) and refuses to save if RMS > 1 mm or max > 2 mm, or the focal
-   length is implausible, or if the camera would be below the bed. It also prints per-edge residuals and flags an edge
+   length is implausible, if the camera would be below the bed, or if its height above the print plane is
+   more than 1 mm off the measured 22.784 mm. It also prints per-edge residuals and flags an edge
    that is much more curved than the rest. Fixes, in order: re-click the flagged edge, add markers, add more clicks.
 5. Check: open `calib_overlay.png`. The green outline and grid must sit on the real plate edges everywhere,
    especially the corners. Then run `watch` on a clean print: every layer should be `ok`.
 6. If the camera or printer is moved later, keep the lens and refit only the pose from fresh clicks
    (the four corners are enough, but all four edges with >= 2 clicks each are used to find them):
    ```bash
-   python -m recovery.cli calibrate-bed --ip <ip> --code <code> --points points.json --profile calib.npz --out calib.npz
+   python -m recovery.cli calibrate-bed --ip <ip> --code <code> --points points.json --profile calib.npz --calib-z 10 --out calib.npz
    ```
    If the lens profile does not fit this unit the command says so (corner reprojection error), then use step 4.
