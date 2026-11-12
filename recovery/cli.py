@@ -9,6 +9,7 @@
   fea-verify  check the FE solver against closed-form benchmarks
   stress    FE stress-test the part about to be printed (optionally with an injected failure)
   slice     cross-section an STL into layers and write G-code (no slicer needed)
+  connection-test  can the laptop talk to the P1S? network, status, camera, files (+ optional pause/resume)
   check-gcode  offline: what the parser makes of a sliced file (markers, layers, outline rebuild)
   agent     agentic monitoring: pause on alarm, function check, decider recommends, a person approves
   llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
@@ -92,6 +93,13 @@ def main(argv=None):
     from .agent.cli import add_arguments as agent_arguments, add_decider_arguments
     agent_arguments(sub.add_parser("agent"))
     add_decider_arguments(sub.add_parser("llm-check"))
+    ct = sub.add_parser("connection-test")
+    ct.add_argument("--ip"), ct.add_argument("--serial"), ct.add_argument("--code")
+    ct.add_argument("--commands", action="store_true", help="also pause and resume a RUNNING print (asks first)")
+    ct.add_argument("--mock", action="store_true", help="run the checklist against a fake printer")
+    ct.add_argument("--mock-broken", nargs="*", default=[], choices=["network", "status", "camera", "files", "commands"],
+                    help="--mock: make these steps fail, to see the hints")
+    ct.add_argument("--out", default="results/connection-test")
     cg = sub.add_parser("check-gcode")
     cg.add_argument("file", help="Bambu Studio .gcode.3mf or a plain .gcode")
     cg.add_argument("--plate", type=int, default=1)
@@ -183,6 +191,16 @@ def main(argv=None):
         from .live import calibrate
         calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
         return
+    if a.cmd == "connection-test":
+        from .connection_test import MockPrinter, RealPrinter, run
+        if a.mock:
+            printer = MockPrinter(a.mock_broken)
+        elif a.ip and a.serial and a.code:
+            printer = RealPrinter(a.ip, a.serial, a.code)
+        else:
+            raise SystemExit("give --ip, --serial and --code (from the printer screen), or --mock")
+        res = run(printer, a.out, commands=a.commands)
+        raise SystemExit(0 if res["ok"] else 1)
     if a.cmd == "llm-check":
         from .agent.cli import llm_check
         llm_check(a)

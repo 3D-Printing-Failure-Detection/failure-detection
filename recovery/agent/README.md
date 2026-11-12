@@ -51,7 +51,7 @@ Tray coordinates: centre (0, 0); front wall middle `0 -10`; right wall middle `1
 
 | Phase | Run | Passes if |
 |---|---|---|
-| 0 · setup | `check-gcode`, `probe`, one `--sim` rehearsal | "looks usable"; printer status and a frame come back |
+| 0 · setup | `connection-test` (add `--commands` during a print), `check-gcode`, one `--sim` rehearsal | all connection steps PASS; "looks usable" |
 | 1 · decisions | dent tests: clean, 1 mm, 3 mm, poke; accept **resume or stop only** | the agent notices the pause, frames saved, recommendations match the table, the agent's resume/stop commands work, water test agrees |
 | 2 · mechanism | `--resume-test` on a scrap tray, no dent | no homing over the part, no collision, no seam, holds water |
 | 3 · correction | 3 mm dent, approve **correct** | new layers step back to the original wall, holds water, ~5.2 ml |

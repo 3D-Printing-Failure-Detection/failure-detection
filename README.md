@@ -150,6 +150,9 @@ repeats this check and refuses to start on a failing part.
 None of these send a print command, so they are safe on any print. Steps 3 and 5 are not needed.
 
 ```bash
+# first: can the laptop talk to the printer? network, status, camera, file access (read only);
+# add --commands while a print runs to also test pause + resume; --mock to see it without a printer
+python -m recovery.cli connection-test --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678
 # offline: does our parser understand your Bambu Studio export? (markers, layer count, outlines)
 python -m recovery.cli check-gcode parts/mypart.gcode.3mf
 # read-only: printer status over MQTT + one camera frame saved to results/probe/
