@@ -172,10 +172,13 @@ class _Run:
 
 
 def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=30, monitor=None,
-              dent_test: DentTest = None, resume_test=False, log=print):
+              dent_test: DentTest = None, resume_test=False, confirm=3, warmup=3, log=print):
     """monitor: check every layer with the camera (tools.watcher); None = whenever there is a watcher.
+    warmup: the first checked layers set this print's baseline (how much the camera always flags, e.g.
+    from calibration error); after that a layer counts as failing only if it flags more than that.
+    confirm: an alarm needs that many failing layers in a row (a real failure persists, noise does not).
     After a difference is accepted (resume), it raises a new alarm only once the flagged area exceeds
-    grow x the accepted one + grow_px."""
+    grow x the accepted one + grow_px. Whole simulated prints: recovery/eval/p1s_print_eval.py."""
     has_watcher = getattr(tools, "watcher", None) is not None
     if monitor is None:
         monitor = has_watcher
@@ -183,6 +186,7 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
         raise ValueError("monitoring every layer needs a failure detector (PrinterTools(..., watcher=...))")
     r = _Run(tools, decider, gate, out_dir, log)
     acknowledged, baseline_next, outcome, unchecked = None, False, "finished", 0
+    seen, baseline, streak = [], 0, 0
     log(f"agent watching {tools.pr.n_total} layers (camera monitoring {'on' if monitor else 'off'}"
         f"{', dent test at the planned pause' if dent_test else ''}); log -> {r.dir}")
     try:
@@ -208,7 +212,13 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
                     log(f"layer {obs.layer}: the camera could not check this layer ({obs.type_prob.get('error')}); "
                         f"{unchecked} unchecked so far, printing goes on")
                 continue
-            if obs.label == "ok":
+            if len(seen) < warmup:                              # learn this print's baseline first
+                seen.append(obs.flagged_px if obs.label != "ok" else 0)
+                baseline = float(np.median(seen))
+                continue
+            failing = obs.label != "ok" and obs.flagged_px > baseline
+            streak = streak + 1 if failing else 0
+            if streak < confirm:
                 continue
             if baseline_next:                                    # the change accepted at the dent test
                 acknowledged, baseline_next = obs.flagged_px, False

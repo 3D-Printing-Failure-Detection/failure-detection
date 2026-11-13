@@ -126,7 +126,9 @@ def make_sample(i, cfg):
     prev_stack = printed[:k - 1] if k > 1 else printed
     with V.P1SScene(cam, look, {"p": V.stack_mesh(prev_stack, bulge_mm=bulge)}, xy, yaw, prev_stack[-1].z, drop) as scene:
         prev, _ = scene.render(["p"])
-    guide = plan_silhouette(cam, look, plan, xy, yaw, drop)
+    # the guide is drawn exactly as on the printer: from the calibration (not the slightly different
+    # camera that took the frames), from the sliced layers as planned, with no extra bed drop
+    guide = plan_silhouette(base_camera(cfg), look, nominal0[:k], xy, yaw)
     ph0 = V.Photometric.sample(rng)
     ph1 = ph0.perturbed(rng)
 
@@ -142,6 +144,28 @@ def make_sample(i, cfg):
                  look=dict(**look_lab, n_lights=len(look.lights), toolhead_in_scene=look.toolhead_xy is not None),
                  camera=cam.to_json())
     return prev, cur, guide, mask, label, (ph0, ph1)
+
+
+def regen_guides(data_dir, calib=None, workers=12, log=print):
+    """Redraw every guide of an existing dataset from the calibration (as `make_sample` now does)."""
+    data_dir = Path(data_dir)
+    labels = [json.loads(l) for l in open(data_dir / "labels.jsonl")]
+    jobs = [(str(data_dir), l, calib) for l in labels]
+    with mp.get_context("spawn").Pool(workers) as pool:
+        for k, _ in enumerate(pool.imap_unordered(_regen_one, jobs, chunksize=8)):
+            if (k + 1) % 500 == 0:
+                log(f"{k + 1}/{len(jobs)} guides")
+    return len(jobs)
+
+
+def _regen_one(args):
+    data_dir, l, calib = args
+    paths = {p: Path(p).stem for p in default_parts() + glob.glob("tests/fixtures/unseen_parts/*.yaml")}
+    path = next(p for p, stem in paths.items() if _nominal(p)[0].name == l["part"])
+    _, nominal = _nominal(path)
+    cam = V.P1SCamera.load(calib) if calib else V.P1SCamera.default()
+    g = plan_silhouette(cam, V.Look(), nominal[:l["layer"]], l["part_xy_mm"], l["part_yaw_deg"])
+    cv2.imwrite(str(Path(data_dir) / l["files"]["guide"]), g)
 
 
 def _write(i, cfg, out):
@@ -216,7 +240,11 @@ def main(argv=None):
     ap.add_argument("--calib", help="camera calibration .npz (needs calib_z_mm)")
     ap.add_argument("--camera-error", type=float, default=1.0,
                     help="scale of the random calibration error (1 = as in training; 2 = a test with twice as much)")
+    ap.add_argument("--regen-guides", metavar="DIR", help="only redraw the guides of an existing dataset")
     a = ap.parse_args(argv)
+    if a.regen_guides:
+        print(f"{regen_guides(a.regen_guides, a.calib, a.workers)} guides redrawn")
+        return 0
     cfg = default_config(seed=a.seed, calib=a.calib, camera_error=a.camera_error,
                          **({"parts": a.parts} if a.parts else {}))
     m = generate(a.n, a.out, cfg, a.workers, a.start, log=lambda s: print(s, flush=True))

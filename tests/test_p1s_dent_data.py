@@ -141,3 +141,34 @@ def test_agent_dent_test_measures_from_the_side_view(tmp_path):
     ev = [json.loads(l) for l in next(tmp_path.glob("*/events.jsonl")).read_text().splitlines()]
     described = ev[0]["situation"]["observation"]["described"]
     assert described.startswith("camera (side view): dent, left wall") and ev[0]["action"] == "resume"
+
+
+def test_agent_catches_a_failing_print_from_the_camera_view(tmp_path):
+    """Watching every layer with the trained failure detector: a print whose layers shift sideways
+    from layer 20 is stopped soon after, and a clean print is not stopped."""
+    from pathlib import Path
+    ckpt = Path("runs/p1s_layer")
+    if not (ckpt / "model.pt").exists():
+        pytest.skip("no trained failure detector at runs/p1s_layer (python -m recovery.models.p1s_layer train ...)")
+    from recovery.agent.deciders import RuleDecider
+    from recovery.agent.gate import ActionGate, AutoApprover
+    from recovery.agent.loop import run_agent
+    from recovery.agent.rehearse import PlannedPauseSim
+    from recovery.agent.tools import PrinterTools
+    from recovery.deform import Failure
+    from recovery.models.p1s_layer import LayerWatcher
+    part = get_part("parts/print/two-hole-block/two-hole-block.yaml")
+    nom = part.layers()
+    watcher = LayerWatcher(str(ckpt))
+    shift = Failure("shift", 20, dict(z0=nom[19].z, layer_h=0.2, dx=3.0, dy=-2.0, severity=3.6, ramp_layers=1))
+    outcomes = {}
+    for name, failure in (("shift", shift), ("clean", None)):
+        pr = PlannedPauseSim(nom, failure, seed=1)
+        tools = PrinterTools(pr, part, watcher)
+        res = run_agent(tools, RuleDecider(), ActionGate(tools, AutoApprover(), log=lambda *a: None),
+                        out_dir=str(tmp_path / name), log=lambda *a: None)
+        outcomes[name] = res
+    stop = outcomes["shift"]["events"][-1]
+    assert stop["action"] == "stop" and 20 <= stop["situation"]["observation"]["layer"] <= 27
+    assert outcomes["clean"]["outcome"] == "finished" and outcomes["clean"]["layers_unchecked"] == 0
+    assert all(e["action"] != "stop" for e in outcomes["clean"]["events"])

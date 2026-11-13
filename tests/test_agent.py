@@ -41,7 +41,20 @@ def _run(part, script, tmp_path, decider=None, approver=None, seed=1, failure_fn
     return p, nom, pr, res
 
 
-SAG = {29: ("collapse", 120)}                                   # a wall starts to sag at layer 29
+SAG = {k: ("collapse", 120) for k in (29, 30, 31)}             # a wall sags from layer 29: alarm at 31
+
+
+def test_one_or_two_odd_layers_do_not_raise_an_alarm(tmp_path):
+    script = {12: ("warp", 200), 30: ("collapse", 150), 31: ("collapse", 150)}
+    _, _, pr, res = _run("two-hole-block", script, tmp_path)
+    assert res["events"] == [] and res["outcome"] == "finished"
+
+
+def test_what_the_camera_always_flags_on_this_print_is_not_an_alarm(tmp_path):
+    script = {k: ("warp", 80) for k in range(60)}                    # e.g. a calibration that is a bit off
+    script.update({k: ("warp", 400) for k in range(40, 60)})        # until a real problem appears
+    _, _, pr, res = _run("two-hole-block", script, tmp_path)
+    assert [e["situation"]["observation"]["layer"] for e in res["events"]] == [42]
 
 
 def test_clean_print_raises_no_alarm(tmp_path):
@@ -53,7 +66,7 @@ def test_a_starting_failure_is_paused_once_then_resumed(tmp_path):
     script = {k: ("collapse", 120 + k - 29) for k in range(29, 60)}   # stays about the same size
     _, _, pr, res = _run("two-hole-block", script, tmp_path)
     assert [e["action"] for e in res["events"]] == ["resume"] and res["outcome"] == "finished"
-    assert res["events"][0]["situation"]["observation"]["flagged_px"] == 120
+    assert res["events"][0]["situation"]["observation"]["flagged_px"] == 122      # third layer in a row
 
 
 def test_a_failure_that_keeps_growing_is_stopped(tmp_path):
@@ -65,8 +78,8 @@ def test_a_failure_that_keeps_growing_is_stopped(tmp_path):
 
 @pytest.mark.parametrize("kind", ["detach", "shift"])
 def test_detach_and_shift_are_stopped_at_once(tmp_path, kind):
-    _, _, pr, res = _run("water-tray", {20: (kind, 900)}, tmp_path)
-    assert [e["action"] for e in res["events"]] == ["stop"] and pr.cancelled and pr.n_done == 21
+    _, _, pr, res = _run("water-tray", {k: (kind, 900) for k in range(20, 60)}, tmp_path)
+    assert [e["action"] for e in res["events"]] == ["stop"] and pr.cancelled and pr.n_done == 23
 
 
 def test_a_camera_problem_is_reported_and_the_print_goes_on(tmp_path):
