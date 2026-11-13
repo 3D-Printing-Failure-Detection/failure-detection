@@ -88,3 +88,38 @@ pixel.
 - For the real test set, label photos in the same `labels.jsonl` format (at least `kind`, `wall`, `along_mm`,
   `depth_mm`). Where the part really sits on the plate (`--part-xy`) and the final calibration (`--calib`) are
   the two settings most worth matching.
+
+## Detector (`recovery/models/dent.py`)
+Input, like the layer models in `nets.py`: before RGB + after RGB + a guide channel, 7 × 256 × 256. The guide is
+the part's outline, projected from the calibration and the part's bed position (the analogue of the expected-layer
+render). Frames are cropped to a square around the guide, because a downscaled full frame would lose a 40 px poke.
+The model is a SegFormer (MiT-b2, ImageNet/ADE20k weights, 7-channel stem). Per pixel it predicts changed or not,
+dent vs poke, and which wall. Image-level kind and wall come from the predicted change region; the smallest region
+that counts as "touched" is tuned on the val split.
+
+A whole-image ConvNeXt-V2 classifier was tried first and stayed at chance (it overfits 64 pairs, so the loop
+works; it cannot find the change from one label per image). Per-pixel supervision is what makes it learn.
+
+```bash
+python -m recovery.models.dent build --data data/p1s_dent_v1 --out data/p1s_dent_v1/crops.npz
+python -m recovery.models.dent train --crops data/p1s_dent_v1/crops.npz --out runs/dent --pretrained   # ~11 min
+python -m recovery.models.dent eval  --crops data/p1s_dent_test_s1/crops.npz --ckpt runs/dent
+```
+
+Results, `runs/dent_v2`. **Simulation only, no real photo has been scored.** "Held-out" is a separate 600-pair set
+generated with `--seed 1`; val is the 300-pair split used to pick the epoch and the threshold.
+
+| | val (300) | held-out sim (600) |
+|---|---|---|
+| dent / poke / none all correct | 95.3 % | **91.0 %** |
+| touched vs untouched correct | 95.7 % | 92.8 % |
+| dent recall / precision | 97.6 / 97.6 % | 88.1 / 97.3 % |
+| poke recall / precision | 93.2 / 96.5 % | 86.3 / 96.2 % |
+| false alarm (untouched flagged) | 5.6 % | 0.5 % |
+| wall correct (dent or poke) | 82.5 % | 76.8 % |
+| change-mask IoU | 0.57 | 0.54 |
+
+Held-out confusion (rows true, columns predicted; dent, poke, none): `[[214, 6, 23], [5, 151, 19], [1, 0, 181]]`.
+Almost all errors are touched prints called untouched. Detection by how many pixels changed: < 15 px 54 %,
+15 to 50 px 88 %, 50 to 200 px 95 %, ≥ 200 px 91 %. The model is conservative on held-out data, so a lower
+threshold would trade false alarms for recall.

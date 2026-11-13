@@ -87,3 +87,18 @@ def test_generate_writes_images_labels_and_manifest(tmp_path):
     assert len(lines) == 3
     for f in ("images/000000_before.jpg", "images/000000_after.jpg", "masks/000000.png", "manifest.json"):
         assert (tmp_path / f).exists()
+
+
+def test_dent_model_crop_follows_the_part_and_decision_uses_the_change_area():
+    torch = pytest.importorskip("torch")
+    from recovery.models import dent as M
+    cfg = D.default_config(kinds=("dent",), weights=(1.0,), part_xy=(60.0, 70.0), camera_jitter=False)
+    before, after, mask, lab, _ = D.make_pair(0, cfg)
+    poly = M.guide_polygon(V.P1SCamera.default(), lab["part_xy_mm"], lab["part_yaw_deg"], lab["top_z_mm"])
+    x, box = M.make_input(before, after, poly)
+    assert x.shape == (M.STORE, M.STORE, 7)
+    assert M.crop(mask, box, M.STORE, M.cv2.INTER_LINEAR).max() > 0          # the change is inside the crop
+    g = x[..., 6] > 0
+    assert g.any() and not (g[0].any() or g[-1].any() or g[:, 0].any() or g[:, -1].any())   # whole guide in the crop
+    area, pk = np.array([0, 3, 50]), np.array([[0.9, 0.1], [0.2, 0.8], [0.7, 0.3]])
+    assert [M.KINDS[k] for k in M.decide(area, pk, 2)] == ["none", "poke", "dent"]
