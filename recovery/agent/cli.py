@@ -45,8 +45,11 @@ def add_arguments(p):
                    "layers (on the real printer the agent reacts to whatever pause the person makes)")
     p.add_argument("--resume-test", action="store_true", help="at the planned pause, send the ORIGINAL "
                    "remaining layers through stop -> upload -> start (no dent), to prove 'correct' works")
-    p.add_argument("--measure", choices=["manual", "camera"], default="manual",
-                   help="dent test: the person types the dent (default), or the top-down camera measures it")
+    p.add_argument("--measure", choices=["sideview", "manual", "camera"], default="sideview",
+                   help="dent test: the dent detector compares the P1S camera's before/after frames (default; "
+                        "falls back to manual if --dent-model is missing), the person types it (manual), or "
+                        "the top-down measurement (camera; not usable on the P1S)")
+    p.add_argument("--dent-model", default="runs/dent", help="dent detector checkpoint (recovery/models/dent.py)")
     p.add_argument("--monitor", choices=["auto", "on", "off"], default="auto",
                    help="camera check every layer; auto = on in --sim, off on the real P1S (its side-on "
                         "camera does not give the top-down view the measurement needs yet)")
@@ -127,11 +130,31 @@ def _spec_only(path):
     return {k: v for k, v in d.items() if k not in GEOMETRY_KEYS}
 
 
+def _side_view(a):
+    """Dent detector on the P1S camera's own view, with the calibration if there is one that records the
+    bed Z (calibrate-bed / calibrate-board --calib-z), otherwise the approximate default camera."""
+    from .. import p1s_view as V
+    from .measure import SideViewMeasure
+    cam = None
+    if os.path.exists(a.calib):
+        try:
+            cam = V.P1SCamera.load(a.calib)
+        except ValueError as e:
+            print(f"{e}; using the approximate default P1S camera")
+    else:
+        print(f"no calibration at {a.calib}: using the approximate default P1S camera (recovery/p1s_view.py)")
+    return SideViewMeasure(a.dent_model, cam)
+
+
 def main(a):
     from ..run import make_models
     from .loop import DentTest
     from .measure import CameraMeasure, ManualMeasure, ScriptedMeasure
     monitor = (a.monitor == "on") or (a.monitor == "auto" and a.sim)
+    if a.dent_test and a.measure == "sideview" and not os.path.exists(os.path.join(a.dent_model, "model.pt")):
+        print(f"no dent detector at {a.dent_model} (train one: python -m recovery.models.dent train ...); "
+              "the person types the change instead")
+        a.measure = "manual"
     camera_needed = monitor or (a.dent_test and a.measure == "camera")
     seg, det = make_models(a.models) if camera_needed else (None, None)
     change = (f"dent {a.dent[0]} {a.dent[1]} {a.dent[2]}" if a.dent else
@@ -143,7 +166,8 @@ def main(a):
         if a.dent_test or a.resume_test:
             k = a.pause_at_layer if a.pause_at_layer is not None else len(nom) // 2
             printer = PlannedPauseSim(nom, None, seed=a.seed, pause_at=k)
-            measure = CameraMeasure() if a.measure == "camera" else ScriptedMeasure(change)
+            measure = (CameraMeasure() if a.measure == "camera" else
+                       _side_view(a) if a.measure == "sideview" else ScriptedMeasure(change))
             test = DentTest(person=lambda: printer.user_change(change), measure=measure)
         else:
             k = a.at_layer if a.at_layer is not None else len(nom) // 2 - 1
@@ -172,7 +196,8 @@ def main(a):
                                                  f"{printer.n_total}. Make the dent or poke now "
                                                  "(tool, not fingers), then press Enter here. Do NOT "
                                                  "resume on the printer; the agent does that... "),
-                            measure=CameraMeasure() if a.measure == "camera" else ManualMeasure())
+                            measure=(CameraMeasure() if a.measure == "camera" else
+                                     _side_view(a) if a.measure == "sideview" else ManualMeasure()))
     tools = PrinterTools(printer, part, seg, det)
     approver = AutoApprover() if a.auto_approve else TerminalApprover()
     gate = ActionGate(tools, approver, auto_pause=not a.no_auto_pause)

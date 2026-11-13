@@ -1,4 +1,5 @@
 """P1S side-view renderer and dent/poke pair generator (recovery/p1s_view.py, recovery/p1s_dent_data.py)."""
+import json
 import os
 import sys
 
@@ -102,3 +103,40 @@ def test_dent_model_crop_follows_the_part_and_decision_uses_the_change_area():
     assert g.any() and not (g[0].any() or g[-1].any() or g[:, 0].any() or g[:, -1].any())   # whole guide in the crop
     area, pk = np.array([0, 3, 50]), np.array([[0.9, 0.1], [0.2, 0.8], [0.7, 0.3]])
     assert [M.KINDS[k] for k in M.decide(area, pk, 2)] == ["none", "poke", "dent"]
+
+
+def test_rehearsal_pause_snapshots_are_the_p1s_view_and_show_the_change():
+    from recovery.agent.rehearse import PlannedPauseSim
+    pr = PlannedPauseSim(get_part(TRAY).layers(), None, seed=1, pause_at=30)
+    while pr.print_layer() != "paused":
+        pass
+    import cv2
+    before, again = pr.snapshot(), pr.snapshot()
+    pr.user_change("dent -15 0 2")
+    after = pr.snapshot()
+    assert before.shape == (720, 1280, 3)
+    smooth = lambda x: cv2.GaussianBlur(x.astype(np.float32).mean(2), (0, 0), 2)
+    changed = lambda x: int((np.abs(smooth(x) - smooth(before)) > 8).sum())
+    assert changed(again) == 0 and changed(after) > 50             # the dent shows, sensor noise does not
+    assert PlannedPauseSim(get_part(TRAY).layers(), None, pause_at=30, view="top").view == "top"
+
+
+def test_agent_dent_test_measures_from_the_side_view(tmp_path):
+    from pathlib import Path
+    ckpt = Path("runs/dent")
+    if not (ckpt / "model.pt").exists():
+        pytest.skip("no trained dent detector at runs/dent (python -m recovery.models.dent train ...)")
+    from recovery.agent.gate import ActionGate, AutoApprover
+    from recovery.agent.loop import DentTest, run_agent
+    from recovery.agent.measure import SideViewMeasure
+    from recovery.agent.rehearse import PlannedPauseSim
+    from recovery.agent.tools import PrinterTools
+    from recovery.agent.deciders import RuleDecider
+    part = get_part(TRAY)
+    pr = PlannedPauseSim(part.layers(), None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, part)
+    test = DentTest(person=lambda: pr.user_change("dent -15 0 2"), measure=SideViewMeasure(str(ckpt)))
+    run_agent(tools, RuleDecider(), ActionGate(tools, AutoApprover()), out_dir=tmp_path, monitor=False, dent_test=test)
+    ev = [json.loads(l) for l in next(tmp_path.glob("*/events.jsonl")).read_text().splitlines()]
+    described = ev[0]["situation"]["observation"]["described"]
+    assert described.startswith("camera (side view): dent, left wall") and ev[0]["action"] == "resume"

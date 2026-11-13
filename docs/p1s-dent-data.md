@@ -123,3 +123,27 @@ Held-out confusion (rows true, columns predicted; dent, poke, none): `[[214, 6, 
 Almost all errors are touched prints called untouched. Detection by how many pixels changed: < 15 px 54 %,
 15 to 50 px 88 %, 50 to 200 px 95 %, ≥ 200 px 91 %. The model is conservative on held-out data, so a lower
 threshold would trade false alarms for recall.
+
+## In the agent's dent test (the default)
+`python -m recovery.cli agent --dent-test …` now measures the change from the P1S camera's own view
+(`--measure sideview`, `SideViewMeasure` in `recovery/agent/measure.py`). It compares the frames saved at the pause
+before and after the change, then turns the detector's kind, wall and position into the existing
+`dent X Y DEPTH` / `poke X Y` / `none` description. From there, the function check, decision and approval are
+unchanged. Depth is not measured: a dent is taken as 1.5 mm, which only affects the capacity check.
+- `--dent-model runs/dent` is the checkpoint. If it is missing, the agent falls back to `--measure manual` (typed in).
+- `--calib calib.npz` is used if it records the bed Z (`calib_z_mm`); otherwise the approximate default camera.
+- Sim rehearsals (`PlannedPauseSim`) now render pause snapshots from the P1S view (`view="p1s"`, part at the
+  plate centre); `view="top"` keeps the old image.
+- `--measure camera` (top-down) is still there, but the P1S camera is too shallow for it (2 to 4 mm per pixel
+  mid-plate).
+
+Sim rehearsals with `runs/dent_v2` (`agent --sim --dent-test … --auto-approve --monitor off`):
+
+| change made | camera said | agent |
+|---|---|---|
+| dent −15 0 2 (left wall) | dent, left wall at (−15.5, −0.8) | resume |
+| dent 0 −10 1.5 (front wall) | dent, front wall at (−2.9, −10.5) | resume |
+| dent 15 0 2 (right wall) | dent, right wall at (15.5, −0.7) | resume |
+| poke 0 −10 (front wall) | poke, front wall at (1.0, −10.5) | stop (leaks) |
+| poke −15 3 (left wall) | poke, **right** wall at (15.5, 4.4) | stop (leaks) |
+| none | none | resume |

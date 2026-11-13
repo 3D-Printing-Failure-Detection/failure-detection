@@ -95,9 +95,15 @@ class PlannedPauseSim(SimPrinter):
     """Simulated printer that stops before layer `pause_at`, like a pause added in the slicer.
     `user_change(description)` is what a person does to the print during that pause."""
 
-    def __init__(self, *args, pause_at=None, **kwargs):
+    def __init__(self, *args, pause_at=None, view="p1s", origin=None, p1s_camera=None, **kwargs):
+        """view: what `snapshot` shows. "p1s" (default) renders the real P1S chamber camera's view
+        (recovery/p1s_view.py) with the part at bed position `origin` (default: plate centre);
+        "top" is the old simulated top-down image."""
         super().__init__(*args, **kwargs)
         self.pause_at, self._paused_once, self.user_paused = pause_at, False, False
+        self.view, self.p1s_camera = view, p1s_camera
+        from .. import config as C
+        self.origin = tuple(origin or C.BED_CENTER)
 
     def print_layer(self):
         if self.pause_at is not None and not self._paused_once and self.n_done == self.pause_at:
@@ -113,9 +119,24 @@ class PlannedPauseSim(SimPrinter):
         return new
 
     def snapshot(self):
+        if self.view == "p1s":
+            return self._p1s_snapshot()
         recent = [self.printed[0]] + self.printed[max(1, len(self.printed) - 4):]
         img = camera.render(recent, np.random.default_rng(len(self.printed)))
         return cv2.cvtColor(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), cv2.COLOR_GRAY2BGR)
+
+    def _p1s_snapshot(self):
+        """BGR frame from the P1S camera: same camera, light and bed position for every frame of a
+        pause, fresh sensor noise each time."""
+        from .. import p1s_view as V
+        cam = self.p1s_camera or V.P1SCamera.default()
+        n = len(self.printed)
+        with V.P1SScene(cam, V.Look(), {"part": V.stack_mesh(self.printed)}, self.origin, 0.0,
+                        self.printed[-1].z) as scene:
+            rgb, _ = scene.render(["part"])
+        self._shots = getattr(self, "_shots", 0) + 1
+        rng = np.random.default_rng([n, self._shots])
+        return V.Photometric().apply(rgb, rng)[..., ::-1].copy()
 
     def resume(self):
         self.user_paused = False

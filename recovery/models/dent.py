@@ -310,6 +310,27 @@ def evaluate(crops, ckpt_dir):
     return r
 
 
+def locate(mask, wall, cam, part_xy, yaw_deg, top_z, bounds=TRAY_BOUNDS, below_top_mm=0.4):
+    """Part-frame point (mm) just outside `wall` where the predicted change is: the ray through the
+    mask's centroid meets the plane just under the print's top (a dent or poke is deepest at the top
+    layers), and the point is snapped onto the wall. None if the mask is empty."""
+    ys, xs = np.nonzero(mask)
+    if not len(xs):
+        return None
+    ray = V._undistort(np.array([[xs.mean(), ys.mean()]]), cam.K, cam.dist)[0]
+    d = cam.R.T @ np.array([ray[0], ray[1], 1.0])
+    c = cam.centre
+    z = V.plate_z_mm(cam, top_z) + top_z - below_top_mm
+    t = (z - c[2]) / d[2]
+    w = c + t * d
+    co, si = np.cos(np.radians(yaw_deg)), np.sin(np.radians(yaw_deg))
+    dx, dy = w[0] - part_xy[0], w[1] - part_xy[1]
+    px, py = co * dx + si * dy, -si * dx + co * dy                 # world -> part frame
+    x0, y0, x1, y1 = bounds
+    px, py = float(np.clip(px, x0 + 0.5, x1 - 0.5)), float(np.clip(py, y0 + 0.5, y1 - 0.5))
+    return {"front": (px, y0 - 0.5), "back": (px, y1 + 0.5), "left": (x0 - 0.5, py), "right": (x1 + 0.5, py)}[wall]
+
+
 class DentDetector:
     """Real-time use: before/after frames from the P1S camera at a pause.
 
@@ -334,8 +355,10 @@ class DentDetector:
         s = side / STORE
         full = cv2.warpAffine(m, np.array([[s, 0, x0], [0, s, y0]], np.float32), (before.shape[1], before.shape[0]),
                               flags=cv2.INTER_NEAREST)
+        wall = WALLS[int(pw[0].argmax())] if kind != "none" else None
+        where = locate(full, wall, self.cam, part_xy, yaw_deg, top_z, bounds) if wall else None
         return dict(kind=kind, change_px_crop=int(area[0]), p_dent_vs_poke=pk[0].round(4).tolist(),
-                    wall=WALLS[int(pw[0].argmax())] if kind != "none" else None, mask=full)
+                    wall=wall, wall_prob=dict(zip(WALLS, pw[0].round(4).tolist())), at_mm=where, mask=full)
 
 
 def main(argv=None):

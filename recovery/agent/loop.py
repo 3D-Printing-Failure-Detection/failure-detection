@@ -128,6 +128,7 @@ class _Run:
         frames["after"] = self.save(f"{layer:04d}_after.png", after)
         diff, change = _frame_change(before, after)
         frames["change"] = self.save(f"{layer:04d}_change.png", diff)
+        tools.pause_frames = (before, after)          # for a measurement that compares the two frames
         new, described = test.measure(tools)
         if new:
             tools.believe_top(new)
