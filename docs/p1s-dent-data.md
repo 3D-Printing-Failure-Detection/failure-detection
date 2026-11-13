@@ -71,11 +71,17 @@ Label fields: `kind`, `wall`, `along_mm` (from the wall's centre, +X for front/b
 `pause_layer`, `top_z_mm`, `bed_drop_mm`, `part_xy_mm`, `part_yaw_deg`, `split` (every 10th pair is `val`),
 plus the `look`, `photometric` and per-sample `camera` used.
 
+## First run (`data/p1s_dent_v1`, not committed)
+3000 pairs in 4 min (12 workers, RTX 5060 Ti), 0 failures, 437 MB: 1167 dent, 896 poke, 937 none; 2700 train,
+300 val. Every dent changes at least 15 px (median 442 px; by wall: front 395, back 325, left 630, right 445).
+Pokes are small: median 40 px, with 91 % above the 15 px visibility threshold. No `none` pair has a changed
+pixel.
+
 ## Things to know before training
 - From this camera the **front wall is seen almost edge-on** and the **left wall faces the camera**. The back
   and right walls are only seen from the inside, over the rim. A dent on the front wall therefore covers few
   pixels. `outer_face_toward_camera` and `change_px` let you stratify or filter.
-- Pokes are small: a median of a few dozen changed pixels (see `manifest.json`).
+- Pokes are small (median 40 changed px). A model has to work at full resolution or on a crop around the part.
 - The images are clean renders. There are no cast shadows: MuJoCo's shadow maps alias on the 0.2 mm layer
   ridges, so shadows are off. There is also no stringing, no ooze from the parked nozzle, and no hand or tool in
   frame. Expect a sim-to-real gap and judge only on the real photos.
