@@ -5,7 +5,6 @@ from typing import List, Optional
 
 import numpy as np
 
-from .. import camera
 from ..geometry import features as F
 from ..geometry.ops import iou
 from ..geometry.spec import OVERHANG_AREA, check
@@ -22,17 +21,20 @@ SUPPORT = "layer not supported"          # prefix of the checker's overhang viol
 class Observation:
     layer: int                       # index of the layer that just finished
     z: float
-    label: str                       # detector label: ok, collapse, warp, shift, under_extrusion, detach
-    deviation_mm: float
+    label: str                       # what it looks like: ok, collapse, warp, shift, under_extrusion, detach
+    flagged_px: int = 0              # size of the area that differs from the plan (in the model's crop)
+    type_prob: dict = field(default_factory=dict)
     image: object = field(repr=False, default=None)
     expected: Optional[Layer] = field(repr=False, default=None)
-    measured: Optional[Layer] = field(repr=False, default=None)
 
 
 class PrinterTools:
-    def __init__(self, printer, part, segmenter=None, detector=None):
-        self.pr, self.part, self.seg, self.det = printer, part, segmenter, detector
+    def __init__(self, printer, part, watcher=None, yaw_deg=0.0):
+        """watcher: models.p1s_layer.LayerWatcher (or anything with the same `check`), needed only for
+        the per-layer camera check. yaw_deg: the part's rotation on the plate (0 = as sliced)."""
+        self.pr, self.part, self.watcher, self.yaw = printer, part, watcher, yaw_deg
         self.nominal = part.layers()
+        self._prev_frame = None
         self.known: List[Layer] = list(getattr(printer, "printed", []))[:printer.n_done]
 
     # ---- sense ----
@@ -64,23 +66,26 @@ class PrinterTools:
         return bool(getattr(self.pr, "paused", False))
 
     def snapshot(self):
-        """The camera frame as the camera sees it (raw, not re-projected), for the log."""
-        shot = getattr(self.pr, "snapshot", None)
-        return shot() if shot else self.pr.camera_image()
+        """The printer camera's frame, as the camera sees it (BGR)."""
+        return self.pr.snapshot()
 
     def observe(self) -> Observation:
-        """Camera frame of the layer that just finished, measured against the plan (top-down
-        measurement). Updates the belief: nominal where it looked fine, measured where it did not."""
-        img, exp = self.pr.camera_image(), self.pr.expected_layer()
-        meas = self.seg.measure(img, camera.expected_mask(exp))
-        d = self.det.detect(img, exp.region, meas)
-        measured = Layer(exp.z, meas)
-        self.known[-1] = exp if d.label == "ok" else measured
-        return Observation(self.pr.n_done - 1, exp.z, d.label, float(d.deviation_mm), img, exp, measured)
-
-    def believe_measured(self, obs: Observation):
-        """Record the measured shape (not the plan) for the layer that just finished."""
-        self.known[-1] = obs.measured
+        """The frame after the layer that just finished, compared with the frame after the layer before
+        and with the plan, in the camera's own view. The camera cannot measure a shape from this angle,
+        so the belief about the part stays the plan; the observation says whether, and how, the print
+        looks different from it."""
+        plan = self.pr.plan[:self.pr.n_done]
+        try:
+            frame = self.snapshot()
+            prev = frame if self._prev_frame is None else self._prev_frame
+            origin = getattr(self.pr, "origin", None) or self.part.origin
+            r = self.watcher.check(prev[..., ::-1], frame[..., ::-1], plan, origin, self.yaw)
+        except Exception as e:           # no frame, or the part is not where the plan says: say so, go on
+            return Observation(self.pr.n_done - 1, plan[-1].z, "unchecked", 0, {"error": f"{type(e).__name__}: {e}"},
+                               None, plan[-1])
+        self._prev_frame = frame
+        return Observation(self.pr.n_done - 1, plan[-1].z, r["kind"], int(r["flagged_px"]),
+                           r.get("type_prob", {}), frame, plan[-1])
 
     def believe_top(self, layers: List[Layer]):
         """Record measured shapes for the top len(layers) printed layers (e.g. after a hand dent)."""

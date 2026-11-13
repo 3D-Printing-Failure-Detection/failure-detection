@@ -5,21 +5,43 @@ import json
 import pytest
 
 from recovery.agent import ActionGate, AutoApprover, LLMDecider, PrinterTools, RuleDecider, TerminalApprover, run_agent
-from recovery.agent.rehearse import hand_dent, hand_poke
+import numpy as np
+
+from recovery.agent.rehearse import PlannedPauseSim
 from recovery.geometry.spec import check
-from recovery.models.classical import ClassicalDetector, ClassicalSegmenter
 from recovery.parts import get_part
-from recovery.sim import SimPrinter
 
 
-def _run(part, failure_fn, tmp_path, decider=None, approver=None, seed=1):
+class ScriptedWatcher:
+    """Stands in for the camera's failure detector (models/p1s_layer.LayerWatcher): what it reports for
+    each finished layer index is scripted, so the agent's decisions can be checked exactly."""
+
+    def __init__(self, script=None):
+        self.script = script or {}
+
+    def check(self, prev, cur, plan, part_xy, yaw_deg=0.0):
+        kind, px = self.script.get(len(plan) - 1, ("ok", 0))
+        return dict(kind=kind, flagged_px=px, type_prob={})
+
+
+class FastSim(PlannedPauseSim):
+    """The simulated printer without rendering (the scripted watcher does not look at frames)."""
+
+    def snapshot(self):
+        return np.zeros((720, 1280, 3), np.uint8)
+
+
+def _run(part, script, tmp_path, decider=None, approver=None, seed=1, failure_fn=None):
     p = get_part(f"parts/print/{part}/{part}.yaml")
     nom = p.layers()
-    pr = SimPrinter(nom, failure_fn(nom) if failure_fn else None, seed=seed)
-    tools = PrinterTools(pr, p, ClassicalSegmenter(), ClassicalDetector())
+    pr = FastSim(nom, failure_fn(nom) if failure_fn else None, seed=seed)
+    tools = PrinterTools(pr, p, ScriptedWatcher(script))
     gate = ActionGate(tools, approver or AutoApprover(), log=lambda *a: None)
     res = run_agent(tools, decider or RuleDecider(), gate, out_dir=str(tmp_path), log=lambda *a: None)
     return p, nom, pr, res
+
+
+SAG = {29: ("collapse", 120)}                                   # a wall starts to sag at layer 29
 
 
 def test_clean_print_raises_no_alarm(tmp_path):
@@ -27,29 +49,44 @@ def test_clean_print_raises_no_alarm(tmp_path):
     assert res["outcome"] == "finished" and res["events"] == []
 
 
-def test_cosmetic_dent_is_paused_then_resumed_and_part_works(tmp_path):
-    p, nom, pr, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path)
-    assert [e["action"] for e in res["events"]] == ["resume"]
-    assert res["outcome"] == "finished" and check(pr.printed, nom, p.spec, p.layer_h).ok
+def test_a_starting_failure_is_paused_once_then_resumed(tmp_path):
+    script = {k: ("collapse", 120 + k - 29) for k in range(29, 60)}   # stays about the same size
+    _, _, pr, res = _run("two-hole-block", script, tmp_path)
+    assert [e["action"] for e in res["events"]] == ["resume"] and res["outcome"] == "finished"
+    assert res["events"][0]["situation"]["observation"]["flagged_px"] == 120
 
 
-def test_small_dent_that_narrows_a_hole_is_caught_by_the_function_check(tmp_path):
-    # the outline moves < 1 mm (below the detector's alarm), but the hole no longer takes the bolt
-    _, _, pr, res = _run("two-hole-block", lambda n: hand_dent(n, 15, -5, 1.0, 29), tmp_path)
-    ev = res["events"][0]
-    assert ev["situation"]["observation"]["label"] == "function_risk" and ev["action"] == "stop"
-    assert pr.cancelled and pr.n_done == 30                    # stopped at the dent layer itself
-    bad = [f["feature"] for f in ev["situation"]["function_if_continue"]["features"] if not f["ok"]]
-    assert bad == ["hole at [15, 0] (dia 5.1-6.0 mm)"]
+def test_a_failure_that_keeps_growing_is_stopped(tmp_path):
+    script = {k: ("collapse", 120 + 40 * (k - 29)) for k in range(29, 60)}
+    _, _, pr, res = _run("two-hole-block", script, tmp_path)
+    assert [e["action"] for e in res["events"]] == ["resume", "stop"] and pr.cancelled
+    assert res["events"][1]["situation"]["observation"]["grown"]
 
 
-def test_tray_poke_through_is_stopped(tmp_path):
-    _, _, pr, res = _run("water-tray", lambda n: hand_poke(n, 5, -10, 29), tmp_path)
-    assert pr.cancelled and res["events"][-1]["action"] == "stop"
+@pytest.mark.parametrize("kind", ["detach", "shift"])
+def test_detach_and_shift_are_stopped_at_once(tmp_path, kind):
+    _, _, pr, res = _run("water-tray", {20: (kind, 900)}, tmp_path)
+    assert [e["action"] for e in res["events"]] == ["stop"] and pr.cancelled and pr.n_done == 21
+
+
+def test_a_camera_problem_is_reported_and_the_print_goes_on(tmp_path):
+    class Flaky(ScriptedWatcher):
+        def check(self, prev, cur, plan, part_xy, yaw_deg=0.0):
+            if len(plan) in (5, 6):
+                raise TimeoutError("no camera frame")
+            return super().check(prev, cur, plan, part_xy, yaw_deg)
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    pr = FastSim(p.layers(), None, seed=1)
+    tools = PrinterTools(pr, p, Flaky())
+    logs = []
+    res = run_agent(tools, RuleDecider(), ActionGate(tools, AutoApprover(), log=lambda *a: None),
+                    out_dir=str(tmp_path), log=logs.append)
+    assert res["outcome"] == "finished" and res["layers_unchecked"] == 2 and res["events"] == []
+    assert any("could not check" in l for l in logs)
 
 
 def test_event_log_is_written(tmp_path):
-    _, _, _, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path)
+    _run("two-hole-block", SAG, tmp_path)
     lines = (tmp_path.glob("*/events.jsonl").__next__()).read_text().splitlines()
     ev = json.loads(lines[0])
     assert set(ev) >= {"situation", "recommendation", "action", "frames"}
@@ -62,7 +99,7 @@ def test_llm_choice_is_used_when_valid(tmp_path):
         calls.append(json.loads(user))
         return '{"action": "stop", "reason": "be conservative"}'
     dec = LLMDecider(complete)
-    _, _, pr, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path, decider=dec)
+    _, _, pr, res = _run("two-hole-block", SAG, tmp_path, decider=dec)
     assert pr.cancelled and res["events"][0]["recommendation"]["source"] == "llm"
     assert {o["id"] for o in calls[0]["allowed_actions"]} == {"resume", "stop"}
     assert "function_if_continue" in calls[0]["situation"]
@@ -74,7 +111,7 @@ def test_bad_llm_reply_falls_back_to_rules_visibly(tmp_path, reply):
         if reply is None:
             raise ConnectionError("no server")
         return reply
-    _, _, pr, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path, decider=LLMDecider(complete))
+    _, _, pr, res = _run("two-hole-block", SAG, tmp_path, decider=LLMDecider(complete))
     rec = res["events"][0]["recommendation"]
     assert rec["source"] == "llm->rules" and rec["action"] == "resume" and not pr.cancelled
 
@@ -82,7 +119,7 @@ def test_bad_llm_reply_falls_back_to_rules_visibly(tmp_path, reply):
 def test_person_can_override_the_recommendation(tmp_path):
     answers = iter(["9", "2"])                                 # an invalid key, then [2] stop
     approver = TerminalApprover(ask=lambda prompt: next(answers), show=lambda *a: None)
-    _, _, pr, res = _run("two-hole-block", lambda n: hand_dent(n, 0, -5, 2.0, 29), tmp_path, approver=approver)
+    _, _, pr, res = _run("two-hole-block", SAG, tmp_path, approver=approver)
     assert res["events"][0]["recommendation"]["action"] == "resume" and res["events"][0]["action"] == "stop"
     assert pr.cancelled
 
@@ -131,7 +168,7 @@ def _dent_test(change, tmp_path, decider=None, approver=None):
     p = get_part("parts/print/water-tray/water-tray.yaml")
     nom = p.layers()
     pr = PlannedPauseSim(nom, None, seed=1, pause_at=30)
-    tools = PrinterTools(pr, p, ClassicalSegmenter(), ClassicalDetector())
+    tools = PrinterTools(pr, p)
     test = DentTest(person=lambda: pr.user_change(change), measure=ScriptedMeasure(change))
     gate = ActionGate(tools, approver or AutoApprover(), log=lambda *a: None)
     res = run_agent(tools, decider or RuleDecider(), gate, out_dir=str(tmp_path), dent_test=test, log=lambda *a: None)

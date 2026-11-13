@@ -34,7 +34,6 @@ import cv2
 import numpy as np
 
 from .. import config as C
-from ..camera import BedCamera
 from ..gcode import print_settings, write_layers
 from ..types import Layer
 
@@ -225,7 +224,7 @@ class BambuPrinter:
     _paused_by_us = False
     _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
 
-    def __init__(self, ip, serial, code, planned: List[Layer], layer_h, bed_camera: BedCamera,
+    def __init__(self, ip, serial, code, planned: List[Layer], layer_h,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
                  rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False):
         self.ip, self.code, self.plan, self.layer_h = ip, code, list(planned), layer_h
@@ -235,11 +234,10 @@ class BambuPrinter:
         self.skipped_layers = 0          # observe_only: layers that finished while we were busy
         self._seen_running = False
         self._layer_done_t = 0.0         # when the last finished layer was seen to finish
-        self.last_frame: Optional[np.ndarray] = None   # raw camera frame behind camera_image()
+        self.last_frame: Optional[np.ndarray] = None   # last raw camera frame
         self.printed: List[Layer] = []  # measured observations, not physical ground truth
         self.link = BambuLink(ip, serial, code)
         self.cam = BambuCamera(ip, code)
-        self.bed_cam = bed_camera
         self.origin = origin or C.BED_CENTER
         self.mode, self.rehome, self.settle, self.timeout = mode, rehome_gcode, settle_s, timeout_s
         t = print_settings(original_gcode or "")
@@ -313,14 +311,10 @@ class BambuPrinter:
         return "paused"
 
     def snapshot(self):
-        """Raw camera frame (as the camera sees it), newer than the last finished layer."""
-        return self.cam.grab(newer_than=self._layer_done_t)
-
-    def camera_image(self):
-        frame = self.cam.grab(newer_than=self._layer_done_t)     # never a frame from mid-layer
-        self.last_frame = frame
-        z = self.plan[self._layer - 1].z
-        return self.bed_cam.top_down(frame, z, self.origin)
+        """The camera frame as the P1S camera sees it, never one from before the last finished layer.
+        There is no top-down view: everything that looks at the print uses this frame."""
+        self.last_frame = self.cam.grab(newer_than=self._layer_done_t)
+        return self.last_frame
 
     def expected_layer(self) -> Layer:
         return self.plan[self._layer - 1]

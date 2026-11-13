@@ -1,14 +1,12 @@
 """Where the agent's measurement of a change comes from during a dent test.
 
 - ManualMeasure: a person types what the part now looks like ('dent X Y DEPTH', 'poke X Y',
-  'none'; part-centred mm, e.g. the tray's front wall middle is 0 -10). Use it until the camera
-  can measure the side-on P1S view: the decision, approval and action steps are the same.
+  'none'; part-centred mm, e.g. the tray's front wall middle is 0 -10). The decision, approval
+  and action steps are the same as with the camera.
 - ScriptedMeasure: the same, given in advance (rehearsal and tests).
-- SideViewMeasure: the P1S chamber camera's own view (front-left, near-horizontal fisheye). The dent
-  detector (recovery/models/dent.py) compares the frames saved before and after the change and
-  says dent / poke / none, which wall and where along it. The default.
-- CameraMeasure: the top-down measurement of the top layer. The P1S camera is too shallow for a
-  usable top-down view (2 to 4 mm per pixel mid-plate), so this is for other rigs and the old sim.
+- SideViewMeasure: the printer camera (front-left, low, wide lens). The dent detector
+  (recovery/models/dent.py) compares the frames saved before and after the change and says
+  dent / poke / none, which wall and where along it. The default.
 Each returns (new shapes for the top layers or None, a description for the log)."""
 from .rehearse import change_from
 
@@ -40,14 +38,6 @@ class ScriptedMeasure:
 
     def __call__(self, tools):
         return change_from(self.description, tools.known[-self.taper:]), self.description
-
-
-class CameraMeasure:
-    name = "camera"
-
-    def __call__(self, tools):
-        obs = tools.observe()
-        return ([obs.measured] if obs.label != "ok" else None), f"camera: {obs.label}, {obs.deviation_mm:.2f} mm"
 
 
 class SideViewMeasure:

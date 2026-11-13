@@ -124,12 +124,17 @@ Read the printed rationale and the file it wrote in `parts/specs/`. **Check the 
 
 ### 4. Calibrate the chamber camera (once)
 
-The P1S camera looks at the bed from an angle; calibration lets the software turn that into a
-top-down view. Print or display a **10 x 7 square checkerboard, 10 mm squares**. Then:
+The P1S camera sits low at the front-left of the chamber and looks across the plate through a wide
+lens. The software uses that view as it is (there is no top-down view); calibration tells it exactly
+where the camera is and how its lens bends the picture. Without it, an approximate camera is used.
+Print or display a **10 x 7 square checkerboard, 10 mm squares**. Then:
 
 ```bash
-python -m recovery.cli calibrate --ip 192.168.1.50 --code 12345678 --out calib.npz
+python -m recovery.cli calibrate --ip 192.168.1.50 --code 12345678 --calib-z 10 --out calib.npz
 ```
+
+`--calib-z` is the bed height shown on the printer screen while the board lies flat (move the bed
+there first). The bed moves down as a print grows and the camera does not, so this is needed.
 
 It asks you to hold the board at 12 different positions/tilts, pressing Enter each time, and then
 to lay it **flat on the bed** with its first inner corner at the bed position you passed in
@@ -142,8 +147,7 @@ to lay it **flat on the bed** with its first inner corner at the bed position yo
 python -m recovery.cli stress --part parts/mypart.yaml
 ```
 
-If it says `FAIL`, fix the design (or the spec) before wasting filament. The live command below
-repeats this check and refuses to start on a failing part.
+If it says `FAIL`, fix the design (or the spec) before wasting filament.
 
 ### 5b. First runs: check, probe, then watch only (do this before step 6)
 
@@ -157,44 +161,41 @@ python -m recovery.cli connection-test --ip 192.168.1.50 --serial 01P00A00000000
 python -m recovery.cli check-gcode parts/mypart.gcode.3mf
 # read-only: printer status over MQTT + one camera frame saved to results/probe/
 python -m recovery.cli probe --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678
-# start the print as usual, then watch it: measures every layer, logs what it WOULD do
+# start the print as usual, then watch it: checks every layer with the camera, logs it, sends nothing
 python -m recovery.cli watch --gcode parts/mypart.gcode.3mf \
     --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz
 ```
 
 - `check-gcode` should end with `looks usable` and its preview PNG should show real holes only.
   If it reports 0 layers or a layer count that differs from the slicer's, stop and send the
-  output to the team: `live` would match frames to the wrong layers.
-- `watch` writes `results/watch/<time>/`: `layers.jsonl` (one line per layer: label, deviation,
-  and on an alarm `would_action`/`would_reason`), `meta.json`, and `frames/` (raw camera frame,
-  top-down view and expected mask per layer). These are our first real images; keep them.
+  output to the team: frames would be matched to the wrong layers.
+- `watch` writes `results/watch/<time>/`: `frames/` (the camera frame after every layer),
+  `layers.jsonl` (one line per layer: `ok` or the failure it looks like, and how big the area that
+  differs from the plan is) and `meta.json`. These are real test images; keep them.
   Ctrl-C stops watching without affecting the print. A long print can run inside `tmux`.
-- No checkerboard yet? Run `watch` without a `calib.npz`: it then saves only the raw frames
-  and layer timing (label `unmeasured`), which is still useful real data.
-- On a clean print every layer should be `ok`. Alarms on a clean print are false alarms:
-  tune thresholds and calibration before letting `live` act.
+- The check needs the trained failure detector (`runs/p1s_layer`, see
+  [docs/p1s-dent-data.md](docs/p1s-dent-data.md)); without it `watch` saves the frames only.
+  No `calib.npz` yet? It uses an approximate camera.
+- On a clean print every layer should be `ok`. Alarms on a clean print are false alarms: send
+  the run folder to the team before letting the agent act.
 
 ### 6. Print with the safety net on
 
 Only after `watch` runs on clean prints show no false alarms.
 
 1. Start the print from Bambu Studio or the printer screen as usual.
-2. In another terminal, start the loop (use your own IP, serial and code):
+2. In another terminal, start the agent (use your own IP, serial and code):
 
 ```bash
-python -m recovery.cli live --part parts/mypart.yaml \
-    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz \
-    --rehome-gcode lift_xy
+python -m recovery.cli agent --part parts/mypart.yaml --gcode parts/mypart.gcode.3mf \
+    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz
 ```
 
-The loop now checks every finished layer. If a layer is off by more than 1 mm it decides:
-**continue**, **adapt**, or **scrap**. To adapt it stops the print, uploads a new G-code file for
-the remaining layers, and starts it, all automatically, then re-syncs its layer counter.
-
-**What to watch for.** After a stop, the printer must still know where its head is. If the first
-resumed layer lands in the wrong place, stop the print, and see [Troubleshooting](#troubleshooting).
-`--rehome-gcode lift_xy` lifts the head clear of the part and re-homes X/Y only (never Z, which
-would crash the nozzle into the part). Use `--skip-stress` only if you accept an unchecked part.
+After every layer it compares the camera frame with the previous one and with the plan. If the print
+starts to look different from the plan it pauses, says what it sees and what it recommends
+(**resume** or **stop**), and waits for you to approve. It stops at once for a part that came off the
+bed or layers that shifted, and stops if an accepted problem keeps growing. More in
+[recovery/agent/README.md](recovery/agent/README.md).
 
 ## Add your own part
 
@@ -392,7 +393,8 @@ possible next step, not wired in.
 | `fea-verify` | check the stress solver against closed-form answers |
 | `slice file.stl` | cross-section an STL |
 | `calibrate --ip ... --code ...` | calibrate the P1S camera |
-| `live --part P --ip ... --serial ... --code ... --calib calib.npz` | run the loop on a real print |
+| `watch --gcode G --ip ... --serial ... --code ...` | check every layer of a real print with the camera; sends nothing |
+| `agent --part P --gcode G --ip ... --serial ... --code ...` | check every layer; pause, recommend and act with your approval |
 | `app` | web interface |
 | `gen-data`, `train` | make synthetic images and train the optional neural models |
 

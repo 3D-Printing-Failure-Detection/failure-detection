@@ -163,82 +163,70 @@ def test_camera_waits_for_a_frame_newer_than_the_layer():
     assert cam.grab(timeout=0.3, newer_than=200.0).shape == (2, 2, 3)
 
 
-def test_watch_runs_end_to_end_without_commanding(tmp_path, monkeypatch):
-    import json
-    from recovery import camera, live
+class _FakeWatchBambu:
+    """Observe-only printer: three layers, a blank camera frame after each."""
 
-    class FakeBambu:
-        def __init__(self, ip, serial, code, planned, layer_h, bed_camera, observe_only=False, **kw):
-            assert observe_only, "watch must build an observe-only printer"
-            self.plan, self.printed, self.skipped_layers, self.last_frame = list(planned), [], 0, None
-            self.link = FakeLink(gcode_state="RUNNING", total_layer_num=len(planned), layer_num=1)
-            self.rng = np.random.default_rng(0)
+    def __init__(self, ip, serial, code, planned, layer_h, observe_only=False, **kw):
+        assert observe_only, "watch must build an observe-only printer"
+        self.plan, self.printed, self.skipped_layers = list(planned), [], 0
+        self.link = FakeLink(gcode_state="RUNNING", total_layer_num=len(planned), layer_num=1)
 
-        n_done = property(lambda self: len(self.printed))
-        n_total = property(lambda self: len(self.plan))
+    n_done = property(lambda self: len(self.printed))
+    n_total = property(lambda self: len(self.plan))
 
-        def print_layer(self):
-            self.printed.append(self.plan[len(self.printed)])
+    def print_layer(self):
+        self.printed.append(self.plan[len(self.printed)])
 
-        def camera_image(self):
-            self.last_frame = camera.render(self.printed[-3:], self.rng)
-            return self.last_frame
+    def snapshot(self):
+        return np.zeros((72, 128, 3), np.uint8)
 
-        def expected_layer(self):
-            return self.plan[len(self.printed) - 1]
+    def close(self):
+        pass
 
-        def close(self):
-            pass
 
-    monkeypatch.setattr(live, "BambuPrinter", FakeBambu)
-    monkeypatch.setattr(live.BedCamera, "load", classmethod(lambda cls, p: None))
+def _watch_file(tmp_path, n):
     f = tmp_path / "p.gcode.3mf"
     with zipfile.ZipFile(f, "w") as z:
-        z.writestr("Metadata/plate_1.gcode", _bambu_file(3))
-    calib = tmp_path / "calib.npz"
-    calib.write_bytes(b"")                            # BedCamera.load is patched; the file must exist
-    run = live.run_watch(None, str(f), "ip", "serial", "code", str(calib), out=str(tmp_path / "w"),
-                         log=lambda *a: None)
-    rows = [json.loads(l) for l in (run / "layers.jsonl").read_text().splitlines()]
-    assert [r["layer"] for r in rows] == [0, 1, 2] and all("label" in r for r in rows)
-    assert len(list((run / "frames").glob("*_raw.jpg"))) == 3
-    meta = json.loads((run / "meta.json").read_text())
-    assert meta["layers_observed"] == 3 and meta["printer_total_layer_num"] == 3
+        z.writestr("Metadata/plate_1.gcode", _bambu_file(n))
+    return f
 
 
-def test_watch_without_calibration_saves_raw_frames_only(tmp_path, monkeypatch):
+def test_watch_checks_every_layer_with_the_camera_model_and_never_commands(tmp_path, monkeypatch):
     import json
     from recovery import live
+    from recovery.models import p1s_layer
 
-    class FakeCam:
-        def grab(self, newer_than=None, timeout=10):
-            return np.zeros((72, 128, 3), np.uint8)
+    seen = []
 
-    class FakeBambu:
-        def __init__(self, ip, serial, code, planned, layer_h, bed_camera, observe_only=False, **kw):
-            assert observe_only and bed_camera is None
-            self.plan, self.printed, self.skipped_layers, self._layer_done_t = list(planned), [], 0, 0.0
-            self.link, self.cam = FakeLink(gcode_state="RUNNING", total_layer_num=len(planned)), FakeCam()
-
-        n_done = property(lambda self: len(self.printed))
-        n_total = property(lambda self: len(self.plan))
-
-        def print_layer(self):
-            self.printed.append(self.plan[len(self.printed)])
-
-        def expected_layer(self):
-            return self.plan[len(self.printed) - 1]
-
-        def close(self):
+    class FakeWatcher:
+        def __init__(self, ckpt, cam=None):
             pass
 
-    monkeypatch.setattr(live, "BambuPrinter", FakeBambu)
-    f = tmp_path / "p.gcode.3mf"
-    with zipfile.ZipFile(f, "w") as z:
-        z.writestr("Metadata/plate_1.gcode", _bambu_file(2))
-    run = live.run_watch(None, str(f), "ip", "serial", "code", str(tmp_path / "missing.npz"),
+        def check(self, prev, cur, plan, part_xy, yaw_deg=0.0):
+            seen.append(len(plan))
+            return dict(kind="warp" if len(plan) == 3 else "ok", flagged_px=50 * (len(plan) == 3), type_prob={})
+
+    monkeypatch.setattr(live, "BambuPrinter", _FakeWatchBambu)
+    monkeypatch.setattr(p1s_layer, "LayerWatcher", FakeWatcher)
+    model = tmp_path / "model"
+    model.mkdir()
+    (model / "model.pt").write_bytes(b"")
+    run = live.run_watch(None, str(_watch_file(tmp_path, 3)), "ip", "serial", "code", None, str(model),
                          out=str(tmp_path / "w"), log=lambda *a: None)
     rows = [json.loads(l) for l in (run / "layers.jsonl").read_text().splitlines()]
-    assert [r["label"] for r in rows] == ["unmeasured"] * 2
-    assert len(list((run / "frames").glob("*_raw.jpg"))) == 2
-    assert json.loads((run / "meta.json").read_text())["calibrated"] is False
+    assert [r["label"] for r in rows] == ["ok", "ok", "warp"] and seen == [1, 2, 3]
+    assert len(list((run / "frames").glob("*.jpg"))) == 3
+    meta = json.loads((run / "meta.json").read_text())
+    assert meta["layers_observed"] == 3 and meta["alarms"] == 1 and meta["printer_total_layer_num"] == 3
+
+
+def test_watch_without_the_model_saves_frames_only(tmp_path, monkeypatch):
+    import json
+    from recovery import live
+    monkeypatch.setattr(live, "BambuPrinter", _FakeWatchBambu)
+    run = live.run_watch(None, str(_watch_file(tmp_path, 2)), "ip", "serial", "code", None,
+                         str(tmp_path / "missing"), out=str(tmp_path / "w"), log=lambda *a: None)
+    rows = [json.loads(l) for l in (run / "layers.jsonl").read_text().splitlines()]
+    assert [r["layer"] for r in rows] == [0, 1] and not any("label" in r for r in rows)
+    assert len(list((run / "frames").glob("*.jpg"))) == 2
+    assert json.loads((run / "meta.json").read_text())["layer_model"] is None

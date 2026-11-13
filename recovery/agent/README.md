@@ -81,37 +81,34 @@ Each phase starts only after the one before it passes.
   (`.png`) in the run folder, and prints both paths at the prompt. The correction G-code fills
   the middle of thin walls, retracts before each travel and drops the bed 0.4 mm while
   travelling; temperatures come from the sliced file (bed: the plate it was sliced for).
-- **The side-on camera.** The P1S chamber camera looks across the bed from the front, almost
-  horizontally, and the bed moves down while the nozzle stays at a fixed height. So the top layers
-  always sit at the same place in the image, but are seen from the side. The existing camera
-  measurement (`--measure camera`, `--monitor on`) re-projects frames to a top-down view and is
-  not usable on this view, which is why the dent test asks the person. The before/after frames
-  are saved so a side-view measurement can be built from real data. Two notes for that work:
-  - `BambuPrinter.camera_image` re-projects onto the plane at the layer's height above the bed.
-    On the P1S the bed moves down by the same amount, so the top layer stays on the plane the
-    camera was calibrated on (if calibrated with the bed at the first layer). That needs fixing
-    in the calibration work, not here.
-  - A dent on a wall seen edge-on (the tray's right wall, `15 0`) changes the outline the camera
-    sees; a dent on the wall facing the camera mostly changes shading.
+- **The camera.** The P1S camera looks across the bed from the front-left, almost horizontally,
+  and the bed moves down while the nozzle stays at a fixed height. So the top layers always sit at
+  the same place in the image, seen from the side. Everything works on that view as it is; there
+  is no top-down view. At a dent test the dent detector compares the frames before and after the
+  change (`--measure sideview`, the default). It cannot measure depth: a dent counts as 1.5 mm.
 
-## Continuous monitoring (top-down camera)
+## Watching every layer
 
 ```
-every layer   sense -> measure outline -> check each feature -> alarm? -> pause -> decide -> approve -> act
+every layer   camera frame -> compare with the previous frame and the plan -> alarm? -> pause -> decide -> approve -> act
 ```
 
-Two alarms: the outline is ~1 mm off plan, or a feature breaks while the outline looks close
-(a 1 mm dent next to a hole narrows it below bolt size without tripping the outline alarm). An
-accepted deviation does not re-alarm on every later layer. On by default in `--sim`; on the real
-P1S only with a top-down view (`--monitor on --calib calib.npz`).
+The failure detector (`recovery/models/p1s_layer.py`, `--layer-model runs/p1s_layer`) says `ok` or which
+failure the print looks like: collapse, warp, shift, under-extrusion, detach. It is on whenever that
+model is there, in `--sim` and on the real printer alike.
+- Detach and shift: stop (nothing sensible can be printed on top).
+- Anything else, the first time: the camera cannot see the new shape well enough to say the part
+  fails, so the recommendation is resume; a person approves.
+- After that it only alarms again if the problem area grows (more than 1.5x the accepted one + 30 px),
+  and then recommends stop.
+- If the camera cannot check a layer (no frame, the part is not where the plan says) the layer is
+  logged as unchecked and the print goes on.
 
 ```bash
 python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.yaml \
     --sim --dent 15 -5 1.0 --at-layer 29
 ```
 
-Rehearsal of all three test parts (clean, cosmetic dent, function-breaking dent, 3 seeds each):
-30/30 correct decisions, no false alarms on clean prints.
 
 ## Deciders (the LLM slot)
 

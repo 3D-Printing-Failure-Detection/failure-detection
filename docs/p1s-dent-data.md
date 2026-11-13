@@ -132,10 +132,8 @@ before and after the change, then turns the detector's kind, wall and position i
 unchanged. Depth is not measured: a dent is taken as 1.5 mm, which only affects the capacity check.
 - `--dent-model runs/dent` is the checkpoint. If it is missing, the agent falls back to `--measure manual` (typed in).
 - `--calib calib.npz` is used if it records the bed Z (`calib_z_mm`); otherwise the approximate default camera.
-- Sim rehearsals (`PlannedPauseSim`) now render pause snapshots from the P1S view (`view="p1s"`, part at the
-  plate centre); `view="top"` keeps the old image.
-- `--measure camera` (top-down) is still there, but the P1S camera is too shallow for it (2 to 4 mm per pixel
-  mid-plate).
+- Sim rehearsals (`PlannedPauseSim`) render every frame from the P1S view (part at the plate centre), like
+  the real printer: there is no top-down image.
 
 Sim rehearsals with `runs/dent_v2` (`agent --sim --dent-test … --auto-approve --monitor off`):
 

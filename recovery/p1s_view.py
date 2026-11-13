@@ -358,11 +358,12 @@ class P1SScene:
         mujoco.mj_forward(self.model, self.data)
         self.renderer = mujoco.Renderer(self.model, rh, rw)
 
-    def render(self, show: List[str]):
-        """(rgb uint8 HxWx3 in the distorted camera image, depth in mm along the optical axis)."""
+    def render(self, show: List[str], scene=True):
+        """(rgb uint8 HxWx3 in the distorted camera image, depth in mm along the optical axis).
+        scene=False hides the plate, chamber and toolhead: only the named part meshes are drawn."""
         opt = mujoco.MjvOption()
         opt.geomgroup[:] = 0
-        opt.geomgroup[0] = 1
+        opt.geomgroup[0] = int(scene)
         for name in show:
             if self.groups.get(name):
                 opt.geomgroup[self.groups[name]] = 1

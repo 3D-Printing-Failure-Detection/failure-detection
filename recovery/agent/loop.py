@@ -16,9 +16,10 @@ remaining layers that return to the original shape), or stop. The person must no
 printer; if they do anyway, the agent offers "continue" instead of "resume" and sends nothing.
 Until the pause, the agent only reads the printer's status: no camera, no decider calls.
 
-An acknowledged deviation (we resumed and the part still worked) does not raise a new alarm on
-every following layer; only a function check that now fails, or a deviation that has grown by
-more than `regrow_mm`, does. That keeps a person from being asked the same question 30 times.
+Every layer (monitor on) the camera's frame is compared with the previous one and with the plan, in
+the camera's own view. An accepted difference (we resumed) does not raise a new alarm on every
+following layer; only one that has grown clearly does. That keeps a person from being asked the
+same question 30 times.
 """
 import json
 import time
@@ -41,7 +42,8 @@ class DentTest:
 def _summary(situation, rec):
     o, c = situation["observation"], situation["cost"]
     lines = [f"\n=== {o['label'].upper()} at layer {o['layer']} (z = {o['z']:.2f} mm)"
-             + (f": {o['deviation_mm']:.2f} mm off plan" if o.get("deviation_mm") is not None else "")
+             + (f": {o['flagged_px']} px look different from the plan" if o.get("flagged_px") is not None else "")
+             + (" and it has grown since it was last accepted" if o.get("grown") else "")
              + (f"; {o['described']}" if o.get("described") else ""), "If we continue, the finished part:"]
     for f in situation["function_if_continue"]["features"]:
         lines.append(f"  {'OK  ' if f['ok'] else 'FAIL'} {f['feature']}" + (f"  ({f['detail']})" if f["detail"] else ""))
@@ -169,10 +171,18 @@ class _Run:
         self.file.close()
 
 
-def run_agent(tools, decider, gate, out_dir="results/agent", regrow_mm=0.5, monitor=True,
+def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=30, monitor=None,
               dent_test: DentTest = None, resume_test=False, log=print):
+    """monitor: check every layer with the camera (tools.watcher); None = whenever there is a watcher.
+    After a difference is accepted (resume), it raises a new alarm only once the flagged area exceeds
+    grow x the accepted one + grow_px."""
+    has_watcher = getattr(tools, "watcher", None) is not None
+    if monitor is None:
+        monitor = has_watcher
+    elif monitor and not has_watcher:
+        raise ValueError("monitoring every layer needs a failure detector (PrinterTools(..., watcher=...))")
     r = _Run(tools, decider, gate, out_dir, log)
-    acknowledged, outcome = None, "finished"
+    acknowledged, baseline_next, outcome, unchecked = None, False, "finished", 0
     log(f"agent watching {tools.pr.n_total} layers (camera monitoring {'on' if monitor else 'off'}"
         f"{', dent test at the planned pause' if dent_test else ''}); log -> {r.dir}")
     try:
@@ -187,29 +197,35 @@ def run_agent(tools, decider, gate, out_dir="results/agent", regrow_mm=0.5, moni
                 if action == "stop":
                     outcome = "stopped"
                     break
-                acknowledged = float("inf") if action == "resume" else acknowledged
+                baseline_next = action == "resume"   # the dent stays visible: accept it, watch for growth
                 continue
             if not monitor:
                 continue
             obs = tools.observe()
+            if obs.label == "unchecked":
+                unchecked += 1
+                if unchecked in (1, 5) or unchecked % 50 == 0:
+                    log(f"layer {obs.layer}: the camera could not check this layer ({obs.type_prob.get('error')}); "
+                        f"{unchecked} unchecked so far, printing goes on")
+                continue
             if obs.label == "ok":
-                report = tools.function_report(current=obs.measured)
-                if report["continue_ok"]:
-                    continue
-                obs.label = "function_risk"                      # looks close to plan, but breaks a feature
-                tools.believe_measured(obs)
-            else:
-                report = tools.function_report()
-            if acknowledged and report["continue_ok"] and obs.deviation_mm <= acknowledged + regrow_mm:
-                continue                                         # same, already-accepted deviation
+                continue
+            if baseline_next:                                    # the change accepted at the dent test
+                acknowledged, baseline_next = obs.flagged_px, False
+                continue
+            grown = acknowledged is not None and obs.flagged_px > grow * acknowledged + grow_px
+            if acknowledged is not None and not grown:
+                continue                                         # the same, already accepted difference
+            report = tools.function_report()
             paused = gate.pause_for_alarm()
-            observation = dict(layer=obs.layer, z=obs.z, label=obs.label,
-                               deviation_mm=round(obs.deviation_mm, 2), paused=paused)
+            observation = dict(layer=obs.layer, z=obs.z, label=obs.label, flagged_px=obs.flagged_px, grown=grown,
+                               seen_by="the printer camera; it shows that the print differs from the plan, "
+                                       "not the exact new shape", paused=paused)
             action = r.decide(observation, report, paused, frames=dict(alarm=r.save(f"{obs.layer:04d}.png", obs.image)))
             if action == "stop":
                 outcome = "stopped"
                 break
-            acknowledged = max(acknowledged or 0.0, obs.deviation_mm)
+            acknowledged = obs.flagged_px
     except PrintEnded as e:
         outcome = f"ended on the printer: {e}"
     except KeyboardInterrupt:
@@ -219,7 +235,8 @@ def run_agent(tools, decider, gate, out_dir="results/agent", regrow_mm=0.5, moni
     transcript = getattr(decider, "full_transcript", None)
     if transcript:
         (r.dir / "llm_transcript.json").write_text(json.dumps(transcript, indent=1, default=str))
-    summary = dict(outcome=outcome, layers=tools.pr.n_done, decisions=len(r.events), decider=decider.name,
+    summary = dict(outcome=outcome, layers=tools.pr.n_done, layers_unchecked=unchecked, decisions=len(r.events),
+                   decider=decider.name,
                    decided_by=[e["recommendation"]["source"] for e in r.events],
                    actions=[e["action"] for e in r.events])
     (r.dir / "summary.json").write_text(json.dumps(summary, indent=1))

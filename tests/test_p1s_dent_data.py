@@ -118,7 +118,8 @@ def test_rehearsal_pause_snapshots_are_the_p1s_view_and_show_the_change():
     smooth = lambda x: cv2.GaussianBlur(x.astype(np.float32).mean(2), (0, 0), 2)
     changed = lambda x: int((np.abs(smooth(x) - smooth(before)) > 8).sum())
     assert changed(again) == 0 and changed(after) > 50             # the dent shows, sensor noise does not
-    assert PlannedPauseSim(get_part(TRAY).layers(), None, pause_at=30, view="top").view == "top"
+    with pytest.raises(NotImplementedError):                       # like the P1S: no top-down view
+        pr.camera_image()
 
 
 def test_agent_dent_test_measures_from_the_side_view(tmp_path):

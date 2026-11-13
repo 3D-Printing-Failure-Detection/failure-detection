@@ -1,39 +1,37 @@
-"""Run the loop on a real Bambu P1S, and calibrate its chamber camera.
+"""Use a real Bambu P1S: check the connection, calibrate its camera, watch a print.
+
+Everything is seen through the printer's own camera (front-left, low, wide lens). There is no
+top-down view, so nothing here re-projects the frame; the trained models work on it as it is.
 
 First runs on a printer, safest first:
   python -m recovery.cli check-gcode part.gcode.3mf                 # offline: does the file parse?
   python -m recovery.cli probe --ip ... --serial ... --code ...     # read-only: status + one frame
-  python -m recovery.cli calibrate --ip 192.168.1.50 --code 12345678 --out calib.npz
-  python -m recovery.cli watch --gcode part.gcode.3mf --ip ... --serial ... --code ... --calib calib.npz
-      # watch-only: measures every layer, logs what it WOULD do, saves frames; never commands
-  python -m recovery.cli live --part parts/mypart.yaml --ip ... --serial ... --code ... --calib calib.npz
-      # acts: pauses, stops and uploads re-planned G-code. Only after watch runs look right.
+  python -m recovery.cli calibrate --ip ... --code ... --calib-z 10 --out calib.npz
+  python -m recovery.cli watch --gcode part.gcode.3mf --ip ... --serial ... --code ... [--calib calib.npz]
+      # watch only: checks every layer, logs it, saves the frames; never sends anything
+  python -m recovery.cli agent ...                                  # acts, with a person approving
 
-The part YAML must point at Bambu Studio's sliced file (`gcode: part.gcode.3mf`) so the
-nominal layers are exactly what the printer is printing. Start the print from Bambu Studio /
-the printer screen as usual, then run `live`; the loop watches layer by layer.
+The sliced file (`--gcode part.gcode.3mf`, or `gcode:` in a part YAML) gives the plan: exactly the
+layers the printer is printing, and where the part sits on the plate.
 """
 import json
 import time
 from pathlib import Path
 
 import cv2
+import numpy as np
 
-from . import camera
-from . import config as C
-from .camera import BedCamera, calibrate_bed_camera
-from .loop.controller import Controller
-from .loop.decide import RulePolicy
+from .camera import calibrate_bed_camera
 from .parts import Part, get_part
 from .printer.bambu import BambuCamera, BambuLink, BambuPrinter, PrintEnded
-from .run import make_models
-from .types import Layer
 
 STATUS_KEYS = ("gcode_state", "layer_num", "total_layer_num", "mc_percent", "mc_remaining_time",
                "nozzle_temper", "bed_temper", "subtask_name", "gcode_file", "print_error")
 
 
-def calibrate(ip, code, out, pattern=(9, 6), square_mm=10.0, board_origin=(100.0, 100.0), n_frames=12):
+def calibrate(ip, code, out, calib_z, pattern=(9, 6), square_mm=10.0, board_origin=(100.0, 100.0), n_frames=12):
+    """Checkerboard calibration of the printer camera. calib_z: the bed Z shown on the printer screen for
+    the flat shot (the bed moves down as a print grows; the camera does not, so the models need it)."""
     cam = BambuCamera(ip, code)
     frames = []
     print("Hold the printed checkerboard in view, different places/tilts for each shot.")
@@ -44,41 +42,13 @@ def calibrate(ip, code, out, pattern=(9, 6), square_mm=10.0, board_origin=(100.0
           f"Y={board_origin[1]} mm, then press Enter...")
     pose = cam.grab()
     calib = calibrate_bed_camera(frames, pattern, square_mm, board_origin, pose)
-    calib.save(out)
+    np.savez(out, K=calib.K, dist=calib.dist, rvec=calib.rvec, tvec=calib.tvec, calib_z_mm=float(calib_z))
     cv2.imwrite(str(out).replace(".npz", "_pose.png"), pose)
     print("saved", out)
     cam.close()
 
 
-def run_live(part_path, ip, serial, code, calib_path, models="classical", mode="restart",
-             rehome_gcode="", skip_stress=False, log=print):
-    part = get_part(part_path)
-    nom = part.layers()
-    if not skip_stress and part.spec.get("loads"):
-        from .fea import stress_test
-        rep = stress_test(nom, part.spec, part.layer_h, 1.0)
-        log("pre-print stress test of the sliced part:\n" + rep.table())
-        if not rep.ok:
-            raise SystemExit("the part as sliced fails its stress tests; fix the design or the spec "
-                             "(or pass --skip-stress)")
-    if part.gcode_text is None:
-        raise ValueError("live runs need `gcode:` (Bambu Studio sliced file) in the part YAML")
-    printer = BambuPrinter(ip, serial, code, nom, part.layer_h, BedCamera.load(calib_path),
-                           origin=part.origin, original_gcode=part.gcode_text, mode=mode,
-                           rehome_gcode=rehome_gcode)
-    seg, det = make_models(models)
-    pol = RulePolicy(part.spec, nom, part.layer_h)
-    ctl = Controller(printer, seg, det, pol, part.spec, nom, part.layer_h, log=log)
-    t0 = time.time()
-    try:
-        res = ctl.run()
-        log(f"done in {time.time()-t0:.0f}s: {res.outcome}; measured final check: {res.final}")
-        return res
-    finally:
-        printer.close()
-
-
-def probe(ip, serial, code, out="results/probe", calib_path=None, wait_s=15.0, log=print):
+def probe(ip, serial, code, out="results/probe", wait_s=15.0, log=print):
     """Read-only connection check: printer status over MQTT and one camera frame. Sends only
     'pushall' (a status request), never a print command."""
     out = Path(out)
@@ -103,10 +73,6 @@ def probe(ip, serial, code, out="results/probe", calib_path=None, wait_s=15.0, l
             return state
         cv2.imwrite(str(out / "camera_raw.jpg"), frame)
         log(f"camera frame {frame.shape[1]}x{frame.shape[0]} -> {out / 'camera_raw.jpg'}")
-        if calib_path:
-            top = BedCamera.load(calib_path).top_down(frame, 0.0, C.BED_CENTER)
-            cv2.imwrite(str(out / "camera_topdown_bed.png"), top)
-            log(f"top-down view of the bed centre -> {out / 'camera_topdown_bed.png'}")
         return state
     finally:
         cam.close()
@@ -123,78 +89,64 @@ def _load_watch_part(part_path, gcode_path, plate=1):
     return Part.from_gcode(gcode_path, plate=plate)
 
 
-def run_watch(part_path, gcode_path, ip, serial, code, calib_path, models="classical", out="results/watch",
-              decide=True, plate=1, log=print):
-    """Watch-only monitoring of a print started from Bambu Studio / the printer screen. Every
-    layer: grab a fresh frame, measure, detect, and (on an alarm) ask the policy what it WOULD
-    do. Nothing is sent to the printer. Saves raw + top-down frames, the expected mask and one
-    JSON line per layer under <out>/<timestamp>/: real images for the dataset and evidence for
-    tuning thresholds before `live` is allowed to act. Without a calibration file only the raw
-    frames and the layer log are saved (still useful as real data); nothing is measured."""
+def run_watch(part_path, gcode_path, ip, serial, code, calib_path=None, layer_model="runs/p1s_layer",
+              out="results/watch", plate=1, log=print):
+    """Watch a print started from Bambu Studio or the printer screen; never sends anything. Every layer:
+    grab a fresh frame and, if the failure detector is there, compare it with the previous frame and the
+    plan (recovery/models/p1s_layer.py). Saves the raw frames and one JSON line per layer under
+    <out>/<timestamp>/: real images for testing the models, and a record of what they said. Without the
+    detector only the frames and the layer timing are saved."""
+    from . import p1s_view as V
     part = _load_watch_part(part_path, gcode_path, plate)
-    calibrated = bool(calib_path) and Path(calib_path).exists()
     nom = part.layers()
     run = Path(out) / time.strftime("%Y%m%d-%H%M%S")
     frames = run / "frames"
     frames.mkdir(parents=True, exist_ok=True)
-    printer = BambuPrinter(ip, serial, code, nom, part.layer_h,
-                           BedCamera.load(calib_path) if calibrated else None,
-                           origin=part.origin, original_gcode=part.gcode_text, observe_only=True)
-    seg, det = make_models(models)
-    pol = RulePolicy(part.spec, nom, part.layer_h) if decide else None
+    cam = None
+    if calib_path and Path(calib_path).exists():
+        cam = V.P1SCamera.load(calib_path)
+    watcher = None
+    if layer_model and (Path(layer_model) / "model.pt").exists():
+        from .models.p1s_layer import LayerWatcher
+        watcher = LayerWatcher(layer_model, cam)
+    printer = BambuPrinter(ip, serial, code, nom, part.layer_h, origin=part.origin,
+                           original_gcode=part.gcode_text, observe_only=True)
     meta = dict(part=part.name, n_layers=len(nom), layer_h=part.layer_h, origin=list(part.origin),
-                dropped_layers=part.dropped_layers, models=models, decide=decide, calibrated=calibrated,
-                started=time.time())
+                dropped_layers=part.dropped_layers, layer_model=layer_model if watcher else None,
+                calibration=str(calib_path) if cam else "approximate default camera", started=time.time())
     t0 = time.time()
     while time.time() - t0 < 15 and printer.link.get("total_layer_num") is None:
         time.sleep(0.5)
     meta["printer_total_layer_num"] = printer.link.get("total_layer_num")
     log(f"watching {len(nom)} parsed layers (printer reports total_layer_num="
         f"{meta['printer_total_layer_num']}); writing to {run}")
-    if not calibrated:
-        log(f"no calibration file ({calib_path}): saving raw frames and layer timing only, no measurement")
+    if watcher is None:
+        log(f"no failure detector at {layer_model}: saving frames and layer timing only")
     if part.dropped_layers:
         log(f"WARNING: {part.dropped_layers} empty layers were dropped while parsing, so layer "
             "indices may not match the printer's layer numbers")
     if meta["printer_total_layer_num"] not in (None, 0, len(nom)):
         log("WARNING: parsed layer count differs from the printer's; frames may be matched to the wrong layer")
-    alarms = 0
+    alarms, prev = 0, None
     try:
         with open(run / "layers.jsonl", "a") as f:
             while printer.n_done < printer.n_total:
                 printer.print_layer()
                 i = printer.n_done - 1
-                if not calibrated:
-                    frame = printer.cam.grab(newer_than=printer._layer_done_t)
-                    cv2.imwrite(str(frames / f"{i:04d}_raw.jpg"), frame)
-                    rec = dict(layer=i, z=printer.expected_layer().z, t=time.time(),
-                               printer_layer_num=printer.link.get("layer_num"),
-                               state=printer.link.get("gcode_state"), label="unmeasured",
-                               skipped_so_far=printer.skipped_layers)
-                    f.write(json.dumps(rec, default=float) + "\n")
-                    f.flush()
-                    log(f"layer {i:4d} z={rec['z']:6.2f}  frame saved (uncalibrated)")
-                    continue
-                img, exp = printer.camera_image(), printer.expected_layer()
-                mask = camera.expected_mask(exp)
-                meas = seg.measure(img, mask)
-                d = det.detect(img, exp.region, meas)
-                cv2.imwrite(str(frames / f"{i:04d}_raw.jpg"), printer.last_frame)
-                cv2.imwrite(str(frames / f"{i:04d}_top.png"), img)
-                cv2.imwrite(str(frames / f"{i:04d}_expected.png"), mask * 255)
-                rec = dict(layer=i, z=exp.z, t=time.time(), printer_layer_num=printer.link.get("layer_num"),
-                           state=printer.link.get("gcode_state"), label=d.label,
-                           deviation_mm=d.deviation_mm, info=d.info, skipped_so_far=printer.skipped_layers)
-                if d.label != "ok":
-                    alarms += 1
-                    if pol is not None:
-                        # same belief as the live controller: nominal below, measured at this layer
-                        dec = pol.decide(list(nom[:i]) + [Layer(exp.z, meas)], printer.plan, d)
-                        rec.update(would_action=dec.action, would_reason=dec.reason)
+                frame = printer.snapshot()
+                cv2.imwrite(str(frames / f"{i:04d}.jpg"), frame)
+                rec = dict(layer=i, z=nom[i].z, t=time.time(), printer_layer_num=printer.link.get("layer_num"),
+                           state=printer.link.get("gcode_state"), skipped_so_far=printer.skipped_layers)
+                if watcher is not None:
+                    r = watcher.check((frame if prev is None else prev)[..., ::-1], frame[..., ::-1],
+                                      nom[:i + 1], part.origin)
+                    rec.update(label=r["kind"], flagged_px=r["flagged_px"], type_prob=r["type_prob"])
+                    alarms += r["kind"] != "ok"
+                prev = frame
                 f.write(json.dumps(rec, default=float) + "\n")
                 f.flush()
-                log(f"layer {i:4d} z={exp.z:6.2f}  {d.label:16s} dev={d.deviation_mm:5.2f} mm"
-                    + (f"  -> would {rec['would_action']}: {rec['would_reason']}" if "would_action" in rec else ""))
+                log(f"layer {i:4d} z={rec['z']:6.2f}  " + (f"{rec['label']:16s} {rec['flagged_px']} px differ"
+                                                         if "label" in rec else "frame saved"))
     except PrintEnded as e:
         log(f"print ended: {e}")
     except KeyboardInterrupt:

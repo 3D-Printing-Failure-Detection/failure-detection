@@ -16,7 +16,6 @@
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
   watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
-  live      run the loop on a real Bambu P1S (print started from Bambu Studio); acts on alarms
 """
 import argparse
 import sys
@@ -90,6 +89,8 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    c.add_argument("--calib-z", type=float, required=True,
+                   help="bed Z shown on the printer screen during the flat shot (mm)")
     from .agent.cli import add_arguments as agent_arguments, add_decider_arguments
     agent_arguments(sub.add_parser("agent"))
     add_decider_arguments(sub.add_parser("llm-check"))
@@ -108,7 +109,6 @@ def main(argv=None):
     pb.add_argument("--ip", required=True)
     pb.add_argument("--serial", required=True)
     pb.add_argument("--code", required=True, help="printer LAN access code")
-    pb.add_argument("--calib", default=None, help="optional calib.npz: also save a top-down view")
     pb.add_argument("--out", default="results/probe")
     wt = sub.add_parser("watch")
     src = wt.add_mutually_exclusive_group(required=True)
@@ -118,20 +118,9 @@ def main(argv=None):
     wt.add_argument("--ip", required=True)
     wt.add_argument("--serial", required=True)
     wt.add_argument("--code", required=True)
-    wt.add_argument("--calib", default="calib.npz")
-    wt.add_argument("--models", default="classical", choices=["classical", "torch"])
-    wt.add_argument("--no-decide", action="store_true", help="only detect; skip the (slower) policy")
+    wt.add_argument("--calib", default="calib.npz", help="camera calibration (default camera if missing)")
+    wt.add_argument("--layer-model", default="runs/p1s_layer", help="failure detector checkpoint")
     wt.add_argument("--out", default="results/watch")
-    lv = sub.add_parser("live")
-    lv.add_argument("--part", required=True, help="part YAML with `gcode:` pointing at the sliced .gcode.3mf")
-    lv.add_argument("--ip", required=True)
-    lv.add_argument("--serial", required=True)
-    lv.add_argument("--code", required=True)
-    lv.add_argument("--calib", default="calib.npz")
-    lv.add_argument("--models", default="classical", choices=["classical", "torch"])
-    lv.add_argument("--mode", default="restart", choices=["restart"])
-    lv.add_argument("--rehome-gcode", default="", help="G-code run before resuming, or preset: none, lift_xy")
-    lv.add_argument("--skip-stress", action="store_true", help="do not gate the print on the FE stress test")
 
     a = ap.parse_args(argv)
     if a.cmd == "specgen":
@@ -189,7 +178,7 @@ def main(argv=None):
         return
     if a.cmd == "calibrate":
         from .live import calibrate
-        calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        calibrate(a.ip, a.code, a.out, a.calib_z, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
         return
     if a.cmd == "connection-test":
         from .connection_test import MockPrinter, RealPrinter, run
@@ -233,16 +222,11 @@ def main(argv=None):
         return
     if a.cmd == "probe":
         from .live import probe
-        probe(a.ip, a.serial, a.code, a.out, a.calib)
+        probe(a.ip, a.serial, a.code, a.out)
         return
     if a.cmd == "watch":
         from .live import run_watch
-        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.models, a.out,
-                  decide=not a.no_decide, plate=a.plate)
-        return
-    if a.cmd == "live":
-        from .live import run_live
-        run_live(a.part, a.ip, a.serial, a.code, a.calib, a.models, a.mode, a.rehome_gcode, a.skip_stress)
+        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.layer_model, a.out, plate=a.plate)
         return
     if a.cmd == "demo":
         from .run import run_scenario

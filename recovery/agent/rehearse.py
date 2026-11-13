@@ -9,12 +9,10 @@ Two ways to dent:
 `PlannedPauseSim` stops at a layer like a pause added in Bambu Studio."""
 from dataclasses import dataclass
 
-import cv2
 import numpy as np
 from shapely.geometry import LineString, Point
 from shapely.ops import nearest_points
 
-from .. import camera
 from ..deform import Failure
 from ..geometry.ops import clean
 from ..sim import SimPrinter
@@ -92,16 +90,15 @@ def change_from(description, top):
 
 
 class PlannedPauseSim(SimPrinter):
-    """Simulated printer that stops before layer `pause_at`, like a pause added in the slicer.
-    `user_change(description)` is what a person does to the print during that pause."""
+    """The simulated P1S the agent rehearses on. It stops before layer `pause_at`, like a pause added in
+    the slicer (None: no pause); `user_change(description)` is what a person does to the print then.
+    Its camera is the printer's own (recovery/p1s_view.py), with the part at bed position `origin`
+    (default: plate centre). Like the real printer, it has no top-down view."""
 
-    def __init__(self, *args, pause_at=None, view="p1s", origin=None, p1s_camera=None, **kwargs):
-        """view: what `snapshot` shows. "p1s" (default) renders the real P1S chamber camera's view
-        (recovery/p1s_view.py) with the part at bed position `origin` (default: plate centre);
-        "top" is the old simulated top-down image."""
+    def __init__(self, *args, pause_at=None, origin=None, p1s_camera=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.pause_at, self._paused_once, self.user_paused = pause_at, False, False
-        self.view, self.p1s_camera = view, p1s_camera
+        self.p1s_camera = p1s_camera
         from .. import config as C
         self.origin = tuple(origin or C.BED_CENTER)
 
@@ -118,16 +115,12 @@ class PlannedPauseSim(SimPrinter):
             self.printed[len(self.printed) - len(new):] = new
         return new
 
-    def snapshot(self):
-        if self.view == "p1s":
-            return self._p1s_snapshot()
-        recent = [self.printed[0]] + self.printed[max(1, len(self.printed) - 4):]
-        img = camera.render(recent, np.random.default_rng(len(self.printed)))
-        return cv2.cvtColor(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), cv2.COLOR_GRAY2BGR)
+    def camera_image(self):
+        raise NotImplementedError("the P1S has no top-down view; use snapshot()")
 
-    def _p1s_snapshot(self):
-        """BGR frame from the P1S camera: same camera, light and bed position for every frame of a
-        pause, fresh sensor noise each time."""
+    def snapshot(self):
+        """BGR frame from the printer camera: same camera, light and placement every time, the bed at
+        the current layer, fresh sensor noise each time."""
         from .. import p1s_view as V
         cam = self.p1s_camera or V.P1SCamera.default()
         n = len(self.printed)
