@@ -40,13 +40,23 @@ class RuleDecider:
     def decide(self, situation: dict, options: list) -> dict:
         ids = {o["id"] for o in options}
         go_on = "resume" if "resume" in ids else "continue"
-        if situation["observation"]["label"] == "detach":
+        o = situation["observation"]
+        if o["label"] == "detach":
             return dict(action="stop", reason="the part has come off the bed: nothing to build on",
                         source=self.name)
+        if o["label"] == "shift":
+            return dict(action="stop", reason="the layers have shifted sideways: what is printed next no longer "
+                        "sits on the part", source=self.name)
+        if o.get("grown"):
+            return dict(action="stop", reason=f"the {o['label'].replace('_', ' ')} keeps getting bigger after it was "
+                        "accepted", source=self.name)
         report = situation["function_if_continue"]
         if report["continue_ok"]:
-            return dict(action=go_on, reason="every functional feature still passes if we continue; "
-                        "the deviation is cosmetic", source=self.name)
+            reason = ("every functional feature still passes if we continue; the deviation is cosmetic"
+                      if o["label"] in ("dent test", "resume test") else
+                      f"a {o['label'].replace('_', ' ')} is starting but the camera cannot see the shape well enough "
+                      "to say the part fails; keep printing and stop if it grows")
+            return dict(action=go_on, reason=reason, source=self.name)
         bad = "; ".join(f"{f['feature']}: {f['detail']}" for f in report["features"] if not f["ok"])
         if "correct" in ids:
             fade = situation["correction"]["fade_layers"]

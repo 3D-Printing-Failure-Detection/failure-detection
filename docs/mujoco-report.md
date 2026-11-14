@@ -1,5 +1,9 @@
 # Repository review and multi-printer recovery experiment
 
+> **Overhead research rig.** These results use the MuJoCo printers' top-down camera
+> (`recovery/printer/mujoco.py`, `recovery/camera.py`), which the real P1S does not have. The code is kept
+> for these results and their tests; the real printer uses the P1S camera's own view (`recovery/p1s_view.py`).
+
 Date: 2026-10-29. Source branch reviewed: `slop-v1`, initially `882d6fa`.
 The repository and remote initially had no `main` branch. Work was isolated on
 `work/mujoco-generalization`; integration status and final results are recorded below.

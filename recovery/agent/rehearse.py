@@ -9,12 +9,10 @@ Two ways to dent:
 `PlannedPauseSim` stops at a layer like a pause added in Bambu Studio."""
 from dataclasses import dataclass
 
-import cv2
 import numpy as np
 from shapely.geometry import LineString, Point
 from shapely.ops import nearest_points
 
-from .. import camera
 from ..deform import Failure
 from ..geometry.ops import clean
 from ..sim import SimPrinter
@@ -92,12 +90,17 @@ def change_from(description, top):
 
 
 class PlannedPauseSim(SimPrinter):
-    """Simulated printer that stops before layer `pause_at`, like a pause added in the slicer.
-    `user_change(description)` is what a person does to the print during that pause."""
+    """The simulated P1S the agent rehearses on. It stops before layer `pause_at`, like a pause added in
+    the slicer (None: no pause); `user_change(description)` is what a person does to the print then.
+    Its camera is the printer's own (recovery/p1s_view.py), with the part at bed position `origin`
+    (default: plate centre). Like the real printer, it has no top-down view."""
 
-    def __init__(self, *args, pause_at=None, **kwargs):
+    def __init__(self, *args, pause_at=None, origin=None, p1s_camera=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.pause_at, self._paused_once, self.user_paused = pause_at, False, False
+        self.p1s_camera = p1s_camera
+        from .. import config as C
+        self.origin = tuple(origin or C.BED_CENTER)
 
     def print_layer(self):
         if self.pause_at is not None and not self._paused_once and self.n_done == self.pause_at:
@@ -112,10 +115,21 @@ class PlannedPauseSim(SimPrinter):
             self.printed[len(self.printed) - len(new):] = new
         return new
 
+    def camera_image(self):
+        raise NotImplementedError("the P1S has no top-down view; use snapshot()")
+
     def snapshot(self):
-        recent = [self.printed[0]] + self.printed[max(1, len(self.printed) - 4):]
-        img = camera.render(recent, np.random.default_rng(len(self.printed)))
-        return cv2.cvtColor(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), cv2.COLOR_GRAY2BGR)
+        """BGR frame from the printer camera: same camera, light and placement every time, the bed at
+        the current layer, fresh sensor noise each time."""
+        from .. import p1s_view as V
+        cam = self.p1s_camera or V.P1SCamera.default()
+        n = len(self.printed)
+        with V.P1SScene(cam, V.Look(), {"part": V.stack_mesh(self.printed)}, self.origin, 0.0,
+                        self.printed[-1].z) as scene:
+            rgb, _ = scene.render(["part"])
+        self._shots = getattr(self, "_shots", 0) + 1
+        rng = np.random.default_rng([n, self._shots])
+        return V.Photometric().apply(rgb, rng)[..., ::-1].copy()
 
     def resume(self):
         self.user_paused = False

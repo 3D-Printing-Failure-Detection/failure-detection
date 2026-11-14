@@ -1,0 +1,7 @@
+# Unseen-part test shape for the camera failure detector (never in its training data).
+name: tapered-vase
+height: 25
+layer_h: 0.2
+geometry:
+  - add: {circle: {r: [14, 18]}}
+  - cut: {circle: {r: [12.8, 16.8]}, z: [1.2, 25]}

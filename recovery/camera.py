@@ -1,5 +1,8 @@
 """Top-down camera model: render layer stacks to images, rasterise expected
-layers, and convert pixel masks back to mm contours. Also real-camera calibration."""
+layers, and convert pixel masks back to mm contours. Also real-camera calibration.
+
+Part of the overhead research rig (printer/mujoco.py, docs/mujoco-report.md), kept for the report's results
+and tests. The real P1S has no top-down view: the real-printer path uses recovery/p1s_view.py."""
 from dataclasses import dataclass
 from typing import List
 
