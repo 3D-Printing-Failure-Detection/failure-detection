@@ -204,20 +204,23 @@ def test_watch_checks_every_layer_with_the_camera_model_and_never_commands(tmp_p
 
         def check(self, prev, cur, plan, part_xy, yaw_deg=0.0):
             seen.append(len(plan))
-            return dict(kind="warp" if len(plan) == 3 else "ok", flagged_px=50 * (len(plan) == 3), type_prob={})
+            return dict(kind="warp" if len(plan) >= 4 else "ok", flagged_px=50 * (len(plan) >= 4), type_prob={})
 
     monkeypatch.setattr(live, "BambuPrinter", _FakeWatchBambu)
     monkeypatch.setattr(p1s_layer, "LayerWatcher", FakeWatcher)
     model = tmp_path / "model"
     model.mkdir()
     (model / "model.pt").write_bytes(b"")
-    run = live.run_watch(None, str(_watch_file(tmp_path, 3)), "ip", "serial", "code", None, str(model),
-                         out=str(tmp_path / "w"), log=lambda *a: None)
+    run = live.run_watch(None, str(_watch_file(tmp_path, 6)), "ip", "serial", "code", None, str(model),
+                         out=str(tmp_path / "w"), warmup=1, confirm=2, log=lambda *a: None)
     rows = [json.loads(l) for l in (run / "layers.jsonl").read_text().splitlines()]
-    assert [r["label"] for r in rows] == ["ok", "ok", "warp"] and seen == [1, 2, 3]
-    assert len(list((run / "frames").glob("*.jpg"))) == 3
+    # the first layer has nothing to compare with; then the agent's rule: 1 layer of baseline, 2 in a row
+    assert "label" not in rows[0] and seen == [2, 3, 4, 5, 6]
+    assert [r["label"] for r in rows[1:]] == ["ok", "ok", "warp", "warp", "warp"]
+    assert [r["alarm"] for r in rows[1:]] == [False, False, False, True, True]
+    assert len(list((run / "frames").glob("*.jpg"))) == 6 and len(list((run / "marked").glob("*.jpg"))) == 6
     meta = json.loads((run / "meta.json").read_text())
-    assert meta["layers_observed"] == 3 and meta["alarms"] == 1 and meta["printer_total_layer_num"] == 3
+    assert meta["layers_observed"] == 6 and meta["first_alarm"]["layer"] == 4 and meta["printer_total_layer_num"] == 6
 
 
 def test_watch_without_the_model_saves_frames_only(tmp_path, monkeypatch):

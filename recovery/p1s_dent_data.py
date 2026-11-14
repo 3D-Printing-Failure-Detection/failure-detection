@@ -343,8 +343,10 @@ def generate(n, out, cfg, workers=1, start=0, log=print):
         (out / d).mkdir(parents=True, exist_ok=True)
     jobs = [(i, cfg, str(out)) for i in range(start, start + n)]
     t0, done, errors, counts = time.time(), 0, [], {}
+    from .p1s_layer_data import TASKS_PER_WORKER, safe_workers   # here: that module imports this one
+    workers = safe_workers(workers, log)
     if workers > 1:
-        pool = mp.get_context("spawn").Pool(workers)
+        pool = mp.get_context("spawn").Pool(workers, maxtasksperchild=TASKS_PER_WORKER)
         it = pool.imap_unordered(_worker, jobs, chunksize=4)
     else:
         pool, it = None, map(_worker, jobs)
@@ -382,7 +384,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--n", type=int, default=3000, help="number of pairs")
     ap.add_argument("--out", default="data/p1s_dent")
-    ap.add_argument("--workers", type=int, default=max(1, min(12, (mp.cpu_count() or 2) - 2)))
+    ap.add_argument("--workers", type=int, help="default: as many as the CPUs and free RAM allow")
     ap.add_argument("--start", type=int, default=0, help="first sample index (to extend a dataset)")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--part", default=DEFAULT_PART, help="part YAML (default: the water tray)")

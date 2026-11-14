@@ -241,7 +241,16 @@ class LayerWatcher:
         area, pk, mk = raw_outputs(self.model, x[None], self.dev)
         kind = KINDS[int(decide(area, pk, self.cfg["min_area"])[0])]
         return dict(kind=kind, flagged_px=int(area[0]), min_px=int(self.cfg["min_area"]),
-                    type_prob=dict(zip(FAILURES, pk[0].round(4).tolist())), mask_crop=mk[0], box=box)
+                    type_prob=dict(zip(FAILURES, pk[0].round(4).tolist())), mask_crop=mk[0], box=box, guide=guide)
+
+    @staticmethod
+    def flagged_points(r):
+        """Full-frame (x, y) pixel coordinates of what check() flagged."""
+        x0, y0, side = r["box"]
+        v, u = np.nonzero(r["mask_crop"])
+        off = (STORE - SIZE) / 2
+        k = side / STORE
+        return np.stack([x0 + (u + off + 0.5) * k, y0 + (v + off + 0.5) * k], 1)
 
 
 def main(argv=None):

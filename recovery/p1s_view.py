@@ -322,6 +322,13 @@ def plate_z_mm(cam: P1SCamera, top_z, drop_mm=0.0):
     return cam.calib_z_mm - top_z - drop_mm
 
 
+def _msh_bytes(verts, faces):
+    """MuJoCo's binary mesh: int32 nvertex, nnormal, ntexcoord, nface; float32 vertices; int32 faces."""
+    v = np.ascontiguousarray(verts, np.float32).reshape(-1, 3)
+    f = np.ascontiguousarray(faces, np.int32).reshape(-1, 3)
+    return np.array([len(v), 0, 0, len(f)], np.int32).tobytes() + v.tobytes() + f.tobytes()
+
+
 class P1SScene:
     """One scene: fixed camera, look and plate height, with several versions of the printed part that can be
     rendered one at a time (e.g. 'before' and 'after' a dent). Mesh `parts` = {name: (verts, faces)} in the
@@ -336,7 +343,7 @@ class P1SScene:
         self.cam, self.look = cam, look
         self.plate_z = plate_z_mm(cam, top_z, drop_mm)
         self.map_x, self.map_y, rw, rh, rf = remap_maps(cam)
-        assets, geoms, self.groups = [], [], {}
+        assets, geoms, self.groups, files = [], [], {}, {}
         for gi, (name, (v, f)) in enumerate(parts.items()):
             if not len(f):
                 self.groups[name] = None
@@ -346,14 +353,15 @@ class P1SScene:
             vw = _part_world(v, xy, yaw_deg, self.plate_z) * 1e-3
             # the stack is an open surface: convex-hull inertia keeps the mesh where it was put (the default
             # and shell inertia shift an open mesh in MuJoCo 3.2; MjSpec crashes when it is set there)
-            assets.append(f'<mesh name="part_{name}" inertia="convex" smoothnormal="false" '
-                          f'vertex="{" ".join(f"{x:.7g}" for x in vw.ravel())}" '
-                          f'face="{" ".join(map(str, np.asarray(f, int).ravel()))}"/>')
+            # binary .msh, not a vertex="..." attribute: MuJoCo's parser of very long attributes failed at
+            # random in a thread of a busy process (simulated printer + watcher)
+            files[f"part_{name}.msh"] = _msh_bytes(vw, f)
+            assets.append(f'<mesh name="part_{name}" file="part_{name}.msh" inertia="convex" smoothnormal="false"/>')
             geoms.append(f'<geom type="mesh" mesh="part_{name}" material="fil" group="{1 + gi}"/>')
             self.groups[name] = 1 + gi
         xml = _scene_xml(cam, look, self.plate_z, rw, rh, rf)
         xml = xml.replace("</asset>", "".join(assets) + "</asset>").replace("</worldbody>", "".join(geoms) + "</worldbody>")
-        self.model = mujoco.MjModel.from_xml_string(xml)
+        self.model = mujoco.MjModel.from_xml_string(xml, files)
         self.data = mujoco.MjData(self.model)
         mujoco.mj_forward(self.model, self.data)
         self.renderer = mujoco.Renderer(self.model, rh, rw)

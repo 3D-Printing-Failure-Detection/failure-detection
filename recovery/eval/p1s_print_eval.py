@@ -19,6 +19,7 @@ from pathlib import Path
 
 import numpy as np
 
+from ..alarm import first_alarm
 from ..deform import random_failure
 from ..p1s_dent_data import _round_and_wobble, base_camera, sample_look, sample_placement
 from ..p1s_layer_data import FAILURES, _nominal, default_config, printed_stack, stack_bounds
@@ -84,28 +85,25 @@ def _job(args):
         return dict(print=i, error=f"{type(e).__name__}: {e}")
 
 
-def alarm_layer(layers, confirm):
-    """First layer at which `confirm` layers in a row were flagged (the agent's alarm), or None."""
-    run = 0
-    for L in layers:
-        run = run + 1 if L["kind"] != "ok" else 0
-        if run >= confirm:
-            return L
-    return None
+def alarm_layer(layers, confirm, warmup=3):
+    """The layer at which the agent would alarm (recovery/alarm.py), or None."""
+    return first_alarm(layers, warmup, confirm)
 
 
-def summarize(prints, confirms=(1, 2, 3)):
+def summarize(prints, confirms=(1, 2, 3), warmup=3):
     ok = [p for p in prints if "error" not in p]
     out = dict(prints=len(ok), errors=len(prints) - len(ok), rules={})
     for c in confirms:
         clean = [p for p in ok if p["true_kind"] == "ok"]
         fail = [p for p in ok if p["true_kind"] != "ok"]
-        false = [p for p in clean if alarm_layer(p["layers"], c)]
+        false = [p for p in clean if alarm_layer(p["layers"], c, warmup)]
         caught, early, delays, kind_ok, by_kind = [], [], [], [], {}
         for p in fail:
             # an alarm before the failure started is a false alarm on a print that later fails
-            pre = alarm_layer([L for L in p["layers"] if not L["failed"]], c)
-            hit = alarm_layer([L for L in p["layers"] if L["failed"]], c)
+            # the rule runs over the whole print; an alarm on a layer before the failure started is early
+            hit = alarm_layer(p["layers"], c, warmup)
+            pre = hit if hit is not None and not hit["failed"] else None
+            hit = None if pre is not None else hit
             early.append(pre is not None)
             caught.append(hit is not None and pre is None)
             by_kind.setdefault(p["true_kind"], []).append(hit is not None and pre is None)
@@ -132,7 +130,12 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=11)
     ap.add_argument("--parts", nargs="*")
     ap.add_argument("--camera-error", type=float, default=1.0)
+    ap.add_argument("--rescore", metavar="PRINTS_JSONL", help="only re-score saved prints with the alarm rule")
     a = ap.parse_args(argv)
+    if a.rescore:
+        prints = [json.loads(l) for l in open(a.rescore)]
+        print(json.dumps(summarize(prints)["rules"], indent=1))
+        return
     cfg = default_config(seed=a.seed, camera_error=a.camera_error, **({"parts": a.parts} if a.parts else {}))
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)

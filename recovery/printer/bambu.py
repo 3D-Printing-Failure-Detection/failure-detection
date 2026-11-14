@@ -110,7 +110,7 @@ def upload_ftps(ip, code, name, data: bytes, remote_dir=""):
 
 class BambuLink:
     """MQTT connection: merges printer reports into `.state`, publishes commands."""
-    def __init__(self, ip, serial, code):
+    def __init__(self, ip, serial, code, port=8883):
         import paho.mqtt.client as mqtt
         self.serial, self.state, self.seq = serial, {}, 0
         self.lock = threading.Lock()
@@ -123,7 +123,7 @@ class BambuLink:
         self.cli.tls_insecure_set(True)
         self.cli.on_connect = lambda c, u, f, rc, *a: c.subscribe(f"device/{serial}/report")
         self.cli.on_message = self._on_msg
-        self.cli.connect(ip, 8883, 60)
+        self.cli.connect(ip, port, 60)
         self.cli.loop_start()
         self.pushall()
 
@@ -163,8 +163,8 @@ class BambuLink:
 
 class BambuCamera:
     """P1/A1 chamber camera: TLS on port 6000, 16-byte-per-field little-endian framing."""
-    def __init__(self, ip, code):
-        self.ip, self.code = ip, code
+    def __init__(self, ip, code, port=6000):
+        self.ip, self.code, self.port = ip, code, port
         self.frame: Optional[np.ndarray] = None
         self.frame_t = 0.0                # time.time() when `frame` arrived
         self._stop = False
@@ -184,7 +184,7 @@ class BambuCamera:
     def _run(self):
         while not self._stop:
             try:
-                raw = socket.create_connection((self.ip, 6000), timeout=10)
+                raw = socket.create_connection((self.ip, self.port), timeout=10)
                 s = _insecure_ctx().wrap_socket(raw)
                 s.sendall(struct.pack("<IIII", 0x40, 0x3000, 0, 0)
                           + b"bblp".ljust(32, b"\0") + self.code.encode().ljust(32, b"\0"))
@@ -226,7 +226,10 @@ class BambuPrinter:
 
     def __init__(self, ip, serial, code, planned: List[Layer], layer_h,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
-                 rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False):
+                 rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False, ports=None):
+        """ports: {"mqtt": 8883, "camera": 6000} to reach a printer on other ports (the simulated printer,
+        recovery/printer/fake_p1s.py, in tests)."""
+        ports = {"mqtt": 8883, "camera": 6000, **(ports or {})}
         self.ip, self.code, self.plan, self.layer_h = ip, code, list(planned), layer_h
         if mode != "restart":
             raise ValueError("only mode='restart' is supported")
@@ -236,8 +239,8 @@ class BambuPrinter:
         self._layer_done_t = 0.0         # when the last finished layer was seen to finish
         self.last_frame: Optional[np.ndarray] = None   # last raw camera frame
         self.printed: List[Layer] = []  # measured observations, not physical ground truth
-        self.link = BambuLink(ip, serial, code)
-        self.cam = BambuCamera(ip, code)
+        self.link = BambuLink(ip, serial, code, ports["mqtt"])
+        self.cam = BambuCamera(ip, code, ports["camera"])
         self.origin = origin or C.BED_CENTER
         self.mode, self.rehome, self.settle, self.timeout = mode, rehome_gcode, settle_s, timeout_s
         t = print_settings(original_gcode or "")
@@ -310,10 +313,10 @@ class BambuPrinter:
         self._layer_done_t = time.time()
         return "paused"
 
-    def snapshot(self):
+    def snapshot(self, timeout=20.0):
         """The camera frame as the P1S camera sees it, never one from before the last finished layer.
         There is no top-down view: everything that looks at the print uses this frame."""
-        self.last_frame = self.cam.grab(newer_than=self._layer_done_t)
+        self.last_frame = self.cam.grab(timeout=timeout, newer_than=self._layer_done_t)
         return self.last_frame
 
     def expected_layer(self) -> Layer:

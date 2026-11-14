@@ -15,7 +15,8 @@
   llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
-  watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
+  watch     watch-only loop on a real P1S: checks every layer, logs and marks up frames, never commands
+  sim-printer  a simulated P1S on this machine (same connections as the real one), to test watch/agent
 """
 import argparse
 import sys
@@ -121,6 +122,30 @@ def main(argv=None):
     wt.add_argument("--calib", default="calib.npz", help="camera calibration (default camera if missing)")
     wt.add_argument("--layer-model", default="runs/p1s_layer", help="failure detector checkpoint")
     wt.add_argument("--out", default="results/watch")
+    wt.add_argument("--view", type=int, metavar="PORT", help="serve a live page of the marked-up frames on this port")
+    wt.add_argument("--view-host", default="127.0.0.1", help="address for the live page (0.0.0.0 = whole network)")
+    wt.add_argument("--ports", help="MQTT,camera ports if not 8883,6000 (the simulated printer)")
+    sp = sub.add_parser("sim-printer", help="a simulated P1S on this machine (same connections as the real one)")
+    ssrc = sp.add_mutually_exclusive_group(required=True)
+    ssrc.add_argument("--part", help="part YAML")
+    ssrc.add_argument("--gcode", help="sliced .gcode.3mf/.gcode")
+    sp.add_argument("--plate", type=int, default=1)
+    sp.add_argument("--fail", choices=["collapse", "warp", "shift", "under_extrusion", "detach"],
+                    help="make this failure happen (default: a good print)")
+    sp.add_argument("--fail-at", type=int, help="layer the failure starts at (default: random)")
+    sp.add_argument("--severity", type=float, help="failure size in mm (default: random)")
+    sp.add_argument("--layer-s", type=float, default=3.0, help="seconds per layer")
+    sp.add_argument("--start-layer", type=int, default=0, help="begin part-way through the print")
+    sp.add_argument("--host", default="127.0.0.1")
+    sp.add_argument("--mqtt-port", type=int, default=8883)
+    sp.add_argument("--camera-port", type=int, default=6000)
+    sp.add_argument("--serial", default="SIMP1S")
+    sp.add_argument("--code", default="12345678")
+    sp.add_argument("--camera-error", type=float, default=1.0, help="how far the camera is off the calibration")
+    sp.add_argument("--calib", help="calibration .npz the simulated camera is close to (default camera if not given)")
+    sp.add_argument("--seed", type=int, default=0)
+    sp.add_argument("--wait-s", type=float, default=600.0, help="start printing once watch/agent connects, or after this")
+    sp.add_argument("--linger-s", type=float, default=10.0, help="keep serving after the print ends")
 
     a = ap.parse_args(argv)
     if a.cmd == "specgen":
@@ -226,7 +251,16 @@ def main(argv=None):
         return
     if a.cmd == "watch":
         from .live import run_watch
-        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.layer_model, a.out, plate=a.plate)
+        ports = None
+        if a.ports:
+            m, c = (int(v) for v in a.ports.split(","))
+            ports = dict(mqtt=m, camera=c)
+        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.layer_model, a.out, plate=a.plate,
+                  ports=ports, view_port=a.view, view_host=a.view_host, log=lambda *m: print(*m, flush=True))
+        return
+    if a.cmd == "sim-printer":
+        from .printer.fake_p1s import main_sim_printer
+        main_sim_printer(a, log=lambda *m: print(*m, flush=True))
         return
     if a.cmd == "demo":
         from .run import run_scenario

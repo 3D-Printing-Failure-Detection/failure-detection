@@ -1,7 +1,8 @@
 """Synthetic training data for spotting print failures layer by layer, seen by the P1S chamber camera.
 
 Each sample is one moment of a print:
-1. a random part (parts/*.yaml and parts/print/*/*.yaml) is printed up to layer k. With probability
+1. a random part (parts/*.yaml, parts/print/*/*.yaml, or one of the random training shapes in
+   recovery/p1s_shapes.py, mostly round) is printed up to layer k. With probability
    p_fail, a failure from recovery/deform.py started a few layers earlier: collapse (a wall sags in),
    warp (a wall curls out), shift (the layers above slide sideways), under_extrusion (a wall section is
    thin or open) or detach (the part came off the bed and only a stub keeps printing);
@@ -28,6 +29,7 @@ import numpy as np
 
 from .deform import random_failure
 from .p1s_dent_data import _round_and_wobble, base_camera, clean_mask, sample_look, sample_placement, _git_commit
+from .p1s_shapes import shape_part
 from .parts import get_part
 
 FAILURES = ("collapse", "warp", "shift", "under_extrusion", "detach")
@@ -39,8 +41,14 @@ def default_parts():
     return sorted(glob.glob("parts/*.yaml") + glob.glob("parts/print/*/*.yaml"))
 
 
+# failure types the detector found hardest (sagging and thin walls) are drawn more often
+KIND_WEIGHTS = dict(collapse=1.3, warp=1.0, shift=0.8, under_extrusion=1.6, detach=0.6)
+
+
 def default_config(**kw):
-    cfg = dict(parts=default_parts(), p_fail=0.7, since_layers=(1, 12), bed_range_mm=(40.0, 150.0), part_xy=None,
+    """shapes: how many random training shapes (recovery/p1s_shapes.py) join the real parts, drawn with
+    probability p_shape. kind_weights: how often each failure type is drawn (None = equally)."""
+    cfg = dict(parts=default_parts(), shapes=160, p_shape=0.6, kind_weights=KIND_WEIGHTS, p_fail=0.6, since_layers=(1, 12), bed_range_mm=(40.0, 150.0), part_xy=None,
                yaw_sigma_deg=10.0, yaw_flip_p=0.15, camera_jitter=True, camera_error=1.0, calib=None, seed=0,
                val_every=10)
     cfg.update(kw)
@@ -48,11 +56,38 @@ def default_config(**kw):
 
 
 _CACHE = {}
+CACHE_PARTS = 16            # parts kept per worker (~15 MB each); with 160 shapes an unbounded cache ran out of RAM
+
+# A worker also keeps ~4 MB per sample it renders that is never freed, so pool workers are replaced after
+# this many samples, and the default worker count is what the free RAM allows.
+TASKS_PER_WORKER = 50
+WORKER_GB = 1.5
+
+
+def safe_workers(requested=None, log=print):
+    """Workers that fit in the available RAM (keeping 3 GB free for the rest of the machine)."""
+    try:
+        avail_gb = next(int(l.split()[1]) for l in open("/proc/meminfo") if l.startswith("MemAvailable")) / 2**20
+    except (OSError, StopIteration):
+        avail_gb = 8.0
+    fit = max(1, int((avail_gb - 3.0) / WORKER_GB))
+    cpu = max(1, min(12, (mp.cpu_count() or 2) - 2))
+    if requested is None:
+        return min(fit, cpu)
+    if requested > fit:
+        log(f"--workers {requested} needs ~{requested * WORKER_GB:.0f} GB but {avail_gb:.1f} GB is free: using {fit}")
+        return fit
+    return requested
 
 
 def _nominal(path):
-    if path not in _CACHE:
-        part = get_part(path)
+    """(Part, nominal layers) for a part YAML or a training shape `shape:<n>`."""
+    if path in _CACHE:
+        _CACHE[path] = _CACHE.pop(path)        # most recently used last
+    else:
+        while len(_CACHE) >= CACHE_PARTS:
+            _CACHE.pop(next(iter(_CACHE)))
+        part = shape_part(int(path[6:])) if path.startswith("shape:") else get_part(path)
         _CACHE[path] = (part, part.layers())
     return _CACHE[path]
 
@@ -86,16 +121,31 @@ def plan_silhouette(cam, look, plan, xy, yaw, drop=0.0):
     return (d < 0.95 * d.max()).astype(np.uint8) * 255
 
 
+def pick_part(rng, cfg):
+    path = cfg["parts"][rng.integers(len(cfg["parts"]))]
+    if cfg.get("shapes") and rng.random() < cfg.get("p_shape", 0.5):
+        path = f"shape:{rng.integers(cfg['shapes'])}"
+    return path
+
+
+def pick_kind(rng, cfg):
+    w = cfg.get("kind_weights")
+    if not w:
+        return FAILURES[rng.integers(len(FAILURES))]
+    p = np.array([w[k] for k in FAILURES], float)
+    return FAILURES[rng.choice(len(FAILURES), p=p / p.sum())]
+
+
 def make_sample(i, cfg):
     """Returns (prev_rgb, cur_rgb, guide, mask, label, (photo_prev, photo_cur))."""
     rng = np.random.default_rng([cfg["seed"], i])
-    path = cfg["parts"][rng.integers(len(cfg["parts"]))]
+    path = pick_part(rng, cfg)
     part, nominal0 = _nominal(path)
     n = len(nominal0)
     nominal = _round_and_wobble(nominal0, rng, float(rng.uniform(0.0, 0.3)), float(rng.uniform(0.0, 0.03)))
     failure, kind = None, "ok"
     if rng.random() < cfg["p_fail"]:
-        kind = FAILURES[rng.integers(len(FAILURES))]
+        kind = pick_kind(rng, cfg)
         failure = random_failure(nominal, rng, kind=kind)
         k = int(min(n, failure.k0 + rng.integers(*cfg["since_layers"]) + 1))
     else:
@@ -151,7 +201,7 @@ def regen_guides(data_dir, calib=None, workers=12, log=print):
     data_dir = Path(data_dir)
     labels = [json.loads(l) for l in open(data_dir / "labels.jsonl")]
     jobs = [(str(data_dir), l, calib) for l in labels]
-    with mp.get_context("spawn").Pool(workers) as pool:
+    with mp.get_context("spawn").Pool(safe_workers(workers, log), maxtasksperchild=TASKS_PER_WORKER * 4) as pool:
         for k, _ in enumerate(pool.imap_unordered(_regen_one, jobs, chunksize=8)):
             if (k + 1) % 500 == 0:
                 log(f"{k + 1}/{len(jobs)} guides")
@@ -160,8 +210,11 @@ def regen_guides(data_dir, calib=None, workers=12, log=print):
 
 def _regen_one(args):
     data_dir, l, calib = args
-    paths = {p: Path(p).stem for p in default_parts() + glob.glob("tests/fixtures/unseen_parts/*.yaml")}
-    path = next(p for p, stem in paths.items() if _nominal(p)[0].name == l["part"])
+    if l["part"].startswith("shape-"):
+        path = f"shape:{int(l['part'].split('-')[1])}"
+    else:
+        paths = default_parts() + glob.glob("tests/fixtures/unseen_parts/*.yaml")
+        path = next(p for p in paths if _nominal(p)[0].name == l["part"])
     _, nominal = _nominal(path)
     cam = V.P1SCamera.load(calib) if calib else V.P1SCamera.default()
     g = plan_silhouette(cam, V.Look(), nominal[:l["layer"]], l["part_xy_mm"], l["part_yaw_deg"])
@@ -202,7 +255,8 @@ def generate(n, out, cfg, workers=1, start=0, log=print):
         (out / d).mkdir(parents=True, exist_ok=True)
     jobs = [(i, cfg, str(out)) for i in range(start, start + n)]
     t0, done, errors = time.time(), 0, []
-    pool = mp.get_context("spawn").Pool(workers) if workers > 1 else None
+    workers = safe_workers(workers, log)
+    pool = mp.get_context("spawn").Pool(workers, maxtasksperchild=TASKS_PER_WORKER) if workers > 1 else None
     it = pool.imap_unordered(_worker, jobs, chunksize=4) if pool else map(_worker, jobs)
     try:
         for i, status in it:
@@ -233,11 +287,12 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--n", type=int, default=5000)
     ap.add_argument("--out", default="data/p1s_layer")
-    ap.add_argument("--workers", type=int, default=max(1, min(12, (mp.cpu_count() or 2) - 2)))
+    ap.add_argument("--workers", type=int, help="default: as many as the CPUs and free RAM allow")
     ap.add_argument("--start", type=int, default=0)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--parts", nargs="*", help="part YAMLs (default: every part in parts/)")
     ap.add_argument("--calib", help="camera calibration .npz (needs calib_z_mm)")
+    ap.add_argument("--shapes", type=int, default=160, help="random training shapes to add (0 = real parts only)")
     ap.add_argument("--camera-error", type=float, default=1.0,
                     help="scale of the random calibration error (1 = as in training; 2 = a test with twice as much)")
     ap.add_argument("--regen-guides", metavar="DIR", help="only redraw the guides of an existing dataset")
@@ -245,7 +300,7 @@ def main(argv=None):
     if a.regen_guides:
         print(f"{regen_guides(a.regen_guides, a.calib, a.workers)} guides redrawn")
         return 0
-    cfg = default_config(seed=a.seed, calib=a.calib, camera_error=a.camera_error,
+    cfg = default_config(seed=a.seed, calib=a.calib, camera_error=a.camera_error, shapes=a.shapes,
                          **({"parts": a.parts} if a.parts else {}))
     m = generate(a.n, a.out, cfg, a.workers, a.start, log=lambda s: print(s, flush=True))
     print(json.dumps({k: m[k] for k in ("samples", "kinds", "visible", "parts", "seconds")}))
