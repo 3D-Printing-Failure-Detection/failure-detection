@@ -35,6 +35,7 @@ def add_arguments(p):
     p.add_argument("--gcode", help="real print: the Bambu Studio .gcode.3mf being printed")
     p.add_argument("--plate", type=int, default=1)
     p.add_argument("--ip"), p.add_argument("--serial"), p.add_argument("--code")
+    p.add_argument("--ports", help="MQTT,camera ports if not 8883,6000 (the simulated printer: recovery.cli sim-printer)")
     p.add_argument("--calib", default="calib.npz")
     p.add_argument("--sim", action="store_true", help="rehearse on the simulated printer")
     p.add_argument("--dent", type=float, nargs=3, metavar=("X", "Y", "DEPTH"),
@@ -48,14 +49,18 @@ def add_arguments(p):
                    "layers (on the real printer the agent reacts to whatever pause the person makes)")
     p.add_argument("--resume-test", action="store_true", help="at the planned pause, send the ORIGINAL "
                    "remaining layers through stop -> upload -> start (no dent), to prove 'correct' works")
-    p.add_argument("--measure", choices=["sideview", "manual"], default="sideview",
-                   help="dent test: the camera compares the frames before and after the change (default; "
-                        "falls back to manual if --dent-model is missing), or the person types it (manual)")
+    p.add_argument("--measure", choices=["sideview", "manual"], default=None,
+                   help="dent test: the person types the change (manual; the default on the real printer), or "
+                        "the camera compares the frames before and after it and the person types only a dent's "
+                        "depth (sideview; the default with --sim, opt-in on the real printer until it is scored "
+                        "on real dent-test photos). Falls back to manual if --dent-model is missing")
     p.add_argument("--dent-model", default="runs/dent", help="dent detector checkpoint (recovery/models/dent.py)")
     p.add_argument("--layer-model", default="runs/p1s_layer",
                    help="failure detector checkpoint for the every-layer check (recovery/models/p1s_layer.py)")
     p.add_argument("--monitor", choices=["auto", "on", "off"], default="auto",
-                   help="camera check every layer; auto = on when --layer-model exists")
+                   help="camera check every layer; auto = on with --sim when --layer-model exists, OFF on the "
+                        "real printer (each alarm pauses a real print and the false-alarm rate on real frames "
+                        "is not measured yet: use 'on' to opt in)")
     p.add_argument("--seed", type=int, default=1)
     add_decider_arguments(p)
     p.add_argument("--no-auto-pause", action="store_true", help="ask before pausing, keep printing meanwhile")
@@ -151,16 +156,25 @@ def _has_model(path):
     return os.path.exists(os.path.join(path, "model.pt"))
 
 
+def resolve_modes(a):
+    """Sets a.measure and returns whether to watch every layer. On the real printer both camera checks are
+    opt-in (--measure sideview, --monitor on) until they are scored on real frames; --sim uses them."""
+    if a.measure is None:
+        a.measure = "sideview" if a.sim else "manual"
+    return a.monitor == "on" or (a.monitor == "auto" and a.sim and _has_model(a.layer_model))
+
+
 def main(a):
     from .loop import DentTest
     from .measure import ManualMeasure, ScriptedMeasure, SideViewMeasure
     cam = _camera(a)
-    monitor = a.monitor == "on" or (a.monitor == "auto" and _has_model(a.layer_model))
+    monitor = resolve_modes(a)
     if monitor and not _has_model(a.layer_model):
         raise SystemExit(f"no failure detector at {a.layer_model}: train one (python -m recovery.models.p1s_layer "
                          "train ...) or use --monitor off")
     if a.monitor == "auto" and not monitor:
-        print(f"no failure detector at {a.layer_model}: not watching every layer")
+        print(f"no failure detector at {a.layer_model}: not watching every layer" if a.sim else
+              "real printer: not watching every layer (--monitor on to opt in)")
     if a.dent_test and a.measure == "sideview" and not _has_model(a.dent_model):
         print(f"no dent detector at {a.dent_model} (train one: python -m recovery.models.dent train ...); "
               "the person types the change instead")
@@ -178,7 +192,9 @@ def main(a):
         if a.dent_test or a.resume_test:
             k = a.pause_at_layer if a.pause_at_layer is not None else len(nom) // 2
             printer = PlannedPauseSim(nom, None, seed=a.seed, pause_at=k, p1s_camera=cam)
-            measure = SideViewMeasure(a.dent_model, cam) if a.measure == "sideview" else ScriptedMeasure(change)
+            depth = a.dent[2] if a.dent else 1.5          # what the person would type in a rehearsal
+            measure = (SideViewMeasure(a.dent_model, cam, depth=lambda *_: depth) if a.measure == "sideview"
+                       else ScriptedMeasure(change))
             test = DentTest(person=lambda: printer.user_change(change), measure=measure)
         else:
             k = a.at_layer if a.at_layer is not None else len(nom) // 2 - 1
@@ -187,13 +203,22 @@ def main(a):
     else:
         if a.auto_approve:
             raise SystemExit("--auto-approve is for --sim only: a person approves actions on a real print")
-        if not (a.gcode and a.ip and a.serial and a.code):
+        if not (a.ip and a.serial and a.code):
             raise SystemExit("a real run needs --gcode, --ip, --serial and --code (or use --sim)")
         from ..printer.bambu import BambuPrinter
-        part = Part.from_gcode(a.gcode, spec=_spec_only(a.part), plate=a.plate)
+        if a.gcode:
+            part = Part.from_gcode(a.gcode, spec=_spec_only(a.part), plate=a.plate)
+        elif a.ports:                                   # the simulated printer prints the YAML shape itself
+            part = get_part(a.part)
+        else:
+            raise SystemExit("a real print needs --gcode (the sliced file being printed)")
         nom = part.layers()
+        ports = None
+        if a.ports:
+            m, c = (int(v) for v in a.ports.split(","))
+            ports = dict(mqtt=m, camera=c)
         printer = BambuPrinter(a.ip, a.serial, a.code, nom, part.layer_h,
-                               origin=part.origin, original_gcode=part.gcode_text)
+                               origin=part.origin, original_gcode=part.gcode_text, ports=ports)
         test = None
         printer.notify_pause = bool(a.dent_test or a.resume_test)
         if a.dent_test:

@@ -122,7 +122,10 @@ def test_rehearsal_pause_snapshots_are_the_p1s_view_and_show_the_change():
         pr.camera_image()
 
 
-def test_agent_dent_test_measures_from_the_side_view(tmp_path):
+@pytest.mark.parametrize("depth, action", [(1.0, "resume"), (2.0, "correct")])
+def test_agent_dent_test_measures_from_the_side_view(tmp_path, depth, action):
+    """The camera finds the dent's wall and position, the person types its depth, and the depth decides:
+    on the tray 1 mm passes the function check (resume), 2 mm does not (correct)."""
     from pathlib import Path
     ckpt = Path("runs/dent")
     if not (ckpt / "model.pt").exists():
@@ -136,11 +139,14 @@ def test_agent_dent_test_measures_from_the_side_view(tmp_path):
     part = get_part(TRAY)
     pr = PlannedPauseSim(part.layers(), None, seed=1, pause_at=30)
     tools = PrinterTools(pr, part)
-    test = DentTest(person=lambda: pr.user_change("dent -15 0 2"), measure=SideViewMeasure(str(ckpt)))
+    test = DentTest(person=lambda: pr.user_change(f"dent -15 0 {depth}"),
+                    measure=SideViewMeasure(str(ckpt), depth=lambda *_: depth))
     run_agent(tools, RuleDecider(), ActionGate(tools, AutoApprover()), out_dir=tmp_path, monitor=False, dent_test=test)
     ev = [json.loads(l) for l in next(tmp_path.glob("*/events.jsonl")).read_text().splitlines()]
-    described = ev[0]["situation"]["observation"]["described"]
-    assert described.startswith("camera (side view): dent, left wall") and ev[0]["action"] == "resume"
+    obs = ev[0]["situation"]["observation"]
+    assert obs["described"].startswith("camera (side view): dent, left wall") and ev[0]["action"] == action
+    assert all(Path(obs["evidence"]["frames"][k]).exists() for k in ("before", "after", "change"))
+    assert obs["evidence"]["detector"].startswith("detector: dent")
 
 
 def test_agent_catches_a_failing_print_from_the_camera_view(tmp_path):

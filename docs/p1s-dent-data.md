@@ -124,18 +124,28 @@ Almost all errors are touched prints called untouched. Detection by how many pix
 15 to 50 px 88 %, 50 to 200 px 95 %, ≥ 200 px 91 %. The model is conservative on held-out data, so a lower
 threshold would trade false alarms for recall.
 
-## In the agent's dent test (the default)
-`python -m recovery.cli agent --dent-test …` now measures the change from the P1S camera's own view
-(`--measure sideview`, `SideViewMeasure` in `recovery/agent/measure.py`). It compares the frames saved at the pause
-before and after the change, then turns the detector's kind, wall and position into the existing
-`dent X Y DEPTH` / `poke X Y` / `none` description. From there, the function check, decision and approval are
-unchanged. Depth is not measured: a dent is taken as 1.5 mm, which only affects the capacity check.
+## In the agent's dent test (opt-in on the real printer)
+`python -m recovery.cli agent --dent-test --measure sideview …` measures the change from the P1S camera's own
+view (`SideViewMeasure` in `recovery/agent/measure.py`). This is the default with `--sim`. On the real printer
+the default is `--measure manual` (the person types the change) until the detector is scored on real
+dent-test photos: the numbers above are on simulated pairs from the same generator, and the camera position
+comes from a calibration fit that is still too loose (re-score after the checkerboard calibration).
+It compares the frames saved at the pause before and after the change, then turns the detector's kind, wall
+and position into the existing `dent X Y DEPTH` / `poke X Y` / `none` description. From there, the function
+check, decision and approval are unchanged.
+- **Depth is typed by the person.** The detector does not measure depth, and depth decides the outcome: on
+  the tray, 1 to 1.5 mm dents pass the function check (**resume**) but 2 mm and deeper fail it (**correct**).
+  So when the camera sees a dent it asks for the depth; a `--sim` rehearsal uses the `--dent` depth.
+- **The approval prompt shows the evidence:** the before, after and change image paths and the detector's
+  confidence (changed area against its threshold, dent vs poke, which wall). A missed poke resumes a tray that
+  will leak, so a `none` or a change close to the threshold is marked "check the images".
 - `--dent-model runs/dent` is the checkpoint. If it is missing, the agent falls back to `--measure manual` (typed in).
 - `--calib calib.npz` is used if it records the bed Z (`calib_z_mm`); otherwise the approximate default camera.
 - Sim rehearsals (`PlannedPauseSim`) render every frame from the P1S view (part at the plate centre), like
   the real printer: there is no top-down image.
 
-Sim rehearsals with `runs/dent_v2` (`agent --sim --dent-test … --auto-approve --monitor off`):
+Sim rehearsals with `runs/dent_v2` (`agent --sim --dent-test … --auto-approve --monitor off`), before depth
+was typed (every dent was taken as 1.5 mm, so the 2 mm dents below would now get **correct**):
 
 | change made | camera said | agent |
 |---|---|---|

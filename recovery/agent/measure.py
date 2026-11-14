@@ -6,8 +6,10 @@
 - ScriptedMeasure: the same, given in advance (rehearsal and tests).
 - SideViewMeasure: the printer camera (front-left, low, wide lens). The dent detector
   (recovery/models/dent.py) compares the frames saved before and after the change and says
-  dent / poke / none, which wall and where along it. The default.
-Each returns (new shapes for the top layers or None, a description for the log)."""
+  dent / poke / none, which wall and where along it; the person types the depth of a dent. Opt-in
+  (--measure sideview) on the real printer until it is scored on real dent-test photos.
+Each returns (new shapes for the top layers or None, a description for the log). A measure may set
+`evidence` (a dict) for the approval prompt."""
 from .rehearse import change_from
 
 PROMPT = ("Describe the part now (mm from the part centre): 'dent X Y DEPTH', 'poke X Y' or 'none'\n"
@@ -40,16 +42,35 @@ class ScriptedMeasure:
         return change_from(self.description, tools.known[-self.taper:]), self.description
 
 
+DEPTH_PROMPT = ("The camera sees a DENT on the {wall} wall at ({x:.1f}, {y:.1f}) mm. How deep is it, in mm?\n"
+                "  (decides resume vs correct: on the tray 1 to 1.5 mm still passes, 2 mm and more needs correct) > ")
+
+
+def ask_depth(wall, x, y, ask=input, show=print):
+    """The person types the depth of a dent the camera found (the detector does not measure depth)."""
+    while True:
+        a = ask(DEPTH_PROMPT.format(wall=wall, x=x, y=y)).strip()
+        try:
+            d = float(a)
+            if d > 0:
+                return d
+        except ValueError:
+            pass
+        show("type the depth in mm, e.g. 1.5")
+
+
 class SideViewMeasure:
     """Dent / poke / none from the before and after frames of the pause, in the P1S camera's own view.
-    The detector does not measure depth: a dent is taken as `dent_depth_mm` deep (the test's gentle push
-    is 1 to 2 mm), which only matters for the capacity check; a poke always opens the wall."""
+    The camera gives the kind, the wall and the position; the detector does not measure depth, and depth
+    decides resume vs correct, so `depth(wall, x, y)` supplies it: the person types it on the real printer,
+    a rehearsal passes the scripted depth. A poke always opens the wall."""
     name = "sideview"
 
-    def __init__(self, ckpt="runs/dent", cam=None, dent_depth_mm=1.5, taper_layers=5, yaw_deg=0.0):
+    def __init__(self, ckpt="runs/dent", cam=None, depth=ask_depth, taper_layers=5, yaw_deg=0.0):
         from ..models.dent import DentDetector
         self.det = DentDetector(ckpt, cam)
-        self.depth, self.taper, self.yaw = dent_depth_mm, taper_layers, yaw_deg
+        self.depth, self.taper, self.yaw = depth, taper_layers, yaw_deg
+        self.evidence = None
 
     def __call__(self, tools):
         before, after = tools.pause_frames
@@ -57,9 +78,31 @@ class SideViewMeasure:
         origin = getattr(tools.pr, "origin", None) or tools.part.origin
         r = self.det.predict(before[..., ::-1], after[..., ::-1], origin, self.yaw, top[-1].z,
                              bounds=top[-1].region.bounds)
+        min_area = self.det.cfg["min_area"]
+        p_dent, p_poke = r["p_dent_vs_poke"]
+        self.evidence = dict(kind=r["kind"], changed_px=r["change_px_crop"], min_px=min_area,
+                             p_dent=p_dent, p_poke=p_poke, wall=r["wall"],
+                             p_wall=r["wall_prob"].get(r["wall"]) if r["wall"] else None)
         note = f"camera (side view): {r['kind']}"
         if r["kind"] == "none" or r["at_mm"] is None:
             return None, note
         x, y = r["at_mm"]
-        desc = f"dent {x:.1f} {y:.1f} {self.depth}" if r["kind"] == "dent" else f"poke {x:.1f} {y:.1f}"
-        return change_from(desc, top), f"{note}, {r['wall']} wall -> '{desc}' (depth not measured)"
+        if r["kind"] == "dent":
+            depth = float(self.depth(r["wall"], x, y))
+            desc = f"dent {x:.1f} {y:.1f} {depth:g}"
+        else:
+            desc = f"poke {x:.1f} {y:.1f}"
+        return change_from(desc, top), f"{note}, {r['wall']} wall -> '{desc}'" + (
+            " (depth typed by the person)" if r["kind"] == "dent" and self.depth is ask_depth else "")
+
+
+def describe_evidence(e):
+    """One line on how sure the camera is, for the approval prompt."""
+    if not e:
+        return ""
+    s = f"detector: {e['kind']}; changed area {e['changed_px']} px (needs {e['min_px']} px to count)"
+    if e["kind"] != "none":
+        s += f"; dent {e['p_dent']:.0%} / poke {e['p_poke']:.0%}; {e['wall']} wall {e['p_wall']:.0%}"
+    if e["kind"] == "none" or e["changed_px"] < 2 * e["min_px"]:
+        s += "  <- close to the threshold: check the images"
+    return s

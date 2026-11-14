@@ -30,6 +30,7 @@ from typing import Callable
 import cv2
 import numpy as np
 
+from ..alarm import AlarmRule
 from ..printer.bambu import PrintEnded
 
 
@@ -44,7 +45,14 @@ def _summary(situation, rec):
     lines = [f"\n=== {o['label'].upper()} at layer {o['layer']} (z = {o['z']:.2f} mm)"
              + (f": {o['flagged_px']} px look different from the plan" if o.get("flagged_px") is not None else "")
              + (" and it has grown since it was last accepted" if o.get("grown") else "")
-             + (f"; {o['described']}" if o.get("described") else ""), "If we continue, the finished part:"]
+             + (f"; {o['described']}" if o.get("described") else "")]
+    ev = o.get("evidence")
+    if ev:                                       # so the person can catch a missed or misread change
+        lines.append("Check the camera before approving:")
+        lines += [f"  {k:6s} {ev['frames'][k]}" for k in ("before", "after", "change") if ev["frames"].get(k)]
+        if ev.get("detector"):
+            lines.append(f"  {ev['detector']}")
+    lines.append("If we continue, the finished part:")
     for f in situation["function_if_continue"]["features"]:
         lines.append(f"  {'OK  ' if f['ok'] else 'FAIL'} {f['feature']}" + (f"  ({f['detail']})" if f["detail"] else ""))
     fix = situation.get("correction")
@@ -138,8 +146,11 @@ class _Run:
         if not paused:
             self.log("the printer was resumed while the agent was waiting: new layers are printing "
                      "over the change; deciding anyway")
+        from .measure import describe_evidence
         observation = dict(layer=layer, z=tools.known[-1].z, label="dent test", described=described,
-                           camera_change=change, paused=paused)
+                           camera_change=change, paused=paused,
+                           evidence=dict(frames={k: str((self.dir / v).resolve()) for k, v in frames.items()},
+                                         detector=describe_evidence(getattr(test.measure, "evidence", None))))
         return self.decide(observation, tools.function_report(), paused=paused, frames=frames)
 
     def resume_test(self):
@@ -178,7 +189,8 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
     from calibration error); after that a layer counts as failing only if it flags more than that.
     confirm: an alarm needs that many failing layers in a row (a real failure persists, noise does not).
     After a difference is accepted (resume), it raises a new alarm only once the flagged area exceeds
-    grow x the accepted one + grow_px. Whole simulated prints: recovery/eval/p1s_print_eval.py."""
+    grow x the accepted one + grow_px. The rule is recovery/alarm.py; whole simulated prints:
+    recovery/eval/p1s_print_eval.py."""
     has_watcher = getattr(tools, "watcher", None) is not None
     if monitor is None:
         monitor = has_watcher
@@ -186,7 +198,7 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
         raise ValueError("monitoring every layer needs a failure detector (PrinterTools(..., watcher=...))")
     r = _Run(tools, decider, gate, out_dir, log)
     acknowledged, baseline_next, outcome, unchecked = None, False, "finished", 0
-    seen, baseline, streak = [], 0, 0
+    rule = AlarmRule(warmup, confirm)
     log(f"agent watching {tools.pr.n_total} layers (camera monitoring {'on' if monitor else 'off'}"
         f"{', dent test at the planned pause' if dent_test else ''}); log -> {r.dir}")
     try:
@@ -212,13 +224,7 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
                     log(f"layer {obs.layer}: the camera could not check this layer ({obs.type_prob.get('error')}); "
                         f"{unchecked} unchecked so far, printing goes on")
                 continue
-            if len(seen) < warmup:                              # learn this print's baseline first
-                seen.append(obs.flagged_px if obs.label != "ok" else 0)
-                baseline = float(np.median(seen))
-                continue
-            failing = obs.label != "ok" and obs.flagged_px > baseline
-            streak = streak + 1 if failing else 0
-            if streak < confirm:
+            if not rule.update(obs.label, obs.flagged_px):     # warmup baseline + `confirm` in a row
                 continue
             if baseline_next:                                    # the change accepted at the dent test
                 acknowledged, baseline_next = obs.flagged_px, False

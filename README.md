@@ -38,6 +38,24 @@ trimesh (geometry and images); **paho-mqtt** (talks to the P1S); **mujoco** (sim
 torch, timm, transformers (optional trained models); gradio (web UI); anthropic (LLM spec author);
 pytest (tests). Bambu Studio and CalculiX are separate programs, installed like any other app.
 
+### Trained models
+
+The camera checks need two trained models that are not in git (~100 MB each). Download them instead of
+retraining (~30 min each):
+
+```bash
+gh release download models-v3 --pattern '*.tar.gz' --dir runs
+for f in runs/*.tar.gz; do tar xzf "$f" -C runs; done
+ln -sfn dent_v2 runs/dent && ln -sfn p1s_layer_v3 runs/p1s_layer
+```
+
+| Model | Default path | What it does | Retrain |
+|---|---|---|---|
+| `dent_v2` | `runs/dent` | dent / poke / none from the before and after frames of a pause | [docs/p1s-dent-data.md](docs/p1s-dent-data.md) |
+| `p1s_layer_v3` | `runs/p1s_layer` | every-layer failure check (collapse, warp, shift, under-extrusion, detach) | [docs/p1s-failure-detection.md](docs/p1s-failure-detection.md) |
+
+Both are scored only on simulated frames so far. Each folder holds the scores (`val.json`, `eval_*.json`).
+
 ## Quick start (no printer needed)
 
 **1. Get the code and install**
@@ -188,8 +206,13 @@ Only after `watch` runs on clean prints show no false alarms.
 
 ```bash
 python -m recovery.cli agent --part parts/mypart.yaml --gcode parts/mypart.gcode.3mf \
-    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz
+    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz --monitor on
 ```
+
+On the real printer the every-layer check is **opt-in** (`--monitor on`; the default is off there and on
+with `--sim`). It has not yet been scored on real frames, and each alarm pauses a real print: run `watch`
+on a few clean prints first to measure the real false-alarm rate. Likewise, the dent test's camera
+measurement is opt-in on the real printer (`--measure sideview`); by default the person types the change.
 
 After every layer it compares the camera frame with the previous one and with the plan. If the print
 starts to look different from the plan it pauses, says what it sees and what it recommends

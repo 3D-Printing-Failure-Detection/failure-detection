@@ -321,7 +321,7 @@ def test_correction_gcode_and_preview_are_saved_before_approval(tmp_path):
             seen.extend(os.path.exists(x) for x in paths)
             return super().choose(recommendation, options, summary)
     p, nom, pr, res = _dent_test("dent 0 -10 3", tmp_path, approver=Inspecting())
-    assert seen == [True, True]
+    assert seen == [True] * 5                          # before, after, change frames + G-code and preview
     fix = res["events"][0]["situation"]["correction"]
     parsed = gcode_to_layers(open(fix["gcode"]).read())
     assert len(parsed) == 30 and iou(parsed[0].region, pr.plan[30].region) > 0.95
@@ -361,3 +361,41 @@ def test_if_someone_resumes_on_the_printer_the_agent_sends_nothing(tmp_path):
     ev = res["events"][0]
     assert ev["options"][0] == "continue" and ev["action"] == "continue" and sent == []
     assert res["outcome"] == "finished"
+
+
+def test_camera_checks_are_opt_in_on_the_real_printer(tmp_path):
+    """Real printer: typed measurement and no every-layer watching unless asked; --sim uses both."""
+    import argparse
+    from recovery.agent.cli import add_arguments, resolve_modes
+    ckpt = tmp_path / "layer"
+    ckpt.mkdir()
+    (ckpt / "model.pt").write_bytes(b"")
+    p = argparse.ArgumentParser()
+    add_arguments(p)
+    base = ["--part", "parts/mug.yaml", "--layer-model", str(ckpt)]
+    a = p.parse_args(base)
+    assert resolve_modes(a) is False and a.measure == "manual"
+    a = p.parse_args(base + ["--sim"])
+    assert resolve_modes(a) is True and a.measure == "sideview"
+    a = p.parse_args(base + ["--monitor", "on", "--measure", "sideview"])
+    assert resolve_modes(a) is True and a.measure == "sideview"
+    a = p.parse_args(["--part", "parts/mug.yaml", "--sim", "--layer-model", str(tmp_path / "missing")])
+    assert resolve_modes(a) is False
+
+
+def test_dent_depth_is_typed_and_evidence_is_shown():
+    from recovery.agent.loop import _summary
+    from recovery.agent.measure import ask_depth, describe_evidence
+    answers, shown = iter(["", "deep", "-1", "2.5"]), []
+    assert ask_depth("front", 0, -10, ask=lambda _: next(answers), show=shown.append) == 2.5 and len(shown) == 3
+    missed = describe_evidence(dict(kind="none", changed_px=3, min_px=5, p_dent=0.5, p_poke=0.5, wall=None, p_wall=None))
+    assert "check the images" in missed
+    sure = describe_evidence(dict(kind="poke", changed_px=400, min_px=5, p_dent=0.1, p_poke=0.9, wall="front", p_wall=0.97))
+    assert "poke 90%" in sure and "check the images" not in sure
+    situation = dict(observation=dict(label="dent test", layer=29, z=6.0, described="camera (side view): none",
+                                      evidence=dict(frames=dict(before="/r/b.png", after="/r/a.png", change="/r/c.png"),
+                                                    detector=missed)),
+                     cost=dict(filament_used_mm=1, filament_total_mm=2, fraction_done=0.5),
+                     function_if_continue=dict(features=[]))
+    text = _summary(situation, dict(source="rules", action="resume", reason="x"))
+    assert "/r/b.png" in text and "/r/c.png" in text and "check the images" in text
