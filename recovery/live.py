@@ -168,14 +168,15 @@ class LiveView:
 
 def run_watch(part_path, gcode_path, ip, serial, code, calib_path=None, layer_model="runs/p1s_layer",
               out="results/watch", plate=1, ports=None, view_port=None, view_host="127.0.0.1", warmup=3, confirm=3,
-              log=print):
+              log=print, stop_after=None):
     """Watch a print started from Bambu Studio or the printer screen; never sends anything. Every layer:
     grab a fresh frame from the printer camera and, if the failure detector is there, compare it with the
     previous frame and the plan (recovery/models/p1s_layer.py). The alarm rule is the agent's
     (recovery/alarm.py): the first `warmup` layers set a baseline, then `confirm` failing layers in a row
     raise an alarm. Saves under <out>/<timestamp>/: frames/ (raw), marked/ (outline + what was flagged),
     layers.jsonl (one line per layer) and meta.json. view_port: also serve a live page on that port.
-    ports: {"mqtt": ..., "camera": ...} for a printer on non-standard ports (the simulated printer)."""
+    ports: {"mqtt": ..., "camera": ...} for a printer on non-standard ports (the simulated printer).
+    stop_after: stop watching once that many layers are done (rehearsals that watch part of a print)."""
     from . import p1s_view as V
     from .alarm import AlarmRule
     part = _load_watch_part(part_path, gcode_path, plate, log)
@@ -219,7 +220,7 @@ def run_watch(part_path, gcode_path, ip, serial, code, calib_path=None, layer_mo
     flagged, unchecked, first_alarm, recent, prev = 0, 0, None, [], None
     try:
         with open(run / "layers.jsonl", "a") as f:
-            while printer.n_done < printer.n_total:
+            while printer.n_done < min(printer.n_total, stop_after or printer.n_total):
                 printer.print_layer()
                 i = printer.n_done - 1
                 rec = dict(layer=i, z=nom[i].z, t=time.time(), printer_layer_num=printer.link.get("layer_num"),
