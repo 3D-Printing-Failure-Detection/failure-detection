@@ -270,37 +270,65 @@ def save_points(points, path, markers=None):
     Path(path).write_text(json.dumps(d, indent=1))
 
 
+def _read_json(path):
+    try:
+        return json.loads(Path(path).read_text())
+    except FileNotFoundError:
+        raise SystemExit(f"no {path}: save it from the click page first")
+    except (UnicodeDecodeError, ValueError):
+        raise SystemExit(f"{path} is not valid JSON (an editor such as TextEdit adds formatting and curly quotes): "
+                         f"use the click page's Save button, or in Terminal: pbpaste > {path}")
+
+
 def load_points(path):
-    d = json.loads(Path(path).read_text())
+    d = _read_json(path)
+    missing = [e for e in EDGES if e not in d]
+    if missing:
+        raise SystemExit(f"{path} has no clicks for: {', '.join(missing)} (use the calibrate-bed click page)")
     return {e: d[e] for e in EDGES}
 
 
 def load_markers(path):
-    return json.loads(Path(path).read_text()).get("markers", [])
+    return _read_json(path).get("markers", [])
 
 
-def pick_points_html(image_name, out_path, intro=None):
-    """Write a dependency-free page: click >=4 points along each bed edge (or markers), copy the JSON."""
+def pick_points_html(image_name, out_path, intro=None, markers_only=False):
+    """Write a dependency-free page: click >=4 points along each bed edge (or markers), then save the JSON.
+    markers_only: a page for board corners at known bed X,Y only (calibrate-board), saving markers.json."""
+    save_name = "markers.json" if markers_only else "points.json"
     intro = intro or ("Choose an edge, then click at least <b>4 points along that plate edge</b>, spread from end to "
                       "end (front = edge nearest the door/you, left/right as you face the printer, back = far edge). "
-                      "Put one click on each corner too. Then <b>Copy JSON</b> and save it as <code>points.json</code>.")
-    Path(out_path).write_text(f"""<!doctype html><meta charset=utf-8><title>Click the bed edges</title>
+                      "Put one click on each corner too. Then <b>Save points.json</b>.")
+    title = "Click the board corners" if markers_only else "Click the bed edges"
+    options = ("<option value=marker>marker (known X,Y mm)" if markers_only else
+               "<option>front<option>right<option>back<option>left<option value=marker>marker (known X,Y mm)")
+    Path(out_path).write_text(f"""<!doctype html><meta charset=utf-8><title>{title}</title>
 <style>body{{font:14px sans-serif;margin:12px}}canvas{{max-width:100%;border:1px solid #888;cursor:crosshair}}
-button,select{{font-size:14px;margin-right:8px}}textarea{{width:100%;height:9em}}</style>
+button,select{{font-size:14px;margin-right:8px}}textarea{{width:100%;height:9em}}#m{{font-weight:bold;margin-left:8px}}</style>
 <p>{intro}</p>
-<select id=e><option>front<option>right<option>back<option>left<option value=marker>marker (known X,Y mm)</select>
-<button id=u>Undo</button><button id=c>Copy JSON</button><span id=n></span><br>
+<select id=e{' hidden' if markers_only else ''}>{options}</select>
+<button id=u>Undo</button><button id=s>Save {save_name}</button><button id=c>Copy JSON</button><span id=n></span><span id=m></span><br>
 <canvas id=cv></canvas><textarea id=o readonly></textarea>
 <script>
+const ONLY_MARKERS={'true' if markers_only else 'false'};
 const img=new Image();img.src={json.dumps(image_name)};const cv=document.getElementById('cv'),x=cv.getContext('2d');
 const P={{front:[],right:[],back:[],left:[],markers:[]}},col={{front:'red',right:'lime',back:'cyan',left:'orange',markers:'magenta'}};
+const say=t=>{{document.getElementById('m').textContent=t}};
+const out=()=>JSON.stringify(ONLY_MARKERS?{{markers:P.markers}}:P);
 img.onload=()=>{{cv.width=img.width;cv.height=img.height;draw()}};
-function draw(){{x.drawImage(img,0,0);for(const k in P){{x.fillStyle=col[k];P[k].forEach(p=>{{p=k=='markers'?p.px:p;x.beginPath();x.arc(p[0],p[1],4,0,7);x.fill()}})}}
-document.getElementById('n').textContent=' '+Object.entries(P).map(([k,v])=>k+':'+v.length).join('  ');
-document.getElementById('o').value=JSON.stringify(P)}}
-cv.onclick=ev=>{{const r=cv.getBoundingClientRect(),s=cv.width/r.width;const pt=[(ev.clientX-r.left)*s,(ev.clientY-r.top)*s],k=document.getElementById('e').value;if(k=='marker'){{const t=prompt('Bed X,Y in mm of this point (e.g. 128,128)');if(!t)return;const m=t.split(',').map(Number);if(m.length!=2||m.some(isNaN))return;P.markers.push({{px:pt,mm:m}})}}else P[k].push(pt);draw()}};
-document.getElementById('u').onclick=()=>{{const k=document.getElementById('e').value;P[k=='marker'?'markers':k].pop();draw()}};
-document.getElementById('c').onclick=()=>navigator.clipboard.writeText(document.getElementById('o').value);
+img.onerror=()=>say('could not load '+img.src+': keep this page in the same folder as the frame');
+function draw(){{x.drawImage(img,0,0);for(const k in P){{x.fillStyle=col[k];P[k].forEach(p=>{{const q=k=='markers'?p.px:p;x.beginPath();x.arc(q[0],q[1],4,0,7);x.fill();
+if(k=='markers'){{x.font='bold 16px sans-serif';x.lineWidth=3;x.strokeStyle='black';const t=p.mm.join(',');x.strokeText(t,q[0]+7,q[1]-7);x.fillText(t,q[0]+7,q[1]-7)}}}})}}
+document.getElementById('n').textContent=' '+Object.entries(P).filter(([k,v])=>!ONLY_MARKERS||k=='markers').map(([k,v])=>k+': '+v.length).join('  ');
+document.getElementById('o').value=out()}}
+cv.onclick=ev=>{{const r=cv.getBoundingClientRect(),s=cv.width/r.width;const pt=[(ev.clientX-r.left)*s,(ev.clientY-r.top)*s],k=document.getElementById('e').value;
+if(k=='marker'){{const t=prompt('Bed X,Y in mm of this corner (e.g. 30,20)');if(t===null)return;
+const m=(t.match(/-?\\d+(?:\\.\\d+)?/g)||[]).map(Number);if(m.length!=2){{say('not added: type two numbers, X then Y in mm, e.g. 30,20');return}}
+P.markers.push({{px:pt,mm:m}});say('added X='+m[0]+', Y='+m[1])}}else{{P[k].push(pt);say('')}}draw()}};
+document.getElementById('u').onclick=()=>{{const k=document.getElementById('e').value;P[k=='marker'?'markers':k].pop();say('');draw()}};
+document.getElementById('s').onclick=()=>{{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([out()],{{type:'application/json'}}));
+a.download={json.dumps(save_name)};a.click();say('saved {save_name} (usually to Downloads)')}};
+document.getElementById('c').onclick=()=>navigator.clipboard.writeText(out()).then(()=>say('copied'),()=>say('copy failed: use Save'));
 </script>""")
 
 
@@ -329,7 +357,7 @@ def main(a):
         html = work.with_name(work.name + "_click.html")
         pick_points_html(png.name, html)
         print(f"frame saved: {png}  ({w}x{h})\nopen {html} in a browser, click 8 points along each bed edge "
-              f"(plus the 4 corners), Copy JSON, save as points.json, then rerun with --points points.json "
+              f"(plus the 4 corners), press Save points.json, then rerun with --points points.json "
               f"--calib-z <bed Z shown on the printer screen when this frame was grabbed>")
         return
     points = load_points(a.points)

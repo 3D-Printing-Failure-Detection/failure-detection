@@ -178,7 +178,7 @@ No checkerboard? `python -m recovery.cli calibrate-bed` fits the camera from the
 # 1. grab a frame and write calib_click.html
 python -m recovery.cli calibrate-bed --ip 192.168.1.50 --code 12345678 --out calib.npz
 # 2. open calib_click.html, click 8+ points along each plate edge, and 5-9 "markers" (tape dots at
-#    measured X,Y mm from the front-left corner), Copy JSON -> points.json
+#    measured X,Y mm from the front-left corner), Save points.json
 # 3. fit; it prints residuals and refuses to save a calibration it cannot vouch for
 python -m recovery.cli calibrate-bed --ip 192.168.1.50 --code 12345678 --points points.json --calib-z 10 --out calib.npz
 ```

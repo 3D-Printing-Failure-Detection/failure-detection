@@ -14,6 +14,8 @@ coordinates by >= 2 board corners clicked at known bed X,Y ("markers", same clic
 """
 import itertools
 import json
+import re
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -443,40 +445,125 @@ def calibrate_from_board(tilted, flat, markers, square_mm=10.0, board_thickness_
 
 
 # ---------------- CLI ----------------
-def capture(ip, code, folder):
-    """Interactive capture of tilted and flat frames into `folder` (+ shots.json and a click page)."""
+def parse_z(text):
+    """Bed Z typed at the capture prompt: '30', 'Z=30', '30 mm', '30,5' -> a number in mm; None if the text is
+    not a single bed height the board can be at (above 0, within the P1S's 256 mm)."""
+    nums = re.findall(r"-?\d+(?:\.\d+)?", text.replace(",", "."))
+    if len(nums) != 1:
+        return None
+    z = float(nums[0])
+    return z if 0 < z <= 256 else None
+
+
+MARKER_HELP = ("Click the <b>points where four squares meet</b> (not the outer corners of the board): 3 of them, far "
+               "apart and not in a line, in the front-left half of the view where the squares look biggest. For each, "
+               "type its bed X,Y in mm, e.g. <code>30,20</code>: X from the plate's left edge, Y from its front edge. "
+               "Measure one with a ruler; its neighbours are 10 mm further per square (X to the right, Y toward the "
+               "back). Then press <b>Save markers.json</b> and move the file into <code>{folder}</code>.")
+
+
+def _save_shots(folder, shots):
+    tmp = folder / "shots.json.tmp"
+    tmp.write_text(json.dumps(shots, indent=1))
+    tmp.replace(folder / "shots.json")
+
+
+def capture(ip, code, folder, camera=None, ask=input):
+    """Interactive capture of tilted and flat frames into `folder` (+ shots.json and a click page).
+    shots.json is updated after every shot, so a mistake or Ctrl-C loses nothing: rerunning with the same
+    folder continues where it stopped."""
     from .calib_offline import pick_points_html
-    from .printer.bambu import BambuCamera
     folder = Path(folder)
     folder.mkdir(parents=True, exist_ok=True)
-    cam = BambuCamera(ip, code)
     shots = dict(tilted=[], flat=[])
+    if (folder / "shots.json").exists():
+        shots.update(json.loads((folder / "shots.json").read_text()))
+        print(f"continuing in {folder}: {len(shots['tilted'])} tilted + {len(shots['flat'])} flat shots already "
+              "saved (use another --dir to start over)")
+    if camera is None:
+        from .printer.bambu import BambuCamera
+        camera = BambuCamera(ip, code)
+
+    def snap(name):
+        """Save a frame that arrived after Enter was pressed (the camera sends about 1 frame/s, so an older one
+        could still show the board or bed before it moved)."""
+        while True:
+            try:
+                img = camera.grab(timeout=15.0, newer_than=time.time())
+            except TimeoutError:
+                if ask("   no new camera frame (LAN mode on? access code right?). Enter = try again, "
+                       "'n' + Enter = skip this shot: ").strip().lower() == "n":
+                    return False
+                continue
+            cv2.imwrite(str(folder / name), img)
+            return True
+
+    def marker_page():
+        if shots["flat"]:
+            pick_points_html(shots["flat"][0]["file"], folder / "markers_click.html",
+                             intro=MARKER_HELP.format(folder=folder), markers_only=True)
+
     try:
         print("1) Hold the board at a different angle/place for each shot (8-15 shots, tilted up to ~45 deg, "
               "filling different parts of the view). Enter = capture, 'n' + Enter = done.")
-        while input(f"   tilted shot {len(shots['tilted']) + 1}: ").strip().lower() != "n":
+        while ask(f"   tilted shot {len(shots['tilted']) + 1}: ").strip().lower() != "n":
             name = f"tilt_{len(shots['tilted']):02d}.png"
-            cv2.imwrite(str(folder / name), cam.grab())
-            shots["tilted"].append(name)
-        print("2) Lay the board FLAT on the plate. Home first, then move the bed with the printer screen (never home or "
-              "go to Z=0 with the board on the plate). Take two heights, e.g. Z=10 and Z=30.")
+            if snap(name):
+                shots["tilted"].append(name)
+                _save_shots(folder, shots)
+        print("2) Lay the board FLAT on the plate. Home first with the plate empty, then move the bed with the printer "
+              "(never home or go to Z=0 with the board on the plate). Take two heights, e.g. Z=10 and Z=30.")
         while True:
-            z = input(f"   bed Z shown on the screen for flat shot {len(shots['flat']) + 1} (blank = done): ").strip()
-            if not z:
+            text = ask(f"   bed Z in mm for flat shot {len(shots['flat']) + 1} (blank = done): ").strip()
+            if not text:
                 break
+            z = parse_z(text)
+            if z is None:
+                print("   not saved: type the bed Z as one number in mm, e.g. 30")
+                continue
+            if any(abs(z - s["z"]) < 1.0 for s in shots["flat"]):
+                print(f"   not saved: there is already a flat shot at Z={z:g}; move the bed to another height first")
+                continue
             name = f"flat_{len(shots['flat']):02d}.png"
-            cv2.imwrite(str(folder / name), cam.grab())
-            shots["flat"].append(dict(file=name, z=float(z)))
+            if snap(name):
+                shots["flat"].append(dict(file=name, z=z))
+                _save_shots(folder, shots)
+                marker_page()
+                print(f"   saved {name} at Z={z:g}")
+    except (KeyboardInterrupt, EOFError):
+        print(f"\nstopped. Shots so far are kept in {folder}; run the same command again to continue.")
     finally:
-        cam.close()
-    (folder / "shots.json").write_text(json.dumps(shots, indent=1))
-    if shots["flat"]:
-        pick_points_html(shots["flat"][0]["file"], folder / "markers_click.html",
-                         intro="Choose <b>marker</b>, click 2-4 board corners far apart near the middle of the view and "
-                               "type each one's bed X,Y in mm (front-left plate corner = 0,0, X to the right, Y toward "
-                               "the back). Then <b>Copy JSON</b> and save it as <code>markers.json</code>.")
-    print(f"saved {len(shots['tilted'])} tilted + {len(shots['flat'])} flat frames in {folder}; open "
-          f"{folder / 'markers_click.html'}, save markers.json there, then run calibrate-board --dir {folder}")
+        camera.close()
+    _save_shots(folder, shots)
+    marker_page()
+    n_flat = len({s["z"] for s in shots["flat"]})
+    if n_flat < 2:
+        print(f"note: {n_flat} flat height(s) so far. Take 2 (e.g. Z=10 and Z=30): the Z check needs both, and "
+              "without 3+ usable tilted shots the fit does too. Rerun the same command to add them.")
+    print(f"saved {len(shots['tilted'])} tilted + {len(shots['flat'])} flat frames in {folder}"
+          + (f"; open {folder / 'markers_click.html'}, save markers.json into {folder}, then run "
+             f"calibrate-board --dir {folder} --board-thickness <mm>" if shots["flat"] else ""))
+
+
+def _read_markers(path, folder):
+    """markers.json from the click page, with an error that says what to do instead of a traceback."""
+    if not path.exists():
+        found = sorted(p for p in list(folder.glob("markers*")) + list((Path.home() / "Downloads").glob("markers*.json"))
+                       if p.name != "markers_click.html")
+        hint = ("; found " + ", ".join(str(p) for p in found) + ": move/rename the right one to " + str(path)
+                if found else "")
+        raise SystemExit(f"no {path}: open {folder / 'markers_click.html'}, click 3 board corners with their bed X,Y, "
+                         f"press 'Save markers.json' and move the file into {folder}{hint}")
+    try:
+        data = json.loads(path.read_text())
+    except (UnicodeDecodeError, ValueError):
+        raise SystemExit(f"{path} is not valid JSON (an editor such as TextEdit adds formatting and curly quotes): "
+                         "use the click page's 'Save markers.json' button, or in Terminal: pbpaste > " + str(path))
+    markers = data.get("markers", []) if isinstance(data, dict) else []
+    if len(markers) < 2:
+        raise SystemExit(f"{path} has {len(markers)} marker(s): on the click page choose 'marker' and click at least "
+                         "3 board corners, typing each one's bed X,Y")
+    return markers
 
 
 def main(a):
@@ -494,12 +581,11 @@ def main(a):
         return img
     tilted = [read(n) for n in shots.get("tilted", [])]
     flat = [(read(s["file"]), float(s["z"])) for s in shots["flat"]]
-    markers_path = Path(a.markers) if a.markers else folder / "markers.json"
-    if not markers_path.exists():
-        raise SystemExit(f"no {markers_path}: open {folder / 'markers_click.html'}, click 2-4 board corners as markers "
-                         "with their bed X,Y, Copy JSON and save it there")
-    markers = json.loads(markers_path.read_text()).get("markers", [])
-    cam, rep = calibrate_from_board(tilted, flat, markers, a.square_mm, a.board_thickness, a.camera_height)
+    markers = _read_markers(Path(a.markers) if a.markers else folder / "markers.json", folder)
+    try:
+        cam, rep = calibrate_from_board(tilted, flat, markers, a.square_mm, a.board_thickness, a.camera_height)
+    except (ValueError, RuntimeError) as e:
+        raise SystemExit(f"calibration failed: {e}")
     print(rep.text())
     from .calib_offline import draw_overlay
     out = Path(a.out)
