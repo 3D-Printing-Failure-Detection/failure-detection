@@ -223,6 +223,7 @@ class BambuPrinter:
     notify_pause = False             # dent tests: return "paused" when someone else pauses the printer
     _paused_by_us = False
     _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
+    frame_extra_drop_mm = 0.0        # extra bed drop while frames are grabbed (timelapse park Z-hop); measure it
 
     def __init__(self, ip, serial, code, planned: List[Layer], layer_h,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
@@ -318,6 +319,19 @@ class BambuPrinter:
         There is no top-down view: everything that looks at the print uses this frame."""
         self.last_frame = self.cam.grab(timeout=timeout, newer_than=self._layer_done_t)
         return self.last_frame
+
+    def frame_bed_drop_mm(self) -> float:
+        """How far the bed sits below the last finished layer's own Z in the frame snapshot() returns. The bed
+        drops as the print grows and the camera is fixed: a layer counts as done once the printer reports the
+        NEXT layer, so the bed is already at the next layer's Z, plus any Z-hop while the head parks
+        (frame_extra_drop_mm). The finished layer's top is this far below the nozzle plane, i.e. the `drop_mm`
+        of p1s_view.plate_z_mm / P1SScene. After the last layer the end G-code moves the bed, so that final
+        frame is not reliable."""
+        if self._layer <= 0:
+            return self.frame_extra_drop_mm
+        done = self.plan[self._layer - 1]
+        nxt = self.plan[self._layer].z if self._layer < len(self.plan) else done.z
+        return float(nxt - done.z + self.frame_extra_drop_mm)
 
     def expected_layer(self) -> Layer:
         return self.plan[self._layer - 1]

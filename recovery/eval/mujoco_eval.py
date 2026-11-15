@@ -127,16 +127,17 @@ def run_case(job):
                 functional, outcome = verdict.ok, "finished"
             else:
                 if method == 'neural_camera_agent':
-                    from ..loop.local_agent import AgentContourPolicy, LocalSupervisor
+                    from ..loop.local_agent import AgentContourPolicy, make_supervisor
                     policy = AgentContourPolicy(part.spec, nominal, part.layer_h,
                         shrink_trend=options.get('contour_trend_shrinkage', False),
-                        supervisor=LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
-                                                   options.get('supervisor_timeout', 120)),
+                        supervisor=make_supervisor(options.get('supervisor_backend', 'claude'), options['supervisor_endpoint'],
+                                                   options['supervisor_model'], options.get('supervisor_timeout', 120),
+                                                   options.get('claude_model', 'claude-sonnet-5-5')),
                         review_interval_layers=options.get('supervisor_review_interval', 8))
                 elif method in ("neural", "neural_agent", 'neural_risk', 'neural_risk_agent'):
                     from ..loop.neural import NeuralPolicy
                     from ..loop.risk_neural import RiskAwareNeuralPolicy
-                    from ..loop.local_agent import AgentNeuralPolicy, AgentRiskAwareNeuralPolicy, LocalSupervisor
+                    from ..loop.local_agent import AgentNeuralPolicy, AgentRiskAwareNeuralPolicy, make_supervisor
                     policy_options = dict(checkpoint=options['neural_checkpoint'],
                                           shrink_trend=options.get('contour_trend_shrinkage', False),
                                           calibrate_measurements=options.get('neural_calibrate_measurements', False),
@@ -146,8 +147,9 @@ def run_case(job):
                         policy_options['joint_forecast'] = options.get('neural_joint_forecast', False)
                         policy_options['hole_envelope'] = options.get('neural_hole_envelope', False)
                     if method.endswith('_agent'):
-                        policy_options['supervisor'] = LocalSupervisor(options['supervisor_endpoint'], options['supervisor_model'],
-                                                                      options.get('supervisor_timeout', 120))
+                        policy_options['supervisor'] = make_supervisor(options.get('supervisor_backend', 'claude'),
+                            options['supervisor_endpoint'], options['supervisor_model'],
+                            options.get('supervisor_timeout', 120), options.get('claude_model', 'claude-sonnet-5-5'))
                         policy_options['review_interval_layers'] = options.get('supervisor_review_interval', 8)
                     policies = {'neural': NeuralPolicy, 'neural_agent': AgentNeuralPolicy,
                                 'neural_risk': RiskAwareNeuralPolicy, 'neural_risk_agent': AgentRiskAwareNeuralPolicy}
@@ -357,7 +359,10 @@ def main(argv=None):
     parser.add_argument('--boundary-observed-wall-guard', action='store_true',
                         help='retain a learned-camera hard-thin warning on an already printed container wall when selecting any plan')
     parser.add_argument('--supervisor-endpoint', default='http://127.0.0.1:8089')
-    parser.add_argument('--supervisor-model', default='local-qwen3')
+    parser.add_argument('--supervisor-model', default='local-qwen3', help='local (Qwen) model name')
+    parser.add_argument('--supervisor-backend', choices=['claude', 'local'], default='claude',
+                        help='claude = Claude with the local Qwen server as backup (default); local = Qwen only')
+    parser.add_argument('--claude-model', default='claude-sonnet-5-5')
     parser.add_argument('--supervisor-timeout', type=float, default=120.)
     parser.add_argument('--supervisor-review-interval', type=int, default=8,
                         help='maximum layer interval between reviews of an unchanged, passing continuation')
@@ -418,7 +423,8 @@ def main(argv=None):
                    neural_hole_envelope=args.neural_hole_envelope,
                    contour_trend_shrinkage=args.contour_trend_shrinkage,
                    supervisor_endpoint=args.supervisor_endpoint, supervisor_model=args.supervisor_model,
-                   supervisor_timeout=args.supervisor_timeout,
+                   supervisor_timeout=args.supervisor_timeout, supervisor_backend=args.supervisor_backend,
+                   claude_model=args.claude_model,
                    supervisor_review_interval=args.supervisor_review_interval)
     output = Path(args.out)
     output.mkdir(parents=True, exist_ok=True)

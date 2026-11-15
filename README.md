@@ -159,6 +159,34 @@ to lay it **flat on the bed** with its first inner corner at the bed position yo
 `--board-origin` (default X=100 Y=100 mm). Replace the IP and access code with yours. This writes
 `calib.npz`; keep it, it only needs redoing if the camera moves.
 
+**Checks.** Add `--board-thickness` if the board is on card or foam (measure it with calipers). The command
+prints the camera's fitted position and angle and refuses to save (unless `--force`) if its height above the
+print plane is more than 1 mm off the measured 22.784 mm (`P1S_CAMERA_ABOVE_PRINT_PLANE_MM` in
+`recovery/config.py`); that only catches gross mistakes, since 1 mm of height is about 8 mm on the bed.
+`watch` and `agent` refuse a calibration file without `calib_z_mm` (`P1SCamera.load`). When a frame is grabbed
+the bed is already one layer lower than the finished layer, plus any Z-hop while the head parks:
+`BambuPrinter.frame_bed_drop_mm()` gives that drop (set `frame_extra_drop_mm` once the park drop is measured).
+
+Have a large board (e.g. one covering the plate)? `python -m recovery.cli calibrate-board` uses raw frames of
+it held at different angles plus flat frames at two bed heights, and falls back to the flat frames alone. It
+checks that the camera height changes by the bed's Z change. Guide: [docs/calibration-board.md](docs/calibration-board.md).
+
+No checkerboard? `python -m recovery.cli calibrate-bed` fits the camera from the plate itself
+(about 0.5 mm in simulation; unproven on a real printer, so the board is still the reference):
+
+```bash
+# 1. grab a frame and write calib_click.html
+python -m recovery.cli calibrate-bed --ip 192.168.1.50 --code 12345678 --out calib.npz
+# 2. open calib_click.html, click 8+ points along each plate edge, and 5-9 "markers" (tape dots at
+#    measured X,Y mm from the front-left corner), Copy JSON -> points.json
+# 3. fit; it prints residuals and refuses to save a calibration it cannot vouch for
+python -m recovery.cli calibrate-bed --ip 192.168.1.50 --code 12345678 --points points.json --calib-z 10 --out calib.npz
+```
+
+Then check `calib_overlay.png` (the green outline must sit on the plate edges) and run `watch` on a clean
+print. If the camera sees the plate at a grazing angle, markers are what make it work. Full guide:
+[docs/calibration-without-checkerboard.md](docs/calibration-without-checkerboard.md).
+
 ### 5. Stress-test before you print
 
 ```bash
@@ -415,7 +443,9 @@ possible next step, not wired in.
 | `stress --part P` | FE stress test, optionally with an injected failure |
 | `fea-verify` | check the stress solver against closed-form answers |
 | `slice file.stl` | cross-section an STL |
-| `calibrate --ip ... --code ...` | calibrate the P1S camera |
+| `calibrate --ip ... --code ... --calib-z 10` | calibrate the P1S camera with a small checkerboard (bed at Z=10 mm for the flat shot) |
+| `calibrate-board --ip ... --code ... --dir calib_shots` | calibrate with a large checkerboard: tilted frames + flat frames at two bed Z |
+| `calibrate-bed --ip ... --code ... --points points.json --calib-z 10` | calibrate without a checkerboard, from clicked bed edges |
 | `watch --gcode G --ip ... --serial ... --code ...` | check every layer of a real print with the camera; sends nothing |
 | `agent --part P --gcode G --ip ... --serial ... --code ...` | check every layer; pause, recommend and act with your approval |
 | `app` | web interface |

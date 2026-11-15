@@ -2,9 +2,10 @@
 layers, and convert pixel masks back to mm contours. Also real-camera calibration.
 
 Part of the overhead research rig (printer/mujoco.py, docs/mujoco-report.md), kept for the report's results
-and tests. The real P1S has no top-down view: the real-printer path uses recovery/p1s_view.py."""
+and tests. The real P1S has no top-down view: the real-printer path uses recovery/p1s_view.py. BedCamera is
+still the calibration format: calibrate, calibrate-board and calibrate-bed save it, P1SCamera.load reads it."""
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 import cv2
 import numpy as np
@@ -114,20 +115,73 @@ def mask_to_region(mask: np.ndarray, cam=CAM, min_area=4.0, simplify=0.12):
 class BedCamera:
     """Calibrated real camera (e.g. the P1S chamber camera, which looks at the bed at an angle).
     K, dist: intrinsics. rvec, tvec: pose of the BED frame (mm, origin front-left, z up) in the
-    camera frame. top_down() resamples a frame into the same top-down view the simulator
-    renders, for the plane at the current print height."""
+    camera frame, with the bed where it was in the calibration frame. top_down() resamples a
+    frame into the same top-down view the simulator renders, for a plane at height z.
+
+    calib_z_mm: printer Z (how far the bed sat below the nozzle) when the calibration frame was
+    taken. The P1S bed moves DOWN one layer per layer while the camera stays fixed, so a layer's
+    top is at the nozzle plane, calib_z_mm above the calibrated plane, while the bed is still at
+    that layer's Z, and lower by however much further the bed has dropped when the frame is
+    grabbed (see layer_plane_z). None means a fixed bed (the head rises with each layer, as in
+    the simulator): the layer top is then at the layer's own z."""
     K: np.ndarray
     dist: np.ndarray
     rvec: np.ndarray
     tvec: np.ndarray
+    calib_z_mm: Optional[float] = None
 
     def save(self, path):
-        np.savez(path, K=self.K, dist=self.dist, rvec=self.rvec, tvec=self.tvec)
+        extra = {} if self.calib_z_mm is None else dict(calib_z_mm=float(self.calib_z_mm))
+        np.savez(path, K=self.K, dist=self.dist, rvec=self.rvec, tvec=self.tvec, **extra)
 
     @classmethod
     def load(cls, path):
         d = np.load(path)
-        return cls(d["K"], d["dist"], d["rvec"], d["tvec"])
+        z = float(d["calib_z_mm"]) if "calib_z_mm" in d.files else None
+        return cls(d["K"], d["dist"], d["rvec"], d["tvec"], z)
+
+    def layer_plane_z(self, layer_z: float, bed_z: Optional[float] = None) -> float:
+        """Height above the calibrated bed plane of the top of a layer printed at `layer_z`, in a frame taken
+        with the bed at printer Z `bed_z` (default: still at layer_z, i.e. the top is at the nozzle plane).
+        The bed is usually already lower when the frame is grabbed (next layer started, or a Z-hop while the
+        head parks), which puts the top below the nozzle plane by bed_z - layer_z."""
+        if self.calib_z_mm is None:
+            return float(layer_z)
+        return float(self.calib_z_mm) - (float(layer_z if bed_z is None else bed_z) - float(layer_z))
+
+    def pose(self) -> dict:
+        """Where the camera is, in calibrated bed coordinates: centre (mm), height above the
+        calibrated plane and above the print (nozzle) plane, and how steeply it looks down."""
+        R, _ = cv2.Rodrigues(np.asarray(self.rvec, float))
+        c = -R.T @ np.asarray(self.tvec, float).reshape(3)
+        axis = R.T @ np.array([0.0, 0.0, 1.0])                  # optical axis, bed frame
+        out = dict(centre_mm=c.round(2).tolist(), height_mm=float(c[2]),
+                   tilt_deg=float(np.degrees(np.arcsin(-axis[2]))),
+                   heading_deg=float(np.degrees(np.arctan2(axis[1], axis[0]))))
+        if self.calib_z_mm is not None:
+            out["height_above_print_plane_mm"] = float(c[2] - self.calib_z_mm)
+        return out
+
+    def pose_text(self) -> str:
+        p = self.pose()
+        s = (f"camera at X={p['centre_mm'][0]:.1f} Y={p['centre_mm'][1]:.1f} mm, {p['height_mm']:.2f} mm above the "
+             f"calibrated plate, looking {p['tilt_deg']:.1f} deg below horizontal (heading {p['heading_deg']:.0f} deg)")
+        if "height_above_print_plane_mm" in p:
+            s += f"; {p['height_above_print_plane_mm']:.2f} mm above the print plane"
+        return s
+
+    def check_height(self, expected_mm: Optional[float], tol_mm: float = 1.0) -> Optional[str]:
+        """Compare the fitted camera height above the print plane with an independent measurement
+        (e.g. config.P1S_CAMERA_ABOVE_PRINT_PLANE_MM). Returns a warning, or None if it agrees.
+        This only catches gross mistakes (wrong --calib-z, board thickness far off): on the P1S camera
+        1 mm of height is about 8 mm on the bed, and the hand measurement is not more precise than that."""
+        if expected_mm is None or self.calib_z_mm is None:
+            return None
+        got = self.pose()["height_above_print_plane_mm"]
+        if abs(got - expected_mm) <= tol_mm:
+            return None
+        return (f"fitted camera height above the print plane is {got:.2f} mm but {expected_mm:.2f} mm was measured: "
+                f"check --calib-z (bed Z during the calibration frame) and the board/marker positions")
 
     def plane_to_image(self, z=0.0) -> np.ndarray:
         """3x3 homography: bed point (X, Y, 1) on the plane at height z -> image pixel."""
@@ -148,8 +202,8 @@ class BedCamera:
         return cv2.warpPerspective(und, M, (n, n), flags=cv2.INTER_LINEAR | cv2.WARP_INVERSE_MAP)
 
 
-def _board_points(pattern, square_mm, origin_mm):
-    return np.array([[origin_mm[0] + i * square_mm, origin_mm[1] + j * square_mm, 0.0]
+def _board_points(pattern, square_mm, origin_mm, z_mm=0.0):
+    return np.array([[origin_mm[0] + i * square_mm, origin_mm[1] + j * square_mm, z_mm]
                      for j in range(pattern[1]) for i in range(pattern[0])], np.float32)
 
 
@@ -163,12 +217,15 @@ def _find_corners(image, pattern):
 
 
 def calibrate_bed_camera(frames, pattern=(9, 6), square_mm=10.0, board_origin_mm=(100.0, 100.0),
-                         pose_frame=None):
+                         pose_frame=None, calib_z_mm=None, board_thickness_mm=0.0):
     """Build a BedCamera from checkerboard photos.
 
     frames: several photos of the board in different places/tilts (intrinsics + distortion);
     pose_frame: one photo with the board lying FLAT on the bed with its first inner corner at
     `board_origin_mm` (bed coordinates, mm) -- this fixes the bed frame. Defaults to frames[-1].
+    calib_z_mm: printer Z of the bed during the pose frame (see BedCamera.calib_z_mm).
+    board_thickness_mm: the board's printed face sits this far above the plate (paper ~0.1,
+    card or foam board more); on this shallow camera 1 mm of height is several mm on the bed.
     Use a sheet of paper printed at 100% scale; measure the square size with calipers.
     """
     pose_frame = frames[-1] if pose_frame is None else pose_frame
@@ -185,7 +242,7 @@ def calibrate_bed_camera(frames, pattern=(9, 6), square_mm=10.0, board_origin_mm
     c = _find_corners(pose_frame, pattern)
     if c is None:
         raise RuntimeError("board not found in the pose frame")
-    ok, rvec, tvec = cv2.solvePnP(_board_points(pattern, square_mm, board_origin_mm), c, K, dist)
+    ok, rvec, tvec = cv2.solvePnP(_board_points(pattern, square_mm, board_origin_mm, board_thickness_mm), c, K, dist)
     if not ok:
         raise RuntimeError("pose estimation failed")
     R, _ = cv2.Rodrigues(rvec)
@@ -194,4 +251,4 @@ def calibrate_bed_camera(frames, pattern=(9, 6), square_mm=10.0, board_origin_mm
         raise RuntimeError("pose puts the camera below the bed: the board's corner order does not match "
                            "bed X/Y. Rotate the flat board 90 degrees (or swap `pattern`) and retake the pose shot")
     print(f"intrinsics RMS reprojection error: {rms:.2f} px (aim for < 0.7)")
-    return BedCamera(K, dist, rvec, tvec)
+    return BedCamera(K, dist, rvec, tvec, calib_z_mm)

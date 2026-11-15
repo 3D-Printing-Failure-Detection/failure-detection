@@ -21,6 +21,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from . import config as C
 from .camera import calibrate_bed_camera
 from .parts import Part, get_part
 from .printer.bambu import BambuCamera, BambuLink, BambuPrinter, PrintEnded
@@ -29,23 +30,33 @@ STATUS_KEYS = ("gcode_state", "layer_num", "total_layer_num", "mc_percent", "mc_
                "nozzle_temper", "bed_temper", "subtask_name", "gcode_file", "print_error")
 
 
-def calibrate(ip, code, out, calib_z, pattern=(9, 6), square_mm=10.0, board_origin=(100.0, 100.0), n_frames=12):
+def calibrate(ip, code, out, calib_z, pattern=(9, 6), square_mm=10.0, board_origin=(100.0, 100.0), n_frames=12,
+              board_thickness=0.0, camera_height=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM, force=False):
     """Checkerboard calibration of the printer camera. calib_z: the bed Z shown on the printer screen for
-    the flat shot (the bed moves down as a print grows; the camera does not, so the models need it)."""
+    the flat shot (the bed moves down as a print grows; the camera does not, so the models need it).
+    board_thickness: mm from the plate to the board's printed face. The fitted camera height is checked
+    against camera_height (the measured height above the print plane); a mismatch refuses to save unless
+    force (it only catches gross mistakes: 1 mm of height is about 8 mm on the bed)."""
     cam = BambuCamera(ip, code)
     frames = []
     print("Hold the printed checkerboard in view, different places/tilts for each shot.")
     for i in range(n_frames):
         input(f"[{i+1}/{n_frames}] position the board, press Enter to capture...")
         frames.append(cam.grab())
-    input(f"Lay the board FLAT on the bed, first inner corner at bed X={board_origin[0]} "
-          f"Y={board_origin[1]} mm, then press Enter...")
+    input(f"Home the printer, move the bed to Z={calib_z:g} mm from the screen, then lay the board FLAT on the "
+          f"bed, first inner corner at bed X={board_origin[0]} Y={board_origin[1]} mm, and press Enter...")
     pose = cam.grab()
-    calib = calibrate_bed_camera(frames, pattern, square_mm, board_origin, pose)
-    np.savez(out, K=calib.K, dist=calib.dist, rvec=calib.rvec, tvec=calib.tvec, calib_z_mm=float(calib_z))
-    cv2.imwrite(str(out).replace(".npz", "_pose.png"), pose)
-    print("saved", out)
     cam.close()
+    calib = calibrate_bed_camera(frames, pattern, square_mm, board_origin, pose, float(calib_z), board_thickness)
+    cv2.imwrite(str(out).replace(".npz", "_pose.png"), pose)
+    print(calib.pose_text())
+    warn = calib.check_height(camera_height)
+    if warn and not force:
+        raise SystemExit(f"not saved: {warn} (and --board-thickness); --force saves anyway")
+    if warn:
+        print("WARNING:", warn)
+    calib.save(out)                  # K, dist, rvec, tvec and calib_z_mm: what P1SCamera.load reads
+    print("saved", out)
 
 
 def probe(ip, serial, code, out="results/probe", wait_s=15.0, log=print):
