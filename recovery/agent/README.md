@@ -1,33 +1,129 @@
 # Agentic monitoring (`recovery/agent/`)
 
-Connects the printer to a decision-maker and back, with a person in the loop:
+Connects the printer to a decision-maker and back, with a person in the loop.
+
+## Container dent test (current focus)
+
+One hand-made change per print. The agent only reads the printer's status until someone pauses
+it; then it is asked once. The person pauses, dents, and presses Enter in the agent, but does NOT
+resume on the printer: the agent resumes, corrects or stops.
 
 ```
-every layer   P1S (MQTT status + camera) or simulator
-  1. sense     wait for the layer to finish, grab a frame            tools.next_layer / observe
-  2. measure   frame -> printed outline vs the sliced plan           (existing segmenter/detector)
-  3. check     if we continue, does each feature still work?         tools.function_report
-               (each hole, the container, support...; existing spec rules, one at a time)
-  4. alarm?    outline > ~1 mm off plan, OR a feature breaks even though the outline looks close
-  5. pause     automatically (safe on the P1S); --no-auto-pause to ask first
-  6. decide    decider recommends resume/continue or stop, with a reason     deciders.py
-  7. approve   a person accepts (Enter) or picks another option              gate.py
-  8. act + log MQTT command; events.jsonl, frames/, llm_transcript.json      loop.py
+person pauses the P1S (screen or app; a pause planned in Bambu Studio also works)
+  1. frame     agent notices the pause, saves a camera frame ("before")
+  2. change    the person dents or pokes the tray, presses Enter in the agent
+  3. frame     agent saves "after" and a picture of what changed
+  4. measure   the person types what they did: 'dent X Y DEPTH' | 'poke X Y' | 'none'
+               (part-centred mm; the camera can't measure the side-on P1S view yet)
+  5. check     if we resume as planned, does the tray still hold water, and can every new
+               layer be printed on the one below it?
+  6. options   resume                         (still works)
+               correct  new G-code for the rest: start on the dented shape, return to the
+                        original wall over ~10 layers (only offered if resuming would fail)
+               stop                           (no option works)
+  7. decide    rules / local Qwen / Claude recommend one, with a reason
+  8. approve   the person presses Enter, or picks another option by number
+  9. act + log MQTT resume / stop, or stop -> upload -> start for correct; events.jsonl + frames
 ```
 
-A deviation that was accepted (resumed) does not re-alarm on every later layer; only a failing
-function check or a deviation that grows by more than 0.5 mm does.
+Rehearsed on the simulated printer (`tests/test_agent.py`), checked against the actual printed
+shape:
+
+| Change at layer 30 | Resume as planned | Agent | Finished tray |
+|---|---|---|---|
+| none, 1 mm dent | works | resume | holds water |
+| 3-5 mm dent | the next layer hangs over 11-15 mm² of air | correct (back over 10 layers) | holds water, ~5.2 ml |
+| poke-through | leaks | stop | stopped at 50% |
+
+```bash
+# rehearse (no printer)
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --sim --dent-test \
+    --pause-at-layer 30 --dent 0 -10 3          # or --poke 5 -10, or nothing for a clean run
+# real P1S: start the print and the agent; around half height (z = 6 mm) pause from the printer
+# screen; the agent takes over from there
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --dent-test \
+    --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
+```
+
+Tray coordinates: centre (0, 0); front wall middle `0 -10`; right wall middle `15 0`; walls 1.2 mm.
+
+### Test order on the printer
+
+| Phase | Run | Passes if |
+|---|---|---|
+| 0 · setup | `connection-test` (add `--commands` during a print), `check-gcode`, one `--sim` rehearsal | all connection steps PASS; "looks usable" |
+| 1 · decisions | dent tests: clean, 1 mm, 3 mm, poke; accept **resume or stop only** | the agent notices the pause, frames saved, recommendations match the table, the agent's resume/stop commands work, water test agrees |
+| 2 · mechanism | `--resume-test` on a scrap tray, no dent | no homing over the part, no collision, no seam, holds water |
+| 3 · correction | 3 mm dent, approve **correct** | new layers step back to the original wall, holds water, ~5.2 ml |
+
+Each phase starts only after the one before it passes.
+
+### Before the first real dent test
+
+- **Check the layer number at the pause.** The agent counts the layer the printer reports as
+  not yet finished (a pause from the screen usually lands mid-layer). Compare the layer the agent
+  prints at the prompt with the printer screen.
+- **Don't resume on the printer.** If someone does, the agent notices, sends nothing and offers
+  "continue" instead of "resume"; the next layers are then already printing over the dent.
+- **"correct" depends on stop → upload → start working on the P1S**, which has never been tried.
+  Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
+  *original* remaining layers through stop → upload → start. Watch the bed: on the P1S the bed is
+  Z (it drops for each layer and for travel moves), so if it homes Z or rises toward the nozzle
+  over the part, stop the printer. Pass = the tray finishes with no visible seam and holds water.
+  Until it passes, choose resume or stop at the prompt.
+
+  ```bash
+  python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --resume-test \
+      --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE     # then pause on the screen
+  ```
+- **Inspect a correction before approving it.** The agent saves the exact G-code it would send
+  (`correction_from_layer_N.gcode`) and a picture of the dented layer and the next new layers
+  (`.png`) in the run folder, and prints both paths at the prompt. The correction G-code fills
+  the middle of thin walls, retracts before each travel and drops the bed 0.4 mm while
+  travelling; temperatures come from the sliced file (bed: the plate it was sliced for).
+- **The camera.** The P1S camera looks across the bed from the front-left, almost horizontally,
+  and the bed moves down while the nozzle stays at a fixed height. So the top layers always sit at
+  the same place in the image, seen from the side. Everything works on that view as it is; there
+  is no top-down view. At a dent test the dent detector compares the frames before and after the
+  change (`--measure sideview`, the default). It cannot measure depth: a dent counts as 1.5 mm.
+
+## Watching every layer
+
+```
+every layer   camera frame -> compare with the previous frame and the plan -> alarm? -> pause -> decide -> approve -> act
+```
+
+The failure detector (`recovery/models/p1s_layer.py`, `--layer-model runs/p1s_layer`) says `ok` or which
+failure the print looks like: collapse, warp, shift, under-extrusion, detach. It is on whenever that
+model is there, in `--sim` and on the real printer alike.
+- Detach and shift: stop (nothing sensible can be printed on top).
+- Anything else, the first time: the camera cannot see the new shape well enough to say the part
+  fails, so the recommendation is resume; a person approves.
+- After that it only alarms again if the problem area grows (more than 1.5x the accepted one + 30 px),
+  and then recommends stop.
+- If the camera cannot check a layer (no frame, the part is not where the plan says) the layer is
+  logged as unchecked and the print goes on.
+
+```bash
+python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.yaml \
+    --sim --dent 15 -5 1.0 --at-layer 29
+```
+
 
 ## Deciders (the LLM slot)
 
-- `rules` (default): continue if every feature passes, stop otherwise; stop if detached.
+- `rules` (default): resume if every feature passes; otherwise correct if a correction passes;
+  otherwise stop. Stop if the part detached.
 - `local`: a local Qwen through Ollama (default `qwen3:1.7b`), or any OpenAI-compatible server
   (`--endpoint`, `--local-model`). Falls back to the rules.
 - `claude`: needs `ANTHROPIC_API_KEY` (`--claude-model`). Falls back to the rules.
 - `auto`: Claude if a key is set, otherwise (or if it fails) local Qwen, otherwise the rules.
 - In code: `LLMDecider(complete, fallback=...)` with any `complete(system, user) -> text`.
 
-Every fallback is visible: the log's `source` says e.g. `local:qwen3:1.7b->rules`.
+The model sees the measurement, both function checks (resume, and the correction if there is
+one), the filament cost and the allowed actions, and must answer `{"action": ..., "reason": ...}`
+with an allowed action. Anything else falls back to the next decider, and the log's `source` says
+so (e.g. `local:qwen3:1.7b->rules`). The model never talks to the printer.
 
 ### Local Qwen setup (until Claude credits arrive)
 
@@ -38,36 +134,6 @@ brew install ollama          # macOS; Linux/Windows: https://ollama.com/download
 ollama serve                 # leave running (or: brew services start ollama)
 ollama pull qwen3:1.7b       # ~1.4 GB; qwen3:8b (~5 GB) is better if the laptop has 16 GB
 python -m recovery.cli llm-check --decider local      # two sample alarms; expect 2/2 right
-python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.yaml \
-    --sim --dent 15 -5 1.0 --at-layer 29 --decider local
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --sim --dent-test \
+    --pause-at-layer 30 --dent 0 -10 3 --decider local
 ```
-
-`llm-check` prints each answer, who made it (the model, or `->rules` if it fell back) and how
-long it took. If the model often falls back or answers wrong, use `qwen3:8b` or `--decider rules`.
-
-The model sees the measurement, the per-feature check, the filament cost and the allowed actions,
-and must answer `{"action": ..., "reason": ...}` with an allowed action. Anything else falls back
-to the rules and is marked `llm->rules` in the log. The model never talks to the printer.
-
-## Run it
-
-```bash
-# rehearse a test in software (no printer): dent next to a hole of the two-hole block
-python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.yaml \
-    --sim --dent 15 -5 1.0 --at-layer 29
-# (--poke X Y for a poke-through, --auto-approve to skip the prompt; coordinates are
-#  part-centred mm: the block's holes are at x = -15 and +15)
-
-# real P1S (print started from Bambu Studio; LAN-only + Developer Mode; camera calibrated)
-python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.yaml \
-    --gcode two-hole-block.gcode.3mf --ip IP --serial SERIAL --code CODE --calib calib.npz \
-    --decider auto
-```
-
-## What is verified
-
-Simulated rehearsal of all three test parts (clean, cosmetic dent, function-breaking dent,
-3 seeds each): 30/30 correct decisions, alarms at the dent layer, no false alarms on clean
-prints, 30-160 ms per layer (`tests/test_agent.py`). The simulated camera is easier than the
-real one, so this does not show the real P1S works yet: run `watch` on clean prints first and
-check the false-alarm rate before letting `agent` pause a real print.

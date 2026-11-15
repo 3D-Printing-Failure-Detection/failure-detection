@@ -73,24 +73,30 @@ def test_a_bed_that_has_already_dropped_further_lowers_the_plane():
     assert BedCamera(cam.K, cam.dist, cam.rvec, cam.tvec).layer_plane_z(6.0, bed_z=6.2) == 6.0   # fixed bed
 
 
-def test_printer_maps_a_finished_layer_with_the_bed_at_the_next_layer():
-    """A layer counts as done once the printer reports the next one, so the bed is one layer lower than the
-    finished layer's top: BambuPrinter.camera_image must read the plane layer_h below the nozzle."""
+def test_printer_reports_the_bed_drop_when_a_frame_is_grabbed(tmp_path):
+    """A layer counts as done once the printer reports the next one, so in the frame the bed is already one layer
+    lower than the finished layer (plus any park Z-hop). The drop BambuPrinter reports must place the plate where
+    both camera models put it: p1s_view.plate_z_mm (the camera-view outline) and BedCamera.layer_plane_z."""
+    from recovery import p1s_view as V
     from recovery.printer.bambu import BambuPrinter
     from recovery.types import Layer
     from shapely.geometry import box
-    cam = p1s_camera(10.0)
-    plan = [Layer(0.2 * (i + 1), box(-10, -10, 10, 10)) for i in range(50)]
-    centre = (70.0, 70.0)
-    frame = frame_with_square(cam, centre, 20.0, 10.0 - 0.2)                 # layer 30's top, bed at layer 31
+    plan = [Layer(round(0.2 * (i + 1), 3), box(-10, -10, 10, 10)) for i in range(50)]
     pr = BambuPrinter.__new__(BambuPrinter)
-    pr.plan, pr._layer, pr.bed_cam, pr.origin, pr._layer_done_t = plan, 30, cam, centre, 0.0
-    pr.cam = type("Cam", (), {"grab": lambda self, newer_than=None: frame})()
-    right = np.linalg.norm(centroid_mm(pr.camera_image(), centre) - centre)
-    at_nozzle = np.linalg.norm(centroid_mm(cam.top_down(frame, 10.0, centre), centre) - centre)   # ignoring the drop
-    assert right < 0.45 and at_nozzle > right + 0.3
-    pr.frame_extra_drop_mm = 0.4                                             # wrong park drop: shifted
-    assert np.linalg.norm(centroid_mm(pr.camera_image(), centre) - centre) > 1.0
+    pr.plan, pr._layer = plan, 30
+    assert pr.frame_bed_drop_mm() == pytest.approx(0.2)                      # bed already at layer 31
+    pr.frame_extra_drop_mm = 0.4
+    assert pr.frame_bed_drop_mm() == pytest.approx(0.6)                      # plus a measured park Z-hop
+    pr._layer = 50
+    assert pr.frame_bed_drop_mm() == pytest.approx(0.4)                      # last layer: no next layer
+    cam = p1s_camera(10.0)
+    cam.save(tmp_path / "calib.npz")                                         # what calibrate-* write
+    pcam = V.P1SCamera.load(tmp_path / "calib.npz")                          # what watch / agent read
+    assert pcam.calib_z_mm == 10.0
+    pr._layer, pr.frame_extra_drop_mm = 30, 0.0
+    top = plan[29].z
+    plate = V.plate_z_mm(pcam, top, pr.frame_bed_drop_mm())
+    assert plate == pytest.approx(cam.layer_plane_z(top, bed_z=top + pr.frame_bed_drop_mm()) - top)
 
 
 def test_calibration_z_is_saved_and_old_files_keep_the_fixed_bed_model(tmp_path):
@@ -103,11 +109,12 @@ def test_calibration_z_is_saved_and_old_files_keep_the_fixed_bed_model(tmp_path)
     assert legacy.calib_z_mm is None and legacy.layer_plane_z(3.4) == 3.4
 
 
-def test_real_printer_refuses_a_calibration_without_bed_z():
-    from recovery.printer.bambu import BambuPrinter
-    no_z = BedCamera(np.eye(3), np.zeros(5), np.zeros((3, 1)), np.ones((3, 1)))
-    with pytest.raises(ValueError, match="--calib-z"):
-        BambuPrinter("0.0.0.0", "serial", "code", [], 0.2, no_z)       # fails before any network I/O
+def test_watch_and_agent_refuse_a_calibration_without_bed_z(tmp_path):
+    from recovery import p1s_view as V
+    cam = p1s_camera(10.0)
+    np.savez(tmp_path / "old.npz", K=cam.K, dist=cam.dist, rvec=cam.rvec, tvec=cam.tvec)
+    with pytest.raises(ValueError, match="calib-z"):
+        V.P1SCamera.load(tmp_path / "old.npz")
 
 
 def test_pose_reports_the_camera_height_and_flags_a_wrong_calib_z():

@@ -30,10 +30,10 @@ are printed, and make the edge clicks much less critical.
 ## The bed moves: calibration Z
 The P1S bed drops by one layer height every layer while the camera stays fixed, so the top of a layer is at
 the nozzle height while it is printed, not `z` above where the plate was. The calibration therefore records the
-bed Z of its frame (`--calib-z`) and later frames are mapped on the plane `calib-z` above the calibrated plate,
-lowered by however far the bed has dropped since that layer when the frame is grabbed (`BedCamera.layer_plane_z`;
-see docs/calibration-board.md for the frame timing). Without this, at a 6 mm print height the
-mapping is off by tens of mm on this camera. The fit also reports the camera's position, its height above
+bed Z of its frame (`--calib-z`): the top of the print is `calib-z` above the calibrated plate, lowered by however
+far the bed has dropped since that layer when the frame is grabbed (`BedCamera.layer_plane_z`, and the plate at
+`calib-z - top - drop` in `p1s_view.plate_z_mm`; see docs/calibration-board.md for the frame timing). Without
+this, at a 6 mm print height the print is placed tens of mm off on this camera. The fit also reports the camera's position, its height above
 the print plane and how steeply it looks down; the height is checked against the team's measurement of
 22.784 mm (`P1S_CAMERA_ABOVE_PRINT_PLANE_MM`), and a disagreement over 1 mm blocks saving (usually a wrong
 `--calib-z`). This only catches gross mistakes: 1 mm of height is about 8 mm on the bed. On a grazing view several poses explain the clicks almost equally well; the measured height

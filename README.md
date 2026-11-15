@@ -38,6 +38,24 @@ trimesh (geometry and images); **paho-mqtt** (talks to the P1S); **mujoco** (sim
 torch, timm, transformers (optional trained models); gradio (web UI); anthropic (LLM spec author);
 pytest (tests). Bambu Studio and CalculiX are separate programs, installed like any other app.
 
+### Trained models
+
+The camera checks need two trained models that are not in git (~100 MB each). Download them instead of
+retraining (~30 min each):
+
+```bash
+gh release download models-v3 --pattern '*.tar.gz' --dir runs
+for f in runs/*.tar.gz; do tar xzf "$f" -C runs; done
+ln -sfn dent_v2 runs/dent && ln -sfn p1s_layer_v3 runs/p1s_layer
+```
+
+| Model | Default path | What it does | Retrain |
+|---|---|---|---|
+| `dent_v2` | `runs/dent` | dent / poke / none from the before and after frames of a pause | [docs/p1s-dent-data.md](docs/p1s-dent-data.md) |
+| `p1s_layer_v3` | `runs/p1s_layer` | every-layer failure check (collapse, warp, shift, under-extrusion, detach) | [docs/p1s-failure-detection.md](docs/p1s-failure-detection.md) |
+
+Both are scored only on simulated frames so far. Each folder holds the scores (`val.json`, `eval_*.json`).
+
 ## Quick start (no printer needed)
 
 **1. Get the code and install**
@@ -124,27 +142,30 @@ Read the printed rationale and the file it wrote in `parts/specs/`. **Check the 
 
 ### 4. Calibrate the chamber camera (once)
 
-The P1S camera looks at the bed from an angle; calibration lets the software turn that into a
-top-down view. Print or display a **10 x 7 square checkerboard, 10 mm squares**. Then:
+The P1S camera sits low at the front-left of the chamber and looks across the plate through a wide
+lens. The software uses that view as it is (there is no top-down view); calibration tells it exactly
+where the camera is and how its lens bends the picture. Without it, an approximate camera is used.
+Print or display a **10 x 7 square checkerboard, 10 mm squares**. Then:
 
 ```bash
 python -m recovery.cli calibrate --ip 192.168.1.50 --code 12345678 --calib-z 10 --out calib.npz
 ```
+
+`--calib-z` is the bed height shown on the printer screen while the board lies flat (move the bed
+there first). The bed moves down as a print grows and the camera does not, so this is needed.
 
 It asks you to hold the board at 12 different positions/tilts, pressing Enter each time, and then
 to lay it **flat on the bed** with its first inner corner at the bed position you passed in
 `--board-origin` (default X=100 Y=100 mm). Replace the IP and access code with yours. This writes
 `calib.npz`; keep it, it only needs redoing if the camera moves.
 
-**The bed moves, so tell it where the bed was.** The P1S bed drops one layer per layer while the
-camera stays fixed, so the top of the print stays near the nozzle height. Before the flat shot, home
-the printer and move the bed to a known Z from the screen (e.g. 10 mm), and pass that as `--calib-z`
-(add `--board-thickness` if the board is on card or foam). The calibration stores it and maps every frame on the
-plane `calib-z` above the calibrated plate (lowered by however far the bed has dropped when each frame is
-grabbed). It also prints the camera's fitted position and angle and refuses to save (unless `--force`) if its
-height above the print plane is more than 1 mm off the measured 22.784 mm
-(`P1S_CAMERA_ABOVE_PRINT_PLANE_MM` in `recovery/config.py`); that only catches gross mistakes, since 1 mm of
-height is about 8 mm on the bed. Calibration files without `--calib-z` are refused by `watch`, `live` and `agent`.
+**Checks.** Add `--board-thickness` if the board is on card or foam (measure it with calipers). The command
+prints the camera's fitted position and angle and refuses to save (unless `--force`) if its height above the
+print plane is more than 1 mm off the measured 22.784 mm (`P1S_CAMERA_ABOVE_PRINT_PLANE_MM` in
+`recovery/config.py`); that only catches gross mistakes, since 1 mm of height is about 8 mm on the bed.
+`watch` and `agent` refuse a calibration file without `calib_z_mm` (`P1SCamera.load`). When a frame is grabbed
+the bed is already one layer lower than the finished layer, plus any Z-hop while the head parks:
+`BambuPrinter.frame_bed_drop_mm()` gives that drop (set `frame_extra_drop_mm` once the park drop is measured).
 
 Have a large board (e.g. one covering the plate)? `python -m recovery.cli calibrate-board` uses raw frames of
 it held at different angles plus flat frames at two bed heights, and falls back to the flat frames alone. It
@@ -172,56 +193,60 @@ print. If the camera sees the plate at a grazing angle, markers are what make it
 python -m recovery.cli stress --part parts/mypart.yaml
 ```
 
-If it says `FAIL`, fix the design (or the spec) before wasting filament. The live command below
-repeats this check and refuses to start on a failing part.
+If it says `FAIL`, fix the design (or the spec) before wasting filament.
 
 ### 5b. First runs: check, probe, then watch only (do this before step 6)
 
 None of these send a print command, so they are safe on any print. Steps 3 and 5 are not needed.
 
 ```bash
+# first: can the laptop talk to the printer? network, status, camera, file access (read only);
+# add --commands while a print runs to also test pause + resume; --mock to see it without a printer
+python -m recovery.cli connection-test --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678
 # offline: does our parser understand your Bambu Studio export? (markers, layer count, outlines)
 python -m recovery.cli check-gcode parts/mypart.gcode.3mf
 # read-only: printer status over MQTT + one camera frame saved to results/probe/
 python -m recovery.cli probe --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678
-# start the print as usual, then watch it: measures every layer, logs what it WOULD do
+# start the print as usual, then watch it: checks every layer with the camera, logs it, sends nothing
 python -m recovery.cli watch --gcode parts/mypart.gcode.3mf \
     --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz
 ```
 
 - `check-gcode` should end with `looks usable` and its preview PNG should show real holes only.
   If it reports 0 layers or a layer count that differs from the slicer's, stop and send the
-  output to the team: `live` would match frames to the wrong layers.
-- `watch` writes `results/watch/<time>/`: `layers.jsonl` (one line per layer: label, deviation,
-  and on an alarm `would_action`/`would_reason`), `meta.json`, and `frames/` (raw camera frame,
-  top-down view and expected mask per layer). These are our first real images; keep them.
+  output to the team: frames would be matched to the wrong layers.
+- `watch` writes `results/watch/<time>/`: `frames/` (the camera frame after every layer),
+  `layers.jsonl` (one line per layer: `ok` or the failure it looks like, and how big the area that
+  differs from the plan is) and `meta.json`. These are real test images; keep them.
   Ctrl-C stops watching without affecting the print. A long print can run inside `tmux`.
-- No checkerboard yet? Run `watch` without a `calib.npz`: it then saves only the raw frames
-  and layer timing (label `unmeasured`), which is still useful real data.
-- On a clean print every layer should be `ok`. Alarms on a clean print are false alarms:
-  tune thresholds and calibration before letting `live` act.
+- The check needs the trained failure detector (`runs/p1s_layer`, see
+  [docs/p1s-dent-data.md](docs/p1s-dent-data.md)); without it `watch` saves the frames only.
+  No `calib.npz` yet? It uses an approximate camera.
+- On a clean print every layer should be `ok`. Alarms on a clean print are false alarms: send
+  the run folder to the team before letting the agent act.
 
 ### 6. Print with the safety net on
 
 Only after `watch` runs on clean prints show no false alarms.
 
 1. Start the print from Bambu Studio or the printer screen as usual.
-2. In another terminal, start the loop (use your own IP, serial and code):
+2. In another terminal, start the agent (use your own IP, serial and code):
 
 ```bash
-python -m recovery.cli live --part parts/mypart.yaml \
-    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz \
-    --rehome-gcode lift_xy
+python -m recovery.cli agent --part parts/mypart.yaml --gcode parts/mypart.gcode.3mf \
+    --ip 192.168.1.50 --serial 01P00A000000000 --code 12345678 --calib calib.npz --monitor on
 ```
 
-The loop now checks every finished layer. If a layer is off by more than 1 mm it decides:
-**continue**, **adapt**, or **scrap**. To adapt it stops the print, uploads a new G-code file for
-the remaining layers, and starts it, all automatically, then re-syncs its layer counter.
+On the real printer the every-layer check is **opt-in** (`--monitor on`; the default is off there and on
+with `--sim`). It has not yet been scored on real frames, and each alarm pauses a real print: run `watch`
+on a few clean prints first to measure the real false-alarm rate. Likewise, the dent test's camera
+measurement is opt-in on the real printer (`--measure sideview`); by default the person types the change.
 
-**What to watch for.** After a stop, the printer must still know where its head is. If the first
-resumed layer lands in the wrong place, stop the print, and see [Troubleshooting](#troubleshooting).
-`--rehome-gcode lift_xy` lifts the head clear of the part and re-homes X/Y only (never Z, which
-would crash the nozzle into the part). Use `--skip-stress` only if you accept an unchecked part.
+After every layer it compares the camera frame with the previous one and with the plan. If the print
+starts to look different from the plan it pauses, says what it sees and what it recommends
+(**resume** or **stop**), and waits for you to approve. It stops at once for a part that came off the
+bed or layers that shifted, and stops if an accepted problem keeps growing. More in
+[recovery/agent/README.md](recovery/agent/README.md).
 
 ## Add your own part
 
@@ -418,8 +443,11 @@ possible next step, not wired in.
 | `stress --part P` | FE stress test, optionally with an injected failure |
 | `fea-verify` | check the stress solver against closed-form answers |
 | `slice file.stl` | cross-section an STL |
-| `calibrate --ip ... --code ... --calib-z 10` | calibrate the P1S camera (bed at Z=10 mm for the flat shot) |
-| `live --part P --ip ... --serial ... --code ... --calib calib.npz` | run the loop on a real print |
+| `calibrate --ip ... --code ... --calib-z 10` | calibrate the P1S camera with a small checkerboard (bed at Z=10 mm for the flat shot) |
+| `calibrate-board --ip ... --code ... --dir calib_shots` | calibrate with a large checkerboard: tilted frames + flat frames at two bed Z |
+| `calibrate-bed --ip ... --code ... --points points.json --calib-z 10` | calibrate without a checkerboard, from clicked bed edges |
+| `watch --gcode G --ip ... --serial ... --code ...` | check every layer of a real print with the camera; sends nothing |
+| `agent --part P --gcode G --ip ... --serial ... --code ...` | check every layer; pause, recommend and act with your approval |
 | `app` | web interface |
 | `gen-data`, `train` | make synthetic images and train the optional neural models |
 

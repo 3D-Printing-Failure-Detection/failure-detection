@@ -1,0 +1,7 @@
+# Unseen-part test shape for the camera failure detector (never in its training data).
+name: hex-nut
+height: 10
+layer_h: 0.2
+geometry:
+  - add: {polygon: {points: [[14, 0], [7, 12.12], [-7, 12.12], [-14, 0], [-7, -12.12], [7, -12.12]]}}
+  - cut: {circle: {center: [0, 0], r: 5}}

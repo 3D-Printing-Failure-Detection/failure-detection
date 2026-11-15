@@ -49,11 +49,16 @@ values themselves must be right (see step 4).
 
 ## When frames are taken during a print
 A layer counts as done once the printer reports the next one, so by the time the frame is grabbed the bed is
-already one layer lower (and lower still if the head parks with a Z-hop for the timelapse). `BambuPrinter`
-therefore reads the finished layer's top `next layer Z - its Z` below the nozzle plane, plus
-`frame_extra_drop_mm` (default 0). Measure whether the bed drops further while the head parks and set that
-value: 0.4 mm unaccounted for is about 3 mm on the bed. The frame after the last layer is taken after the end
-G-code has moved the bed and is not reliable.
+already one layer lower (and lower still if the head parks with a Z-hop for the timelapse).
+`BambuPrinter.frame_bed_drop_mm()` gives that drop: `next layer Z - its Z`, plus `frame_extra_drop_mm`
+(default 0). It is the `drop_mm` of `p1s_view.plate_z_mm` / `P1SScene`, which place the plate in the camera view.
+Measure whether the bed drops further while the head parks and set that value: 0.4 mm unaccounted for is about
+3 mm on the bed. The frame after the last layer is taken after the end G-code has moved the bed and is not
+reliable.
+
+The layer detector (`recovery/models/p1s_layer.py`) is trained with the plan outline drawn at no drop and
+frames taken with a random 0 to 0.4 mm drop, so it already tolerates the one-layer drop; whether to pass the
+measured drop to `plan_silhouette` (or widen the training range if the park drop is larger) is open.
 
 ## First real frames (screenshots, Nov 2026)
 Two screenshots of a bed-sized board at "0 mm" and "10 mm" gave a consistent lens in both and camera heights of

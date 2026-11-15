@@ -51,26 +51,29 @@ def build_detector(backbone=DEFAULT_BACKBONE, n_frames=N_FRAMES, pretrained=Fals
                              num_classes=len(LABELS))
 
 
-def build_segmenter(seg_arch=DEFAULT_SEG, n_frames=N_FRAMES, pretrained=False, config=None):
+def build_segmenter(seg_arch=DEFAULT_SEG, n_frames=N_FRAMES, pretrained=False, config=None, num_labels=1):
     from transformers import SegformerConfig, SegformerForSemanticSegmentation
     in_ch = in_channels(n_frames)
     if config is not None:
         cfg = SegformerConfig.from_dict(config)
-        if cfg.num_channels != in_ch or cfg.num_labels != 1:
+        if cfg.num_channels != in_ch or cfg.num_labels != num_labels:
             raise ValueError("saved segmenter config does not match frame/label count")
         return SegformerForSemanticSegmentation(cfg)
     if not pretrained:
         # Read only architecture metadata; weights remain randomly initialized.
-        cfg = SegformerConfig.from_pretrained(seg_arch, num_labels=1, num_channels=in_ch)
+        cfg = SegformerConfig.from_pretrained(seg_arch, num_labels=num_labels, num_channels=in_ch)
         return SegformerForSemanticSegmentation(cfg)
-    model = SegformerForSemanticSegmentation.from_pretrained(seg_arch, num_labels=1,
+    model = SegformerForSemanticSegmentation.from_pretrained(seg_arch, num_labels=num_labels,
                                                              ignore_mismatched_sizes=True)
-    old = model.segformer.encoder.patch_embeddings[0].proj          # expects 3 channels
+    # first patch embedding (expects 3 channels): segformer.encoder.patch_embeddings[0].proj in
+    # transformers 4, segformer.stages[0].patch_embeddings.proj in 5; find it by walking the modules
+    name, old = next((n, m) for n, m in model.segformer.named_modules() if isinstance(m, nn.Conv2d))
     new = nn.Conv2d(in_ch, old.out_channels, old.kernel_size, old.stride, old.padding)
     with torch.no_grad():                                           # spread the RGB filters over all channels
         new.weight.copy_(old.weight.mean(1, keepdim=True).repeat(1, in_ch, 1, 1) * 3 / in_ch)
         new.bias.copy_(old.bias)
-    model.segformer.encoder.patch_embeddings[0].proj = new
+    parent, attr = name.rsplit(".", 1)
+    setattr(model.segformer.get_submodule(parent), attr, new)
     model.config.num_channels = in_ch
     return model
 
