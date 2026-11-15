@@ -192,6 +192,8 @@ def main():
     ap.add_argument("--run", default="results/live_sim_check_v3")
     ap.add_argument("--out", default="videos/sim_failure_detection.mp4")
     ap.add_argument("--hq", action="store_true", help="full 1080p, ~45 MB (default: 720p, ~2 MB, small enough for git)")
+    ap.add_argument("--only", type=int, nargs="*", help="rehearsal indices to include (default: all, in ORDER)")
+    ap.add_argument("--no-summary", action="store_true")
     a = ap.parse_args()
     results = json.loads(Path(a.run, "results.json").read_text())
     small = [] if a.hq else ["-vf", "scale=1280:-2"]
@@ -206,7 +208,7 @@ def main():
     put(card([("3D-print failure detector", TEXT, 64), ("sim-in-the-loop rehearsal", START, 40)],
              ["a simulated Bambu P1S prints; the trained model watches its camera every layer",
               "and raises an alarm after 3 failing layers in a row"]), 3.0)
-    for k in ORDER:
+    for k in (a.only or ORDER):
         res = results[k]
         run = Path(res["run"])
         meta = json.loads((run / "meta.json").read_text())
@@ -222,7 +224,8 @@ def main():
         t, c = result_line(res)
         put(np.asarray(Image.blend(Image.fromarray(fr), Image.fromarray(card([(t, c, 48)])), 0.85)), END_S)
         print(res["part"], res["failure"], "->", t, flush=True)
-    put(summary(results), 6.0)
+    if not a.no_summary:
+        put(summary(results), 6.0)
     w.close()
     print("wrote", a.out)
 
