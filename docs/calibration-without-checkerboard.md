@@ -67,7 +67,7 @@ helps by about 20 %. Markers are what matter; the calibration Z is not critical.
 3. Open `calib_click.html` in a browser. For each edge (front = nearest you / the door, then left, right,
    back as you face the printer) pick it in the dropdown and click **8 points spread from end to end along
    the visible plate edge**, including both corners. Click the true edge of the plate, not the bed
-   clip or shadow. Press **Copy JSON** and save it as `points.json`. Edges that are cut off by the frame:
+   clip or shadow. Press **Save points.json** (it goes to Downloads; move it next to the command). Edges that are cut off by the frame:
    click what is visible; at least 6 per edge are required.
 4. Fit:
    ```bash

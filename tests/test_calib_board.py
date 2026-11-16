@@ -171,3 +171,88 @@ def test_frames_of_different_sizes_are_refused(frames):
     small = cv2.resize(frames["f30"], (960, 540))
     with pytest.raises(ValueError, match="same size"):
         calibrate_from_board([], [(frames["f10"], 10.0), (small, 30.0)], markers_for(frames["t10"], MARKS))
+
+
+# ---------------- interactive capture and the marker page ----------------
+class FakeCamera:
+    """Stands in for BambuCamera: returns a fresh frame per grab and remembers the `newer_than` it was asked for."""
+    def __init__(self, frame, fail=0):
+        self.frame, self.fail, self.asked, self.closed = frame, fail, [], False
+
+    def grab(self, timeout=10.0, newer_than=None):
+        self.asked.append(newer_than)
+        if self.fail:
+            self.fail -= 1
+            raise TimeoutError("no camera frame")
+        return self.frame.copy()
+
+    def close(self):
+        self.closed = True
+
+
+def answers(*xs):
+    it = iter(xs)
+    def ask(prompt=""):
+        a = next(it)
+        if isinstance(a, BaseException):
+            raise a
+        return a
+    return ask
+
+
+def test_parse_z_reads_what_people_type():
+    from recovery.calib_board import parse_z
+    for text in ("30", "Z=30", "z 30", "30 mm", "30.0mm", " 30 "):
+        assert parse_z(text) == 30.0
+    assert parse_z("10,5") == 10.5
+    for bad in ("", "abc", "0", "-5", "10 30", "300"):
+        assert parse_z(bad) is None
+
+
+def test_capture_asks_again_on_a_typo_and_waits_for_a_fresh_frame(frames, tmp_path):
+    import json
+    from recovery.calib_board import capture
+    cam = FakeCamera(frames["f10"])
+    capture(None, None, tmp_path, camera=cam,
+            ask=answers("", "n", "Z=10", "ten", "10", "30 mm", ""))
+    shots = json.loads((tmp_path / "shots.json").read_text())
+    assert shots["tilted"] == ["tilt_00.png"]
+    assert shots["flat"] == [dict(file="flat_00.png", z=10.0), dict(file="flat_01.png", z=30.0)]
+    assert all(t is not None for t in cam.asked) and cam.closed       # every shot waited for a new frame
+    page = (tmp_path / "markers_click.html").read_text()
+    assert "Click the board corners" in page and "Save markers.json" in page and "flat_00.png" in page
+
+
+def test_capture_keeps_the_shots_after_ctrl_c_and_continues(frames, tmp_path):
+    import json
+    from recovery.calib_board import capture
+    capture(None, None, tmp_path, camera=FakeCamera(frames["f10"]),
+            ask=answers("", "", "n", "10", KeyboardInterrupt()))
+    shots = json.loads((tmp_path / "shots.json").read_text())
+    assert len(shots["tilted"]) == 2 and [s["z"] for s in shots["flat"]] == [10.0]
+    assert (tmp_path / "markers_click.html").exists()
+    capture(None, None, tmp_path, camera=FakeCamera(frames["f30"], fail=1),
+            ask=answers("n", "30", "", ""))                      # camera times out once, Enter retries
+    shots = json.loads((tmp_path / "shots.json").read_text())
+    assert len(shots["tilted"]) == 2 and [s["z"] for s in shots["flat"]] == [10.0, 30.0]
+
+
+def test_a_bad_markers_file_gives_a_clear_message(frames, tmp_path):
+    import argparse
+    import json
+    from recovery.calib_board import main
+    cv2.imwrite(str(tmp_path / "flat_00.png"), frames["f10"])
+    (tmp_path / "shots.json").write_text(json.dumps(dict(tilted=[], flat=[dict(file="flat_00.png", z=10)])))
+    a = argparse.Namespace(ip=None, code=None, dir=str(tmp_path), markers=None, square_mm=SQ, board_thickness=THICK,
+                           camera_height=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM, out=str(tmp_path / "calib.npz"), force=False)
+    with pytest.raises(SystemExit, match="no .*markers.json"):
+        main(a)
+    (tmp_path / "markers.json").write_text('{\\rtf1 {“markers”: []}}')      # TextEdit-style file
+    with pytest.raises(SystemExit, match="not valid JSON"):
+        main(a)
+    (tmp_path / "markers.json").write_text(json.dumps(dict(markers=[])))
+    with pytest.raises(SystemExit, match="0 marker"):
+        main(a)
+    (tmp_path / "markers.json").write_text(json.dumps(dict(markers=markers_for(frames["t10"], MARKS))))
+    with pytest.raises(SystemExit, match="calibration failed"):             # one flat frame, no tilted ones
+        main(a)

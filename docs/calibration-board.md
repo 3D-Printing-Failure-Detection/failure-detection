@@ -26,15 +26,20 @@ values themselves must be right (see step 4).
    ```
    - Tilted: hold the board at 8 to 15 different angles (up to about 45 deg) and places, filling different parts
      of the view. Keep it still for each shot.
-   - Flat: home the printer FIRST, then lay the board flat on the plate and move the bed from the printer screen.
-     Take two heights, e.g. Z=10 and Z=30, typing the Z shown on the screen for each. Never home or go to Z=0 with
-     the board on the plate: the nozzle would hit it.
-3. Open `calib_shots/markers_click.html`, choose `marker`, click 3 board corners that are far apart and not in a
-   line, and type each one's bed X,Y in mm (front-left plate corner = 0,0, X to the right, Y toward the back).
-   Pick corners in the front-left half of the view, where the squares look biggest: far away they are only a few
-   pixels deep and a click can land on the neighbouring corner. Copy JSON and save it as
-   `calib_shots/markers.json`. Easiest: line the board's edge up with the plate's front-left corner so corner
-   positions are multiples of 10 mm. A wrong origin (e.g. every X off by 10 mm) cannot be detected by the
+   - Flat: home the printer FIRST with the plate empty, then lay the board flat on the plate and move the bed from
+     the printer. Take two heights, e.g. Z=10 and Z=30, typing the bed Z for each (`30`, `Z=30` and `30 mm` are all
+     read as 30). Never home or go to Z=0 with the board on the plate: the nozzle would hit it.
+   - Every shot is written to `shots.json` straight away and each frame is one that arrived after Enter was pressed.
+     A typo is asked again, and after a mistake or Ctrl-C the same command continues in the same folder.
+3. Open `calib_shots/markers_click.html` (written after the first flat shot). Click 3 **points where four squares
+   meet** (not the outer corners of the board), far apart and not in a line, and type each one's bed X,Y in mm, e.g.
+   `30,20` (front-left plate corner = 0,0, X to the right, Y toward the back). Each accepted marker shows its X,Y
+   next to the dot. To get the X,Y: lay the board square to the plate edges, measure ONE crossing near the front-left
+   with a ruler (X from the plate's left edge, Y from its front edge); every other crossing is 10 mm further per
+   square. Pick corners in the front-left half of the view, where the squares look biggest: far away they are only
+   a few pixels deep and a click can land on the neighbouring corner. Press **Save markers.json** and move the file
+   from Downloads into `calib_shots/` (or pass `--markers ~/Downloads/markers.json`). Do not paste it into TextEdit:
+   it adds formatting and curly quotes. A wrong origin (e.g. every X off by 10 mm) cannot be detected by the
    software; the overlay in step 5 shows it.
 4. Fit:
    ```bash
