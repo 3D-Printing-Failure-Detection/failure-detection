@@ -1,0 +1,7 @@
+# Unseen-part test shape for the camera failure detector (never in its training data).
+name: l-bracket
+height: 6
+layer_h: 0.2
+geometry:
+  - add: {polygon: {points: [[-20, -15], [20, -15], [20, -5], [-10, -5], [-10, 15], [-20, 15]]}}
+  - cut: {circle: {center: [12, -10], r: 2.5}}

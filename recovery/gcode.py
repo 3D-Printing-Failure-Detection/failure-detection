@@ -82,26 +82,71 @@ def layer_paths(region, layer_idx, w=C.LINE_W, loops=2, tagged=False):
     return paths if tagged else [p for _, p in paths]
 
 
+def gap_fill_paths(region, paths, w=C.LINE_W, min_gap=0.15):
+    """Strips of `region` that the line paths (each `w` wide) leave empty, e.g. the middle of a
+    wall thinner than four line widths. Returns (polyline, width) along each strip's middle."""
+    if not paths:
+        return []
+    covered = shapely.union_all([LineString(p).buffer(w / 2, quad_segs=4) for p in paths if len(p) > 1])
+    out = []
+    for strip in polys(clean(region.difference(covered.buffer(0.01)))):
+        width = 2 * strip.area / max(strip.length, 1e-9)          # a thin strip: area ~ length x width
+        if width < min_gap or width > 2 * w:
+            continue
+        for mid in polys(strip.buffer(-0.45 * width, quad_segs=4)):
+            if mid.interiors:                       # a closed ring of gap: one loop along its middle
+                out.append((np.array(mid.exterior.coords), width))
+                continue
+            # an open strip: one line along its long axis (tracing the outline would extrude it twice)
+            r = np.array(mid.minimum_rotated_rectangle.exterior.coords)[:4]
+            sides = [(r[i], r[(i + 1) % 4]) for i in range(4)]
+            short = sorted(sides, key=lambda s: np.hypot(*(s[1] - s[0])))[:2]
+            out.append((np.array([(short[0][0] + short[0][1]) / 2, (short[1][0] + short[1][1]) / 2]), width))
+    return out
+
+
 def write_layers(layers: List[Layer], layer_h, start_idx=0, w=C.LINE_W, loops=2,
-                 feed=1800, origin=None, bambu=False) -> Tuple[str, float]:
+                 feed=1800, origin=None, bambu=False, gap_fill=False, retract_mm=0.0,
+                 zhop_mm=0.0) -> Tuple[str, float]:
     """G-code text for the layers; returns (text, filament_mm).
     bambu=True also emits `M73 L<n>` (layer progress) so the printer's reported
-    layer_num keeps counting through adapted layers."""
+    layer_num keeps counting through adapted layers. For G-code that a real printer will run
+    (the defaults keep the simulator's output unchanged): gap_fill extrudes the empty middle of
+    thin walls; retract_mm pulls the filament back before each travel; zhop_mm opens the gap
+    between nozzle and part during travel (on the P1S the bed drops, the nozzle stays put)."""
     out, filament = [], 0.0
     cx, cy = origin or C.BED_CENTER
     for k, lay in enumerate(layers):
         out += [";LAYER_CHANGE", f";Z:{lay.z:.3f}", f";HEIGHT:{layer_h:.3f}", f";WIDTH:{w:.3f}"]
         if bambu:
             out.append(f"M73 L{start_idx + k + 1}")
-        out.append(f"G1 Z{lay.z:.3f} F600")
+        tagged = layer_paths(lay.region, start_idx + k, w, loops, tagged=True)
+        jobs = [(feat, path, w) for feat, path in tagged]
+        if gap_fill:
+            jobs += [("Gap infill", path, gw) for path, gw in gap_fill_paths(lay.region, [p for _, p in tagged], w)]
+        if not zhop_mm:
+            out.append(f"G1 Z{lay.z:.3f} F600")
         tag = None
-        for feat, path in layer_paths(lay.region, start_idx + k, w, loops, tagged=True):
+        for i, (feat, path, width) in enumerate(jobs):
             if feat != tag:
                 out.append(f";TYPE:{feat}")
                 tag = feat
-            out.append(f"G0 X{path[0,0]+cx:.3f} Y{path[0,1]+cy:.3f} F7200")
+            if zhop_mm:                         # lift clear, travel, come back down, prime
+                if retract_mm and (i or k):
+                    out.append(f"G1 E-{retract_mm:.2f} F1800")
+                out.append(f"G1 Z{lay.z + zhop_mm:.3f} F600")
+                out.append(f"G0 X{path[0,0]+cx:.3f} Y{path[0,1]+cy:.3f} F7200")
+                out.append(f"G1 Z{lay.z:.3f} F600")
+                if retract_mm and (i or k):
+                    out.append(f"G1 E{retract_mm:.2f} F1800")
+            else:
+                if retract_mm and i:
+                    out.append(f"G1 E-{retract_mm:.2f} F1800")
+                out.append(f"G0 X{path[0,0]+cx:.3f} Y{path[0,1]+cy:.3f} F7200")
+                if retract_mm and i:
+                    out.append(f"G1 E{retract_mm:.2f} F1800")
             for a, b in zip(path[:-1], path[1:]):
-                e = _e(np.hypot(*(b - a)), w, layer_h)
+                e = _e(np.hypot(*(b - a)), width, layer_h)
                 filament += e
                 out.append(f"G1 X{b[0]+cx:.3f} Y{b[1]+cy:.3f} E{e:.5f} F{feed}")
     return "\n".join(out) + "\n", filament
@@ -327,17 +372,24 @@ def inspect_gcode(text: str, origin=None) -> dict:
         bounds_mm=[round(v, 2) for v in shapely.union_all([l.region for l in solid]).bounds] if solid else None)
 
 
+PLATE_TEMP_KEYS = {"cool plate": "cool_plate_temp", "engineering plate": "eng_plate_temp",
+                   "high temp plate": "hot_plate_temp", "textured pei plate": "textured_plate_temp"}
+
+
 def print_settings(text: str, default_nozzle=220, default_bed=55) -> dict:
-    """Temperatures from the config block Bambu Studio appends to its G-code."""
+    """Temperatures from the config block Bambu Studio appends to its G-code. The bed temperature
+    is the one for the plate the job was sliced for (`curr_bed_type`), when the file says so."""
     def grab(keys, default):
         for k in keys:
             m = re.search(rf"^;\s*{k}\s*=\s*(\d+)", text, re.M)
             if m:
                 return int(m.group(1))
         return default
+    plate = re.search(r"^;\s*curr_bed_type\s*=\s*(.+?)\s*$", text, re.M)
+    first = PLATE_TEMP_KEYS.get(plate.group(1).lower()) if plate else None
     return dict(nozzle=grab(["nozzle_temperature"], default_nozzle),
-                bed=grab(["hot_plate_temp", "textured_plate_temp", "cool_plate_temp",
-                          "eng_plate_temp"], default_bed))
+                bed=grab(([first] if first else []) + ["hot_plate_temp", "textured_plate_temp",
+                                                       "cool_plate_temp", "eng_plate_temp"], default_bed))
 
 
 def splice_gcode(original: str, keep_layers: int, new_layers: List[Layer], layer_h,

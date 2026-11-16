@@ -9,17 +9,22 @@
   fea-verify  check the FE solver against closed-form benchmarks
   stress    FE stress-test the part about to be printed (optionally with an injected failure)
   slice     cross-section an STL into layers and write G-code (no slicer needed)
+  connection-test  can the laptop talk to the P1S? network, status, camera, files (+ optional pause/resume)
   check-gcode  offline: what the parser makes of a sliced file (markers, layers, outline rebuild)
   agent     agentic monitoring: pause on alarm, function check, decider recommends, a person approves
   llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
-  watch     watch-only loop on a real P1S: logs what it WOULD do, saves frames, never commands
-  live      run the loop on a real Bambu P1S (print started from Bambu Studio); acts on alarms
+  calibrate-board  calibrate from a large 10 mm checkerboard: tilted frames + flat frames at known bed Z
+  calibrate-bed  same, without a checkerboard: click the bed edges in one frame
+  watch     watch-only loop on a real P1S: checks every layer, logs and marks up frames, never commands
+  sim-printer  a simulated P1S on this machine (same connections as the real one), to test watch/agent
 """
 import argparse
 import sys
 from pathlib import Path
+
+from . import config as C
 
 
 def main(argv=None):
@@ -89,9 +94,48 @@ def main(argv=None):
     c.add_argument("--square-mm", type=float, default=10.0)
     c.add_argument("--board-origin", type=float, nargs=2, default=[100.0, 100.0],
                    help="bed X Y (mm) of the board's first inner corner in the flat shot")
+    c.add_argument("--calib-z", type=float, required=True,
+                   help="bed Z shown on the printer screen during the flat shot (mm)")
+    c.add_argument("--board-thickness", type=float, default=0.0, help="mm from the plate to the board's printed face")
+    c.add_argument("--camera-height", type=float, default=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM,
+                   help="measured camera height above the print plane, used to check the fit (mm)")
+    c.add_argument("--force", action="store_true", help="save even if the camera-height check fails")
+    bd = sub.add_parser("calibrate-board", help="calibrate from a large checkerboard (see docs/calibration-board.md)")
+    bd.add_argument("--ip", default=None, help="with --code: capture frames interactively into --dir")
+    bd.add_argument("--code", default=None)
+    bd.add_argument("--dir", default="calib_shots", help="folder with shots.json and the frames")
+    bd.add_argument("--markers", default=None, help="markers.json from the click page (default: <dir>/markers.json)")
+    bd.add_argument("--square-mm", type=float, default=10.0)
+    bd.add_argument("--board-thickness", type=float, default=0.0, help="mm from the plate to the board's printed face")
+    bd.add_argument("--camera-height", type=float, default=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM,
+                    help="measured camera height above the print plane, used to check the fit (mm)")
+    bd.add_argument("--out", default="calib.npz")
+    bd.add_argument("--force", action="store_true", help="save even if the fit is not acceptable")
+    cb = sub.add_parser("calibrate-bed", help="checkerboard-free calibration from the bed edges (see docs/calibration-without-checkerboard.md)")
+    cb.add_argument("--ip"); cb.add_argument("--code")
+    cb.add_argument("--image", default=None, help="use this saved frame instead of grabbing one from the printer")
+    cb.add_argument("--points", default=None, help="points.json from the click page; omit to grab a frame and write the page")
+    cb.add_argument("--profile", default=None, help="existing calib.npz: keep its lens, refit only the pose from the corners")
+    cb.add_argument("--out", default="calib.npz")
+    cb.add_argument("--fov", type=float, default=None, help="diagonal FOV prior in degrees (default 110)")
+    cb.add_argument("--bed", type=float, default=256.0, help="plate edge length in mm")
+    cb.add_argument("--force", action="store_true", help="save even if the fit is not acceptable")
+    cb.add_argument("--calib-z", type=float, default=None,
+                    help="bed Z (mm, printer screen) when the frame was grabbed; required to fit (the P1S bed moves in Z)")
+    cb.add_argument("--camera-height", type=float, default=C.P1S_CAMERA_ABOVE_PRINT_PLANE_MM,
+                    help="measured camera height above the print plane, used to check the fit (mm)")
+    cb.add_argument("--height-prior", type=float, default=None, metavar="SIGMA_MM",
+                    help="also use --camera-height as a soft constraint in the fit, with this uncertainty (mm)")
     from .agent.cli import add_arguments as agent_arguments, add_decider_arguments
     agent_arguments(sub.add_parser("agent"))
     add_decider_arguments(sub.add_parser("llm-check"))
+    ct = sub.add_parser("connection-test")
+    ct.add_argument("--ip"), ct.add_argument("--serial"), ct.add_argument("--code")
+    ct.add_argument("--commands", action="store_true", help="also pause and resume a RUNNING print (asks first)")
+    ct.add_argument("--mock", action="store_true", help="run the checklist against a fake printer")
+    ct.add_argument("--mock-broken", nargs="*", default=[], choices=["network", "status", "camera", "files", "commands"],
+                    help="--mock: make these steps fail, to see the hints")
+    ct.add_argument("--out", default="results/connection-test")
     cg = sub.add_parser("check-gcode")
     cg.add_argument("file", help="Bambu Studio .gcode.3mf or a plain .gcode")
     cg.add_argument("--plate", type=int, default=1)
@@ -100,7 +144,6 @@ def main(argv=None):
     pb.add_argument("--ip", required=True)
     pb.add_argument("--serial", required=True)
     pb.add_argument("--code", required=True, help="printer LAN access code")
-    pb.add_argument("--calib", default=None, help="optional calib.npz: also save a top-down view")
     pb.add_argument("--out", default="results/probe")
     wt = sub.add_parser("watch")
     src = wt.add_mutually_exclusive_group(required=True)
@@ -110,20 +153,33 @@ def main(argv=None):
     wt.add_argument("--ip", required=True)
     wt.add_argument("--serial", required=True)
     wt.add_argument("--code", required=True)
-    wt.add_argument("--calib", default="calib.npz")
-    wt.add_argument("--models", default="classical", choices=["classical", "torch"])
-    wt.add_argument("--no-decide", action="store_true", help="only detect; skip the (slower) policy")
+    wt.add_argument("--calib", default="calib.npz", help="camera calibration (default camera if missing)")
+    wt.add_argument("--layer-model", default="runs/p1s_layer", help="failure detector checkpoint")
     wt.add_argument("--out", default="results/watch")
-    lv = sub.add_parser("live")
-    lv.add_argument("--part", required=True, help="part YAML with `gcode:` pointing at the sliced .gcode.3mf")
-    lv.add_argument("--ip", required=True)
-    lv.add_argument("--serial", required=True)
-    lv.add_argument("--code", required=True)
-    lv.add_argument("--calib", default="calib.npz")
-    lv.add_argument("--models", default="classical", choices=["classical", "torch"])
-    lv.add_argument("--mode", default="restart", choices=["restart"])
-    lv.add_argument("--rehome-gcode", default="", help="G-code run before resuming, or preset: none, lift_xy")
-    lv.add_argument("--skip-stress", action="store_true", help="do not gate the print on the FE stress test")
+    wt.add_argument("--view", type=int, metavar="PORT", help="serve a live page of the marked-up frames on this port")
+    wt.add_argument("--view-host", default="127.0.0.1", help="address for the live page (0.0.0.0 = whole network)")
+    wt.add_argument("--ports", help="MQTT,camera ports if not 8883,6000 (the simulated printer)")
+    sp = sub.add_parser("sim-printer", help="a simulated P1S on this machine (same connections as the real one)")
+    ssrc = sp.add_mutually_exclusive_group(required=True)
+    ssrc.add_argument("--part", help="part YAML")
+    ssrc.add_argument("--gcode", help="sliced .gcode.3mf/.gcode")
+    sp.add_argument("--plate", type=int, default=1)
+    sp.add_argument("--fail", choices=["collapse", "warp", "shift", "under_extrusion", "detach"],
+                    help="make this failure happen (default: a good print)")
+    sp.add_argument("--fail-at", type=int, help="layer the failure starts at (default: random)")
+    sp.add_argument("--severity", type=float, help="failure size in mm (default: random)")
+    sp.add_argument("--layer-s", type=float, default=3.0, help="seconds per layer")
+    sp.add_argument("--start-layer", type=int, default=0, help="begin part-way through the print")
+    sp.add_argument("--host", default="127.0.0.1")
+    sp.add_argument("--mqtt-port", type=int, default=8883)
+    sp.add_argument("--camera-port", type=int, default=6000)
+    sp.add_argument("--serial", default="SIMP1S")
+    sp.add_argument("--code", default="12345678")
+    sp.add_argument("--camera-error", type=float, default=1.0, help="how far the camera is off the calibration")
+    sp.add_argument("--calib", help="calibration .npz the simulated camera is close to (default camera if not given)")
+    sp.add_argument("--seed", type=int, default=0)
+    sp.add_argument("--wait-s", type=float, default=600.0, help="start printing once watch/agent connects, or after this")
+    sp.add_argument("--linger-s", type=float, default=10.0, help="keep serving after the print ends")
 
     a = ap.parse_args(argv)
     if a.cmd == "specgen":
@@ -181,8 +237,29 @@ def main(argv=None):
         return
     if a.cmd == "calibrate":
         from .live import calibrate
-        calibrate(a.ip, a.code, a.out, square_mm=a.square_mm, board_origin=tuple(a.board_origin))
+        calibrate(a.ip, a.code, a.out, a.calib_z, square_mm=a.square_mm, board_origin=tuple(a.board_origin),
+                  board_thickness=a.board_thickness, camera_height=a.camera_height, force=a.force)
         return
+    if a.cmd == "calibrate-board":
+        if a.ip and not a.code:
+            raise SystemExit("--ip needs --code (printer LAN access code)")
+        from .calib_board import main as calibrate_board
+        calibrate_board(a)
+        return
+    if a.cmd == "calibrate-bed":
+        from .calib_offline import main as calibrate_bed
+        calibrate_bed(a)
+        return
+    if a.cmd == "connection-test":
+        from .connection_test import MockPrinter, RealPrinter, run
+        if a.mock:
+            printer = MockPrinter(a.mock_broken)
+        elif a.ip and a.serial and a.code:
+            printer = RealPrinter(a.ip, a.serial, a.code)
+        else:
+            raise SystemExit("give --ip, --serial and --code (from the printer screen), or --mock")
+        res = run(printer, a.out, commands=a.commands)
+        raise SystemExit(0 if res["ok"] else 1)
     if a.cmd == "llm-check":
         from .agent.cli import llm_check
         llm_check(a)
@@ -215,16 +292,20 @@ def main(argv=None):
         return
     if a.cmd == "probe":
         from .live import probe
-        probe(a.ip, a.serial, a.code, a.out, a.calib)
+        probe(a.ip, a.serial, a.code, a.out)
         return
     if a.cmd == "watch":
         from .live import run_watch
-        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.models, a.out,
-                  decide=not a.no_decide, plate=a.plate)
+        ports = None
+        if a.ports:
+            m, c = (int(v) for v in a.ports.split(","))
+            ports = dict(mqtt=m, camera=c)
+        run_watch(a.part, a.gcode, a.ip, a.serial, a.code, a.calib, a.layer_model, a.out, plate=a.plate,
+                  ports=ports, view_port=a.view, view_host=a.view_host, log=lambda *m: print(*m, flush=True))
         return
-    if a.cmd == "live":
-        from .live import run_live
-        run_live(a.part, a.ip, a.serial, a.code, a.calib, a.models, a.mode, a.rehome_gcode, a.skip_stress)
+    if a.cmd == "sim-printer":
+        from .printer.fake_p1s import main_sim_printer
+        main_sim_printer(a, log=lambda *m: print(*m, flush=True))
         return
     if a.cmd == "demo":
         from .run import run_scenario

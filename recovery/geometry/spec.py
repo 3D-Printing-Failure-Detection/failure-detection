@@ -1,7 +1,8 @@
 """Function specs: turn a measured/planned layer stack into a pass/fail verdict.
 
 Checks (all optional, driven by parts/<name>.yaml):
-  container    closed walls above base_h, flat solid base, capacity range
+  container    closed walls above base_h, no cavity over open air in the layer below, flat solid base,
+               capacity range (counted up to the first leaking layer)
   min_wall_mm  no layer (beyond a small defect budget) thinner than this
   material_volume_mm3, holes (through-hole size/position)
   connected (z-range must be N pieces, e.g. handle fused), present (material must exist)
@@ -13,6 +14,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List
 
 from shapely.geometry import Point
+from shapely.ops import unary_union
 
 from ..types import Layer
 from . import features as F
@@ -21,6 +23,7 @@ from .ops import polys
 MAX_DEFECT_LAYERS = 3        # layers allowed to dip below min_wall
 HARD_WALL_FRAC = 0.6         # ...but never below this fraction of min_wall
 OVERHANG_AREA = 6.0          # mm^2 of excess overhang that breaks a part
+LEAK_AREA = 1.0              # mm^2 of cavity over open air in the layer below (beyond the design): liquid drains
 
 
 @dataclass
@@ -31,6 +34,16 @@ class Verdict:
 
     def __str__(self):
         return "OK" if self.ok else "FAIL: " + "; ".join(self.violations)
+
+
+def _leak_area(lay: Layer, below: Layer) -> float:
+    """Cavity of `lay` that sits over neither material nor cavity of the layer below: liquid in it
+    drains out between the layers even though each layer on its own is a closed ring (a wall that
+    steps sideways by more than its thickness, e.g. resuming over a deep dent)."""
+    cav = unary_union(F.base(lay)["holes"])
+    if cav.is_empty:
+        return 0.0
+    return cav.difference(unary_union([below.region] + F.base(below)["holes"])).area
 
 
 def check(layers: List[Layer], planned: List[Layer], spec: dict, layer_h: float) -> Verdict:
@@ -49,8 +62,8 @@ def check(layers: List[Layer], planned: List[Layer], spec: dict, layer_h: float)
     c = spec.get("container")
     if c:
         base_h = c["base_h"]
-        cap, bad_wall, bad_base = 0.0, 0, 0
-        for lay, pl in zip(layers, planned):
+        cap, bad_wall, bad_base, leaks, worst_leak, drained = 0.0, 0, 0, 0, 0.0, False
+        for j, (lay, pl) in enumerate(zip(layers, planned)):
             f, pf = F.base(lay), F.base(pl)
             if lay.z <= base_h:
                 if f["area"] < 0.85 * pf["area"] or f["n_main_holes"] > 0:
@@ -58,10 +71,20 @@ def check(layers: List[Layer], planned: List[Layer], spec: dict, layer_h: float)
             else:
                 if f["hole_area"] < 0.5 * pf["hole_area"]:
                     bad_wall += 1
-                cap += f["hole_area"] * layer_h
+                if j > 0:
+                    leak = _leak_area(lay, layers[j - 1]) - _leak_area(pl, planned[j - 1])
+                    worst_leak = max(worst_leak, leak)
+                    if leak > LEAK_AREA:
+                        leaks += 1
+                        drained = True       # the water line: nothing from this layer up is held
+                if not drained:
+                    cap += f["hole_area"] * layer_h
         met["capacity_mm3"] = cap
+        met["leak_mm2"] = worst_leak
         if bad_wall:
             viol.append(f"walls not closed in {bad_wall} layers (leaks)")
+        if leaks:
+            viol.append(f"cavity over open air in {leaks} layers ({worst_leak:.0f} mm2 at worst; leaks between layers)")
         if bad_base:
             viol.append(f"base not flat/solid in {bad_base} layers")
         lo, hi = c["capacity_mm3"]

@@ -59,6 +59,13 @@ class LocalSupervisor:
         self.endpoint, self.model, self.timeout = endpoint.rstrip('/'), model, timeout
         self.audit = []
 
+    def _complete(self, payload):
+        """Send the request; return an OpenAI-style chat-completion dict."""
+        request = urllib.request.Request(self.endpoint + '/v1/chat/completions',
+            data=json.dumps(payload, allow_nan=False).encode(), headers={'Content-Type': 'application/json'})
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            return json.load(response)
+
     def choose(self, observation, candidates):
         ids = [c['id'] for c in candidates if c['ok'] and c['executable'] and c.get('review_eligible', True)]
         if not ids:
@@ -113,10 +120,7 @@ class LocalSupervisor:
         self.audit.append(record)
         started = time.monotonic()
         try:
-            request = urllib.request.Request(self.endpoint + '/v1/chat/completions',
-                data=json.dumps(payload, allow_nan=False).encode(), headers={'Content-Type': 'application/json'})
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
-                result = json.load(response)
+            result = self._complete(payload)
             record['response'] = result
             content = result['choices'][0]['message']['content']
             selected = json.loads(content)
@@ -133,6 +137,78 @@ class LocalSupervisor:
         finally:
             record['seconds'] = time.monotonic() - started
             record['request_sha256'] = hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+
+
+class ClaudeSupervisor(LocalSupervisor):
+    """Same prompt, schema, validation and audit as LocalSupervisor, answered by Claude.
+
+    The reply is stored in the OpenAI chat-completion shape so the audit tooling reads
+    Claude and Qwen records identically. Needs ANTHROPIC_API_KEY (or a `client`).
+    """
+
+    def __init__(self, model='claude-sonnet-5-5', timeout=60, client=None, max_tokens=300):
+        self.endpoint, self.model, self.timeout = 'anthropic', model, timeout
+        self.client, self.max_tokens, self.audit = client, max_tokens, []
+
+    def _complete(self, payload):
+        if self.client is None:
+            import os
+            import anthropic
+            self.client = anthropic.Anthropic(api_key=os.environ['ANTHROPIC_API_KEY'], timeout=self.timeout)
+        schema = payload['response_format']['json_schema']['schema']
+        system = payload['messages'][0]['content'] + (
+            ' Reply with ONLY a JSON object matching this schema, no prose or code fences: '
+            + json.dumps(schema, separators=(',', ':')))
+        msg = self.client.messages.create(model=self.model, max_tokens=self.max_tokens, system=system,
+                                          messages=[dict(role='user', content=payload['messages'][1]['content'])])
+        text = ''.join(b.text for b in msg.content if getattr(b, 'type', 'text') == 'text').strip()
+        if text.startswith('```'):
+            text = text.strip('`').removeprefix('json').strip()
+        return dict(model=self.model, usage=dict(input_tokens=msg.usage.input_tokens,
+                                                 output_tokens=msg.usage.output_tokens),
+                    choices=[dict(message=dict(content=text),
+                                  finish_reason='stop' if msg.stop_reason == 'end_turn' else msg.stop_reason)])
+
+
+class FallbackSupervisor:
+    """Primary supervisor (Claude); if it fails or answers invalidly, ask the backup (local Qwen).
+
+    The switch is never silent: the audit holds every attempt, and the backup's record carries
+    `fallback_for` with the primary's error. If the backup also fails, the error propagates
+    (no unsupervised decision).
+    """
+
+    def __init__(self, primary, backup):
+        self.primary, self.backup, self.audit = primary, backup, []
+
+    @property
+    def model(self):
+        return f'{self.primary.model}->{self.backup.model}'
+
+    def choose(self, observation, candidates):
+        n1, n2 = len(self.primary.audit), len(self.backup.audit)
+        try:
+            return self.primary.choose(observation, candidates)
+        except Exception as exc:
+            error = f'{type(exc).__name__}: {exc}'[:300]
+            try:
+                return self.backup.choose(observation, candidates)
+            finally:
+                if len(self.backup.audit) > n2:
+                    self.backup.audit[-1]['fallback_for'] = dict(primary=self.primary.model, error=error)
+        finally:
+            self.audit.extend(self.primary.audit[n1:] + self.backup.audit[n2:])
+
+
+def make_supervisor(backend='claude', endpoint='http://127.0.0.1:8089', local_model='local-qwen3',
+                    timeout=120, claude_model='claude-sonnet-5-5'):
+    """'claude' = Claude with local Qwen as backup; 'local' = Qwen only."""
+    local = LocalSupervisor(endpoint, local_model, timeout)
+    if backend == 'local':
+        return local
+    if backend != 'claude':
+        raise ValueError(f'unknown supervisor backend {backend!r}')
+    return FallbackSupervisor(ClaudeSupervisor(claude_model), local)
 
 
 class LocalAgentMixin:
@@ -191,7 +267,7 @@ class LocalAgentMixin:
         # prose is preserved in the raw audit, but the operator-facing reason
         # states only the selected action and the tool-verified prediction.
         return Decision('continue' if chosen['name'] == 'continue' else 'adapt',
-            'local Qwen selected ' + chosen['name'] + '; predicted function checks pass',
+            'supervisor (' + str(self.supervisor.model) + ') selected ' + chosen['name'] + '; predicted function checks pass',
             chosen['plan'], chosen['verdict'], considered)
 
 

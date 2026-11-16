@@ -5,6 +5,10 @@ from dataclasses import dataclass
 # Bambu Lab P1S: 256 x 256 mm bed, origin front-left, part usually arranged at the centre
 BED_SIZE = (256.0, 256.0)
 BED_CENTER = (128.0, 128.0)
+# Chamber camera height above the plate at the first layer, measured by the team (Nov 2026). The
+# bed drops as the print grows and the camera is fixed, so this is also its height above the top of
+# every layer being printed. Used only to CHECK a calibration (and as an optional prior), never to map.
+P1S_CAMERA_ABOVE_PRINT_PLANE_MM = 22.784
 NOZZLE = 0.4
 LINE_W = 0.42              # Bambu Studio default wall width for a 0.4 mm nozzle
 FILAMENT_D = 1.75

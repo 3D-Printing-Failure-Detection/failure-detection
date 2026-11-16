@@ -1,5 +1,9 @@
 """Hybrid MuJoCo printer: actuated stages + rendered RGB + geometric deposition.
 
+The OVERHEAD RESEARCH RIG: its camera looks straight down, which the real P1S cannot. It is kept for the
+report's results (docs/mujoco-report.md) and their tests. The real printer and its rehearsal sim use only the
+P1S camera's own view (recovery/p1s_view.py, recovery/agent/rehearse.py).
+
 Every generated extrusion polyline is executed as settled waypoint moves. The
 realized nozzle/bed coordinates are buffered into beads, then a prescribed failure
 deforms the deposited layer. This is a quasi-static toolpath model: no melt,

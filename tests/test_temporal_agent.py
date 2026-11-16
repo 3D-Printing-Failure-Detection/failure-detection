@@ -260,3 +260,49 @@ def test_reused_review_requires_fresh_passing_checks(monkeypatch, persistence_mo
     assert len(policy.supervisor.audit) == 2
     candidate['verdict'] = Verdict(False, ['newly failing measurement'])
     assert policy.decide([layer] * 10, [layer] * 20, detection).action == 'scrap'
+
+
+class _FakeClaude:
+    def __init__(self, text=None, error=None):
+        self.text, self.error, self.messages = text, error, self
+    def create(self, **kw):
+        if self.error:
+            raise self.error
+        from types import SimpleNamespace as N
+        return N(content=[N(type='text', text=self.text)], stop_reason='end_turn',
+                 usage=N(input_tokens=10, output_tokens=5))
+
+
+def _qwen_ok(monkeypatch, candidate):
+    response = dict(choices=[dict(message=dict(content=json.dumps(dict(candidate=candidate, reason='qwen'))),
+                                  finish_reason='stop')])
+    monkeypatch.setattr('urllib.request.urlopen', lambda *a, **kw: io.BytesIO(json.dumps(response).encode()))
+
+
+CANDS = [dict(id=1, ok=True, executable=True), dict(id=2, ok=True, executable=True)]
+
+
+def test_claude_supervisor_answers_in_audit_compatible_shape():
+    from recovery.loop.local_agent import ClaudeSupervisor
+    sup = ClaudeSupervisor(client=_FakeClaude('```json\n{"candidate": 2, "reason": "ok"}\n```'))
+    assert sup.choose({}, CANDS)['candidate'] == 2
+    rec = sup.audit[-1]
+    assert rec['accepted'] and rec['response']['choices'][0]['finish_reason'] == 'stop'
+
+
+def test_claude_failure_falls_back_to_qwen_visibly(monkeypatch):
+    from recovery.loop.local_agent import ClaudeSupervisor, FallbackSupervisor
+    _qwen_ok(monkeypatch, 1)
+    sup = FallbackSupervisor(ClaudeSupervisor(client=_FakeClaude(error=TimeoutError('down'))), LocalSupervisor())
+    assert sup.choose({}, CANDS)['candidate'] == 1
+    assert [a['accepted'] for a in sup.audit] == [False, True]
+    assert 'TimeoutError' in sup.audit[-1]['fallback_for']['error']
+
+
+def test_claude_invalid_choice_falls_back_and_claude_success_skips_qwen(monkeypatch):
+    from recovery.loop.local_agent import ClaudeSupervisor, FallbackSupervisor
+    _qwen_ok(monkeypatch, 2)
+    bad = FallbackSupervisor(ClaudeSupervisor(client=_FakeClaude('{"candidate": 9, "reason": "x"}')), LocalSupervisor())
+    assert bad.choose({}, CANDS)['candidate'] == 2 and len(bad.audit) == 2
+    good = FallbackSupervisor(ClaudeSupervisor(client=_FakeClaude('{"candidate": 1, "reason": "x"}')), LocalSupervisor())
+    assert good.choose({}, CANDS)['candidate'] == 1 and len(good.audit) == 1

@@ -34,7 +34,6 @@ import cv2
 import numpy as np
 
 from .. import config as C
-from ..camera import BedCamera
 from ..gcode import print_settings, write_layers
 from ..types import Layer
 
@@ -67,7 +66,9 @@ def resume_gcode(layers: List[Layer], layer_h, start_idx, origin, nozzle=220, be
     if rehome_gcode:
         head.append(rehome_gcode)
     head += [f"G1 Z{z0 + z_hop:.3f} F600", "M106 P1 S255"]       # part-cooling fan on
-    body, _ = write_layers(layers, layer_h, start_idx=start_idx, origin=origin, bambu=True)
+    # thin walls filled, filament retracted and the bed dropped z_hop for every travel move
+    body, _ = write_layers(layers, layer_h, start_idx=start_idx, origin=origin, bambu=True,
+                           gap_fill=True, retract_mm=0.8, zhop_mm=z_hop)
     return "\n".join(head) + "\n" + body + FOOTER
 
 
@@ -109,7 +110,7 @@ def upload_ftps(ip, code, name, data: bytes, remote_dir=""):
 
 class BambuLink:
     """MQTT connection: merges printer reports into `.state`, publishes commands."""
-    def __init__(self, ip, serial, code):
+    def __init__(self, ip, serial, code, port=8883):
         import paho.mqtt.client as mqtt
         self.serial, self.state, self.seq = serial, {}, 0
         self.lock = threading.Lock()
@@ -122,7 +123,7 @@ class BambuLink:
         self.cli.tls_insecure_set(True)
         self.cli.on_connect = lambda c, u, f, rc, *a: c.subscribe(f"device/{serial}/report")
         self.cli.on_message = self._on_msg
-        self.cli.connect(ip, 8883, 60)
+        self.cli.connect(ip, port, 60)
         self.cli.loop_start()
         self.pushall()
 
@@ -162,8 +163,8 @@ class BambuLink:
 
 class BambuCamera:
     """P1/A1 chamber camera: TLS on port 6000, 16-byte-per-field little-endian framing."""
-    def __init__(self, ip, code):
-        self.ip, self.code = ip, code
+    def __init__(self, ip, code, port=6000):
+        self.ip, self.code, self.port = ip, code, port
         self.frame: Optional[np.ndarray] = None
         self.frame_t = 0.0                # time.time() when `frame` arrived
         self._stop = False
@@ -183,7 +184,7 @@ class BambuCamera:
     def _run(self):
         while not self._stop:
             try:
-                raw = socket.create_connection((self.ip, 6000), timeout=10)
+                raw = socket.create_connection((self.ip, self.port), timeout=10)
                 s = _insecure_ctx().wrap_socket(raw)
                 s.sendall(struct.pack("<IIII", 0x40, 0x3000, 0, 0)
                           + b"bblp".ljust(32, b"\0") + self.code.encode().ljust(32, b"\0"))
@@ -219,10 +220,17 @@ class BambuPrinter:
     _seen_running = False
     _layer_done_t = 0.0
     last_frame = None
+    notify_pause = False             # dent tests: return "paused" when someone else pauses the printer
+    _paused_by_us = False
+    _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
+    frame_extra_drop_mm = 0.0        # extra bed drop while frames are grabbed (timelapse park Z-hop); measure it
 
-    def __init__(self, ip, serial, code, planned: List[Layer], layer_h, bed_camera: BedCamera,
+    def __init__(self, ip, serial, code, planned: List[Layer], layer_h,
                  origin=None, original_gcode: Optional[str] = None, mode="restart",
-                 rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False):
+                 rehome_gcode="", settle_s=1.5, timeout_s=4 * 3600, observe_only=False, ports=None):
+        """ports: {"mqtt": 8883, "camera": 6000} to reach a printer on other ports (the simulated printer,
+        recovery/printer/fake_p1s.py, in tests)."""
+        ports = {"mqtt": 8883, "camera": 6000, **(ports or {})}
         self.ip, self.code, self.plan, self.layer_h = ip, code, list(planned), layer_h
         if mode != "restart":
             raise ValueError("only mode='restart' is supported")
@@ -230,11 +238,10 @@ class BambuPrinter:
         self.skipped_layers = 0          # observe_only: layers that finished while we were busy
         self._seen_running = False
         self._layer_done_t = 0.0         # when the last finished layer was seen to finish
-        self.last_frame: Optional[np.ndarray] = None   # raw camera frame behind camera_image()
+        self.last_frame: Optional[np.ndarray] = None   # last raw camera frame
         self.printed: List[Layer] = []  # measured observations, not physical ground truth
-        self.link = BambuLink(ip, serial, code)
-        self.cam = BambuCamera(ip, code)
-        self.bed_cam = bed_camera
+        self.link = BambuLink(ip, serial, code, ports["mqtt"])
+        self.cam = BambuCamera(ip, code, ports["camera"])
         self.origin = origin or C.BED_CENTER
         self.mode, self.rehome, self.settle, self.timeout = mode, rehome_gcode, settle_s, timeout_s
         t = print_settings(original_gcode or "")
@@ -266,7 +273,10 @@ class BambuPrinter:
             if state == "FAILED":
                 raise RuntimeError("printer reports FAILED")
             if state == "RUNNING":
-                self._seen_running = True
+                self._seen_running, self._await_running = True, False
+            elif (state == "PAUSE" and self.notify_pause and not self._paused_by_us
+                  and not self._await_running):
+                return self._external_pause()
             elif state == "IDLE" and self._seen_running:
                 raise PrintEnded("the job was stopped on the printer (state IDLE)")
             reported = self._layer_num()
@@ -293,11 +303,35 @@ class BambuPrinter:
         time.sleep(self.settle)          # head parks (timelapse 'traditional') and the image settles
         self._layer_done_t = time.time()
 
-    def camera_image(self):
-        frame = self.cam.grab(newer_than=self._layer_done_t)     # never a frame from mid-layer
-        self.last_frame = frame
-        z = self.plan[self._layer - 1].z
-        return self.bed_cam.top_down(frame, z, self.origin)
+    def _external_pause(self):
+        """Someone else paused the printer: from the screen, the app, or a pause planned in Bambu
+        Studio. layer_num is the layer being printed (or about to print, for a planned pause), which
+        may be half done; count only the layers before it as done. (CHECK on the first real test:
+        compare the layer the agent reports with the printer screen.)"""
+        done = min(max(self._layer, self._layer_num() - 1), self.n_total)
+        self.printed.extend(self.plan[self._layer:done])
+        self._layer = done
+        self._layer_done_t = time.time()
+        return "paused"
+
+    def snapshot(self, timeout=20.0):
+        """The camera frame as the P1S camera sees it, never one from before the last finished layer.
+        There is no top-down view: everything that looks at the print uses this frame."""
+        self.last_frame = self.cam.grab(timeout=timeout, newer_than=self._layer_done_t)
+        return self.last_frame
+
+    def frame_bed_drop_mm(self) -> float:
+        """How far the bed sits below the last finished layer's own Z in the frame snapshot() returns. The bed
+        drops as the print grows and the camera is fixed: a layer counts as done once the printer reports the
+        NEXT layer, so the bed is already at the next layer's Z, plus any Z-hop while the head parks
+        (frame_extra_drop_mm). The finished layer's top is this far below the nozzle plane, i.e. the `drop_mm`
+        of p1s_view.plate_z_mm / P1SScene. After the last layer the end G-code moves the bed, so that final
+        frame is not reliable."""
+        if self._layer <= 0:
+            return self.frame_extra_drop_mm
+        done = self.plan[self._layer - 1]
+        nxt = self.plan[self._layer].z if self._layer < len(self.plan) else done.z
+        return float(nxt - done.z + self.frame_extra_drop_mm)
 
     def expected_layer(self) -> Layer:
         return self.plan[self._layer - 1]
@@ -311,19 +345,24 @@ class BambuPrinter:
 
     def pause(self):
         self._command_allowed("pause")
+        self._paused_by_us = True
         self.link.command("pause")
         if not self.link.wait_state({"PAUSE"}, timeout=60):
             raise TimeoutError("printer did not acknowledge pause")
 
     def resume(self):
         self._command_allowed("resume")
+        self._paused_by_us, self._await_running = False, True
         self.link.command("resume")
+
+    def correction_gcode(self, layers: List[Layer]) -> str:
+        """The file `replace_remaining` would upload, for inspection before approving."""
+        return resume_gcode(layers, self.layer_h, self._layer, self.origin, self.nozzle, self.bed, self.rehome)
 
     def replace_remaining(self, layers: List[Layer]):
         self._command_allowed("replace the remaining layers of")
         keep = self._layer
-        gc = resume_gcode(layers, self.layer_h, keep, self.origin, self.nozzle, self.bed, self.rehome)
-        self._restart(gc, keep, layers)
+        self._restart(self.correction_gcode(layers), keep, layers)
 
     def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2):
         """Fully automatic stop -> upload -> start -> confirm. No human touches the printer.
