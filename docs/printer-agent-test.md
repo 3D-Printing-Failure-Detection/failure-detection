@@ -52,13 +52,16 @@ Replace `IP SERIAL CODE` below with the printer's values (the same ones as in `c
 ## How every printed test goes
 
 1. Put a clean plate in. (If the screen shows FAILED from the last print, that's normal.)
-2. **Start the print first** (send `water-tray.gcode.3mf` from Bambu Studio as usual).
-3. Then, in the repo folder, start the agent with the command for that test (below). It prints
-   `agent watching ... layers`.
-4. At about **z = 6 mm (layer 30, half height)**, press **Pause on the printer screen**. Wait for
-   the head to park.
-5. The agent says `Printer paused after layer N of M`. Check that N matches the printer screen
-   (±1). Write down both.
+2. Start the print (send `water-tray.gcode.3mf` from Bambu Studio as usual) and start the agent
+   with the command for that test (below), in the repo folder. Either order is fine, and so is
+   starting the agent mid-print, as long as it is before layer 30.
+3. The agent first says `Connected.` (if it says `no status from the printer`, close Bambu
+   Studio / Bambu Handy and run `connection-test`). Then it prints a line each time the layer
+   changes, e.g. `printer: RUNNING, layer 12/60`. **If no lines appear, stop and tell us.**
+4. When the line ends with `<- pause from the printer screen now` (layer 30, z = 6 mm), press
+   **Pause on the printer screen**. Wait for the head to park.
+5. The agent says `Printer paused after layer N of M`. Write down N. Nothing happens in the
+   agent until the printer is paused: the prompts only appear after the pause.
 6. Do what the test says to the part, then follow the agent's prompts.
 7. When the agent asks for approval, it shows what it found and its recommendation:
    `Recommended: X. Enter = accept, or [1] ... [2] ...`. Press Enter to accept, or type a number.
@@ -128,6 +131,6 @@ Same command as test 1 (`--dent-test`).
 - The full terminal output (copy and paste).
 - The run folder `results/agent/<date-time>/`. Zip it. It has the log (`events.jsonl`,
   `summary.json`), the before/after photos and any G-code the agent made.
-- The layer numbers from step 5 (agent vs. printer screen).
+- The layer number N from step 5, and a copy of the `printer: ...` lines the agent printed.
 - Photos of the finished tray (side and top), plus the water-test result.
 - Anything odd: noises, bed moves, a long wait, an error message.

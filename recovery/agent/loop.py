@@ -200,7 +200,7 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
     acknowledged, baseline_next, outcome, unchecked = None, False, "finished", 0
     rule = AlarmRule(warmup, confirm)
     log(f"agent watching {tools.pr.n_total} layers (camera monitoring {'on' if monitor else 'off'}"
-        f"{', dent test at the planned pause' if dent_test else ''}); log -> {r.dir}")
+        f"{', dent test: waiting for the printer to be paused' if dent_test or resume_test else ''}); log -> {r.dir}")
     try:
         while tools.pr.n_done < tools.pr.n_total and not tools.pr.cancelled:
             if tools.next_layer() == "paused":

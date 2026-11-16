@@ -121,10 +121,16 @@ class BambuLink:
         self.cli.username_pw_set("bblp", code)
         self.cli.tls_set_context(_insecure_ctx())
         self.cli.tls_insecure_set(True)
-        self.cli.on_connect = lambda c, u, f, rc, *a: c.subscribe(f"device/{serial}/report")
+        self.last_msg_t = 0.0
+        self.cli.on_connect = self._on_connect
         self.cli.on_message = self._on_msg
         self.cli.connect(ip, port, 60)
         self.cli.loop_start()
+
+    def _on_connect(self, c, u, f, rc, *a):
+        # ask for the full status only after subscribing: a P1S answers once and afterwards sends only
+        # what changed, so a reply that arrives before the subscription is lost for good
+        c.subscribe(f"device/{self.serial}/report")
         self.pushall()
 
     def _on_msg(self, c, u, msg):
@@ -135,6 +141,7 @@ class BambuLink:
         if p:
             with self.lock:
                 self.state.update(p)
+                self.last_msg_t = time.time()
 
     def send(self, payload: dict):
         self.seq += 1
@@ -151,6 +158,18 @@ class BambuLink:
     def get(self, key, default=None):
         with self.lock:
             return self.state.get(key, default)
+
+    def wait_status(self, timeout=30.0):
+        """Wait until the printer has reported its state, asking again every 5 s."""
+        t0 = asked = time.time()
+        while time.time() - t0 < timeout:
+            if self.get("gcode_state") is not None:
+                return True
+            if time.time() - asked > 5:
+                self.pushall()
+                asked = time.time()
+            time.sleep(0.2)
+        return False
 
     def wait_state(self, states, timeout=60, poll=0.5):
         t0 = time.time()
@@ -223,6 +242,8 @@ class BambuPrinter:
     notify_pause = False             # dent tests: return "paused" when someone else pauses the printer
     _paused_by_us = False
     _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
+    skip_ahead = False               # dent test without per-layer checks: the agent may start mid-print
+    log = print                      # progress lines while waiting (dent tests)
     frame_extra_drop_mm = 0.0        # extra bed drop while frames are grabbed (timelapse park Z-hop); measure it
 
     def __init__(self, ip, serial, code, planned: List[Layer], layer_h,
@@ -267,9 +288,17 @@ class BambuPrinter:
     def print_layer(self):
         """Block until layer index n_done has finished: the printer reports layer_num = L
         while printing layer L (1-based), so layer i is done once layer_num >= i + 2."""
-        t0 = time.time()
+        t0 = asked = time.time()
         while time.time() - t0 < self.timeout:
             state = self.link.get("gcode_state")
+            if self.notify_pause:
+                self._progress(state)
+                if time.time() - asked > 60 and hasattr(self.link, "pushall"):
+                    self.link.pushall()      # a P1S sends only changes: refresh the full status now and then
+                    asked = time.time()
+            if state in ("FAILED", "FINISH") and self.notify_pause and not self._seen_running:
+                time.sleep(0.5)              # the last print's end state: wait for this print to start
+                continue
             if state == "FAILED":
                 raise RuntimeError("printer reports FAILED")
             if state == "RUNNING":
@@ -280,7 +309,7 @@ class BambuPrinter:
             elif state == "IDLE" and self._seen_running:
                 raise PrintEnded("the job was stopped on the printer (state IDLE)")
             reported = self._layer_num()
-            if reported > self._layer + 2 and self.observe_only:
+            if reported > self._layer + 2 and (self.observe_only or self.skip_ahead):
                 # we were busy while layers finished: skip ahead instead of failing
                 n = reported - 2 - self._layer
                 self.printed.extend(self.plan[self._layer:self._layer + n])
@@ -302,6 +331,22 @@ class BambuPrinter:
         self._layer += 1
         time.sleep(self.settle)          # head parks (timelapse 'traditional') and the image settles
         self._layer_done_t = time.time()
+
+    def _progress(self, state):
+        """Dent tests: say what the printer is doing whenever its state or layer changes, so the person
+        knows the agent is following the print and when to pause it."""
+        now = (state, self.link.get("layer_num"))
+        if now == getattr(self, "_shown", None):
+            return
+        self._shown = now
+        if state is None:
+            self.log("  waiting for the printer's status...")
+        elif state in ("IDLE", "FINISH", "FAILED") and not self._seen_running:
+            self.log(f"  printer: {state} (not printing yet). Start the print; the agent waits.")
+        else:
+            half = self.n_total // 2
+            hint = "  <- pause from the printer screen now" if (now[1] or 0) >= half and state == "RUNNING" else ""
+            self.log(f"  printer: {state}, layer {now[1]}/{self.link.get('total_layer_num', self.n_total)}{hint}")
 
     def _external_pause(self):
         """Someone else paused the printer: from the screen, the app, or a pause planned in Bambu

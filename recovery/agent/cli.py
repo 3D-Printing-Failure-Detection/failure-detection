@@ -221,6 +221,14 @@ def main(a):
                                origin=part.origin, original_gcode=part.gcode_text, ports=ports)
         test = None
         printer.notify_pause = bool(a.dent_test or a.resume_test)
+        printer.skip_ahead = printer.notify_pause and not monitor     # no per-layer checks: may start mid-print
+        if not printer.link.wait_status(30):
+            printer.close()
+            raise SystemExit("no status from the printer in 30 s: check --ip, --serial and --code (connection-test), "
+                             "and close Bambu Studio / Bambu Handy on other devices if they are connected over LAN")
+        if printer.notify_pause:
+            print(f"Connected. Pause from the printer screen at about half height (layer {len(nom) // 2}, "
+                  f"z = {nom[len(nom) // 2 - 1].z:.1f} mm); the agent shows the layer below and then takes over.")
         if a.dent_test:
             test = DentTest(person=lambda: input(f"\nPrinter paused after layer {printer.n_done} of "
                                                  f"{printer.n_total}. Make the dent or poke now "

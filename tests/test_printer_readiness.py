@@ -233,3 +233,20 @@ def test_watch_without_the_model_saves_frames_only(tmp_path, monkeypatch):
     assert [r["layer"] for r in rows] == [0, 1] and not any("label" in r for r in rows)
     assert len(list((run / "frames").glob("*.jpg"))) == 2
     assert json.loads((run / "meta.json").read_text())["layer_model"] is None
+
+
+def test_dent_test_started_mid_print_jumps_to_the_current_layer():
+    pr = _printer(False, gcode_state="RUNNING", layer_num=15, total_layer_num=10)
+    pr.plan = [object()] * 60
+    pr.notify_pause, pr.skip_ahead, pr.log = True, True, lambda *a: None
+    pr.print_layer()
+    assert pr.n_done == 14
+
+
+def test_dent_test_waits_through_the_last_prints_end_state():
+    shown = []
+    pr = _printer(False, gcode_state="FINISH", layer_num=0)
+    pr.notify_pause, pr.timeout, pr.log = True, 0.6, shown.append
+    with pytest.raises(TimeoutError):                 # waits for the print to start instead of failing
+        pr.print_layer()
+    assert "Start the print" in shown[0]
