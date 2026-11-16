@@ -49,6 +49,8 @@ Tray coordinates: centre (0, 0); front wall middle `0 -10`; right wall middle `1
 
 ### Test order on the printer
 
+Step-by-step guide for the person at the printer: [docs/printer-agent-test.md](../../docs/printer-agent-test.md).
+
 | Phase | Run | Passes if |
 |---|---|---|
 | 0 · setup | `connection-test` (add `--commands` during a print), `check-gcode`, one `--sim` rehearsal | all connection steps PASS; "looks usable" |

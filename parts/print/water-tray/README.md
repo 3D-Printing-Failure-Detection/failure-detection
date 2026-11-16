@@ -31,7 +31,8 @@ Pause at layer 30 (Bambu Studio preview: right-click the "+" on the layer slider
 or pause from the printer screen at 6 mm), wait for the head to park, dent, resume.
 **Safety:** nozzle about 220 °C, bed about 60 °C: use a tool, never fingers.
 
-**With the agent (dent test):** start the agent, pause from the printer screen at about 6 mm,
+**With the agent (dent test):** follow [docs/printer-agent-test.md](../../../docs/printer-agent-test.md)
+step by step. In short: start the agent, pause from the printer screen at about 6 mm,
 dent, and press Enter in the agent; do not resume on the printer. The agent saves before/after
 frames, asks what you did, checks whether the tray will still hold water, and recommends resume,
 correct (new layers that return to the original wall) or stop, for you to approve. See
