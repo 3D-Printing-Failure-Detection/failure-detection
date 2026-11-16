@@ -82,6 +82,22 @@ python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --den
 
 This is the risky one. It has never been tried on the P1S. Watch the bed the whole time it restarts.
 
+**What happens and why.** A running Bambu job can't be edited, so "correct" doesn't change the
+paused job. Instead the system:
+1. stops the paused job;
+2. uploads a new file with only the remaining layers (in this test, the original ones, unchanged);
+3. starts that file as a new job.
+
+The new file heats up and then continues at the current height (about 6 mm). It deliberately
+doesn't home Z or level the bed, because the nozzle would hit the part. So it only works if the
+printer still knows where the head is after the stop. This test checks exactly that, before any
+corrected layers are involved.
+
+Normal: the job stops, a new job starts on the screen, the printer heats, and the next layer
+prints right on top of the old one. **Not normal (press Stop):** it homes, levels the bed, or
+moves the bed up toward the nozzle over the part, or the first new layer prints in the air or
+digs into the part.
+
 ```bash
 python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --resume-test \
     --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
