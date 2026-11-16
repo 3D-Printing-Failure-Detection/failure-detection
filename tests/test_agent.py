@@ -226,6 +226,22 @@ def test_printed_layers_are_not_judged_for_hanging_over_air(tmp_path):
     assert report["continue_ok"]
 
 
+@pytest.mark.parametrize("change, leaks", [("dent 0 -10 1", False), ("dent 0 -10 3", True), ("dent 15 0 4", True)])
+def test_resuming_over_a_deep_dent_leaks_between_layers(change, leaks):
+    # each layer is a closed ring, but past the wall thickness the next layer's cavity sits over open air
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    pr = PlannedPauseSim(p.layers(), None, seed=1, pause_at=30)
+    tools = PrinterTools(pr, p)
+    while tools.next_layer() != "paused":
+        pass
+    tools.believe_top(pr.user_change(change))
+    def container(future):
+        return next(f for f in tools.function_report(future=future)["features"] if f["feature"].startswith("holds"))
+    resume = container(None)
+    assert resume["ok"] != leaks and ("open air" in resume["detail"]) == leaks
+    assert container(tools.correction()["layers"])["ok"]                # the correction stays over the dented wall
+
+
 def test_person_can_type_the_dent(tmp_path):
     from recovery.agent.measure import ManualMeasure
     answers = iter(["dent 0 -10", "dent 0 -10 3"])               # first answer is incomplete
