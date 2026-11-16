@@ -9,3 +9,4 @@ pytest>=8,<10
 mujoco==3.2.7
 trimesh>=4,<5
 rtree>=1,<2
+imageio[ffmpeg]>=2.30        # videos/make_sim_video.py (bundles an H.264 encoder)
