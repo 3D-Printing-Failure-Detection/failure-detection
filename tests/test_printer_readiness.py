@@ -1,6 +1,7 @@
 """What has to work before the first runs on the real P1S: parsing Bambu Studio output, and a
 watch-only printer backend that can never command the printer."""
 import threading
+import time
 import zipfile
 
 import numpy as np
@@ -250,3 +251,70 @@ def test_dent_test_waits_through_the_last_prints_end_state():
     with pytest.raises(TimeoutError):                 # waits for the print to start instead of failing
         pr.print_layer()
     assert "Start the print" in shown[0]
+
+
+def test_upload_does_not_wait_for_a_tls_shutdown_the_printer_never_sends():
+    import io
+    from recovery.printer.bambu import _BambuFTPS
+
+    class Conn:
+        sent = b""
+        def sendall(self, b): Conn.sent += b
+        def unwrap(self): raise TimeoutError("The read operation timed out")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    ftp = _BambuFTPS.__new__(_BambuFTPS)
+    ftp.voidcmd = lambda cmd: "200"
+    ftp.transfercmd = lambda cmd, rest=None: Conn()
+    ftp.voidresp = lambda: "226 Transfer complete"
+    assert ftp.storbinary("STOR x.gcode", io.BytesIO(b"G1 X1\n" * 5000)) == "226 Transfer complete"
+    assert len(Conn.sent) == 6 * 5000
+
+
+def test_replacement_job_asks_the_person_to_start_it_if_the_printer_does_not(monkeypatch):
+    import threading
+    import recovery.printer.bambu as B
+    uploads, shown = [], []
+    monkeypatch.setattr(B, "upload_ftps", lambda ip, code, name, data: uploads.append(name))
+    pr = _printer(False, gcode_state="PAUSE", layer_num=30)
+    pr.plan, pr._layer, pr.ip, pr.code, pr.log = [object()] * 60, 29, "ip", "code", shown.append
+    pr.link.lock, pr.link.wait_state = threading.Lock(), None
+
+    def wait_state(states, timeout=60, poll=0.05):
+        t0 = time.time()
+        while time.time() - t0 < timeout:
+            if pr.link.state.get("gcode_state") in states:
+                return True
+            time.sleep(poll)
+        return False
+
+    def command(cmd, param=""):
+        pr.link.sent.append((cmd, param))
+        if cmd == "stop":
+            pr.link.state["gcode_state"] = "IDLE"
+
+    def person_starts_it():                       # the gcode_file command did nothing; the person starts it
+        while not any("Start it from the printer screen" in m for m in shown):
+            time.sleep(0.02)
+        pr.link.state.update(gcode_state="RUNNING", layer_num=30)
+
+    pr.link.wait_state, pr.link.command = wait_state, command
+    threading.Thread(target=person_starts_it, daemon=True).start()
+    pr._restart("G1\n", 29, [object()] * 31, start_wait_s=0.3, person_wait_s=5)
+    assert len(uploads) == 1 and ("gcode_file", f"/sdcard/{uploads[0]}") in pr.link.sent
+    assert pr._offset == 0 and len(pr.plan) == 60
+
+
+def test_replacement_job_parks_the_head_at_the_end():
+    from recovery.printer.bambu import FOOTER
+    lines = FOOTER.split()
+    assert "G28" not in FOOTER and lines.index("Z10") < lines.index("X65") < lines.index("M104")
+
+
+def test_dent_test_finishes_even_if_the_layer_count_drifted_after_a_restart():
+    pr = _printer(False, gcode_state="FINISH", layer_num=31)
+    pr.plan, pr._layer, pr._seen_running = [object()] * 60, 40, True
+    pr.notify_pause, pr.skip_ahead, pr.log = True, True, lambda *a: None
+    pr.print_layer()
+    assert pr.n_done == 60

@@ -107,10 +107,14 @@ python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --res
 ```
 
 - At the pause, **don't touch the part**.
-- The agent shows `RESUME TEST` and recommends **RESTART**. Accept it. The printer stops, gets the
-  original remaining layers as a new file and starts it.
+- The agent shows `RESUME TEST` and recommends **RESTART**. Accept it. The printer stops, and the
+  agent prints `uploaded adapted_<number>.gcode; starting it`, then `... is printing`.
+- If the agent instead says `The printer did not start ... by itself`, start that exact file from
+  the printer screen (SD card files). The agent waits up to 15 min. Note which one happened: it
+  tells us whether the printer accepts the start command from the laptop.
+- At the end, the bed should drop and the head should park at the back left, away from the part.
 - **Pass:** no Z homing over the part, no collision, it continues at the right height, there's no
-  visible seam at 6 mm, and the tray holds water.
+  visible seam at 6 mm, the head parks at the end, and the tray holds water.
 - If it fails, press Stop on the printer, then send everything (see below) and a video if you can.
   Do **not** do test 3 until this passes.
 
@@ -132,5 +136,6 @@ Same command as test 1 (`--dent-test`).
 - The run folder `results/agent/<date-time>/`. Zip it. It has the log (`events.jsonl`,
   `summary.json`), the before/after photos and any G-code the agent made.
 - The layer number N from step 5, and a copy of the `printer: ...` lines the agent printed.
-- Photos of the finished tray (side and top), plus the water-test result.
+- Photos of the finished tray (side and top, close up at 6 mm), plus the water-test result.
+  **Needed for every test**: the photos and water test are what show whether the part works.
 - Anything odd: noises, bed moves, a long wait, an error message.

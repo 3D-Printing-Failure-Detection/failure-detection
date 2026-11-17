@@ -37,7 +37,24 @@ from .. import config as C
 from ..gcode import print_settings, write_layers
 from ..types import Layer
 
-FOOTER = "M104 S0\nM140 S0\nM84\n; end\n"
+# end of a replacement job, after Bambu's own P1S end G-code: retract, drop the bed 10 mm, park the head
+# at the back left (clear of the part, so it can be taken off), then fans and heaters off
+FOOTER = """
+M400
+G1 E-0.8 F1800
+G91
+G1 Z10 F900
+G90
+G1 X65 Y245 F12000
+G1 Y265 F3000
+M106 P1 S0
+M106 P2 S0
+M106 P3 S0
+M104 S0
+M140 S0
+M400
+; end
+"""
 
 
 class PrintEnded(RuntimeError):
@@ -89,6 +106,17 @@ class ImplicitFTPS(ftplib.FTP_TLS):
         self._sock = value
 
 
+class _BambuFTPS(ImplicitFTPS):
+    def storbinary(self, cmd, fp, blocksize=8192, callback=None, rest=None):
+        """ftplib's upload without the TLS shutdown on the data connection: Bambu printers never answer
+        it, so ftplib waits until the read times out although the file is already stored."""
+        self.voidcmd("TYPE I")
+        with self.transfercmd(cmd, rest) as conn:
+            while buf := fp.read(blocksize):
+                conn.sendall(buf)
+        return self.voidresp()
+
+
 def _insecure_ctx():
     ctx = ssl.create_default_context()
     ctx.check_hostname = False            # the printer uses a self-signed certificate
@@ -97,7 +125,7 @@ def _insecure_ctx():
 
 
 def upload_ftps(ip, code, name, data: bytes, remote_dir=""):
-    ftp = ImplicitFTPS(context=_insecure_ctx())
+    ftp = _BambuFTPS(context=_insecure_ctx())
     ftp.connect(ip, 990, timeout=30)
     ftp.login("bblp", code)
     ftp.prot_p()
@@ -242,6 +270,7 @@ class BambuPrinter:
     notify_pause = False             # dent tests: return "paused" when someone else pauses the printer
     _paused_by_us = False
     _await_running = False           # after we resume, ignore the PAUSE state until RUNNING is seen
+    resumed_once = False
     skip_ahead = False               # dent test without per-layer checks: the agent may start mid-print
     log = print                      # progress lines while waiting (dent tests)
     frame_extra_drop_mm = 0.0        # extra bed drop while frames are grabbed (timelapse park Z-hop); measure it
@@ -315,6 +344,10 @@ class BambuPrinter:
                 self.printed.extend(self.plan[self._layer:self._layer + n])
                 self._layer += n
                 self.skipped_layers += n
+            if state == "FINISH" and self.skip_ahead and self._seen_running:
+                self.printed.extend(self.plan[self._layer:self.n_total - 1])
+                self._layer = self.n_total - 1
+                break
             if state == "FINISH" and self._layer != self.n_total - 1:
                 if self.observe_only:
                     raise PrintEnded(f"the printer finished at our layer {self._layer} of {self.n_total} "
@@ -345,14 +378,16 @@ class BambuPrinter:
             self.log(f"  printer: {state} (not printing yet). Start the print; the agent waits.")
         else:
             half = self.n_total // 2
-            hint = "  <- pause from the printer screen now" if (now[1] or 0) >= half and state == "RUNNING" else ""
-            self.log(f"  printer: {state}, layer {now[1]}/{self.link.get('total_layer_num', self.n_total)}{hint}")
+            hint = ("  <- pause from the printer screen now" if (now[1] or 0) >= half and state == "RUNNING"
+                    and not self.resumed_once else "")
+            self.log(f"  printer: {state}, layer {self._layer_num()}/{self.n_total}{hint}")
 
     def _external_pause(self):
         """Someone else paused the printer: from the screen, the app, or a pause planned in Bambu
         Studio. layer_num is the layer being printed (or about to print, for a planned pause), which
         may be half done; count only the layers before it as done. (CHECK on the first real test:
         compare the layer the agent reports with the printer screen.)"""
+        self.resumed_once = True                       # no more "pause now" hints after the first pause
         done = min(max(self._layer, self._layer_num() - 1), self.n_total)
         self.printed.extend(self.plan[self._layer:done])
         self._layer = done
@@ -409,9 +444,10 @@ class BambuPrinter:
         keep = self._layer
         self._restart(self.correction_gcode(layers), keep, layers)
 
-    def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2):
-        """Fully automatic stop -> upload -> start -> confirm. No human touches the printer.
-        Retries the upload/start once; every step waits for the printer's own acknowledgement."""
+    def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2, start_wait_s=120, person_wait_s=900):
+        """stop -> upload -> start -> confirm, each step waiting for the printer's own acknowledgement.
+        The upload is retried once. If the printer does not start the file by itself (the `gcode_file`
+        command is untested on the P1S), the person is asked to start it from the screen."""
         name = f"adapted_{int(time.time())}.gcode"
         self.link.command("stop")
         if not self.link.wait_state({"IDLE", "FINISH", "FAILED"}, timeout=120):
@@ -420,29 +456,35 @@ class BambuPrinter:
         for _ in range(attempts):
             try:
                 upload_ftps(self.ip, self.code, name, gc.encode())
-                with self.link.lock:
-                    self.link.state.pop("layer_num", None)    # so the next report is from the NEW job
-                self.link.command("gcode_file", f"/sdcard/{name}")
-                if not self.link.wait_state({"RUNNING"}, timeout=120):
-                    raise TimeoutError("printer did not start the replacement job")
                 break
-            except (OSError, TimeoutError) as e:
+            except (OSError, ftplib.Error) as e:
                 last = e
-                self.link.pushall()
                 time.sleep(3)
         else:
-            raise RuntimeError(f"could not start the replacement job: {last}")
-        # calibrate the layer counter from the first report of the new job: M73 L<n> may or may
-        # not be honoured by the firmware, and the loop must know which layer it is looking at
+            raise RuntimeError(f"could not upload the replacement job {name}: {last}")
+        self.log(f"  uploaded {name}; starting it")
+        with self.link.lock:
+            self.link.state.pop("layer_num", None)    # so the next report is from the NEW job
+        self.link.command("gcode_file", f"/sdcard/{name}")
+        if not self.link.wait_state({"RUNNING"}, timeout=start_wait_s):
+            self.log(f"\n  The printer did not start {name} by itself. Start it from the printer screen "
+                     f"(files on the SD card: {name}). The agent waits up to {person_wait_s // 60} min.")
+            if not self.link.wait_state({"RUNNING"}, timeout=person_wait_s):
+                raise TimeoutError(f"the replacement job {name} was not started")
+        self.log(f"  {name} is printing")
+        # calibrate the layer counter from the new job's first layer report: M73 L<n> may or may not be
+        # honoured by the firmware (0 is reported while it heats, so wait for a real layer)
         t0 = time.time()
-        while self.link.get("layer_num") is None and time.time() - t0 < 180:
+        while not (self.link.get("layer_num") or 0) and time.time() - t0 < 300:
             time.sleep(0.5)
-        first = self.link.get("layer_num")
-        if first is None:
-            raise TimeoutError("replacement job started but reported no layer number")
-        self._offset = (keep + 1) - int(first)
+        first = int(self.link.get("layer_num") or 0)
+        if first:
+            self._offset = (keep + 1) - first
+        else:
+            self.log("  the new job reports no layer number yet; assuming it counts from the original's layers")
         self.plan = self.plan[:keep] + list(layers)
         self.resumed_at = keep
+        self._seen_running = True
 
     def cancel(self):
         self._command_allowed("stop")

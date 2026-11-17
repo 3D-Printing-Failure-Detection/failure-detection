@@ -42,7 +42,7 @@ class DentTest:
 
 def _summary(situation, rec):
     o, c = situation["observation"], situation["cost"]
-    lines = [f"\n=== {o['label'].upper()} at layer {o['layer']} (z = {o['z']:.2f} mm)"
+    lines = [f"\n=== {o['label'].upper()} after layer {o['layer'] + 1} (z = {o['z']:.2f} mm)"
              + (f": {o['flagged_px']} px look different from the plan" if o.get("flagged_px") is not None else "")
              + (" and it has grown since it was last accepted" if o.get("grown") else "")
              + (f"; {o['described']}" if o.get("described") else "")]
@@ -125,7 +125,7 @@ class _Run:
         self.file.write(json.dumps(event, default=str) + "\n")
         self.file.flush()
         self.events.append(event)
-        self.log(f"layer {observation['layer']}: {observation['label']} -> {action} ({rec['source']})")
+        self.log(f"after layer {observation['layer'] + 1}: {observation['label']} -> {action} ({rec['source']})")
         return action
 
     def dent_test(self, test: DentTest):
@@ -165,7 +165,7 @@ class _Run:
                    dict(id="resume", effect="normal resume instead (no test)"),
                    dict(id="stop", effect="stop the print")]
         rec = dict(action="restart", reason="resume test requested", source="test")
-        summary = (f"\n=== RESUME TEST at layer {layer}: the part is unchanged.\n"
+        summary = (f"\n=== RESUME TEST after layer {layer + 1}: the part is unchanged.\n"
                    f"The printer will stop, then start {gcode} ({len(layers)} layers).\n"
                    f"Watch the bed: if it homes Z or moves toward the nozzle over the part, stop the printer.")
         action = self.gate.decide_and_act(rec, options, summary, correction_layers=layers)
@@ -175,7 +175,7 @@ class _Run:
         self.file.write(json.dumps(event, default=str) + "\n")
         self.file.flush()
         self.events.append(event)
-        self.log(f"layer {layer}: resume test -> {action}")
+        self.log(f"after layer {layer + 1}: resume test -> {action}")
         return action
 
     def close(self):

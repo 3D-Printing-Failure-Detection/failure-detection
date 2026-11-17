@@ -298,9 +298,11 @@ def test_gap_fill_closes_the_middle_of_the_trays_thin_wall():
 
 
 def test_correction_gcode_retracts_and_drops_the_bed_for_every_travel():
-    from recovery.printer.bambu import resume_gcode
+    from recovery.printer.bambu import FOOTER, resume_gcode
     nom = get_part("parts/print/water-tray/water-tray.yaml").layers()
-    lines = resume_gcode(nom[30:32], 0.2, 30, (128.0, 128.0)).splitlines()
+    gc = resume_gcode(nom[30:32], 0.2, 30, (128.0, 128.0))
+    assert gc.endswith(FOOTER)
+    lines = gc[:-len(FOOTER)].splitlines()                             # the layers, without the end/park code
     travels = [i for i, l in enumerate(lines) if l.startswith("G0 ")]
     assert travels
     for i in travels:
