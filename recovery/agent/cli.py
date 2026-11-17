@@ -47,7 +47,7 @@ def add_arguments(p):
                    "app or a pause planned in Bambu Studio) and dents the part, decide what to do")
     p.add_argument("--pause-at-layer", type=int, default=None, help="--sim only: pause after this many "
                    "layers (on the real printer the agent reacts to whatever pause the person makes)")
-    p.add_argument("--resume-test", action="store_true", help="at the planned pause, send the ORIGINAL "
+    p.add_argument("--resume-test", action="store_true", help="at the pause, send the ORIGINAL "
                    "remaining layers through stop -> upload -> start (no dent), to prove 'correct' works")
     p.add_argument("--measure", choices=["sideview", "manual"], default=None,
                    help="dent test: the person types the change (manual; the default on the real printer), or "

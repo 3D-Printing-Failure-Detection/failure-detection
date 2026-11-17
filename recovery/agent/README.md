@@ -67,8 +67,10 @@ Each phase starts only after the one before it passes.
   prints at the prompt with the printer screen.
 - **Don't resume on the printer.** If someone does, the agent notices, sends nothing and offers
   "continue" instead of "resume"; the next layers are then already printing over the dent.
-- **"correct" depends on stop → upload → start working on the P1S**, which has never been tried.
-  Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
+- **"correct" depends on stop → upload → start working on the P1S.** On 2026-11-17 the stop and
+  upload worked and the file printed fine when started by hand; the agent starting it itself
+  (`gcode_file`) is untested, so if the printer does not start it within 2 min the agent asks the
+  person to start it from the screen. Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
   *original* remaining layers through stop → upload → start. Watch the bed: on the P1S the bed is
   Z (it drops for each layer and for travel moves), so if it homes Z or rises toward the nozzle
   over the part, stop the printer. Pass = the tray finishes with no visible seam and holds water.

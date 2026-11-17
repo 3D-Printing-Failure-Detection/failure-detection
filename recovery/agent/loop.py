@@ -4,7 +4,7 @@ Two kinds of alarm: the outline is more than ~1 mm off plan (detector), or the m
 breaks a functional feature even though it looks almost right (a hole narrowed by a 1 mm dent
 moves the outline by less than the detector's threshold). The second is checked on every layer.
 
-Resume test (`resume_test=True`): at the planned pause, with no change to the part, send the
+Resume test (`resume_test=True`): at the pause, with no change to the part, send the
 ORIGINAL remaining layers through the correction path (stop -> upload -> start). If that tray
 finishes cleanly, the mechanism behind "correct" works on this printer.
 

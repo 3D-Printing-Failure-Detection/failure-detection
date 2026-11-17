@@ -1,7 +1,9 @@
 """Bambu Lab P1S backend. Same interface as sim.SimPrinter, so loop.controller.Controller
 runs unchanged.
 
-NOT tested on hardware. Protocol details follow the community docs (OpenBambuAPI):
+Tested on a P1S (2026-11-15/17): status, camera, pause, resume, stop and upload. Not yet confirmed:
+starting an uploaded file with `gcode_file` (the agent asks the person to start it if the printer
+does not). Protocol details follow the community docs (OpenBambuAPI):
   * LAN MQTT over TLS, port 8883, user `bblp`, password = LAN access code;
     commands -> device/<serial>/request, status <- device/<serial>/report
     (report fields used: gcode_state, layer_num, total_layer_num).
