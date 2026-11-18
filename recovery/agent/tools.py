@@ -129,31 +129,39 @@ class PrinterTools:
                                               if k != "max_overhang_mm2"}))
         return dict(continue_ok=all(f["ok"] for f in features), features=features)
 
-    def correction(self, fades=(10, 15, 30, float("inf"))) -> Optional[dict]:
-        """A replacement for the remaining layers that starts on the measured top layer and returns
-        to the original shape over `fade` layers. Boundary-role-aware fit (Ishaan's ContourResidual:
-        outer edges matched to outer edges, inner to inner), so a thin wall is not mis-fitted.
-        Returns the passing plan closest to the original design, or None."""
+    def try_correction(self, fade_layers) -> Optional[dict]:
+        """Build and check ONE correction plan: the remaining layers start on the measured top layer
+        and return to the original shape over `fade_layers` layers (None or inf = keep the measured
+        shape to the top). Boundary-role-aware fit (Ishaan's ContourResidual: outer edges matched to
+        outer edges, inner to inner), so a thin wall is not mis-fitted. Returns the plan whether or
+        not it passes (`report["continue_ok"]`), with its fidelity to the design (mean IoU)."""
         from ..loop.contour import ContourResidual, _warp_rings
         k = len(self.known)
         rest = self.pr.plan[k:]
         if not rest:
             return None
+        fade = float("inf") if fade_layers is None else float(fade_layers)
         res = ContourResidual(self.pr.plan[k - 1], self.known[-1])
+        layers = []
+        for n, lay in enumerate(rest):
+            g = 1.0 if not np.isfinite(fade) else max(0.0, 1.0 - n / fade)
+            layers.append(lay if g <= 1e-3 else
+                          Layer(lay.z, _warp_rings(lay.region, lambda pts, interior, g=g: g * res(pts, interior))))
+        report = self.function_report(future=layers)
+        fidelity = float(np.mean([iou(a.region, b.region) for a, b in zip(layers, self.nominal[k:])]))
+        return dict(fade_layers=None if not np.isfinite(fade) else int(fade), fidelity=round(fidelity, 4),
+                    layers=layers, report=report)
+
+    def correction(self, fades=(10, 15, 30, float("inf"))) -> Optional[dict]:
+        """The automatic search: try each fade length, return the passing plan closest to the
+        original design, or None."""
         best = None
         for fade in fades:
-            layers = []
-            for n, lay in enumerate(rest):
-                g = 1.0 if not np.isfinite(fade) else max(0.0, 1.0 - n / fade)
-                layers.append(lay if g <= 1e-3 else
-                              Layer(lay.z, _warp_rings(lay.region, lambda pts, interior, g=g: g * res(pts, interior))))
-            report = self.function_report(future=layers)
-            if not report["continue_ok"]:
-                continue
-            fidelity = float(np.mean([iou(a.region, b.region) for a, b in zip(layers, self.nominal[k:])]))
-            if best is None or fidelity > best["fidelity"]:
-                best = dict(fade_layers=None if not np.isfinite(fade) else int(fade), fidelity=round(fidelity, 4),
-                            layers=layers, report=report)
+            fix = self.try_correction(fade)
+            if fix is None:
+                return None
+            if fix["report"]["continue_ok"] and (best is None or fix["fidelity"] > best["fidelity"]):
+                best = fix
         return best
 
     def cost(self) -> dict:

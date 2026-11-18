@@ -1,9 +1,9 @@
 """Bambu Lab P1S backend. Same interface as sim.SimPrinter, so loop.controller.Controller
 runs unchanged.
 
-Tested on a P1S (2026-11-15/17): status, camera, pause, resume, stop and upload. Not yet confirmed:
-starting an uploaded file with `gcode_file` (the agent asks the person to start it if the printer
-does not). Protocol details follow the community docs (OpenBambuAPI):
+Tested on a P1S (2026-11-15/17): status, camera, pause, resume, stop and upload. The P1S ignored the
+`gcode_file` start command (2026-11-17), so the agent asks the person to start the uploaded file from
+the printer screen; that is the accepted way for now (a .3mf + `project_file` might work, untried). Protocol details follow the community docs (OpenBambuAPI):
   * LAN MQTT over TLS, port 8883, user `bblp`, password = LAN access code;
     commands -> device/<serial>/request, status <- device/<serial>/report
     (report fields used: gcode_state, layer_num, total_layer_num).
@@ -448,8 +448,8 @@ class BambuPrinter:
 
     def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2, start_wait_s=120, person_wait_s=900):
         """stop -> upload -> start -> confirm, each step waiting for the printer's own acknowledgement.
-        The upload is retried once. If the printer does not start the file by itself (the `gcode_file`
-        command is untested on the P1S), the person is asked to start it from the screen."""
+        The upload is retried once. If the printer does not start the file by itself (the P1S ignored
+        `gcode_file` on 2026-11-17), the person is asked to start it from the screen."""
         name = f"adapted_{int(time.time())}.gcode"
         self.link.command("stop")
         if not self.link.wait_state({"IDLE", "FINISH", "FAILED"}, timeout=120):

@@ -11,3 +11,4 @@ runs_smoke/
 .claude/
 /Project 2 plan*.pdf
 !tests/data/
+.env

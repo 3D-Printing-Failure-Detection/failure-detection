@@ -19,7 +19,8 @@ person pauses the P1S (screen or app; a pause planned in Bambu Studio also works
                layer be printed on the one below it?
   6. options   resume                         (still works)
                correct  new G-code for the rest: start on the dented shape, return to the
-                        original wall over ~10 layers (only offered if resuming would fail)
+                        original wall over ~10 layers (only offered if resuming would fail;
+                        designed by the search, or proposed by the LLM and checked: --plan-fix)
                stop                           (no option works)
   7. decide    rules / local Qwen / Claude recommend one, with a reason
   8. approve   the person presses Enter, or picks another option by number
@@ -68,9 +69,9 @@ Each phase starts only after the one before it passes.
 - **Don't resume on the printer.** If someone does, the agent notices, sends nothing and offers
   "continue" instead of "resume"; the next layers are then already printing over the dent.
 - **"correct" depends on stop → upload → start working on the P1S.** On 2026-11-17 the stop and
-  upload worked and the file printed fine when started by hand; the agent starting it itself
-  (`gcode_file`) is untested, so if the printer does not start it within 2 min the agent asks the
-  person to start it from the screen. Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
+  upload worked and the file printed fine when started by hand. The P1S ignores the laptop's start
+  command (`gcode_file`), so after 2 min the agent asks the person to start it from the screen; that
+  is the accepted way for now. Prove it first with the **resume test**: a scrap tray, no dent; at the pause the agent sends the
   *original* remaining layers through stop → upload → start. Watch the bed: on the P1S the bed is
   Z (it drops for each layer and for travel moves), so if it homes Z or rises toward the nozzle
   over the part, stop the printer. Pass = the tray finishes with no visible seam and holds water.
@@ -118,16 +119,45 @@ python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.ya
 
 - `rules` (default): resume if every feature passes; otherwise correct if a correction passes;
   otherwise stop. Stop if the part detached.
+- `openai`: an OpenAI model (`--openai-model`, default `gpt-4.1-mini`; `gpt-5.4-mini` also works).
+  Needs `OPENAI_API_KEY`, in the environment or in a `.env` file in the folder you run from
+  (`OPENAI_API_KEY=sk-...`; `.env` is git-ignored, never commit it). Falls back to the rules.
 - `local`: a local Qwen through Ollama (default `qwen3:1.7b`), or any OpenAI-compatible server
   (`--endpoint`, `--local-model`). Falls back to the rules.
 - `claude`: needs `ANTHROPIC_API_KEY` (`--claude-model`). Falls back to the rules.
-- `auto`: Claude if a key is set, otherwise (or if it fails) local Qwen, otherwise the rules.
+- `auto`: Claude if its key is set, then OpenAI if its key is set, then local Qwen, then the rules
+  (each one stands in when the one before fails).
 - In code: `LLMDecider(complete, fallback=...)` with any `complete(system, user) -> text`.
 
 The model sees the measurement, both function checks (resume, and the correction if there is
 one), the filament cost and the allowed actions, and must answer `{"action": ..., "reason": ...}`
 with an allowed action. Anything else falls back to the next decider, and the log's `source` says
 so (e.g. `local:qwen3:1.7b->rules`). The model never talks to the printer.
+
+### The LLM plans the correction (`--plan-fix`)
+
+With a language-model decider (`--plan-fix auto`, the default) the model also designs the correction:
+it proposes how many layers the new layers take to return to the original wall (or keeps the dented
+shape), with a reason. Our code builds that plan (Ishaan's contour fit) and checks it with the same
+function checks (Sri's spec); a failing plan goes back to the model with its failure reasons, up to
+3 times. If no proposal passes or the model is unavailable, the automatic search (fade 10, 15, 30,
+keep) is used and the log says `->search`. `--plan-fix search` keeps the search with an LLM decider.
+Code: `recovery/agent/planner.py`; each run saves `planner_transcript.json`.
+
+In simulation `gpt-4.1-mini` planned a passing fix on its first proposal for 3 mm (10 layers), 4 mm on
+the right wall and 5 mm (30 layers). For a 3 mm dent the checks pass any fade of 3 layers or more.
+
+### OpenAI (tested 2026-11-17)
+
+```bash
+python -m recovery.cli llm-check --decider openai          # 2/2 right, about 1-2 s per call
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --sim --dent-test \
+    --pause-at-layer 30 --dent 0 -10 3 --decider openai
+```
+
+In simulation `gpt-4.1-mini` chose the same as the rules on all four tray dent tests: clean and
+1 mm -> resume, 3 mm -> correct, poke-through -> stop. The model only chooses among the offered
+actions and gives a reason; it never writes G-code or talks to the printer.
 
 ### Local Qwen setup (until Claude credits arrive)
 

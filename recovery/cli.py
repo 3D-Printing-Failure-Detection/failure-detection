@@ -12,7 +12,7 @@
   connection-test  can the laptop talk to the P1S? network, status, camera, files (+ optional pause/resume)
   check-gcode  offline: what the parser makes of a sliced file (markers, layers, outline rebuild)
   agent     agentic monitoring: pause on alarm, function check, decider recommends, a person approves
-  llm-check test the agent's language model (local Qwen / Claude) on two sample alarms
+  llm-check test the agent's language model (OpenAI / local Qwen / Claude) on two sample alarms
   probe     read-only: P1S status over MQTT + one camera frame (no print commands)
   calibrate calibrate the P1S chamber camera against a checkerboard
   calibrate-board  calibrate from a large 10 mm checkerboard: tilted frames + flat frames at known bed Z
