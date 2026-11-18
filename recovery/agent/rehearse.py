@@ -46,9 +46,11 @@ def hand_dent(nominal, x, y, depth_mm, at_layer, width_mm=3.0, layers=5) -> Hand
                                                sigma=width_mm, severity=depth_mm), layers=layers)
 
 
-def dent_layers(top, x, y, depth_mm, width_mm=4.0):
+def dent_layers(top, x, y, depth_mm, width_mm=3.0):
     """Bend already-printed layers `top` (bottom to top) in at (x, y): full depth on the last,
-    tapering linearly to zero below."""
+    tapering linearly to zero below. `width_mm` is the bell's sigma along the wall: 3 mm means the
+    dent fades out about 6 mm to each side, a 12 mm stretch of wall, which is what real hand dents on
+    the tray measured (Omar, 2026-11-18: three presses, up to 12 mm wide)."""
     c, n0 = _push(top[-1], x, y)
     out = []
     for i, lay in enumerate(top):
