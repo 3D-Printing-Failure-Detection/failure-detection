@@ -8,13 +8,15 @@
          reasons, up to `rounds` times. If no proposal passes, or the model is unavailable, the
          search runs instead, and the log says so.
 
-The model never writes G-code: it chooses the plan's parameters, our code writes the layers and
-the G-code, and nothing is offered unless every check passes.
+With `writer` (an LLMGcodeWriter, `--plan-fix gcode`) the model then also writes the G-code of the
+changed layers (recovery/agent/gcode_writer.py); otherwise our code writes it. Nothing is offered
+unless every check passes.
 """
 import json
 import time
 
 from .deciders import parse_reply
+from .usage import labelled
 
 SYSTEM = """You plan a repair for a 3D print that was damaged mid-print (e.g. a wall dented inward).
 The layers already printed cannot change. You choose how the REMAINING layers should be shaped:
@@ -27,7 +29,7 @@ original), but each new layer then steps further sideways over the one below and
 the part further from the design. Every proposal is built and checked against the part's function
 (e.g. holds liquid, holes in tolerance, every new layer supported); you see the result of earlier
 proposals in `tried`. Do not repeat a failed proposal; use its failure reasons.
-Reply with JSON only: {"fade_layers": <integer from 1 to remaining_layers, or null>,
+Reply with JSON only: {"fade_layers": <a value allowed by fade_layers_allowed>,
 "reason": "<one or two sentences>"}"""
 
 
@@ -49,16 +51,27 @@ def _summary(fix):
 class LLMFixPlanner:
     """A language model proposes correction plans; the function checks accept or reject each one."""
 
-    def __init__(self, complete, name="llm", rounds=3, fallback=None, system=SYSTEM):
-        self.complete, self.name, self.rounds, self.system = complete, name, rounds, system
+    def __init__(self, complete, name="llm", rounds=3, fallback=None, system=SYSTEM, writer=None):
+        self.complete, self.name, self.rounds, self.system = labelled(complete, "plan"), name, rounds, system
         self.fallback = fallback or SearchPlanner()
+        self.writer = writer
         self.transcript = []
 
     def plan(self, tools, situation):
+        fix = self._plan(tools, situation)
+        if fix and self.writer is not None:
+            fix = self.writer.write(tools, fix)
+        return fix
+
+    def _plan(self, tools, situation):
         o = situation["observation"]
         remaining = tools.pr.n_total - tools.pr.n_done
+        # when the model also writes the G-code, every changed layer is a model call: cap them
+        limit = min(remaining, self.writer.max_layers) if self.writer is not None else remaining
+        keep_ok = self.writer is None
+        allowed = f"an integer from 1 to {limit}" + (", or null (keep the damaged shape)" if keep_ok else "")
         base = dict(measured_change=o.get("described") or o.get("label"), after_layer=o["layer"] + 1,
-                    layer_height_mm=tools.part.layer_h, remaining_layers=remaining,
+                    layer_height_mm=tools.part.layer_h, remaining_layers=remaining, fade_layers_allowed=allowed,
                     part=tools.part.spec.get("description", ""),
                     if_we_continue_unchanged=[f"{f['feature']}: {f['detail']}"
                                               for f in situation["function_if_continue"]["features"] if not f["ok"]])
@@ -71,17 +84,17 @@ class LLMFixPlanner:
                 rec["reply"] = reply
                 ans = parse_reply(reply)
                 fade = ans.get("fade_layers")
-                if fade is not None:
-                    fade = int(fade)
-                    if not 1 <= fade <= remaining:
-                        raise ValueError(f"fade_layers {fade} outside 1..{remaining}")
+                fade = None if fade is None else int(fade)
             except Exception as e:           # no key, server down, bad reply -> the search, visibly
                 rec.update(error=f"{type(e).__name__}: {e}"[:300], latency_s=round(time.time() - t0, 2))
                 self.transcript.append(rec)
                 why = f"{self.name} unavailable or invalid: {type(e).__name__}"
                 break
-            fix = tools.try_correction(fade)
-            result = _summary(fix) if fix else dict(fade_layers=fade, passes=False, failing=["nothing left to print"])
+            if (fade is None and not keep_ok) or (fade is not None and not 1 <= fade <= limit):
+                fix, result = None, dict(fade_layers=fade, passes=False, failing=[f"not allowed: use {allowed}"])
+            else:
+                fix = tools.try_correction(fade)
+                result = _summary(fix) if fix else dict(fade_layers=fade, passes=False, failing=["nothing left to print"])
             tried.append(dict(result, reason=str(ans.get("reason", ""))))
             rec.update(latency_s=round(time.time() - t0, 2), result=result)
             self.transcript.append(rec)
@@ -95,4 +108,4 @@ class LLMFixPlanner:
 
     @property
     def full_transcript(self):
-        return self.transcript
+        return self.transcript + (self.writer.full_transcript if self.writer is not None else [])

@@ -25,12 +25,15 @@ import yaml
 from ..parts import Part, get_part
 from ..loop.llm import MODEL as CLAUDE_MODEL
 from .deciders import LLMDecider, RuleDecider, openai_complete
+from .gcode_writer import LLMGcodeWriter
 from .planner import LLMFixPlanner, SearchPlanner
+from .usage import Usage
 from .gate import ActionGate, AutoApprover, TerminalApprover
 from .loop import run_agent
 from .tools import PrinterTools
 
 OPENAI_MODEL = "gpt-4.1-mini"
+GCODE_MODEL = "gpt-5.4-mini"      # writing G-code needs exact arithmetic: gpt-4.1-mini got every E value wrong
 GEOMETRY_KEYS = ("geometry", "stl", "gcode", "height", "layer_h", "name", "plate", "spec_file")
 
 
@@ -80,20 +83,27 @@ def add_decider_arguments(p):
                    "or qwen3:8b (~5 GB, better) on 16 GB machines")
     p.add_argument("--endpoint", default="http://127.0.0.1:11434", help="local OpenAI-compatible server")
     p.add_argument("--claude-model", default=CLAUDE_MODEL)
-    p.add_argument("--plan-fix", default="auto", choices=["auto", "llm", "search"],
+    p.add_argument("--plan-fix", default="auto", choices=["auto", "llm", "gcode", "search"],
                    help="who designs a correction: the decider's language model proposes it and the checks "
-                        "verify it (llm), or the automatic search over fade lengths (search); auto = llm "
-                        "whenever --decider is a language model, else search")
+                        "verify it (llm); the same, and the model also writes the G-code of the changed layers, "
+                        "each one checked and read back (gcode); or the automatic search over fade lengths "
+                        "(search). auto = llm whenever --decider is a language model, else search")
+    p.add_argument("--gcode-model", default=GCODE_MODEL, help="OpenAI model that writes the G-code with "
+                   "--plan-fix gcode (with --decider claude or local, the decider's own model writes it)")
 
 
-def _claude_complete(model):
+def _claude_complete(model, usage=None):
     import anthropic
     client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
-    def complete(system, user):
-        msg = client.messages.create(model=model, max_tokens=400, system=system,
+    def complete(system, user, label=None):
+        t0 = time.time()
+        msg = client.messages.create(model=model, max_tokens=8000, system=system,
                                      messages=[{"role": "user", "content": user}])
+        if usage is not None:
+            usage.record(model, label, msg.usage.input_tokens, msg.usage.output_tokens, round(time.time() - t0, 2))
         return msg.content[0].text
+    complete.counts_usage = True
     return complete
 
 
@@ -110,13 +120,13 @@ def load_dotenv(path=".env"):
             os.environ.setdefault(k.strip(), v.strip().strip("'\""))
 
 
-def _openai(model, fallback=None):
-    return LLMDecider(openai_complete("https://api.openai.com", model, api_key=os.environ["OPENAI_API_KEY"]),
-                      name=f"openai:{model}", fallback=fallback)
+def _openai(model, fallback=None, usage=None):
+    return LLMDecider(openai_complete("https://api.openai.com", model, api_key=os.environ["OPENAI_API_KEY"],
+                                      timeout=300, usage=usage), name=f"openai:{model}", fallback=fallback)
 
 
 def make_decider(kind, local_model="qwen3:1.7b", endpoint="http://127.0.0.1:11434", claude_model=CLAUDE_MODEL,
-                 openai_model=OPENAI_MODEL):
+                 openai_model=OPENAI_MODEL, usage=None):
     """rules; openai -> rules; local -> rules; claude -> rules;
     auto: claude (if its key is set) -> openai (if its key is set) -> local -> rules."""
     load_dotenv()
@@ -125,25 +135,30 @@ def make_decider(kind, local_model="qwen3:1.7b", endpoint="http://127.0.0.1:1143
     if kind == "openai":
         if not os.environ.get("OPENAI_API_KEY"):
             raise SystemExit("--decider openai needs OPENAI_API_KEY (in the environment or a .env file here)")
-        return _openai(openai_model)
-    local = LLMDecider(openai_complete(endpoint, local_model), name=f"local:{local_model}")
+        return _openai(openai_model, usage=usage)
+    local = LLMDecider(openai_complete(endpoint, local_model, usage=usage), name=f"local:{local_model}")
     if kind == "local":
         return local
     if kind == "auto":
-        chain = _openai(openai_model, fallback=local) if os.environ.get("OPENAI_API_KEY") else local
+        chain = _openai(openai_model, fallback=local, usage=usage) if os.environ.get("OPENAI_API_KEY") else local
         if not os.environ.get("ANTHROPIC_API_KEY"):
             return chain
-        return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}", fallback=chain)
-    return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}")
+        return LLMDecider(_claude_complete(claude_model, usage), name=f"claude:{claude_model}", fallback=chain)
+    return LLMDecider(_claude_complete(claude_model, usage), name=f"claude:{claude_model}")
 
 
-def make_planner(kind, decider):
-    """search, or the decider's own language model (first in its chain) proposing the plan."""
-    if kind == "llm" and not isinstance(decider, LLMDecider):
-        raise SystemExit("--plan-fix llm needs a language-model decider (--decider openai, claude, local or auto)")
+def make_planner(kind, decider, gcode_complete=None):
+    """search, or the decider's own language model (first in its chain) proposing the plan;
+    with kind "gcode" a model (gcode_complete, else the decider's) also writes the G-code."""
+    if kind in ("llm", "gcode") and not isinstance(decider, LLMDecider):
+        raise SystemExit(f"--plan-fix {kind} needs a language-model decider (--decider openai, claude, local or auto)")
     if kind == "search" or not isinstance(decider, LLMDecider):
         return SearchPlanner()
-    return LLMFixPlanner(decider.complete, name=decider.name)
+    writer = None
+    if kind == "gcode":
+        complete, name = gcode_complete or (decider.complete, decider.name)
+        writer = LLMGcodeWriter(complete, name=name)
+    return LLMFixPlanner(decider.complete, name=decider.name, writer=writer)
 
 
 # a situation like the one the agent sends after a dent next to a hole (the right answer: stop)
@@ -164,7 +179,8 @@ OPTIONS = [dict(id="resume", effect="keep printing the original plan"),
 
 def llm_check(a):
     """Two canned alarms (one cosmetic, one that breaks a hole) through the chosen decider."""
-    dec = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model)
+    usage = Usage()
+    dec = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model, usage=usage)
     right = 0
     for name, sit, want in (("cosmetic dent", SAMPLE_OK, "resume"), ("hole narrowed", SAMPLE, "stop")):
         t0 = time.time()
@@ -176,6 +192,8 @@ def llm_check(a):
     used = {r.get("decider"): "error: " + r["error"] if "error" in r else "ok"
             for r in getattr(dec, "full_transcript", [])}
     print(f"{right}/2 right; model calls: {json.dumps(used)}")
+    if usage.calls:
+        print(usage.line())
     return right
 
 
@@ -285,9 +303,15 @@ def main(a):
     approver = AutoApprover() if a.auto_approve else TerminalApprover()
     gate = ActionGate(tools, approver, auto_pause=not a.no_auto_pause)
     try:
-        decider = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model)
+        usage = Usage()
+        decider = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model, usage=usage)
+        gcode_complete = None
+        if a.plan_fix == "gcode" and decider.name.startswith("openai:"):
+            gcode_complete = (openai_complete("https://api.openai.com", a.gcode_model, timeout=600,
+                                              api_key=os.environ["OPENAI_API_KEY"], usage=usage), f"openai:{a.gcode_model}")
         return run_agent(tools, decider, gate, out_dir=a.out, monitor=monitor, dent_test=test,
-                         resume_test=a.resume_test, planner=make_planner(a.plan_fix, decider))
+                         resume_test=a.resume_test, planner=make_planner(a.plan_fix, decider, gcode_complete),
+                         usage=usage)
     finally:
         if hasattr(printer, "close"):
             printer.close()

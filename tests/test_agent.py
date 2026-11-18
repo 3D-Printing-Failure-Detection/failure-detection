@@ -487,3 +487,117 @@ def test_plan_fix_auto_uses_the_llm_only_with_an_llm_decider():
     assert isinstance(make_planner("search", LLMDecider(lambda s, u: "", name="x")), SearchPlanner)
     with pytest.raises(SystemExit):
         make_planner("llm", RuleDecider())
+
+
+# ---------------------------------------------------------------- the LLM writes the G-code of the changed layers
+def _protocol_gcode(ctx):
+    """A correct model reply: the per-path recipe in gcode_writer.SYSTEM, followed exactly."""
+    import math
+    from recovery.agent.gcode_writer import RETRACT, ZHOP
+    z, out = ctx["z"], []
+    for p in ctx["paths"]:
+        pts = p["points"]
+        out += [f"G1 E-{RETRACT} F1800", f"G1 Z{z + ZHOP:.3f} F600", f";TYPE:{p['feature']}",
+                f"G0 X{pts[0][0]:.3f} Y{pts[0][1]:.3f} F7200", f"G1 Z{z:.3f} F600", f"G1 E{RETRACT} F1800"]
+        out += [f"G1 X{b[0]:.3f} Y{b[1]:.3f} E{math.hypot(b[0] - a[0], b[1] - a[1]) * p['e_per_mm']:.5f} F1800"
+                for a, b in zip(pts[:-1], pts[1:])]
+    return "\n".join(out)
+
+
+def _gcode_planner(write_reply, fades=('{"fade_layers": 10, "reason": "gentle"}',)):
+    from recovery.agent.gcode_writer import LLMGcodeWriter
+    from recovery.agent.planner import LLMFixPlanner
+    asked = []
+
+    def plan(system, user):
+        asked.append(user)
+        return fades[min(len(asked), len(fades)) - 1]
+    writer = LLMGcodeWriter(lambda s, u: write_reply(json.loads(u)), name="llm")
+    return LLMFixPlanner(plan, name="llm", writer=writer), asked
+
+
+def test_llm_written_gcode_is_checked_read_back_and_sent(tmp_path):
+    planner, _ = _gcode_planner(lambda ctx: json.dumps({"gcode": _protocol_gcode(ctx)}))
+    p, nom, pr, res = _dent_test("dent 0 -10 3", tmp_path, planner=planner)
+    fix = res["events"][0]["situation"]["correction"]
+    assert res["events"][0]["action"] == "correct"
+    assert fix["gcode_by"].startswith("10/10 changed layers written by llm")
+    assert all(l["by"] == "llm" and l["attempts"] == 1 for l in fix["gcode_layers"])
+    saved = open(fix["gcode"]).read()                                   # the file that would be uploaded
+    assert saved.count(";LAYER_CHANGE") == 30 and "; --- original layers ---" in saved
+    from recovery import gcode as G
+    assert len(G.gcode_to_layers(saved, origin=p.origin)) == 30
+    truth = check(pr.printed, nom, p.spec, p.layer_h)                   # the tray as printed holds water
+    assert res["outcome"] == "finished" and truth.ok, truth.violations
+
+
+def test_unsafe_llm_gcode_never_reaches_the_printer(tmp_path):
+    bad = "G28\nG1 X0 Y0 E5 F1800"                                       # homes, extrudes off the part
+    planner, _ = _gcode_planner(lambda ctx: json.dumps({"gcode": bad}))
+    p, nom, pr, res = _dent_test("dent 0 -10 3", tmp_path, planner=planner)
+    fix = res["events"][0]["situation"]["correction"]
+    assert fix["gcode_by"].startswith("0/10") and all(l["by"] == "our writer" and l["attempts"] == 3
+                                                      for l in fix["gcode_layers"])
+    assert "G28" not in open(fix["gcode"]).read()
+    assert res["outcome"] == "finished" and check(pr.printed, nom, p.spec, p.layer_h).ok
+
+
+def test_layer_check_names_each_unsafe_line():
+    from recovery.agent.gcode_writer import check_layer, layer_context
+    p = get_part("parts/print/water-tray/water-tray.yaml")
+    lay = p.layers()[40]
+    jobs, ctx = layer_context(lay, 41, p.layer_h, p.origin)
+    good = _protocol_gcode(ctx)
+    assert check_layer(good, lay, jobs, p.layer_h, p.origin) == []
+    z = ctx["z"]
+    for line, says in (("G28", "not allowed"), ("M104 S0", "not allowed"), (f"G1 Z{z - 1:.3f}", "neither the layer height"),
+                       ("G1 X500 Y500 F7200", "outside the part"), ("G1 E3 F1800", "at most 1 mm")):
+        assert any(says in m for m in check_layer(good + "\n" + line, lay, jobs, p.layer_h, p.origin)), line
+    lifted = good.replace(f"G1 Z{z:.3f} F600", f"G1 Z{z + 0.4:.3f} F600")    # never comes back down
+    assert any("while not at the layer height" in m for m in check_layer(lifted, lay, jobs, p.layer_h, p.origin))
+    doubled = "\n".join(l.replace(" E0.0", " E0.1") for l in good.splitlines())
+    assert any("E per mm" in m or "total extrusion" in m for m in check_layer(doubled, lay, jobs, p.layer_h, p.origin))
+
+
+def test_original_layers_are_copied_only_when_it_is_safe():
+    from recovery.agent.gcode_writer import original_layers
+    layers = "".join(f"; CHANGE_LAYER\n; Z_HEIGHT: {0.2 * (i + 1):.1f}\nG1 Z{0.2 * (i + 1):.1f}\nG1 X1 Y1 E0.1\n"
+                     for i in range(5))
+    text = "M83\n" + layers + "; MACHINE_END_GCODE_START\nG1 Z100\n"
+    tail = original_layers(text, 3)
+    assert tail.startswith("; CHANGE_LAYER\n; Z_HEIGHT: 0.8") and tail.count("CHANGE_LAYER") == 2 and "Z100" not in tail
+    assert original_layers("M83\n" + layers, 3) is None                         # no end marker: not sure where to cut
+    assert original_layers("M82\n" + layers + "; MACHINE_END_GCODE_START\n", 3) is None      # absolute E
+    assert original_layers(text.replace("G1 X1 Y1 E0.1", "G28", 1).replace("; Z_HEIGHT: 0.2", "", 1), 0) is None
+    assert original_layers(None, 3) is None
+
+
+def test_usage_counts_tokens_and_cost_per_step():
+    from recovery.agent.usage import Usage, labelled
+    u = Usage()
+    u.record("gpt-4.1-mini", "decide", 1_000_000, 0)
+    u.record("gpt-4.1-mini-2025-04-14", "write G-code", 0, 1_000_000)
+    u.record("some-new-model", "plan", 10, 10)
+    t = u.totals()
+    assert t["by_step"]["decide"]["cost_usd"] == 0.4 and t["by_step"]["write G-code"]["cost_usd"] == 1.6
+    assert t["by_step"]["plan"]["cost_usd"] is None and t["total"]["cost_usd"] is None and t["total"]["calls"] == 3
+    seen = []
+
+    def complete(system, user, label=None):
+        seen.append(label)
+        return "{}"
+    complete.counts_usage = True
+    labelled(labelled(complete, "decide"), "plan")("s", "u")
+    assert seen == ["plan"]
+
+
+def test_gcode_mode_keeps_the_fix_short_enough_to_write():
+    planner, asked = _gcode_planner(lambda ctx: json.dumps({"gcode": _protocol_gcode(ctx)}),
+                                    fades=('{"fade_layers": 30}', '{"fade_layers": null}', '{"fade_layers": 10}'))
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        from pathlib import Path
+        _, _, _, res = _dent_test("dent 0 -10 3", Path(d), planner=planner)
+    fix = res["events"][0]["situation"]["correction"]
+    assert fix["fade_layers"] == 10 and [a["passes"] for a in fix["attempts"]] == [False, False, True]
+    assert "not allowed: use an integer from 1 to 15" in asked[1]

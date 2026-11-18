@@ -147,6 +147,33 @@ Code: `recovery/agent/planner.py`; each run saves `planner_transcript.json`.
 In simulation `gpt-4.1-mini` planned a passing fix on its first proposal for 3 mm (10 layers), 4 mm on
 the right wall and 5 mm (30 layers). For a 3 mm dent the checks pass any fade of 3 layers or more.
 
+### The LLM writes the G-code (`--plan-fix gcode`)
+
+The model plans the fix (as above, at most 15 changed layers) and then writes the G-code of every
+changed layer itself, one layer per call, all layers in parallel (`recovery/agent/gcode_writer.py`):
+- **It gets:** the layer height, the layer's toolpaths (the planned wall loops and gap fills in bed
+  coordinates), line widths, `e_per_mm` from the extrusion formula, speeds and the recipe for
+  retract / lift / travel / lower / prime. **It writes:** every line of G-code, including every E value.
+- **Checked per layer:** only G0/G1, Z only at the layer height or lifted 0.4 mm, moves inside the
+  part's area, E per mm within 15% of the formula, retracts balanced, total E within 10%. Then the
+  layer is read back with our parser and must match the planned shape (95%). A failing layer goes
+  back to the model with the problems (3 tries), then our writer writes that layer.
+- **Checked as a whole:** the read-back layers must pass the function checks, or our writer's file is used.
+- **The file:** resume header + the model's layers + the sliced file's later layers copied unchanged
+  (cut before its end G-code; if that is not possible, our writer writes them) + our footer.
+- **Models:** `--gcode-model` (default `gpt-5.4-mini`) writes; the decider model (default
+  `gpt-4.1-mini`) still plans and decides. gpt-4.1-mini could not write it: every layer had wrong E values.
+
+3 mm tray dent in simulation (2026-11-18): `gpt-5.4-mini` wrote all 15 changed layers, each passing on
+the first try; read back they match the plan at 99.6-99.8% and the tray holds water. 17 calls,
+25k tokens in / 30k out, about $0.15, 27 s.
+
+### Tokens and cost
+
+Every model call (decide, plan, write G-code) is counted: the approval summary and the end of the
+run print e.g. `LLM: 17 calls (plan 1, write G-code 15, decide 1), 25,286 tokens in / 29,690 out, $0.1525`,
+and the run folder has `usage.json` (per call and per step). Prices: `recovery/agent/usage.py`.
+
 ### OpenAI (tested 2026-11-17)
 
 ```bash

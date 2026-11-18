@@ -3,6 +3,8 @@ alike, because both share the controller's printer interface. Nothing here decid
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+import inspect
+
 import numpy as np
 
 from ..geometry import features as F
@@ -190,6 +192,11 @@ class PrinterTools:
         from ..printer.bambu import resume_gcode
         return resume_gcode(layers, self.part.layer_h, self.pr.n_done, self.part.origin)
 
-    def correct(self, layers: List[Layer]):
-        """Replace the remaining layers (real P1S: stop, upload new G-code, start; unproven)."""
-        self.pr.replace_remaining(layers)
+    def correct(self, layers: List[Layer], gcode: Optional[str] = None):
+        """Replace the remaining layers (real P1S: stop, upload new G-code, start). `gcode`: the
+        exact file to send (the language model's, already checked); the simulator prints `layers`,
+        which are then that file read back."""
+        if gcode is not None and "gcode" in inspect.signature(self.pr.replace_remaining).parameters:
+            self.pr.replace_remaining(layers, gcode=gcode)
+        else:
+            self.pr.replace_remaining(layers)

@@ -61,10 +61,14 @@ def _summary(situation, rec):
         lines.append(f"Correction available: new remaining layers, {back}; every feature passes.")
         lines.append(f"  Planned by {fix['planned_by']}" + (f": {fix['plan_reason']}" if fix.get("plan_reason") else "")
                      + (f" ({len(fix['attempts'])} proposal(s) checked)" if fix.get("attempts") else ""))
+        if fix.get("gcode_by"):
+            lines.append(f"  G-code: {fix['gcode_by']}")
         lines.append(f"  Its G-code and a preview are saved; inspect before approving: {fix['gcode']}, {fix['preview']}")
     lines.append(f"Filament: {c['filament_used_mm']} mm used of {c['filament_total_mm']} "
                  f"({c['fraction_done']:.0%} done)")
     lines.append(f"Agent ({rec['source']}): {rec['action'].upper()} because {rec['reason']}")
+    if situation.get("llm_usage"):
+        lines.append(situation["llm_usage"])
     return "\n".join(lines)
 
 
@@ -78,9 +82,9 @@ def _frame_change(before, after):
 
 
 class _Run:
-    def __init__(self, tools, decider, gate, out_dir, log, planner=None):
+    def __init__(self, tools, decider, gate, out_dir, log, planner=None, usage=None):
         from .planner import SearchPlanner
-        self.tools, self.decider, self.gate, self.log = tools, decider, gate, log
+        self.tools, self.decider, self.gate, self.log, self.usage = tools, decider, gate, log, usage
         self.planner = planner or SearchPlanner()
         self.dir = Path(out_dir) / time.strftime("%Y%m%d-%H%M%S")
         (self.dir / "frames").mkdir(parents=True, exist_ok=True)
@@ -91,12 +95,13 @@ class _Run:
         cv2.imwrite(str(self.dir / "frames" / name), image)
         return f"frames/{name}"
 
-    def save_plan(self, layers, label):
-        """The replacement G-code and a picture of its first layers, before anyone approves it."""
+    def save_plan(self, layers, label, text=None):
+        """The replacement G-code (`text` if given: exactly the file that would be sent) and a
+        picture of its first layers, before anyone approves it."""
         from ..viz import layer_preview
         k = self.tools.pr.n_done
         gcode = self.dir / f"{label}_from_layer_{k}.gcode"
-        gcode.write_text(self.tools.correction_gcode(layers))
+        gcode.write_text(text if text is not None else self.tools.correction_gcode(layers))
         shown = [self.tools.known[-1]] + list(layers[:12])
         fig = layer_preview(shown, f"{label}: printed top layer, then the next {len(shown) - 1} new layers", n=4)
         preview = self.dir / f"{label}_from_layer_{k}.png"
@@ -117,15 +122,20 @@ class _Run:
                         if fix["fade_layers"] else "keep the new shape to the top")
                 options.append(dict(id="correct", effect=f"replace the remaining {n} layers: start on the "
                                     f"measured shape and {back}; every feature passes"))
-                gcode, preview = self.save_plan(fix["layers"], "correction")
+                gcode, preview = self.save_plan(fix["layers"], "correction", fix.get("gcode"))
                 situation["correction"] = dict(fade_layers=fix["fade_layers"], fidelity=fix["fidelity"],
                                                features=fix["report"]["features"], gcode=gcode, preview=preview,
                                                planned_by=fix["planned_by"], plan_reason=fix.get("reason", ""),
-                                               attempts=fix.get("attempts", []))
+                                               attempts=fix.get("attempts", []),
+                                               gcode_by=(fix.get("gcode_by") or {}).get("summary"),
+                                               gcode_layers=(fix.get("gcode_by") or {}).get("per_layer"))
         options.append(dict(id="stop", effect="stop the print; it is scrapped and must be restarted"))
         rec = self.decider.decide(situation, options)
+        if self.usage is not None and self.usage.calls:
+            situation["llm_usage"] = self.usage.line()
         action = self.gate.decide_and_act(rec, options, _summary(situation, rec),
-                                          correction_layers=fix["layers"] if fix else None)
+                                          correction_layers=fix["layers"] if fix else None,
+                                          correction_gcode=fix.get("gcode") if fix else None)
         event = dict(t=time.time(), situation=situation, options=[o["id"] for o in options],
                      recommendation=rec, action=action, frames=frames)
         self.file.write(json.dumps(event, default=str) + "\n")
@@ -189,7 +199,8 @@ class _Run:
 
 
 def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=30, monitor=None,
-              dent_test: DentTest = None, resume_test=False, confirm=3, warmup=3, log=print, planner=None):
+              dent_test: DentTest = None, resume_test=False, confirm=3, warmup=3, log=print, planner=None,
+              usage=None):
     """monitor: check every layer with the camera (tools.watcher); None = whenever there is a watcher.
     warmup: the first checked layers set this print's baseline (how much the camera always flags, e.g.
     from calibration error); after that a layer counts as failing only if it flags more than that.
@@ -197,13 +208,14 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
     After a difference is accepted (resume), it raises a new alarm only once the flagged area exceeds
     grow x the accepted one + grow_px. The rule is recovery/alarm.py; whole simulated prints:
     recovery/eval/p1s_print_eval.py.
-    planner: who designs a correction (recovery/agent/planner.py); default the automatic search."""
+    planner: who designs a correction (recovery/agent/planner.py); default the automatic search.
+    usage: agent/usage.Usage counting every model call's tokens and cost (saved as usage.json)."""
     has_watcher = getattr(tools, "watcher", None) is not None
     if monitor is None:
         monitor = has_watcher
     elif monitor and not has_watcher:
         raise ValueError("monitoring every layer needs a failure detector (PrinterTools(..., watcher=...))")
-    r = _Run(tools, decider, gate, out_dir, log, planner)
+    r = _Run(tools, decider, gate, out_dir, log, planner, usage)
     acknowledged, baseline_next, outcome, unchecked = None, False, "finished", 0
     rule = AlarmRule(warmup, confirm)
     log(f"agent watching {tools.pr.n_total} layers (camera monitoring {'on' if monitor else 'off'}"
@@ -266,6 +278,11 @@ def run_agent(tools, decider, gate, out_dir="results/agent", grow=1.5, grow_px=3
                                if e["situation"].get("correction")],
                    decided_by=[e["recommendation"]["source"] for e in r.events],
                    actions=[e["action"] for e in r.events])
+    if usage is not None and usage.calls:
+        usage.save(r.dir / "usage.json")
+        summary["llm_usage"] = usage.totals()["total"]
     (r.dir / "summary.json").write_text(json.dumps(summary, indent=1))
     log(f"{outcome} after {tools.pr.n_done} layers, {len(r.events)} decision(s); see {r.dir}")
+    if usage is not None and usage.calls:
+        log(usage.line())
     return dict(summary, run=str(r.dir), events=r.events)

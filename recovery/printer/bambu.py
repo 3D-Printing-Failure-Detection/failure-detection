@@ -71,11 +71,9 @@ REHOME_PRESETS = {
 }
 
 
-def resume_gcode(layers: List[Layer], layer_h, start_idx, origin, nozzle=220, bed=55,
-                 rehome_gcode="", z_hop=0.4, lift_mm=10.0) -> str:
-    """Self-contained G-code that continues a part from `layers`. `rehome_gcode` is raw G-code
-    or the name of a preset in REHOME_PRESETS."""
-    z0 = layers[0].z if layers else 0.0
+def resume_header(z0, start_idx, nozzle=220, bed=55, rehome_gcode="", z_hop=0.4, lift_mm=10.0) -> str:
+    """Start of a resume file: heat, absolute XY/Z with relative E, (optional re-home), lift
+    clear of the part at z0 + z_hop, part-cooling fan on."""
     rehome_gcode = REHOME_PRESETS.get(rehome_gcode, rehome_gcode)
     if "{lift" in rehome_gcode:
         rehome_gcode = rehome_gcode.format(lift=lift_mm)
@@ -85,10 +83,19 @@ def resume_gcode(layers: List[Layer], layer_h, start_idx, origin, nozzle=220, be
     if rehome_gcode:
         head.append(rehome_gcode)
     head += [f"G1 Z{z0 + z_hop:.3f} F600", "M106 P1 S255"]       # part-cooling fan on
+    return "\n".join(head) + "\n"
+
+
+def resume_gcode(layers: List[Layer], layer_h, start_idx, origin, nozzle=220, bed=55,
+                 rehome_gcode="", z_hop=0.4, lift_mm=10.0) -> str:
+    """Self-contained G-code that continues a part from `layers`. `rehome_gcode` is raw G-code
+    or the name of a preset in REHOME_PRESETS."""
+    z0 = layers[0].z if layers else 0.0
+    head = resume_header(z0, start_idx, nozzle, bed, rehome_gcode, z_hop, lift_mm)
     # thin walls filled, filament retracted and the bed dropped z_hop for every travel move
     body, _ = write_layers(layers, layer_h, start_idx=start_idx, origin=origin, bambu=True,
                            gap_fill=True, retract_mm=0.8, zhop_mm=z_hop)
-    return "\n".join(head) + "\n" + body + FOOTER
+    return head + body + FOOTER
 
 
 class ImplicitFTPS(ftplib.FTP_TLS):
@@ -296,6 +303,7 @@ class BambuPrinter:
         self.cam = BambuCamera(ip, code, ports["camera"])
         self.origin = origin or C.BED_CENTER
         self.mode, self.rehome, self.settle, self.timeout = mode, rehome_gcode, settle_s, timeout_s
+        self.original_gcode = original_gcode         # the sliced file (its later layers can be reused)
         t = print_settings(original_gcode or "")
         self.nozzle, self.bed = t["nozzle"], t["bed"]
         self.cancelled = False
@@ -441,10 +449,12 @@ class BambuPrinter:
         """The file `replace_remaining` would upload, for inspection before approving."""
         return resume_gcode(layers, self.layer_h, self._layer, self.origin, self.nozzle, self.bed, self.rehome)
 
-    def replace_remaining(self, layers: List[Layer]):
+    def replace_remaining(self, layers: List[Layer], gcode: Optional[str] = None):
+        """`gcode`: send this file (e.g. written by the language model and checked) instead of
+        writing one from `layers`."""
         self._command_allowed("replace the remaining layers of")
         keep = self._layer
-        self._restart(self.correction_gcode(layers), keep, layers)
+        self._restart(gcode or self.correction_gcode(layers), keep, layers)
 
     def _restart(self, gc: str, keep: int, layers: List[Layer], attempts=2, start_wait_s=120, person_wait_s=900):
         """stop -> upload -> start -> confirm, each step waiting for the printer's own acknowledgement.

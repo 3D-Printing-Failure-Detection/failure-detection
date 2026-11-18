@@ -38,7 +38,7 @@ class ActionGate:
         self.tools.pause()
         return True
 
-    def decide_and_act(self, recommendation, options, summary, correction_layers=None) -> str:
+    def decide_and_act(self, recommendation, options, summary, correction_layers=None, correction_gcode=None) -> str:
         action = self.approver.choose(recommendation, options, summary)
         if action not in {o["id"] for o in options}:
             raise ValueError(f"approver chose an option that was not offered: {action}")
@@ -47,5 +47,8 @@ class ActionGate:
         elif action == "resume":
             self.tools.resume()
         elif action in ("correct", "restart"):
-            self.tools.correct(correction_layers)
+            if correction_gcode is None:
+                self.tools.correct(correction_layers)
+            else:
+                self.tools.correct(correction_layers, gcode=correction_gcode)
         return action                                # "continue": printer was never paused

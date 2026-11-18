@@ -21,9 +21,10 @@ Do the tests in order. Start a test only once the one before it has passed.
 | 2 | re-upload test, no dent → **restart** | 1 tray | stop → upload → start works on the P1S (the step behind "correct") | passed 11-17 (file started from the screen) |
 | 3 | 3 mm dent → **correct** | 1 tray | the whole chain: corrected layers uploaded and printed, tray holds water | rerun 11-17: results pending |
 | 4 | 3 mm dent, **LLM** decides and plans the fix → **correct** | 1 tray | the LLM chooses the action and designs the correction; our checks verify it | new |
+| 5 | 3 mm dent, the **LLM also writes the G-code** → **correct** | 1 tray | the corrected layers' G-code is written by the LLM, checked, and prints | new |
 
-**Short on time?** Tests 3 and 4 can be done back to back in one session (2 trays), or test 4 alone:
-it covers everything test 3 does, plus the LLM.
+**Short on time?** Tests 3, 4 and 5 can be done back to back in one session (3 trays). Test 5 alone
+covers everything 3 and 4 do, plus the LLM writing the G-code.
 
 Replace `IP SERIAL CODE` below with the printer's values (the same as in `connection-test`).
 
@@ -189,6 +190,30 @@ python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --den
 - If it says `openai...->rules` or `->search`, the model could not be used and the rules took over:
   the print is still fine, but send the output (`llm_transcript.json`, `planner_transcript.json`).
 - **Pass:** as test 3, and the run folder has `planner_transcript.json`.
+
+## 5. Dent 3 mm, the LLM also writes the G-code → correct
+
+Same as test 4 (same `.env`), with one more option. The LLM plans the fix, then writes the G-code of
+every changed layer itself (about 15 layers). Each layer is safety-checked and read back before
+anything is sent; the layers above the fix are copied unchanged from your sliced file.
+
+```bash
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --dent-test \
+    --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE --decider openai --plan-fix gcode
+```
+
+- At the pause: dent the front wall about **3 mm**, press Enter, type `dent 0 -10 3`.
+- Writing takes about 30 s (the printer stays paused).
+- Check the summary before accepting:
+  - `G-code: 15/15 changed layers written by openai:gpt-5.4-mini; the other 15 layers copied from the sliced file`;
+  - note it if it says `by our writer` for some layers, or `our writer (no usable sliced file)`;
+  - the `LLM: ... calls ... $...` line (the cost so far);
+  - the picture `correction_from_layer_N.png`, as in test 4.
+- Accept, start the file from the printer screen when asked, and **watch the first new layers**:
+  this is the first time G-code written by the LLM runs on the printer. Press Stop if the nozzle
+  digs in, prints in the air or leaves the part.
+- **Pass:** as test 3, and the run folder has `usage.json` and `planner_transcript.json`.
+- Also send `water-tray.gcode.3mf` (your sliced file) so we can check the copying of the top layers offline.
 
 ## Send back after each test
 

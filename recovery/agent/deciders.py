@@ -78,11 +78,12 @@ def parse_reply(text: str) -> dict:
     return json.loads(m.group(0))
 
 
-def openai_complete(endpoint="http://127.0.0.1:11434", model="qwen3:1.7b", timeout=120, api_key=None):
+def openai_complete(endpoint="http://127.0.0.1:11434", model="qwen3:1.7b", timeout=120, api_key=None, usage=None):
     """complete(system, user) for an OpenAI-compatible chat server: a local one (Ollama's default
     port is 11434) or OpenAI itself (endpoint https://api.openai.com with api_key). Deterministic,
     JSON-only replies; Qwen3's thinking is switched off with /no_think. Models that only accept
-    the default temperature (e.g. gpt-5*) are retried without it."""
+    the default temperature (e.g. gpt-5*) are retried without it. `usage` (agent/usage.Usage)
+    counts every call's tokens and cost under its `label`."""
     url = endpoint.rstrip("/") + "/v1/chat/completions"
     headers = {"Content-Type": "application/json"}
     if api_key:
@@ -91,20 +92,27 @@ def openai_complete(endpoint="http://127.0.0.1:11434", model="qwen3:1.7b", timeo
     def post(body):
         req = urllib.request.Request(url, json.dumps(body).encode(), headers)
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            return json.loads(r.read())["choices"][0]["message"]["content"]
+            return json.loads(r.read())
 
-    def complete(system, user):
+    def complete(system, user, label=None):
         if model.lower().startswith("qwen3"):
             user = user + "\n/no_think"
         body = dict(model=model, temperature=0, response_format=dict(type="json_object"),
                     messages=[dict(role="system", content=system), dict(role="user", content=user)])
+        t0 = time.time()
         try:
-            return post(body)
+            out = post(body)
         except urllib.error.HTTPError as e:
             if e.code != 400 or "temperature" not in e.read().decode(errors="replace"):
                 raise
             body.pop("temperature")
-            return post(body)
+            out = post(body)
+        u = out.get("usage") or {}
+        if usage is not None:
+            usage.record(model, label, u.get("prompt_tokens", 0), u.get("completion_tokens", 0),
+                         round(time.time() - t0, 2))
+        return out["choices"][0]["message"]["content"]
+    complete.counts_usage = True
     return complete
 
 
@@ -113,7 +121,9 @@ class LLMDecider:
     its reply is unusable."""
 
     def __init__(self, complete, fallback=None, system=SYSTEM, name="llm"):
-        self.complete, self.fallback, self.system, self.name = complete, fallback or RuleDecider(), system, name
+        from .usage import labelled
+        self.complete, self.fallback, self.system, self.name = (labelled(complete, "decide"), fallback or RuleDecider(),
+                                                                system, name)
         self.transcript = []
 
     def decide(self, situation: dict, options: list) -> dict:
