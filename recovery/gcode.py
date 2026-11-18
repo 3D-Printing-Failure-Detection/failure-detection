@@ -107,13 +107,16 @@ def gap_fill_paths(region, paths, w=C.LINE_W, min_gap=0.15):
 
 def write_layers(layers: List[Layer], layer_h, start_idx=0, w=C.LINE_W, loops=2,
                  feed=1800, origin=None, bambu=False, gap_fill=False, retract_mm=0.0,
-                 zhop_mm=0.0) -> Tuple[str, float]:
+                 zhop_mm=0.0, first_retract=False) -> Tuple[str, float]:
     """G-code text for the layers; returns (text, filament_mm).
     bambu=True also emits `M73 L<n>` (layer progress) so the printer's reported
     layer_num keeps counting through adapted layers. For G-code that a real printer will run
     (the defaults keep the simulator's output unchanged): gap_fill extrudes the empty middle of
     thin walls; retract_mm pulls the filament back before each travel; zhop_mm opens the gap
-    between nozzle and part during travel (on the P1S the bed drops, the nozzle stays put)."""
+    between nozzle and part during travel (on the P1S the bed drops, the nozzle stays put).
+    first_retract: also retract before the very first travel. Set it when the text continues
+    printed material (a layer or tail written on its own after other layers): the nozzle is primed
+    there, so travelling without a retract would ooze across the part."""
     out, filament = [], 0.0
     cx, cy = origin or C.BED_CENTER
     for k, lay in enumerate(layers):
@@ -132,12 +135,12 @@ def write_layers(layers: List[Layer], layer_h, start_idx=0, w=C.LINE_W, loops=2,
                 out.append(f";TYPE:{feat}")
                 tag = feat
             if zhop_mm:                         # lift clear, travel, come back down, prime
-                if retract_mm and (i or k):
+                if retract_mm and (i or k or first_retract):
                     out.append(f"G1 E-{retract_mm:.2f} F1800")
                 out.append(f"G1 Z{lay.z + zhop_mm:.3f} F600")
                 out.append(f"G0 X{path[0,0]+cx:.3f} Y{path[0,1]+cy:.3f} F7200")
                 out.append(f"G1 Z{lay.z:.3f} F600")
-                if retract_mm and (i or k):
+                if retract_mm and (i or k or first_retract):
                     out.append(f"G1 E{retract_mm:.2f} F1800")
             else:
                 if retract_mm and i:

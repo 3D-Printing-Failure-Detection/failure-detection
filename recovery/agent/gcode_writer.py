@@ -17,7 +17,7 @@ simulator has none, so our writer stands in).
               layer supported); if that fails, our writer's file is used instead.
   file        resume header + the model's layers + the original's later layers + footer.
 
-The check is a stand-in until a fuller G-code checker exists (proposed for Sri: gcode_check).
+The checks are recovery/geometry/gcode_check.py (per layer, and for the whole uploaded file).
 """
 import json
 import re
@@ -29,6 +29,7 @@ import shapely
 
 from .. import config as C
 from .. import gcode as G
+from ..geometry.gcode_check import gcode_check, gcode_file_check
 from ..geometry.ops import iou
 from ..types import Layer
 from .deciders import parse_reply
@@ -95,71 +96,8 @@ def _strip(text):
 
 
 def check_layer(text, layer: Layer, jobs, layer_h, origin, margin_mm=2.0) -> List[str]:
-    """Safety problems in one layer of G-code (empty = safe to print). Stand-in for gcode_check."""
-    z, problems = layer.z, []
-    x0, y0, x1, y1 = layer.region.bounds
-    x0, x1, y0, y1 = x0 + origin[0] - margin_mm, x1 + origin[0] + margin_mm, y0 + origin[1] - margin_mm, y1 + origin[1] + margin_mm
-    rates = [G._e(1.0, wd, layer_h) for _, _, wd in jobs]
-    lo, hi = 0.85 * min(rates), 1.15 * max(rates)
-    want_e = sum(G._e(shapely.LineString(p).length, wd, layer_h) for _, p, wd in jobs)
-    x = y = None
-    cz, e_total, e_still, bad_rate = None, 0.0, 0.0, 0
-    for n, raw in enumerate(text.splitlines(), 1):
-        code = raw.split(";", 1)[0].strip()
-        if not code:
-            continue
-        op, *args = code.split()
-        if op not in ("G0", "G1"):
-            problems.append(f"line {n}: '{code}' is not allowed (only G0/G1)")
-            continue
-        v = {}
-        for a in args:
-            if a[:1].upper() not in ALLOWED_LETTERS:
-                problems.append(f"line {n}: '{a}' is not allowed")
-                continue
-            try:
-                v[a[0].upper()] = float(a[1:])
-            except ValueError:
-                problems.append(f"line {n}: cannot read '{a}'")
-        if "F" in v and not 300 <= v["F"] <= 12000:
-            problems.append(f"line {n}: speed F{v['F']:g} outside 300-12000")
-        if "Z" in v:
-            if min(abs(v["Z"] - z), abs(v["Z"] - z - ZHOP)) > 0.005:
-                problems.append(f"line {n}: Z{v['Z']:g} is neither the layer height {z:.3f} nor lifted {z + ZHOP:.3f}")
-            cz = v["Z"]
-        nx, ny = v.get("X", x), v.get("Y", y)
-        if ("X" in v or "Y" in v) and not (x0 <= nx <= x1 and y0 <= ny <= y1):
-            problems.append(f"line {n}: X{nx:g} Y{ny:g} is outside the part's area")
-        e = v.get("E")
-        if e is not None:
-            if op == "G0":
-                problems.append(f"line {n}: G0 must not extrude")
-            moved = x is not None and (nx != x or ny != y)
-            if moved:
-                if e < 0:
-                    problems.append(f"line {n}: retract while moving")
-                elif cz is None or abs(cz - z) > 0.005:
-                    problems.append(f"line {n}: extruding while not at the layer height {z:.3f}")
-                else:
-                    rate = e / max(np.hypot(nx - x, ny - y), 1e-9)
-                    if not lo <= rate <= hi and np.hypot(nx - x, ny - y) > 0.05:
-                        bad_rate += 1
-                        if bad_rate <= 3:
-                            problems.append(f"line {n}: E{e:g} over {np.hypot(nx - x, ny - y):.3f} mm is "
-                                            f"{rate:.4f}/mm, expected {lo / 0.85:.4f}-{hi / 1.15:.4f}/mm")
-                    e_total += e
-            else:
-                if abs(e) > 1.0:
-                    problems.append(f"line {n}: E{e:g} without moving (retract/prime at most 1 mm)")
-                e_still += e
-        x, y = nx, ny
-    if bad_rate > 3:
-        problems.append(f"... {bad_rate} extrusion moves in total have the wrong E per mm")
-    if abs(e_still) > 0.05:
-        problems.append(f"retracts and primes do not balance (net {e_still:+.2f} mm)")
-    if not 0.9 * want_e <= e_total <= 1.1 * want_e:
-        problems.append(f"total extrusion {e_total:.2f} mm, expected about {want_e:.2f} mm (all paths printed?)")
-    return problems
+    """Safety problems in one layer of G-code (empty = safe to print): recovery.geometry.gcode_check."""
+    return gcode_check(text, layer, jobs, layer_h, origin, margin_mm)
 
 
 def read_back(text, layer: Layer, layer_no, layer_h, origin) -> Layer:
@@ -201,7 +139,7 @@ class LLMGcodeWriter:
     def _one(self, layer, layer_no, layer_h, origin):
         jobs, ctx = layer_context(layer, layer_no, layer_h, origin)
         ours, _ = G.write_layers([layer], layer_h, start_idx=layer_no - 1, origin=origin, gap_fill=True,
-                                 retract_mm=RETRACT, zhop_mm=ZHOP)
+                                 retract_mm=RETRACT, zhop_mm=ZHOP, first_retract=True)
         ours = ours.split(f";WIDTH:{C.LINE_W:.3f}\n", 1)[-1]            # body only (markers added here)
         tries = []
         for _ in range(self.rounds):
@@ -269,13 +207,20 @@ class LLMGcodeWriter:
                 tail = None
         if tail is None:
             tail, _ = G.write_layers(list(layers[n_new:]), layer_h, start_idx=k + n_new, origin=origin, bambu=True,
-                                     gap_fill=True, retract_mm=RETRACT, zhop_mm=ZHOP)
+                                     gap_fill=True, retract_mm=RETRACT, zhop_mm=ZHOP, first_retract=True)
             tail_by = "our writer (no usable sliced file)"
         info.update(rest_layers=len(layers) - n_new, rest_by=tail_by,
                     summary=f"{by_model}/{n_new} changed layers written by {self.name}"
                             + (f", {n_new - by_model} by our writer" if by_model < n_new else "")
                             + f"; the other {len(layers) - n_new} layers {tail_by}")
-        fix.update(gcode=head + body + "; --- original layers ---\n" + tail + FOOTER,
+        full = head + body + "; --- original layers ---\n" + tail + FOOTER
+        problems = gcode_file_check(full, list(new_shapes) + list(layers[n_new:]), origin)
+        if problems:
+            info["summary"] = "our writer: the assembled file failed the file check (" + "; ".join(problems[:3]) + ")"
+            info["file_problems"] = problems
+            fix["gcode_by"] = info
+            return fix
+        fix.update(gcode=full,
                    layers=new_shapes + list(layers[n_new:]), report=report, gcode_by=info)
         return fix
 
