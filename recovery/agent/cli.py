@@ -25,6 +25,7 @@ import yaml
 from ..parts import Part, get_part
 from ..loop.llm import MODEL as CLAUDE_MODEL
 from .deciders import LLMDecider, RuleDecider, openai_complete
+from .planner import LLMFixPlanner, SearchPlanner
 from .gate import ActionGate, AutoApprover, TerminalApprover
 from .loop import run_agent
 from .tools import PrinterTools
@@ -79,6 +80,10 @@ def add_decider_arguments(p):
                    "or qwen3:8b (~5 GB, better) on 16 GB machines")
     p.add_argument("--endpoint", default="http://127.0.0.1:11434", help="local OpenAI-compatible server")
     p.add_argument("--claude-model", default=CLAUDE_MODEL)
+    p.add_argument("--plan-fix", default="auto", choices=["auto", "llm", "search"],
+                   help="who designs a correction: the decider's language model proposes it and the checks "
+                        "verify it (llm), or the automatic search over fade lengths (search); auto = llm "
+                        "whenever --decider is a language model, else search")
 
 
 def _claude_complete(model):
@@ -130,6 +135,15 @@ def make_decider(kind, local_model="qwen3:1.7b", endpoint="http://127.0.0.1:1143
             return chain
         return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}", fallback=chain)
     return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}")
+
+
+def make_planner(kind, decider):
+    """search, or the decider's own language model (first in its chain) proposing the plan."""
+    if kind == "llm" and not isinstance(decider, LLMDecider):
+        raise SystemExit("--plan-fix llm needs a language-model decider (--decider openai, claude, local or auto)")
+    if kind == "search" or not isinstance(decider, LLMDecider):
+        return SearchPlanner()
+    return LLMFixPlanner(decider.complete, name=decider.name)
 
 
 # a situation like the one the agent sends after a dent next to a hole (the right answer: stop)
@@ -271,8 +285,9 @@ def main(a):
     approver = AutoApprover() if a.auto_approve else TerminalApprover()
     gate = ActionGate(tools, approver, auto_pause=not a.no_auto_pause)
     try:
-        return run_agent(tools, make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model), gate,
-                         out_dir=a.out, monitor=monitor, dent_test=test, resume_test=a.resume_test)
+        decider = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model)
+        return run_agent(tools, decider, gate, out_dir=a.out, monitor=monitor, dent_test=test,
+                         resume_test=a.resume_test, planner=make_planner(a.plan_fix, decider))
     finally:
         if hasattr(printer, "close"):
             printer.close()

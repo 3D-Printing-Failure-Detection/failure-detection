@@ -7,10 +7,10 @@
 **Not needed:**
 - **Dent model:** you type what you did to the part (`dent X Y DEPTH`), the default on the real printer.
 - **Calibration:** without `calib.npz` the agent uses an approximate camera; this only affects the saved photos.
-- **LLM:** decisions use the built-in rules (`--decider rules`, the default).
-  - Optional, once tests 2-3 pass: add `--decider openai` to test 3 so an OpenAI model decides instead.
-  - It needs a file `.env` in the repo folder with the line `OPENAI_API_KEY=...` (get the key from Sohum
-    privately; never commit it). Check it first with `python -m recovery.cli llm-check --decider openai` (expect `2/2 right`).
+- **LLM for tests 0-3:** they use the built-in rules (`--decider rules`, the default). Test 4 uses an
+  OpenAI model; its setup is in test 4.
+- **The printer starting the new file by itself:** the P1S ignores the laptop's start command
+  (confirmed 11-17). When the agent asks, start the file from the printer screen. That is expected.
 
 Do the tests in order. Start a test only once the one before it has passed.
 
@@ -18,8 +18,12 @@ Do the tests in order. Start a test only once the one before it has passed.
 |---|---|---|---|---|
 | 0 | setup | none | the sliced file is understood; the agent runs in simulation | passed 11-16 |
 | 1 | 1 mm dent → **resume** | 1 tray | the agent notices the pause, checks, recommends, and its resume works | passed 11-17 |
-| 2 | re-upload test, no dent → **restart** | 1 tray | stop → upload → start works on the P1S (the step behind "correct") | rerun |
-| 3 | 3 mm dent → **correct** | 1 tray | the whole chain: corrected layers uploaded and printed, tray holds water | rerun |
+| 2 | re-upload test, no dent → **restart** | 1 tray | stop → upload → start works on the P1S (the step behind "correct") | passed 11-17 (file started from the screen) |
+| 3 | 3 mm dent → **correct** | 1 tray | the whole chain: corrected layers uploaded and printed, tray holds water | rerun 11-17: results pending |
+| 4 | 3 mm dent, **LLM** decides and plans the fix → **correct** | 1 tray | the LLM chooses the action and designs the correction; our checks verify it | new |
+
+**Short on time?** Tests 3 and 4 can be done back to back in one session (2 trays), or test 4 alone:
+it covers everything test 3 does, plus the LLM.
 
 Replace `IP SERIAL CODE` below with the printer's values (the same as in `connection-test`).
 
@@ -97,8 +101,9 @@ python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --den
 
 The risky one: watch the bed the whole time it restarts.
 
-**Status (11-17):** the stop and the upload worked, and the uploaded file printed fine when started
-by hand. Still untested: the agent starting the file by itself.
+**Status (11-17):** passed. The stop and the upload worked, and the uploaded file printed fine when
+started from the printer screen. The P1S does not start it from the laptop, so starting it from the
+screen is the normal step now.
 
 **What happens and why:**
 - A running Bambu job can't be edited, so "correct" doesn't change the paused job. Instead the system:
@@ -125,11 +130,11 @@ python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --res
 
 - At the pause, **don't touch the part**.
 - The agent shows `RESUME TEST` and recommends **RESTART**. Accept it.
-- The printer stops. The agent prints `uploaded adapted_<number>.gcode; starting it`, then `... is printing`.
-- If instead it says `The printer did not start ... by itself`:
+- The printer stops. The agent prints `uploaded adapted_<number>.gcode; starting it`.
+- After about 2 min it says `The printer did not start ... by itself` (expected):
   - start that exact file from the printer screen (SD card files);
-  - the agent waits up to 15 min;
-  - note which one happened: it tells us whether the printer accepts the start command from the laptop.
+  - the agent continues as soon as the print starts (15 min is only the longest it waits);
+  - then it prints `... is printing`.
 - At the end, the bed should drop and the head should park at the back left, away from the part.
 - **Pass:**
   - no Z homing over the part, no collision;
@@ -149,12 +154,41 @@ Same command as test 1 (`--dent-test`).
   (`correction_from_layer_N.png`):
   - the new layers should start at the dented wall;
   - and step back to the original wall over about 10 layers.
-- Accept. The printer stops, uploads and restarts as in test 2 (start the file from the screen if
-  the agent asks).
+- Accept. The printer stops and the file is uploaded as in test 2. Start the file from the printer
+  screen when the agent asks.
 - **Pass:**
   - the new layers step back to the original wall;
   - the head parks at the end;
   - the tray holds water (about 5 ml).
+
+## 4. Dent 3 mm, the LLM decides and plans the fix → correct
+
+Same as test 3, but an OpenAI model makes the two decisions the rules made before:
+- **plans the fix:** how many layers to step back to the original wall over (or keep the dent).
+  Our code builds that plan and Sri's checks test it; a failing plan goes back to the model with the
+  reasons (up to 3 tries). The model never writes G-code.
+- **decides:** resume, correct or stop, with a reason.
+
+Setup (once):
+- Create a file named `.env` in the repo folder with one line: `OPENAI_API_KEY=...`
+  (get the key from Sohum privately; never commit or share it).
+- Check it: `python -m recovery.cli llm-check --decider openai`. **Pass:** `2/2 right`.
+
+```bash
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --dent-test \
+    --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE --decider openai
+```
+
+- At the pause, press the middle of the front wall inward about **3 mm**, press Enter, type `dent 0 -10 3`.
+- Check the summary before accepting:
+  - `Planned by openai:...` with the model's reason and how many proposals were checked;
+  - `Agent (openai:...): CORRECT because ...`;
+  - the picture `correction_from_layer_N.png`: the new layers start at the dent and step back to the
+    wall over the number of layers the model chose.
+- Accept, then start the file from the printer screen when the agent asks.
+- If it says `openai...->rules` or `->search`, the model could not be used and the rules took over:
+  the print is still fine, but send the output (`llm_transcript.json`, `planner_transcript.json`).
+- **Pass:** as test 3, and the run folder has `planner_transcript.json`.
 
 ## Send back after each test
 

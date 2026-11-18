@@ -195,7 +195,7 @@ def test_claude_failure_falls_back_to_local_then_rules(monkeypatch):
 
 
 # ---------------------------------------------------------------- container dent test at a planned pause
-def _dent_test(change, tmp_path, decider=None, approver=None):
+def _dent_test(change, tmp_path, decider=None, approver=None, planner=None):
     from recovery.agent.loop import DentTest
     from recovery.agent.measure import ScriptedMeasure
     from recovery.agent.rehearse import PlannedPauseSim
@@ -205,7 +205,8 @@ def _dent_test(change, tmp_path, decider=None, approver=None):
     tools = PrinterTools(pr, p)
     test = DentTest(person=lambda: pr.user_change(change), measure=ScriptedMeasure(change))
     gate = ActionGate(tools, approver or AutoApprover(), log=lambda *a: None)
-    res = run_agent(tools, decider or RuleDecider(), gate, out_dir=str(tmp_path), dent_test=test, log=lambda *a: None)
+    res = run_agent(tools, decider or RuleDecider(), gate, out_dir=str(tmp_path), dent_test=test, log=lambda *a: None,
+                    planner=planner)
     return p, nom, pr, res
 
 
@@ -438,3 +439,51 @@ def test_dent_depth_is_typed_and_evidence_is_shown():
                      function_if_continue=dict(features=[]))
     text = _summary(situation, dict(source="rules", action="resume", reason="x"))
     assert "/r/b.png" in text and "/r/c.png" in text and "check the images" in text
+
+
+# ---------------------------------------------------------------- the LLM plans the correction
+def _scripted_planner(replies, name="llm"):
+    from recovery.agent.planner import LLMFixPlanner
+    prompts = []
+
+    def complete(system, user):
+        prompts.append(user)
+        r = replies[len(prompts) - 1]
+        if isinstance(r, Exception):
+            raise r
+        return r
+    return LLMFixPlanner(complete, name=name), prompts
+
+
+def test_llm_planned_fix_is_checked_and_a_failing_plan_goes_back_with_its_reasons(tmp_path):
+    planner, prompts = _scripted_planner(['{"fade_layers": 1, "reason": "return at once"}',
+                                          '{"fade_layers": 6, "reason": "gentler"}'])
+    p, nom, pr, res = _dent_test("dent 0 -10 3", tmp_path, planner=planner)
+    fix = res["events"][0]["situation"]["correction"]
+    assert res["events"][0]["action"] == "correct" and fix["fade_layers"] == 6 and fix["planned_by"] == "llm"
+    assert [a["passes"] for a in fix["attempts"]] == [False, True]
+    assert "hang over air" in prompts[1] and '"fade_layers": 1' in prompts[1]      # the failure was fed back
+    truth = check(pr.printed, nom, p.spec, p.layer_h)                              # the shape actually printed
+    assert res["outcome"] == "finished" and truth.ok, truth.violations
+    assert res["planned_by"] == ["llm"] and (tmp_path / res["run"].split("/")[-1] / "planner_transcript.json").exists()
+
+
+def test_llm_planner_unavailable_or_never_passing_falls_back_to_the_search(tmp_path):
+    planner, _ = _scripted_planner([RuntimeError("no key")])
+    _, _, _, res = _dent_test("dent 0 -10 3", tmp_path, planner=planner)
+    fix = res["events"][0]["situation"]["correction"]
+    assert fix["planned_by"] == "llm->search" and fix["fade_layers"] == 10
+    planner, _ = _scripted_planner(['{"fade_layers": 1}'] * 3)
+    _, _, _, res = _dent_test("dent 0 -10 3", tmp_path / "b", planner=planner)
+    fix = res["events"][0]["situation"]["correction"]
+    assert fix["planned_by"] == "llm->search" and len(fix["attempts"]) == 3
+
+
+def test_plan_fix_auto_uses_the_llm_only_with_an_llm_decider():
+    from recovery.agent.cli import make_planner
+    from recovery.agent.planner import LLMFixPlanner, SearchPlanner
+    assert isinstance(make_planner("auto", RuleDecider()), SearchPlanner)
+    assert isinstance(make_planner("auto", LLMDecider(lambda s, u: "", name="x")), LLMFixPlanner)
+    assert isinstance(make_planner("search", LLMDecider(lambda s, u: "", name="x")), SearchPlanner)
+    with pytest.raises(SystemExit):
+        make_planner("llm", RuleDecider())
