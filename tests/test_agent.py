@@ -150,13 +150,34 @@ def test_reply_parser_ignores_a_thinking_block():
     assert parse_reply(text) == {"action": "stop", "reason": "hole too small"}
 
 
-def test_auto_chain_without_key_or_server_falls_back_to_rules(monkeypatch):
+def test_auto_chain_without_key_or_server_falls_back_to_rules(monkeypatch, tmp_path):
     from recovery.agent.cli import OPTIONS, SAMPLE, make_decider
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.chdir(tmp_path)                                     # no .env here
+    for k in ("ANTHROPIC_API_KEY", "OPENAI_API_KEY"):
+        monkeypatch.setenv(k, "x"), monkeypatch.delenv(k)          # restored after the test
     dec = make_decider("auto", endpoint="http://127.0.0.1:9")      # nothing listens there
     out = dec.decide(SAMPLE, OPTIONS)
     assert out["action"] == "stop" and out["source"] == "local:qwen3:1.7b->rules"
     assert "error" in dec.full_transcript[0]
+
+
+def test_openai_decider_sends_the_key_and_falls_back_to_rules(monkeypatch, tmp_path):
+    """--decider openai: the request carries the key (read from .env); a failed call -> rules."""
+    import urllib.request
+    from recovery.agent.cli import OPTIONS, SAMPLE, make_decider
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("OPENAI_API_KEY", "x"), monkeypatch.delenv("OPENAI_API_KEY")   # .env sets it; undone after
+    (tmp_path / ".env").write_text("OPENAI_API_KEY=sk-test\n")
+    sent = []
+
+    def fake_urlopen(req, timeout=None):
+        sent.append(req)
+        raise OSError("offline")
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    out = make_decider("openai", openai_model="gpt-4.1-mini").decide(SAMPLE, OPTIONS)
+    assert sent[0].full_url == "https://api.openai.com/v1/chat/completions"
+    assert sent[0].get_header("Authorization") == "Bearer sk-test"
+    assert out["action"] == "stop" and out["source"] == "openai:gpt-4.1-mini->rules"
 
 
 def test_claude_failure_falls_back_to_local_then_rules(monkeypatch):

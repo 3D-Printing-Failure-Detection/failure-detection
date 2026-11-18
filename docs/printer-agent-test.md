@@ -8,6 +8,9 @@
 - **Dent model:** you type what you did to the part (`dent X Y DEPTH`), the default on the real printer.
 - **Calibration:** without `calib.npz` the agent uses an approximate camera; this only affects the saved photos.
 - **LLM:** decisions use the built-in rules (`--decider rules`, the default).
+  - Optional, once tests 2-3 pass: add `--decider openai` to test 3 so an OpenAI model decides instead.
+  - It needs a file `.env` in the repo folder with the line `OPENAI_API_KEY=...` (get the key from Sohum
+    privately; never commit it). Check it first with `python -m recovery.cli llm-check --decider openai` (expect `2/2 right`).
 
 Do the tests in order. Start a test only once the one before it has passed.
 

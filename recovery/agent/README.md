@@ -118,16 +118,32 @@ python -m recovery.cli agent --part parts/print/two-hole-block/two-hole-block.ya
 
 - `rules` (default): resume if every feature passes; otherwise correct if a correction passes;
   otherwise stop. Stop if the part detached.
+- `openai`: an OpenAI model (`--openai-model`, default `gpt-4.1-mini`; `gpt-5.4-mini` also works).
+  Needs `OPENAI_API_KEY`, in the environment or in a `.env` file in the folder you run from
+  (`OPENAI_API_KEY=sk-...`; `.env` is git-ignored, never commit it). Falls back to the rules.
 - `local`: a local Qwen through Ollama (default `qwen3:1.7b`), or any OpenAI-compatible server
   (`--endpoint`, `--local-model`). Falls back to the rules.
 - `claude`: needs `ANTHROPIC_API_KEY` (`--claude-model`). Falls back to the rules.
-- `auto`: Claude if a key is set, otherwise (or if it fails) local Qwen, otherwise the rules.
+- `auto`: Claude if its key is set, then OpenAI if its key is set, then local Qwen, then the rules
+  (each one stands in when the one before fails).
 - In code: `LLMDecider(complete, fallback=...)` with any `complete(system, user) -> text`.
 
 The model sees the measurement, both function checks (resume, and the correction if there is
 one), the filament cost and the allowed actions, and must answer `{"action": ..., "reason": ...}`
 with an allowed action. Anything else falls back to the next decider, and the log's `source` says
 so (e.g. `local:qwen3:1.7b->rules`). The model never talks to the printer.
+
+### OpenAI (tested 2026-11-17)
+
+```bash
+python -m recovery.cli llm-check --decider openai          # 2/2 right, about 1-2 s per call
+python -m recovery.cli agent --part parts/print/water-tray/water-tray.yaml --sim --dent-test \
+    --pause-at-layer 30 --dent 0 -10 3 --decider openai
+```
+
+In simulation `gpt-4.1-mini` chose the same as the rules on all four tray dent tests: clean and
+1 mm -> resume, 3 mm -> correct, poke-through -> stop. The model only chooses among the offered
+actions and gives a reason; it never writes G-code or talks to the printer.
 
 ### Local Qwen setup (until Claude credits arrive)
 

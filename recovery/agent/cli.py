@@ -10,9 +10,11 @@ Container dent test (a pause planned in Bambu Studio; the camera tells dent / po
                    --gcode water-tray.gcode.3mf --ip IP --serial SERIAL --code CODE
 Watching every layer for failures (on whenever the trained model is there):
   agent --part ... --gcode ... --ip ... --serial ... --code ... [--calib calib.npz]
-Decider: --decider rules (default) | local (Qwen on Ollama, or any OpenAI-compatible server) |
-         claude (ANTHROPIC_API_KEY) | auto (Claude if a key is set, then local, then rules).
-Check a model before a print:  python -m recovery.cli llm-check --decider local
+Decider: --decider rules (default) | openai (OPENAI_API_KEY, --openai-model) |
+         local (Qwen on Ollama, or any OpenAI-compatible server) | claude (ANTHROPIC_API_KEY) |
+         auto (Claude if its key is set, then OpenAI if its key is set, then local, then rules).
+         Keys can sit in a .env file in the folder you run from (KEY=value lines; never commit it).
+Check a model before a print:  python -m recovery.cli llm-check --decider openai
 """
 import json
 import os
@@ -27,6 +29,7 @@ from .gate import ActionGate, AutoApprover, TerminalApprover
 from .loop import run_agent
 from .tools import PrinterTools
 
+OPENAI_MODEL = "gpt-4.1-mini"
 GEOMETRY_KEYS = ("geometry", "stl", "gcode", "height", "layer_h", "name", "plate", "spec_file")
 
 
@@ -69,7 +72,9 @@ def add_arguments(p):
 
 
 def add_decider_arguments(p):
-    p.add_argument("--decider", default="rules", choices=["rules", "local", "claude", "auto"])
+    p.add_argument("--decider", default="rules", choices=["rules", "openai", "local", "claude", "auto"])
+    p.add_argument("--openai-model", default=OPENAI_MODEL, help="OpenAI model for --decider openai/auto, "
+                   "e.g. gpt-4.1-mini (default), gpt-4o-mini, gpt-5.4-mini")
     p.add_argument("--local-model", default="qwen3:1.7b", help="local model (Ollama tag), e.g. qwen3:1.7b (~1.4 GB) "
                    "or qwen3:8b (~5 GB, better) on 16 GB machines")
     p.add_argument("--endpoint", default="http://127.0.0.1:11434", help="local OpenAI-compatible server")
@@ -87,17 +92,44 @@ def _claude_complete(model):
     return complete
 
 
-def make_decider(kind, local_model="qwen3:1.7b", endpoint="http://127.0.0.1:11434", claude_model=CLAUDE_MODEL):
-    """rules; local -> rules; claude -> rules; auto: claude (if a key is set) -> local -> rules."""
+def load_dotenv(path=".env"):
+    """KEY=value lines from a .env file into the environment (already-set variables win)."""
+    try:
+        lines = open(path).read().splitlines()
+    except OSError:
+        return
+    for line in lines:
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.removeprefix("export ").split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+
+
+def _openai(model, fallback=None):
+    return LLMDecider(openai_complete("https://api.openai.com", model, api_key=os.environ["OPENAI_API_KEY"]),
+                      name=f"openai:{model}", fallback=fallback)
+
+
+def make_decider(kind, local_model="qwen3:1.7b", endpoint="http://127.0.0.1:11434", claude_model=CLAUDE_MODEL,
+                 openai_model=OPENAI_MODEL):
+    """rules; openai -> rules; local -> rules; claude -> rules;
+    auto: claude (if its key is set) -> openai (if its key is set) -> local -> rules."""
+    load_dotenv()
     if kind == "rules":
         return RuleDecider()
+    if kind == "openai":
+        if not os.environ.get("OPENAI_API_KEY"):
+            raise SystemExit("--decider openai needs OPENAI_API_KEY (in the environment or a .env file here)")
+        return _openai(openai_model)
     local = LLMDecider(openai_complete(endpoint, local_model), name=f"local:{local_model}")
     if kind == "local":
         return local
-    if kind == "auto" and not os.environ.get("ANTHROPIC_API_KEY"):
-        return local
-    return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}",
-                      fallback=local if kind == "auto" else None)
+    if kind == "auto":
+        chain = _openai(openai_model, fallback=local) if os.environ.get("OPENAI_API_KEY") else local
+        if not os.environ.get("ANTHROPIC_API_KEY"):
+            return chain
+        return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}", fallback=chain)
+    return LLMDecider(_claude_complete(claude_model), name=f"claude:{claude_model}")
 
 
 # a situation like the one the agent sends after a dent next to a hole (the right answer: stop)
@@ -118,7 +150,7 @@ OPTIONS = [dict(id="resume", effect="keep printing the original plan"),
 
 def llm_check(a):
     """Two canned alarms (one cosmetic, one that breaks a hole) through the chosen decider."""
-    dec = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model)
+    dec = make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model)
     right = 0
     for name, sit, want in (("cosmetic dent", SAMPLE_OK, "resume"), ("hole narrowed", SAMPLE, "stop")):
         t0 = time.time()
@@ -239,7 +271,7 @@ def main(a):
     approver = AutoApprover() if a.auto_approve else TerminalApprover()
     gate = ActionGate(tools, approver, auto_pause=not a.no_auto_pause)
     try:
-        return run_agent(tools, make_decider(a.decider, a.local_model, a.endpoint, a.claude_model), gate,
+        return run_agent(tools, make_decider(a.decider, a.local_model, a.endpoint, a.claude_model, a.openai_model), gate,
                          out_dir=a.out, monitor=monitor, dent_test=test, resume_test=a.resume_test)
     finally:
         if hasattr(printer, "close"):
